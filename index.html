@@ -368,12 +368,17 @@ p{margin:0}
 .bar i{display:block;height:100%;width:0;transition:width .3s;background:var(--me-grad);border-radius:99px}
 .media{aspect-ratio:4/3;border-radius:var(--radius-m);border:2px dashed color-mix(in srgb,var(--me) 25%,var(--line));display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;color:var(--muted);font-size:12px;margin-bottom:14px;background:color-mix(in srgb,var(--me-soft) 45%,var(--surface))}
 .media img{width:72px;height:72px;object-fit:contain;opacity:.85}
+.media.exercise-media{display:block;border:0;background:#FDFAF6;overflow:hidden}
+.media.exercise-media img{display:block;width:100%;height:100%;object-fit:contain;opacity:1}
 .rcard{background:var(--surface);border-radius:var(--radius-l);padding:16px;box-shadow:var(--shadow);margin-bottom:16px}
 .tag2.light{display:inline-flex;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--me-soft);color:var(--me-ink);margin-bottom:8px}
 .run-top .pc{font-size:12px;font-weight:800;color:var(--me-ink);background:var(--me-soft);border-radius:999px;padding:3px 10px}
 .rlist{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
 .rlist li{display:flex;align-items:center;gap:10px;background:var(--sunk);border-radius:var(--radius-s);padding:10px 12px;font-size:14px;font-weight:600}
 .rlist li span{width:24px;height:24px;border-radius:50%;background:var(--surface);color:var(--me-ink);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+.rlist li img.list-art{width:80px;height:60px;object-fit:contain;border-radius:8px;background:#FDFAF6;flex:none}
+.rlist li img.list-art.duo{width:62px;height:47px}
+.rlist li b{min-width:0;font-size:14px;line-height:1.4}
 .tring{position:relative;width:200px;height:200px;margin:4px auto 20px}
 .tring svg{width:200px;height:200px;transform:rotate(-90deg)}
 .tring circle#cdRing{transition:stroke-dashoffset 1s linear}
@@ -399,6 +404,31 @@ p{margin:0}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);
   padding:9px 16px;border-radius:999px;font-size:13px;z-index:30;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
+/* 形象反馈 */
+.react{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px) scale(.96);z-index:31;opacity:0;pointer-events:none;
+  display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:24px;padding:10px 18px 10px 10px;box-shadow:var(--shadow-lift);width:max-content;max-width:calc(100vw - 32px);transition:opacity .25s,transform .25s}
+.react.show{opacity:1;transform:translate(-50%,0) scale(1)}
+.react img{width:64px;height:64px;object-fit:contain;flex:none}
+.react b{display:block;font-size:15px;font-weight:800}
+.react small{display:block;font-size:12px;color:var(--muted)}
+.react.big{flex-direction:column;text-align:center;padding:18px 24px;bottom:auto;top:50%;transform:translate(-50%,-44%) scale(.9)}
+.react.big.show{transform:translate(-50%,-50%) scale(1)}
+.react.big img{width:140px;height:140px}
+.react.big b{font-size:20px}
+.missed{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center;background:var(--surface);border-radius:var(--radius-m);padding:10px 14px 10px 10px;box-shadow:var(--shadow);margin-bottom:14px}
+.missed img{width:64px;height:64px;object-fit:contain}
+.missed b{display:block;font-size:14px;font-weight:800}
+.missed small{display:block;font-size:12px;color:var(--muted);line-height:1.5}
+.empty-mood{display:flex;align-items:center;gap:10px}
+.empty-mood img{width:56px;height:56px;object-fit:contain;flex:none}
+.rrest .mood{width:88px;height:88px;object-fit:contain;display:block;margin:0 auto 6px}
+.obs .ol li.has-art{grid-template-columns:76px 1fr auto}
+.obs .ol .art{position:relative;width:76px;height:57px;border-radius:10px;overflow:hidden;background:#FDFAF6;flex:none}
+.obs .ol .art img{width:100%;height:100%;object-fit:contain;display:block}
+.obs .ol .art .n{position:absolute;left:4px;bottom:4px;width:20px;height:20px;font-size:11px;background:rgba(24,28,36,.72);color:#fff}
+.desk .art{width:100%;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#FDFAF6;margin-bottom:6px}
+.desk .art img{width:100%;height:100%;object-fit:contain;display:block}
+@media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
 </head>
@@ -422,6 +452,7 @@ p{margin:0}
 
 <div class="run" id="run" aria-live="polite"><div class="wrap" id="runBody"></div></div>
 <div class="toast" id="toast" role="status"></div>
+<div class="react" id="react" role="status" aria-live="polite"></div>
 <div class="pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickTitle"><div class="inner">
   <h1 id="pickTitle">你是谁？</h1>
   <p class="lead">选好后，这台手机上的打卡、训练和记录都按你的身份来。</p>
@@ -535,41 +566,55 @@ const WORKOUTS = {
     warm:["开合跳 30 秒","徒手深蹲 10 个","手臂绕环 30 秒","原地高抬腿 30 秒"],
     cool:["大腿前侧、后侧拉伸各 20 秒","胸部拉伸 20 秒","猫牛式 5 次"],
     moves:[
-      {n:"高脚杯深蹲",r:"12 次",c:"双手捧哑铃在胸前，蹲到大腿平行地面，膝盖和脚尖同向"},
-      {n:"哑铃俯身划船",r:"每侧 10 次",c:"一手撑凳，背部平直，把哑铃拉向腰侧"},
-      {n:"俯卧撑",r:"8–12 次",c:"做不了就跪姿，身体保持一条直线"},
-      {n:"哑铃罗马尼亚硬拉",r:"12 次",c:"膝盖微屈，屁股往后推，背不弓，感受大腿后侧"},
-      {n:"平板支撑",r:"40 秒",c:"收紧腹部和臀部，不塌腰",sec:40}
+      {n:"高脚杯深蹲",img:"a-goblet-squat",r:"12 次",c:"双手捧哑铃在胸前，蹲到大腿平行地面，膝盖和脚尖同向"},
+      {n:"哑铃俯身划船",img:"a-db-row",r:"每侧 10 次",c:"一手撑凳，背部平直，把哑铃拉向腰侧"},
+      {n:"俯卧撑",img:"a-push-up",r:"8–12 次",c:"做不了就跪姿，身体保持一条直线"},
+      {n:"哑铃罗马尼亚硬拉",img:"a-db-rdl",r:"12 次",c:"膝盖微屈，屁股往后推，背不弓，感受大腿后侧"},
+      {n:"平板支撑",img:"a-plank",r:"40 秒",c:"收紧腹部和臀部，不塌腰",sec:40}
     ]},
   B:{name:"训练 B",who:"hus",rounds:3,restMove:15,restRound:60,equip:"一对哑铃 + 瑜伽垫",
     warm:["开合跳 30 秒","徒手深蹲 10 个","手臂绕环 30 秒","原地高抬腿 30 秒"],
     cool:["大腿前侧、后侧拉伸各 20 秒","胸部拉伸 20 秒","猫牛式 5 次"],
     moves:[
-      {n:"哑铃后撤步弓步蹲",r:"每侧 10 次",c:"向后跨步下蹲，前腿膝盖不内扣"},
-      {n:"哑铃站姿推举",r:"10 次",c:"收紧核心，不要后仰借力"},
-      {n:"哑铃臀桥",r:"15 次",c:"哑铃放髋部，顶到最高点夹紧臀部停 1 秒"},
-      {n:"地板哑铃卧推",r:"12 次",c:"躺在垫子上推，手肘碰地即可"},
-      {n:"死虫",r:"每侧 10 次",c:"下背部始终贴地，对侧手脚同时伸展"}
+      {n:"哑铃后撤步弓步蹲",img:"b-reverse-lunge",r:"每侧 10 次",c:"向后跨步下蹲，前腿膝盖不内扣"},
+      {n:"哑铃站姿推举",img:"b-overhead-press",r:"10 次",c:"收紧核心，不要后仰借力"},
+      {n:"哑铃臀桥",img:"b-db-glute-bridge",r:"15 次",c:"哑铃放髋部，顶到最高点夹紧臀部停 1 秒"},
+      {n:"地板哑铃卧推",img:"b-floor-press",r:"12 次",c:"躺在垫子上推，手肘碰地即可"},
+      {n:"死虫",img:"b-dead-bug",r:"每侧 10 次",c:"下背部始终贴地，对侧手脚同时伸展"}
     ]},
   W:{name:"臀腿跟练",who:"wife",rounds:2,restMove:15,restRound:45,equip:"一张瑜伽垫",
     warm:["原地踏步 30 秒","髋关节绕环每侧 10 次","徒手深蹲 8 个"],
     cool:["婴儿式 30 秒","髋部拉伸每侧 20 秒"],
     moves:[
-      {n:"臀桥",r:"15 次",c:"双脚与髋同宽，顶起时夹紧臀部，停 1 秒再放下"},
-      {n:"徒手深蹲",r:"12 次",c:"屁股往后坐，像坐椅子，膝盖不内扣"},
-      {n:"侧卧抬腿",r:"每侧 12 次",c:"身体侧躺成一条直线，上面的腿慢慢抬起放下"},
-      {n:"蚌式开合",r:"每侧 15 次",c:"侧躺屈膝，双脚并拢，打开上侧膝盖"},
-      {n:"后撤步弓步",r:"每侧 8 次",c:"可以扶着墙或椅子保持平衡"},
-      {n:"仰卧交替抬腿",r:"每侧 10 次",c:"下背部贴地，腹部收紧，慢慢放下"}
+      {n:"臀桥",img:"w-glute-bridge",r:"15 次",c:"双脚与髋同宽，顶起时夹紧臀部，停 1 秒再放下"},
+      {n:"徒手深蹲",img:"w-bodyweight-squat",r:"12 次",c:"屁股往后坐，像坐椅子，膝盖不内扣"},
+      {n:"侧卧抬腿",img:"w-side-leg-raise",r:"每侧 12 次",c:"身体侧躺成一条直线，上面的腿慢慢抬起放下"},
+      {n:"蚌式开合",img:"w-clamshell",r:"每侧 15 次",c:"侧躺屈膝，双脚并拢，打开上侧膝盖"},
+      {n:"后撤步弓步",img:"w-reverse-lunge",r:"每侧 8 次",c:"可以扶着墙或椅子保持平衡"},
+      {n:"仰卧交替抬腿",img:"w-alt-leg-raise",r:"每侧 10 次",c:"下背部贴地，腹部收紧，慢慢放下"}
     ]},
   D:{name:"工位 3 分钟",who:"both",rounds:1,restMove:5,restRound:0,equip:"不需要装备",warm:[],cool:[],
     moves:[
-      {n:"坐姿夹臀",r:"15 次",c:"收紧臀部保持 3 秒再放松"},
-      {n:"坐姿收腹",r:"15 次",c:"吸气时收紧腹部"},
-      {n:"颈部侧拉伸",r:"左右各 15 秒",c:"动作要慢，不要用力拽",sec:30},
-      {n:"站姿提踵",r:"10 次",c:"起身，脚跟抬起再慢慢放下"},
-      {n:"双手向上伸展",r:"15 秒",c:"双手交叉向上，拉长身体",sec:15}
+      {n:"坐姿夹臀",img:"d-seated-glute-squeeze",r:"15 次",c:"收紧臀部保持 3 秒再放松"},
+      {n:"坐姿收腹",img:"d-seated-brace",r:"15 次",c:"吸气时收紧腹部"},
+      {n:"颈部侧拉伸",img:"d-neck-stretch",r:"左右各 15 秒",c:"动作要慢，不要用力拽",sec:30},
+      {n:"站姿提踵",img:"d-calf-raise",r:"10 次",c:"起身，脚跟抬起再慢慢放下"},
+      {n:"双手向上伸展",img:"d-overhead-reach",r:"15 秒",c:"双手交叉向上，拉长身体",sec:15}
     ]}
+};
+const LIST_MOVE_MEDIA={
+  "开合跳 30 秒":[["warm-jumping-jack","开合跳"]],
+  "徒手深蹲 10 个":[["w-bodyweight-squat","徒手深蹲"]],
+  "手臂绕环 30 秒":[["warm-arm-circle","手臂绕环"]],
+  "原地高抬腿 30 秒":[["warm-high-knees","原地高抬腿"]],
+  "原地踏步 30 秒":[["warm-march","原地踏步"]],
+  "髋关节绕环每侧 10 次":[["warm-hip-circle","髋关节绕环"]],
+  "徒手深蹲 8 个":[["w-bodyweight-squat","徒手深蹲"]],
+  "大腿前侧、后侧拉伸各 20 秒":[["cool-quad-stretch","大腿前侧拉伸"],["cool-hamstring-stretch","大腿后侧拉伸"]],
+  "胸部拉伸 20 秒":[["cool-chest-stretch","胸部拉伸"]],
+  "猫牛式 5 次":[["cool-cat-cow","猫牛式"]],
+  "婴儿式 30 秒":[["cool-child-pose","婴儿式"]],
+  "髋部拉伸每侧 20 秒":[["cool-hip-stretch","髋部拉伸"]]
 };
 const WEEK = ["日","一","二","三","四","五","六"];
 
@@ -751,6 +796,23 @@ function bothStreak(){
   return n;
 }
 const MEAL_IC={breakfast:"🍳",lunch:"🍱",snack:"🍎",dinner:"🥗"};
+/* 表情：workout 运动中 · meal 按计划吃 · weigh 记录身体数据 · happy 开心 · sad 没有数据 · day-done 今天全部完成 · day-missed 回顾昨天没完成 */
+const mood=(person,state)=>`assets/mood/${person}-${state}.png`;
+let reactT=null;
+function react(state,title,sub,big){
+  const el=$("#react"); el.className="react"+(big?" big":"");
+  el.innerHTML=`<img src="${mood(me,state)}" alt=""><div><b>${esc(title)}</b>${sub?`<small>${esc(sub)}</small>`:""}</div>`;
+  requestAnimationFrame(()=>el.classList.add("show"));
+  clearTimeout(reactT); reactT=setTimeout(()=>el.classList.remove("show"), big?2600:2000);
+}
+/* 昨天的计划还差几项（只在最近一周有打卡时提醒，避免新用户被打扰） */
+function yesterdayMissing(person){
+  const y=addDays(new Date(),-1); if(dayDone(person,y)) return 0;
+  const recent=[1,2,3,4,5,6,7].some(n=>{ const c=store.checkins[person+"_"+ymd(addDays(new Date(),-n))]; return c && ((c.meals&&Object.keys(c.meals).length)||c.workout); });
+  if(!recent) return 0;
+  const c=getCheckin(person,ymd(y)); const s=scheduleFor(person,y);
+  return MEALS.filter(m=>!(c.meals&&c.meals[m])).length + (s.kind==="train"&&c.workout!=="done"?1:0);
+}
 const secH=(icon,title,right)=>`<div class="sec-h"><h3><i class="si" aria-hidden="true">${icon}</i>${title}</h3>${right?`<span>${right}</span>`:""}</div>`;
 
 function viewToday(){
@@ -762,7 +824,7 @@ function viewToday(){
     <span class="chip ${got===need?"good":""}">今天 ${got}/${need}</span></div>`;
   const duo=`<section class="duo" aria-label="两个人今天的进度">
     <div class="duo-h"><h2><i>♥</i>今天两个人的进度</h2></div>
-    ${["hus","wife"].map(p=>`<div class="track ${p}"><img class="ava" src="assets/avatar-${p}.png" alt="${PEOPLE[p].label}的形象" width="44" height="44">
+    ${["hus","wife"].map(p=>`<div class="track ${p}"><img class="ava" src="${dayDone(p,today)?mood(p,"day-done"):"assets/avatar-"+p+".png"}" alt="${PEOPLE[p].label}${dayDone(p,today)?"今天全部完成":"的形象"}" width="44" height="44">
       <div><div class="who"><span class="name">${PEOPLE[p].label}${p===me?"（我）":""}</span>
         <span class="last">${(t=>t?"最近打卡 "+whenText(t):"还没有打卡")(lastCheckinAt(p))}</span></div>
         <div class="beads">${beadsFor(p)}</div></div>
@@ -799,7 +861,10 @@ function viewToday(){
   const overCount=MEALS.filter(m=>c.meals&&c.meals[m]==="over").length;
   const overNote= overCount ? `<p class="note" style="margin-top:10px">吃多了没关系，下一顿正常吃就好，不用饿肚子补回来。</p>` : "";
 
-  $("#view").innerHTML = together + duo + `
+  const todayAny = (c.meals&&Object.keys(c.meals).length) || c.workout;
+  const miss = todayAny ? 0 : yesterdayMissing(me);
+  const missed = miss ? `<div class="missed"><img src="${mood(me,"day-missed")}" alt=""><div><b>昨天还差 ${miss} 项没打卡</b><small>没关系，今天重新开始就好。先把早餐打个卡吧</small></div></div>` : "";
+  $("#view").innerHTML = missed + together + duo + `
     <section class="sec">${secH("💪","今天的训练")}${trainCard}</section>
     <section class="sec">${secH("🍽️","今天吃什么",`全天${dayKcal(me)}<br>蛋白质${plan.protein}`)}
       <div class="stack">${meals}</div>${overNote}</section>
@@ -839,7 +904,7 @@ function ringCard(person){
         <circle cx="64" cy="64" r="${R}" fill="none" stroke="url(#${gid})" stroke-width="12" stroke-linecap="round" stroke-dasharray="${(C*pct).toFixed(1)} ${C.toFixed(1)}"/></svg>
       <div class="c"><small>已吃约</small><b>${mid}</b><small>kcal</small></div>
     </div>
-    <div class="ring-side"><img src="assets/avatar-${person}.png" alt="${PEOPLE[person].label}的形象" width="80" height="80"><p>${line}</p><span class="chip">全天计划 ${kcalText(day)}</span></div>
+    <div class="ring-side"><img src="${e.n===4?mood(person,"day-done"):mood(person,"meal")}" alt="${PEOPLE[person].label}的形象" width="80" height="80"><p>${line}</p><span class="chip">全天计划 ${kcalText(day)}</span></div>
     <div class="ring-meals">${MEALS.map(m=>{ const [k,t]=st(m); return `<div class="${k}"><b>${names[m]}</b>${t}</div>`; }).join("")}</div>
     <p class="ring-foot">只按打卡的餐次估算，不是精确计算</p>
   </div>`;
@@ -879,10 +944,10 @@ function planCard(key,canStart){
   const w=WORKOUTS[key];
   if(key==="D") return `<div class="card"><div class="plan-h"><div><h4 style="margin:0 0 2px;font-size:16px;font-weight:800">🧘 ${w.name}</h4><p style="font-size:12px;color:var(--muted)">不计入训练打卡，久坐时随时做</p></div>
       ${canStart?`<button class="btn primary" data-start="D">开始</button>`:""}</div>
-    <div class="desk" style="margin-top:12px">${w.moves.map(m=>`<div><h5>${esc(m.n)}</h5><p>${esc(m.r)}</p></div>`).join("")}</div></div>`;
+    <div class="desk" style="margin-top:12px">${w.moves.map(m=>`<div><span class="art" style="display:block"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意" loading="lazy"></span><h5>${esc(m.n)}</h5><p>${esc(m.r)}</p></div>`).join("")}</div></div>`;
   return `<div class="obs plan ${viewP}"><div class="plan-h"><span class="tag2">${viewP===me?"我的训练":PEOPLE[viewP].label+"的训练"}</span><span class="theirs">${w.rounds} 轮 · ${w.equip}</span></div>
     <h4>${w.name}</h4><p>动作间休息 ${w.restMove} 秒，轮间 ${w.restRound} 秒</p>
-    <ol class="ol">${w.moves.map((m,i)=>`<li><span class="n">${i+1}</span><div><h5>${esc(m.n)}</h5><small>${esc(m.c)}</small></div><span class="r">${esc(m.r)}</span></li>`).join("")}</ol>
+    <ol class="ol">${w.moves.map((m,i)=>`<li class="has-art"><span class="art"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意" loading="lazy" width="76" height="57"><span class="n">${i+1}</span></span><div><h5>${esc(m.n)}</h5><small>${esc(m.c)}</small></div><span class="r">${esc(m.r)}</span></li>`).join("")}</ol>
     ${canStart?`<button class="cta" data-start="${key}">▶ 开始跟练</button>`:""}</div>`;
 }
 function viewTrain(){
@@ -946,7 +1011,7 @@ function trendCard(){
   const series=["hus","wife"].map((p,bi)=>({p,bi,pts:measureSeries(p).filter(m=>typeof m[recField]==="number").slice(-12)}));
   const toggle=`<div class="seg2" role="group" aria-label="看哪项趋势">${fields.map(f=>`<button data-rec-field="${f}" aria-pressed="${f===recField}">${FIELDS[f][0]}</button>`).join("")}</div>`;
   const legend=`<div class="legend">${series.map(s=>{ const l=s.pts[s.pts.length-1]; return `<span class="${s.p}"><i></i>${PEOPLE[s.p].label}${l?` <b>${l[recField]} ${unit}</b>`:" 还没有数据"}</span>`; }).join("")}</div>`;
-  if(!series.some(s=>s.pts.length)) return `<div class="card chart"><div class="chart-h"><b>两个人的趋势</b>${toggle}</div><p class="empty">记录两次以上就能看到${label}趋势</p></div>`;
+  if(!series.some(s=>s.pts.length)) return `<div class="card chart"><div class="chart-h"><b>两个人的趋势</b>${toggle}</div><p class="empty empty-mood"><img src="${mood(me,"sad")}" alt="">还没有${label}数据，记录两次以上就能看到趋势</p></div>`;
   const body=series.map(s=>{
     if(!s.pts.length) return `<text x="${W/2}" y="${s.bi*BAND+BAND/2+4}" text-anchor="middle" font-size="11" fill="var(--faint)">${PEOPLE[s.p].label}还没有${label}数据</text>`;
     const vals=s.pts.map(m=>m[recField]); let lo=Math.min(...vals), hi=Math.max(...vals); if(hi-lo<1){ lo-=.5; hi+=.5; }
@@ -1004,11 +1069,11 @@ function insightCard(){
     return `<div class="irow ${p}"><span class="ic">${p==="hus"?"💪":"🌸"}</span><span class="t">${PEOPLE[p].label}连续打卡 <b>${n}</b> 天</span>
       <span class="chip ${done?"good":"me2"}">${done?"今天已完成":"今天进行中"}</span></div>`; };
   return `<div class="insight"><div class="ih"><div><h3>看趋势，别看单日</h3><p>${tip}</p></div>
-    <img src="assets/avatar-${me}.png" alt="" width="72" height="72"></div>${row("hus")}${row("wife")}</div>`;
+    <img src="${mood(me,"weigh")}" alt="" width="72" height="72"></div>${row("hus")}${row("wife")}</div>`;
 }
 function feedRows(){
   const hist=Object.values(store.measures).sort((a,b)=>a.date<b.date?1:-1).slice(0,6);
-  if(!hist.length) return `<p class="empty">还没有记录。每周日早上空腹量一次。</p>`;
+  if(!hist.length) return `<p class="empty empty-mood"><img src="${mood(me,"sad")}" alt="">还没有记录。每周日早上空腹量一次。</p>`;
   return hist.map(m=>{
     const extra=[m.waist!=null?`腰围 ${m.waist}`:"",m.hip!=null?`臀围 ${m.hip}`:"",m.thigh!=null?`腿围 ${m.thigh}`:""].filter(Boolean).join(" · ");
     const pw=m.weight!=null?prevValue(m.person,"weight",m.date):null;
@@ -1058,7 +1123,7 @@ function viewRecord(){
     let any=false;
     ["weight","waist","hip","thigh"].forEach(k=>{ const raw=f.get(k); if(raw!==null && raw!==""){ const n=Number(raw); if(!isNaN(n)){ body[k]=n; any=true; } } });
     if(!any){ toast("至少填一项再保存"); return; }
-    putMeasure(body); toast("已保存记录");
+    putMeasure(body); react("weigh","已保存记录","看 3–4 周的趋势，别看单日");
   });
 }
 
@@ -1116,12 +1181,12 @@ function drawRun(){
   if(s.type==="list"){
     st.total=0;
     body=`<div class="rcard"><span class="tag2 light">${s.title==="先热身"?"🔥 热身":"🌿 放松"}</span><h2>${s.title}</h2>
-      <ol class="rlist">${s.items.map((x,i)=>`<li><span>${i+1}</span>${esc(x)}</li>`).join("")}</ol></div>
+      <ol class="rlist">${s.items.map((x,i)=>{const media=LIST_MOVE_MEDIA[x]||[];return `<li><span>${i+1}</span>${media.map(([id,alt])=>`<img class="list-art${media.length>1?" duo":""}" src="assets/moves/${id}.gif" alt="${alt}动作示意" loading="lazy">`).join("")}<b>${esc(x)}</b></li>`}).join("")}</ol></div>
       <div class="actions"><button class="cta" data-run="next">${s.btn}</button></div>`;
   }else if(s.type==="move"){
     const timed=!!s.m.sec;
     st.total = timed ? s.m.sec : 0;
-    body=`<div class="rcard"><div class="media"><img src="assets/avatar-${me}.png" alt="" width="72" height="72"><span>动作示意图待添加</span></div>
+    body=`<div class="rcard"><div class="media exercise-media"><img src="assets/moves/${s.m.img}.gif" alt="${esc(s.m.n)}动作示意" width="800" height="600"></div>
       <span class="tag2 light">第 ${s.round} 轮 · 动作 ${s.idx}/${w.moves.length}</span>
       <h2>${esc(s.m.n)}</h2><p class="reps">${esc(s.m.r)}</p><p class="cue">💡 ${esc(s.m.c)}</p></div>
       ${timed?timerRing(st.running?st.sec:s.m.sec,s.m.sec):""}
@@ -1130,12 +1195,12 @@ function drawRun(){
       ${!timed?`<button class="cta" data-run="next">✓ 做完了</button>`:""}</div>`;
   }else if(s.type==="rest"){
     st.total=s.sec;
-    body=`<div class="rrest"><h2>${s.round?"这一轮完成，休息一下 🎉":"休息一下"}</h2>
+    body=`<div class="rrest"><img class="mood" src="${mood(me,s.round?"happy":"workout")}" alt=""><h2>${s.round?"这一轮完成，休息一下 🎉":"休息一下"}</h2>
       ${timerRing(s.sec,s.sec)}
       <p class="next">下一个 <b>${esc(s.next)}</b></p></div>
       <div class="actions"><button class="btn ghost" data-run="next">跳过休息</button></div>`;
   }else{
-    body=`<div class="rend"><img src="assets/avatar-${me}.png" alt="${PEOPLE[me].label}的形象" width="140" height="140"><h2>练完了 ✨</h2><p class="cue">${w.name}，${w.rounds} 轮全部完成。</p></div>
+    body=`<div class="rend"><img src="${mood(me,"happy")}" alt="${PEOPLE[me].label}开心地庆祝" width="140" height="140"><h2>练完了 ✨</h2><p class="cue">${w.name}，${w.rounds} 轮全部完成。</p></div>
       <div class="actions">${w.who==="both"?"":`<button class="cta" data-run="finish">记录完成并返回</button>`}
       <button class="btn ghost" data-run="close">返回</button></div>`;
   }
@@ -1172,7 +1237,13 @@ document.addEventListener("click",e=>{
     const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date)));
     c.meals=c.meals||{}; c.meals[t.dataset.meal] = c.meals[t.dataset.meal]===t.dataset.v ? null : t.dataset.v;
     if(!c.meals[t.dataset.meal]) delete c.meals[t.dataset.meal];
-    putCheckin(c); return;
+    const was=dayDone(me,new Date());
+    putCheckin(c);
+    const v=c.meals[t.dataset.meal];
+    if(!was && dayDone(me,new Date())) react("day-done","今天全部完成啦",scheduleFor(me,new Date()).kind==="train"?"四餐和训练都打卡了，明天继续":"四餐都打卡了，明天继续",true);
+    else if(v==="plan") react("meal","按计划吃完啦 ✨",MEAL_PLAN[me][t.dataset.meal].t+"已打卡");
+    else if(v==="over") react("meal","吃多了没关系","下一顿正常吃就好，不用饿肚子补回来");
+    return;
   }
   if(t.dataset.stand){
     if(readOnly){ toast("你现在只有查看权限"); return; }
@@ -1191,7 +1262,8 @@ document.addEventListener("click",e=>{
     else if(a==="close"){ if(runState && runState.steps[runState.i].type!=="end" && runState.i>0 && !confirm("训练还没做完，确定退出？")) return; closeRun(); }
     else if(a==="timer"){ const s=runState.steps[runState.i]; runState.running=true; runState.sec=s.m.sec; drawRun(); countdown(s.m.sec,nextStep); }
     else if(a==="finish"){
-      if(!readOnly){ const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date))); c.workout="done"; runState=null; putCheckin(c); toast("训练已打卡"); }
+      if(!readOnly){ const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date))); c.workout="done"; runState=null; putCheckin(c);
+        if(dayDone(me,new Date())) react("day-done","今天全部完成啦","训练和四餐都打卡了",true); else react("happy","训练已打卡 💪","剩下的按计划来"); }
       closeRun();
     }
   }

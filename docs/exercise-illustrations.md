@@ -1,6 +1,6 @@
 # 训练动作示意图说明
 
-用于单独生成跟练页里的动作示意图。App 跟练模式每个动作上方都有一个 **4:3** 的"动作示意图待添加"占位框，图做好后按下面的文件名放进 `assets/moves/`，再接入页面。
+用于跟练页的动作示意图。32 项动作已按下述文件名生成 4:3 静态分解 PNG 和循环 GIF，统一保存在 `UIset/exercises/`，并同步到 `assets/moves/` 供页面使用。跟练页显示 GIF；热身和放松清单也显示对应动效缩略图。
 
 动作名称、次数、App 里的要点都和 `index.html` 里的 `WORKOUTS` 一致；"动作分解"和"画面重点"是为了画图补充的说明。
 
@@ -87,7 +87,7 @@ Avoid: text, numbers, logo, watermark, floor texture, scenery, extra characters,
 | `cool-child-pose.png` | 婴儿式 | 放松（臀腿） |
 | `cool-hip-stretch.png` | 髋部拉伸 | 放松（臀腿） |
 
-共 32 张。热身和放松目前在 App 里是文字清单，不显示图；优先做前 21 张主动作。
+共 32 项，主动作、热身和放松素材均已完成。热身和放松仍以文字清单为主，同时显示动效缩略图。
 
 ---
 
@@ -329,8 +329,8 @@ Avoid: text, numbers, logo, watermark, floor texture, scenery, extra characters,
 
 ---
 
-## 9. 接入方式（图做好之后）
+## 9. 当前接入方式
 
-1. 把图片按上面的文件名放进 `assets/moves/`，建议先压缩到 1200 × 900、每张 100KB 以内。
-2. 在 `index.html` 的 `WORKOUTS` 里给每个动作加一个 `img` 字段（例如 `img:"a-goblet-squat"`），跟练页的占位框换成 `<img>`，替代文本用动作名。
-3. 没有图的动作继续显示占位框。
+1. `UIset/exercises/` 存放全套素材及 `gallery.html` 总览；`assets/moves/` 保存页面使用的同名副本。
+2. 每项的 `.gif` 为 800 × 600 循环动效，`.png` 为 1200 × 900 静态动作分解。
+3. `index.html` 的 `WORKOUTS` 使用 `img` 字段对应动作文件名；跟练页显示动效，替代文本使用动作名。热身和放松清单通过 `LIST_MOVE_MEDIA` 对应素材。
