@@ -12,7 +12,7 @@
   --bg:#FDFAF6; --surface:#FFFFFF; --sunk:#F6F3EE; --ink:#192024; --muted:#64748B; --faint:#94A3B8; --line:rgba(25,32,36,.07);
   --hus:#0284C7; --hus-ink:#0369A1; --hus-soft:#E0F2FE; --hus-grad:linear-gradient(135deg,#38BDF8 0%,#0284C7 100%); --hus-glow:0 8px 24px -4px rgba(2,132,199,.35);
   --wife:#FF4B72; --wife-ink:#E11D48; --wife-soft:#FFE4E6; --wife-grad:linear-gradient(135deg,#FF758C 0%,#FF4B72 100%); --wife-glow:0 8px 24px -4px rgba(255,75,114,.35);
-  --sun:#F59E0B; --sun-ink:#B45309; --sun-soft:#FEF3C7; --good:#15803D; --good-soft:#DCFCE7;
+  --sun:#F59E0B; --sun-ink:#B45309; --sun-soft:#FEF3C7; --good:#15803D; --good-soft:#DCFCE7; --lav:#7C3AED; --lav-soft:#EDE9FE;
   --danger:#C2410C; --obsidian:#181C24; --on-obsidian:#F1F5F9; --obsidian-2:#232833;
   --mesh:radial-gradient(circle at 8% 0%,rgba(255,226,209,.55) 0%,transparent 42%),radial-gradient(circle at 95% 18%,rgba(224,242,254,.7) 0%,transparent 45%),radial-gradient(circle at 50% 100%,rgba(255,228,230,.45) 0%,transparent 55%);
   --shadow:0 4px 20px -2px rgba(25,32,36,.05),0 1px 3px rgba(25,32,36,.03);
@@ -26,7 +26,7 @@
   :root:not([data-theme="light"]){
     --bg:#101318; --surface:#191D24; --sunk:#222731; --ink:#EEF1F4; --muted:#9AA5B4; --faint:#6B7684; --line:rgba(255,255,255,.08);
     --hus:#38BDF8; --hus-ink:#7DD3FC; --hus-soft:#0C3246; --wife:#FF7A95; --wife-ink:#FDA4B8; --wife-soft:#4A1E2A;
-    --sun:#FBBF24; --sun-ink:#FCD34D; --sun-soft:#3D2F12; --good:#4ADE80; --good-soft:#12301F; --danger:#FB923C; --obsidian:#0B0D11; --obsidian-2:#1A1F28;
+    --sun:#FBBF24; --sun-ink:#FCD34D; --sun-soft:#3D2F12; --good:#4ADE80; --good-soft:#12301F; --lav:#C4B5FD; --lav-soft:#2A2145; --danger:#FB923C; --obsidian:#0B0D11; --obsidian-2:#1A1F28;
     --mesh:radial-gradient(circle at 8% 0%,rgba(255,120,67,.10) 0%,transparent 42%),radial-gradient(circle at 95% 18%,rgba(56,189,248,.10) 0%,transparent 45%);
     --shadow:0 1px 0 rgba(255,255,255,.04) inset,0 4px 20px -4px rgba(0,0,0,.4);
   }
@@ -34,13 +34,21 @@
 :root[data-theme="dark"]{
   --bg:#101318; --surface:#191D24; --sunk:#222731; --ink:#EEF1F4; --muted:#9AA5B4; --faint:#6B7684; --line:rgba(255,255,255,.08);
   --hus:#38BDF8; --hus-ink:#7DD3FC; --hus-soft:#0C3246; --wife:#FF7A95; --wife-ink:#FDA4B8; --wife-soft:#4A1E2A;
-  --sun:#FBBF24; --sun-ink:#FCD34D; --sun-soft:#3D2F12; --good:#4ADE80; --good-soft:#12301F; --danger:#FB923C; --obsidian:#0B0D11; --obsidian-2:#1A1F28;
+  --sun:#FBBF24; --sun-ink:#FCD34D; --sun-soft:#3D2F12; --good:#4ADE80; --good-soft:#12301F; --lav:#C4B5FD; --lav-soft:#2A2145; --danger:#FB923C; --obsidian:#0B0D11; --obsidian-2:#1A1F28;
   --mesh:radial-gradient(circle at 8% 0%,rgba(255,120,67,.10) 0%,transparent 42%),radial-gradient(circle at 95% 18%,rgba(56,189,248,.10) 0%,transparent 45%);
   --shadow:0 1px 0 rgba(255,255,255,.04) inset,0 4px 20px -4px rgba(0,0,0,.4);
 }
 /* 当前身份色：跟随"我是谁" */
-.me-hus{--me:var(--hus);--me-ink:var(--hus-ink);--me-soft:var(--hus-soft);--me-grad:var(--hus-grad);--me-glow:var(--hus-glow)}
-.me-wife{--me:var(--wife);--me-ink:var(--wife-ink);--me-soft:var(--wife-soft);--me-grad:var(--wife-grad);--me-glow:var(--wife-glow)}
+.me-hus{--me:var(--hus);--me-ink:var(--hus-ink);--me-soft:var(--hus-soft);--me-grad:var(--hus-grad);--me-glow:var(--hus-glow);
+  --mesh:radial-gradient(circle at 10% 0%,rgba(186,230,253,.75) 0%,transparent 45%),radial-gradient(circle at 100% 22%,rgba(255,226,209,.55) 0%,transparent 42%),radial-gradient(circle at 40% 100%,rgba(224,242,254,.7) 0%,transparent 55%)}
+.me-wife{--me:var(--wife);--me-ink:var(--wife-ink);--me-soft:var(--wife-soft);--me-grad:var(--wife-grad);--me-glow:var(--wife-glow);
+  --mesh:radial-gradient(circle at 10% 0%,rgba(255,205,215,.75) 0%,transparent 45%),radial-gradient(circle at 100% 22%,rgba(255,236,210,.55) 0%,transparent 42%),radial-gradient(circle at 40% 100%,rgba(255,228,230,.75) 0%,transparent 55%)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .me-hus{--mesh:radial-gradient(circle at 10% 0%,rgba(56,189,248,.14) 0%,transparent 45%),radial-gradient(circle at 100% 30%,rgba(255,120,67,.07) 0%,transparent 42%)}
+  :root:not([data-theme="light"]) .me-wife{--mesh:radial-gradient(circle at 10% 0%,rgba(255,75,114,.15) 0%,transparent 45%),radial-gradient(circle at 100% 30%,rgba(255,170,90,.07) 0%,transparent 42%)}
+}
+:root[data-theme="dark"] .me-hus{--mesh:radial-gradient(circle at 10% 0%,rgba(56,189,248,.14) 0%,transparent 45%)}
+:root[data-theme="dark"] .me-wife{--mesh:radial-gradient(circle at 10% 0%,rgba(255,75,114,.15) 0%,transparent 45%)}
 .hus{--p:var(--hus);--p-ink:var(--hus-ink);--p-soft:var(--hus-soft);--p-grad:var(--hus-grad);--p-glow:var(--hus-glow)}
 .wife{--p:var(--wife);--p-ink:var(--wife-ink);--p-soft:var(--wife-soft);--p-grad:var(--wife-grad);--p-glow:var(--wife-glow)}
 
@@ -60,9 +68,11 @@ p{margin:0}
 /* top bar */
 .top{display:flex;align-items:center;gap:10px;padding:6px 0 14px}
 .top .title{flex:1;min-width:0}
+.top .tile{width:42px;height:42px;border-radius:14px;background:var(--surface);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;color:var(--me);flex:none}
+.top .tile svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .top h1{font-size:24px;font-weight:800;display:flex;align-items:center;gap:6px}
 .top h1::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--me)}
-.date{font-size:12px;color:var(--muted)}
+.date{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .role{display:flex;align-items:center;gap:2px;border:0;border-radius:999px;padding:4px;background:var(--surface);box-shadow:var(--shadow);font-size:13px;font-weight:700}
 .role .r{padding:5px 11px;border-radius:999px;color:var(--faint)}
 .role .sw{color:var(--faint);font-size:12px}
@@ -97,7 +107,8 @@ p{margin:0}
 .stack{display:grid;gap:10px}
 .sec{margin-bottom:22px}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 4px 10px}
-.sec-h h3{font-size:17px;font-weight:800}
+.sec-h h3{font-size:17px;font-weight:800;display:flex;align-items:center;gap:8px}
+.sec-h h3 .si{font-style:normal;width:28px;height:28px;border-radius:10px;background:var(--surface);box-shadow:var(--shadow);display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none}
 .sec-h span{font-size:12px;color:var(--muted);text-align:right}
 .chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
 .chip.good{background:var(--good-soft);color:var(--good)}
@@ -213,6 +224,15 @@ p{margin:0}
 .list li small{display:block;color:var(--muted);font-size:12px}
 .mplan{display:grid;grid-template-columns:32px 1fr;gap:4px 12px}
 .mplan .l{grid-row:1/3;width:32px;height:32px;border-radius:10px;background:var(--p-soft);color:var(--p-ink);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+.l.m-breakfast{background:var(--sun-soft);color:var(--sun-ink)} .l.m-lunch{background:var(--good-soft);color:var(--good)} .l.m-snack{background:var(--lav-soft);color:var(--lav)}
+.meal-top .ic.m-breakfast{background:var(--sun-soft)} .meal-top .ic.m-lunch{background:var(--good-soft)} .meal-top .ic.m-snack{background:var(--lav-soft)} .meal-top .ic.m-dinner{background:var(--me-soft)}
+.faq details{border-radius:var(--radius-s);background:var(--sunk)}
+.faq details+details{margin-top:8px}
+.faq summary{list-style:none;cursor:pointer;padding:12px 14px;font-size:14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"⌄";color:var(--muted);font-size:16px;line-height:1;transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(180deg)}
+.faq details p{padding:0 14px 12px;font-size:13px;color:var(--muted);line-height:1.6}
 .mplan .h{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .mplan .h b{font-size:15px;font-weight:800}
 .mplan .h b time{font-size:12px;color:var(--muted);font-weight:500;margin-left:6px}
@@ -274,6 +294,49 @@ p{margin:0}
 .hist-row small{color:var(--muted)}
 .empty{font-size:13px;color:var(--muted);padding:6px 0}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.insight{border-radius:var(--radius-l);padding:18px;background:linear-gradient(160deg,color-mix(in srgb,var(--me-soft) 85%,var(--surface)) 0%,var(--surface) 70%);box-shadow:var(--shadow)}
+.insight .ih{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-bottom:12px}
+.insight h3{font-size:18px;font-weight:800;margin-bottom:4px}
+.insight p{font-size:13px;color:var(--muted);line-height:1.6}
+.insight img{width:72px;height:72px;object-fit:contain;background:var(--surface);border-radius:22px;padding:4px;box-shadow:var(--shadow)}
+.irow{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:999px;padding:8px 10px 8px 8px;font-size:13px;font-weight:600;box-shadow:var(--shadow)}
+.irow+.irow{margin-top:8px}
+.irow .ic{width:28px;height:28px;border-radius:50%;background:var(--p-soft);display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.irow .t{flex:1;min-width:0} .irow b{color:var(--p-ink);font-size:15px}
+.chip.me2{background:var(--p-soft);color:var(--p-ink)}
+.form2{display:grid;gap:12px}
+.form2 .fh{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted);font-weight:600}
+.form2 .fh input{font:inherit;font-size:14px;font-weight:700;color:var(--ink);background:var(--sunk);border:0;border-radius:999px;padding:7px 14px}
+.mtiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mtile{display:grid;gap:2px;padding:12px 14px;border-radius:var(--radius-m);background:color-mix(in srgb,var(--me-soft) 60%,var(--surface));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--me) 12%,transparent);cursor:text}
+.mtile .ml{font-size:12px;color:var(--muted);font-weight:600}
+.mtile .mv{display:flex;align-items:baseline;gap:4px}
+.mtile input{font:inherit;font-size:30px;font-weight:800;letter-spacing:-.02em;color:var(--ink);background:transparent;border:0;padding:0;width:3.4em;min-width:0;font-variant-numeric:tabular-nums}
+.mtile input::placeholder{color:color-mix(in srgb,var(--ink) 22%,transparent)}
+.mtile input:focus{outline:none}
+.mtile:focus-within{box-shadow:0 0 0 3px color-mix(in srgb,var(--me) 30%,transparent)}
+.mtile .mv i{font-style:normal;font-size:13px;color:var(--muted)}
+.mtile .md{justify-self:start;font-size:11px;font-weight:700;color:var(--me-ink);background:var(--surface);border-radius:999px;padding:2px 9px;margin-top:4px}
+.seg2{display:inline-flex;background:var(--sunk);border-radius:999px;padding:3px;gap:2px}
+.seg2 button{border:0;background:transparent;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--muted)}
+.seg2 button[aria-pressed="true"]{background:var(--me-grad);color:#fff;box-shadow:var(--me-glow)}
+.chart .chart-h{align-items:center;margin-bottom:10px}
+.chart .legend{justify-content:space-between;margin:0 0 8px}
+.chart .legend span{display:flex;align-items:center;gap:6px}
+.chart .legend i{background:var(--p);margin:0}
+.chart .legend b{color:var(--ink);font-weight:800}
+.plot{background:var(--sunk);border-radius:var(--radius-m);padding:6px}
+.chart-foot{font-size:11px;color:var(--faint);text-align:center;margin-top:8px}
+.feed{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:10px;border-radius:var(--radius-m);background:color-mix(in srgb,var(--p-soft) 45%,var(--surface))}
+.feed+.feed{margin-top:8px}
+.feed img{width:40px;height:40px;border-radius:50%;background:var(--surface);object-fit:contain;padding:2px;box-shadow:0 0 0 2px var(--p)}
+.feed .t div{display:flex;align-items:center;gap:6px;font-size:14px}
+.feed .t b{font-weight:800}
+.feed .t .chip{background:var(--surface);color:var(--p-ink);padding:1px 8px;font-size:11px}
+.feed small{display:block;font-size:12px;color:var(--muted)}
+.feed .v{text-align:right}
+.feed .v b{display:block;font-size:16px;font-weight:800;color:var(--p-ink);font-variant-numeric:tabular-nums}
+.linkbtn{border:0;background:transparent;color:var(--me-ink);font-size:13px;font-weight:700;padding:10px 4px 0}
 .who-card{background:var(--surface);border-radius:var(--radius-l);padding:16px 12px;display:grid;justify-items:center;text-align:center;gap:2px;box-shadow:var(--shadow);background-image:linear-gradient(180deg,color-mix(in srgb,var(--p-soft) 70%,transparent) 0%,transparent 55%)}
 .who-card .ava{width:84px;height:84px;border-radius:50%;background:var(--surface);box-shadow:0 0 0 3px var(--p),var(--p-glow);display:flex;align-items:center;justify-content:center;margin-bottom:8px}
 .who-card .ava img{width:72px;height:72px;object-fit:contain}
@@ -303,10 +366,29 @@ p{margin:0}
 .run-top span{font-size:13px;color:var(--muted)}
 .bar{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin-bottom:18px}
 .bar i{display:block;height:100%;width:0;transition:width .3s;background:var(--me-grad);border-radius:99px}
-.media{aspect-ratio:4/3;border-radius:var(--radius-l);border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;margin-bottom:18px;background:var(--surface)}
+.media{aspect-ratio:4/3;border-radius:var(--radius-m);border:2px dashed color-mix(in srgb,var(--me) 25%,var(--line));display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;color:var(--muted);font-size:12px;margin-bottom:14px;background:color-mix(in srgb,var(--me-soft) 45%,var(--surface))}
+.media img{width:72px;height:72px;object-fit:contain;opacity:.85}
+.rcard{background:var(--surface);border-radius:var(--radius-l);padding:16px;box-shadow:var(--shadow);margin-bottom:16px}
+.tag2.light{display:inline-flex;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--me-soft);color:var(--me-ink);margin-bottom:8px}
+.run-top .pc{font-size:12px;font-weight:800;color:var(--me-ink);background:var(--me-soft);border-radius:999px;padding:3px 10px}
+.rlist{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
+.rlist li{display:flex;align-items:center;gap:10px;background:var(--sunk);border-radius:var(--radius-s);padding:10px 12px;font-size:14px;font-weight:600}
+.rlist li span{width:24px;height:24px;border-radius:50%;background:var(--surface);color:var(--me-ink);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+.tring{position:relative;width:200px;height:200px;margin:4px auto 20px}
+.tring svg{width:200px;height:200px;transform:rotate(-90deg)}
+.tring circle#cdRing{transition:stroke-dashoffset 1s linear}
+.tring>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.tring .big{margin:0;font-size:64px}
+.tring small{font-size:13px;color:var(--muted)}
+.rrest{text-align:center;padding-top:8vh}
+.rrest h2{margin-bottom:18px}
+.rrest .next{font-size:14px;color:var(--muted);background:var(--surface);box-shadow:var(--shadow);display:inline-block;border-radius:999px;padding:8px 16px}
+.rrest .next b{color:var(--ink);margin-left:4px}
+.rend{text-align:center;padding-top:10vh}
+.rend img{width:140px;height:140px;object-fit:contain;margin-bottom:12px}
 .run h2{font-size:28px;font-weight:800;margin-bottom:4px}
-.run .reps{font-size:18px;font-weight:800;margin-bottom:10px;color:var(--me-ink)}
-.run .cue{font-size:14px;color:var(--muted);margin-bottom:24px}
+.run .reps{display:inline-block;font-size:16px;font-weight:800;margin-bottom:10px;color:var(--me-ink);background:var(--me-soft);border-radius:999px;padding:4px 14px}
+.run .cue{font-size:14px;color:var(--muted);line-height:1.6}
 .run .big{font-size:72px;font-weight:800;text-align:center;line-height:1;margin:18px 0 8px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .run .sub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:24px}
 .run .actions{margin-top:auto;display:grid;gap:10px}
@@ -323,7 +405,7 @@ p{margin:0}
 <body class="me-hus">
 <div class="wrap">
   <header class="top">
-    <div class="title"><h1 id="pageTitle">今日</h1><div class="date" id="dateLabel"></div></div>
+    <span class="tile" id="pageIcon" aria-hidden="true"></span><div class="title"><h1 id="pageTitle">今日</h1><div class="date" id="dateLabel"></div></div>
     <button class="role" data-open-picker aria-label="切换身份，当前是老公" id="roleBtn"><span class="r hus">老公</span><span class="sw">⇄</span><span class="r wife">老婆</span></button>
     <img class="me-ava" id="meAva" src="assets/avatar-hus.png" alt="" width="44" height="44">
   </header>
@@ -616,7 +698,8 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 function renderHeader(){
   const d=new Date();
   $("#pageTitle").textContent={today:"今日",diet:"饮食",train:"训练",record:"记录"}[tab];
-  $("#dateLabel").textContent=`${d.getMonth()+1} 月 ${d.getDate()} 日 · 星期${WEEK[d.getDay()]}`;
+  const tb=document.querySelector(`.tabs [data-tab="${tab}"] svg`); if(tb) $("#pageIcon").innerHTML=tb.outerHTML;
+  $("#dateLabel").textContent=`${d.getMonth()+1}月${d.getDate()}日 周${WEEK[d.getDay()]}`;
   $("#roleBtn").setAttribute("aria-label","切换身份，当前是"+PEOPLE[me].label);
   $("#meAva").src="assets/avatar-"+me+".png"; $("#meAva").alt=PEOPLE[me].label+"的形象";
   document.body.className="me-"+me;
@@ -668,6 +751,7 @@ function bothStreak(){
   return n;
 }
 const MEAL_IC={breakfast:"🍳",lunch:"🍱",snack:"🍎",dinner:"🥗"};
+const secH=(icon,title,right)=>`<div class="sec-h"><h3><i class="si" aria-hidden="true">${icon}</i>${title}</h3>${right?`<span>${right}</span>`:""}</div>`;
 
 function viewToday(){
   const today=new Date(); const date=ymd(today);
@@ -708,7 +792,7 @@ function viewToday(){
   const meals=MEALS.map(m=>{
     const v=c.meals&&c.meals[m]; const p=plan[m];
     const b=(val,txt)=>`<button data-meal="${m}" data-v="${val}" aria-pressed="${v===val}">${txt}</button>`;
-    return `<div class="card meal"><div class="meal-top"><h4><span class="ic" aria-hidden="true">${MEAL_IC[m]}</span><span>${p.t}<br><time>${p.time}</time></span></h4><span class="kcal">约 ${mealKcal(me,m)} kcal</span></div>
+    return `<div class="card meal"><div class="meal-top"><h4><span class="ic m-${m}" aria-hidden="true">${MEAL_IC[m]}</span><span>${p.t}<br><time>${p.time}</time></span></h4><span class="kcal">约 ${mealKcal(me,m)} kcal</span></div>
       ${foodList(me,m)}<div class="seg" role="group" aria-label="${p.t}打卡">${b("plan","按计划吃了 ✨")}${b("over","吃多了 🍰")}${b("skip","没吃")}</div></div>`;
   }).join("");
 
@@ -716,10 +800,10 @@ function viewToday(){
   const overNote= overCount ? `<p class="note" style="margin-top:10px">吃多了没关系，下一顿正常吃就好，不用饿肚子补回来。</p>` : "";
 
   $("#view").innerHTML = together + duo + `
-    <section class="sec"><div class="sec-h"><h3>今天的训练</h3></div>${trainCard}</section>
-    <section class="sec"><div class="sec-h"><h3>今天吃什么</h3><span>全天${dayKcal(me)}<br>蛋白质${plan.protein}</span></div>
+    <section class="sec">${secH("💪","今天的训练")}${trainCard}</section>
+    <section class="sec">${secH("🍽️","今天吃什么",`全天${dayKcal(me)}<br>蛋白质${plan.protein}`)}
       <div class="stack">${meals}</div>${overNote}</section>
-    <section class="sec"><div class="sec-h"><h3>工位起身</h3></div>
+    <section class="sec">${secH("🪑","工位起身")}
       <div class="card counter"><span class="ic" aria-hidden="true">🧘</span><div class="txt"><h4>起来动一动</h4><p>每坐 1 小时起身 2–3 分钟，今天目标 6 次</p></div>
       <div class="ctl"><button data-stand="-1" aria-label="减一次">−</button><b>${c.stand||0}<small>/6 次</small></b><button data-stand="1" aria-label="加一次">+</button></div></div></section>`;
 }
@@ -763,32 +847,32 @@ function ringCard(person){
 function viewDiet(){
   const plan=MEAL_PLAN[viewP]; const w=new Date().getDay();
   const L={breakfast:"早",lunch:"午",snack:"加",dinner:"晚"};
-  const rows=MEALS.map(m=>`<div class="card mplan ${viewP}"><span class="l">${L[m]}</span>
+  const rows=MEALS.map(m=>`<div class="card mplan ${viewP}"><span class="l m-${m}">${L[m]}</span>
     <div class="h"><b>${plan[m].t}<time>${plan[m].time}</time></b><span class="chip">约 ${mealKcal(viewP,m)} kcal</span></div>
     <p>${esc(plan[m].food)}</p></div>`).join("");
-  const tn = (w>=1&&w<=5) ? `<div class="tonight"><h4>今晚：${DINNERS[w].n}</h4><p>${DINNERS[w].h} · 约 ${DINNERS[w].kcal[viewP]} kcal</p></div>` : "";
+  const tn = (w>=1&&w<=5) ? `<div class="tonight"><span class="tag" style="margin:0 0 6px">今晚推荐</span><h4>${DINNERS[w].n}</h4><p>${DINNERS[w].h} · 约 ${DINNERS[w].kcal[viewP]} kcal</p></div>` : "";
   const dinners=[1,2,3,4,5].filter(d=>d!==w).map(d=>`<div class="dinner"><span class="d">周${WEEK[d]}</span>
     <div><h4>${DINNERS[d].n}</h4><p>${DINNERS[d].h}</p></div><span class="k">约 ${DINNERS[d].kcal[viewP]}</span></div>`).join("");
   $("#view").innerHTML=peekSwitch()+`
-  <section class="sec"><div class="sec-h"><h3>今天吃了多少</h3><span>${PEOPLE[viewP].label} · 全天${dayKcal(viewP)}</span></div>${ringCard(viewP)}</section>
-  <section class="sec"><div class="sec-h"><h3>${PEOPLE[viewP].label}的一天</h3><span>蛋白质 ${plan.protein}</span></div>
+  <section class="sec">${secH("🔥","今天吃了多少",PEOPLE[viewP].label)}${ringCard(viewP)}</section>
+  <section class="sec">${secH("🗓️",PEOPLE[viewP].label+"的一天","蛋白质 "+plan.protein)}
     <div class="stack">${rows}</div></section>
-  <section class="sec"><div class="sec-h"><h3>晚餐轮换</h3><span>15 分钟快手菜</span></div>
+  <section class="sec">${secH("⏱️","晚餐轮换","15 分钟快手菜")}
     <div class="card">${tn}${dinners}</div>
     <p class="note" style="margin-top:10px">周日花 1 小时备菜：肉切好腌好分装冷冻，蔬菜洗好沥干装盒，工作日下锅就行。</p></section>
-  <section class="sec"><div class="sec-h"><h3>点外卖怎么选</h3></div>
+  <section class="sec">${secH("🛵","点外卖怎么选")}
     <div class="two">
       <div class="card good"><h4>😊 优先选</h4><ul><li>一荤一素简餐</li><li>牛肉粉、鸡肉粉，粉吃一半</li><li>日式定食、去皮鸡腿饭</li><li>麻辣烫多选菜和肉，汤不喝</li></ul></div>
       <div class="card bad"><h4>🙅 尽量少选</h4><ul><li>盖浇饭、黄焖鸡</li><li>炒饭炒面</li><li>汉堡炸鸡、披萨</li><li>重酱料的轻食沙拉</li></ul></div>
     </div></section>
-  <section class="sec"><div class="sec-h"><h3>常见场景</h3></div>
-    <div class="card"><ul class="list">
-      <li><b>沙拉酱</b>　选油醋汁，只倒一半；沙拉里要有肉蛋和一点主食</li>
-      <li><b>下午咖啡</b>　美式随便喝；拿铁就当加餐；避开糖浆、生椰、厚乳；3–4 点前喝完</li>
-      <li><b>做饭用油</b>　两人一顿控制在 1 勺以内</li>
-      <li><b>带娃</b>　宝宝吃剩的饭和辅食不要自己吃掉</li>
-      <li><b>加班饿了</b>　无糖酸奶、鸡蛋、小番茄、黄瓜</li>
-    </ul></div></section>`;
+  <section class="sec">${secH("💬","常见场景")}
+    <div class="card faq">
+      <details><summary>沙拉酱怎么选？</summary><p>选油醋汁，只倒一半；沙拉里要有肉蛋和一点主食。</p></details>
+      <details><summary>下午想喝咖啡？</summary><p>美式随便喝；拿铁就当加餐；避开糖浆、生椰、厚乳；3–4 点前喝完。</p></details>
+      <details><summary>做饭用多少油？</summary><p>两人一顿控制在 1 勺以内。</p></details>
+      <details><summary>带娃时的小习惯</summary><p>宝宝吃剩的饭和辅食不要自己吃掉。</p></details>
+      <details><summary>加班饿了吃什么？</summary><p>无糖酸奶、鸡蛋、小番茄、黄瓜。</p></details>
+    </div></section>`;
 }
 
 function planCard(key,canStart){
@@ -820,10 +904,10 @@ function viewTrain(){
   const keys = viewP==="hus" ? ["A","B"] : ["W"];
   const mine = viewP===me;
   $("#view").innerHTML=`
-  <section class="sec"><div class="sec-h"><h3>这周两个人的安排</h3><span>✓ 是已完成的</span></div>
+  <section class="sec">${secH("📅","这周两个人的安排","✓ 是已完成的")}
     <div class="card">${head}${rows}</div></section>
   ${peekSwitch()}
-  <section class="sec"><div class="sec-h"><h3>${PEOPLE[viewP].label}的训练内容</h3>${viewP==="hus"?"<span>A、B 每周交替</span>":""}</div>
+  <section class="sec">${secH("🏋️",PEOPLE[viewP].label+"的训练内容",viewP==="hus"?"A、B 每周交替":"")}
     <div class="stack">${keys.map(k=>planCard(k,mine)).join("")}${mine?planCard("D",true):""}</div></section>
   <p class="note">膝盖或腰出现疼痛（不是肌肉酸）就先停下。${viewP==="hus"?"3 轮都轻松完成时，下次加 1–2kg 或每组多做 2 次。":"适应 3–4 周后从 2 轮加到 3 轮，或套上弹力带做。"}</p>`;
 }
@@ -841,29 +925,47 @@ function whenText(t){
 function measureSeries(person){
   return Object.values(store.measures).filter(m=>m.person===person).sort((a,b)=>a.date<b.date?-1:1);
 }
-function chartSVG(field,label,unit){
-  const W=320,H=130,P=26;
-  const series=["hus","wife"].map(p=>({p,pts:measureSeries(p).filter(m=>typeof m[field]==="number").slice(-12)}));
-  const all=series.flatMap(s=>s.pts.map(x=>x[field]));
-  if(!all.length) return `<div class="card chart"><div class="chart-h"><b>${label}</b></div><p class="empty">记录两次以上就能看到趋势</p></div>`;
-  let lo=Math.min(...all), hi=Math.max(...all); if(hi-lo<2){ lo-=1; hi+=1; }
-  const y=v=>H-P-((v-lo)/(hi-lo))*(H-2*P);
-  const lines=series.map(s=>{
-    if(!s.pts.length) return "";
-    const n=s.pts.length; const x=i=> n===1 ? W/2 : P+(i/(n-1))*(W-2*P);
-    const col=`var(--${s.p})`;
-    const pl=s.pts.map((m,i)=>`${x(i).toFixed(1)},${y(m[field]).toFixed(1)}`).join(" ");
-    const last=s.pts[n-1];
-    return `<polyline points="${pl}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`+
-      s.pts.map((m,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(m[field]).toFixed(1)}" r="3.5" fill="${col}"/>`).join("")+
-      `<text x="${(x(n-1)).toFixed(1)}" y="${(y(last[field])-9).toFixed(1)}" text-anchor="middle" font-size="11" fill="${col}" font-weight="700">${last[field]}</text>`;
+let recField="weight";
+const FIELDS={weight:["体重","kg"],waist:["腰围","cm"],hip:["臀围","cm"],thigh:["大腿围","cm"]};
+/* 平滑曲线：两个人各占上下一半、各自按自己的范围缩放（体重相差大时也能看清各自的走势） */
+function smoothPath(pts){
+  if(pts.length<2) return "";
+  let d=`M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[i-1]||pts[i], p1=pts[i], p2=pts[i+1], p3=pts[i+2]||p2;
+    const c1=[p1[0]+(p2[0]-p0[0])/6, p1[1]+(p2[1]-p0[1])/6], c2=[p2[0]-(p3[0]-p1[0])/6, p2[1]-(p3[1]-p1[1])/6];
+    d+=` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  return d;
+}
+function trendCard(){
+  const fields=["weight","waist"].concat(measureSeries("wife").some(m=>typeof m.hip==="number")?["hip"]:[]);
+  if(!fields.includes(recField)) recField="weight";
+  const [label,unit]=FIELDS[recField];
+  const W=320,H=170,PX=18,BAND=H/2;
+  const series=["hus","wife"].map((p,bi)=>({p,bi,pts:measureSeries(p).filter(m=>typeof m[recField]==="number").slice(-12)}));
+  const toggle=`<div class="seg2" role="group" aria-label="看哪项趋势">${fields.map(f=>`<button data-rec-field="${f}" aria-pressed="${f===recField}">${FIELDS[f][0]}</button>`).join("")}</div>`;
+  const legend=`<div class="legend">${series.map(s=>{ const l=s.pts[s.pts.length-1]; return `<span class="${s.p}"><i></i>${PEOPLE[s.p].label}${l?` <b>${l[recField]} ${unit}</b>`:" 还没有数据"}</span>`; }).join("")}</div>`;
+  if(!series.some(s=>s.pts.length)) return `<div class="card chart"><div class="chart-h"><b>两个人的趋势</b>${toggle}</div><p class="empty">记录两次以上就能看到${label}趋势</p></div>`;
+  const body=series.map(s=>{
+    if(!s.pts.length) return `<text x="${W/2}" y="${s.bi*BAND+BAND/2+4}" text-anchor="middle" font-size="11" fill="var(--faint)">${PEOPLE[s.p].label}还没有${label}数据</text>`;
+    const vals=s.pts.map(m=>m[recField]); let lo=Math.min(...vals), hi=Math.max(...vals); if(hi-lo<1){ lo-=.5; hi+=.5; }
+    const top=s.bi*BAND+22, bot=(s.bi+1)*BAND-12;
+    const n=s.pts.length, x=i=> n===1 ? W/2 : PX+(i/(n-1))*(W-2*PX), y=v=>bot-((v-lo)/(hi-lo))*(bot-top);
+    const xy=s.pts.map((m,i)=>[x(i),y(m[recField])]);
+    const line=smoothPath(xy); const mine=s.p===me; const col=`var(--${s.p})`;
+    const area=line?`${line} L${xy[n-1][0].toFixed(1)},${bot+8} L${xy[0][0].toFixed(1)},${bot+8} Z`:"";
+    const last=xy[n-1];
+    return (area?`<path d="${area}" fill="url(#fill-${s.p})"/>`:"")+
+      (line?`<path d="${line}" fill="none" stroke="${col}" stroke-width="${mine?3:2.5}" stroke-linecap="round" ${mine?"":`stroke-dasharray="1 6"`}/>`:"")+
+      xy.map(([cx,cy],i)=>i===n-1?"":`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="2.5" fill="${col}" opacity=".5"/>`).join("")+
+      `<circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="5" fill="var(--surface)" stroke="${col}" stroke-width="3"/>`+
+      `<text x="${Math.min(last[0],W-24).toFixed(1)}" y="${(last[1]-10).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="800" fill="${col}">${s.pts[n-1][recField]}</text>`;
   }).join("");
-  const grid=`<line x1="${P}" x2="${W-P}" y1="${y(hi)}" y2="${y(hi)}" stroke="var(--line)"/><line x1="${P}" x2="${W-P}" y1="${y(lo)}" y2="${y(lo)}" stroke="var(--line)"/>
-    <text x="2" y="${y(hi)+4}" font-size="10" fill="var(--muted)">${hi.toFixed(0)}</text><text x="2" y="${y(lo)+4}" font-size="10" fill="var(--muted)">${lo.toFixed(0)}</text>`;
-  return `<div class="card chart"><div class="chart-h"><b>${label}</b><span style="color:var(--muted)">${unit}</span></div>
-    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}趋势">${grid}${lines}</svg>
-    <div class="legend"><span><i style="background:var(--hus)"></i>老公</span><span><i style="background:var(--wife)"></i>老婆</span></div>
-    </div>`;
+  const defs=`<defs>${["hus","wife"].map(p=>`<linearGradient id="fill-${p}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--${p})" stop-opacity=".22"/><stop offset="1" stop-color="var(--${p})" stop-opacity="0"/></linearGradient>`).join("")}</defs>`;
+  return `<div class="card chart"><div class="chart-h"><b>两个人的趋势</b>${toggle}</div>${legend}
+    <div class="plot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}趋势，最近 12 次">${defs}<line x1="${PX}" x2="${W-PX}" y1="${BAND}" y2="${BAND}" stroke="var(--line)" stroke-dasharray="3 5"/>${body}</svg></div>
+    <p class="chart-foot">最近 12 次记录 · 两人各自按自己的范围显示走势</p></div>`;
 }
 function whoCard(p){
   const ms=measureSeries(p);
@@ -885,37 +987,72 @@ function whoCard(p){
     :`<p>还没有记录</p>`}
   </div>`;
 }
+function shortDay(date){
+  const t=ymd(new Date()), y=ymd(addDays(new Date(),-1));
+  return date===t?"今天":date===y?"昨天":`${+date.slice(5,7)}/${+date.slice(8)}`;
+}
+/* 某人某项在 date 之前最近一次的值 */
+function prevValue(person,field,date){
+  const ms=measureSeries(person).filter(m=>typeof m[field]==="number" && m.date<date);
+  return ms.length?ms[ms.length-1][field]:null;
+}
+const fmtDelta=(d,unit)=>{ d=Math.round(d*10)/10; return d===0?"持平":(d>0?"+":"−")+Math.abs(d)+" "+unit; };
+function insightCard(){
+  const tip = me==="wife" ? "体重不怎么动、围度在变小，就说明方向对了。看 3–4 周的趋势，别看单日。"
+    : "看 3–4 周的趋势，别看单日。每周日早上空腹量一次，数据最稳。";
+  const row=p=>{ const done=dayDone(p,new Date()); const n=streak(p);
+    return `<div class="irow ${p}"><span class="ic">${p==="hus"?"💪":"🌸"}</span><span class="t">${PEOPLE[p].label}连续打卡 <b>${n}</b> 天</span>
+      <span class="chip ${done?"good":"me2"}">${done?"今天已完成":"今天进行中"}</span></div>`; };
+  return `<div class="insight"><div class="ih"><div><h3>看趋势，别看单日</h3><p>${tip}</p></div>
+    <img src="assets/avatar-${me}.png" alt="" width="72" height="72"></div>${row("hus")}${row("wife")}</div>`;
+}
+function feedRows(){
+  const hist=Object.values(store.measures).sort((a,b)=>a.date<b.date?1:-1).slice(0,6);
+  if(!hist.length) return `<p class="empty">还没有记录。每周日早上空腹量一次。</p>`;
+  return hist.map(m=>{
+    const extra=[m.waist!=null?`腰围 ${m.waist}`:"",m.hip!=null?`臀围 ${m.hip}`:"",m.thigh!=null?`腿围 ${m.thigh}`:""].filter(Boolean).join(" · ");
+    const pw=m.weight!=null?prevValue(m.person,"weight",m.date):null;
+    return `<div class="feed ${m.person}"><img src="assets/avatar-${m.person}.png" alt="" width="40" height="40">
+      <div class="t"><div><b>${PEOPLE[m.person].label}</b><span class="chip">${shortDay(m.date)}</span></div><small>${esc(extra)||"只记了体重"}</small></div>
+      <div class="v">${m.weight!=null?`<b>${m.weight} kg</b><small>${pw!=null?fmtDelta(m.weight-pw,"kg"):"第一次记录"}</small>`:""}</div></div>`;
+  }).join("");
+}
 function renderRecordData(){
   const pair=$("#recPair"); if(pair) pair.innerHTML=whoCard("hus")+whoCard("wife");
+  const ins=$("#recInsight"); if(ins) ins.innerHTML=insightCard();
   const box=$("#recData"); if(!box) return;
-  const hist=Object.values(store.measures).sort((a,b)=>a.date<b.date?1:-1).slice(0,16);
-  const rows=hist.length?hist.map(m=>{
-    const extra=[m.waist!=null?`腰 ${m.waist}`:"",m.hip!=null?`臀 ${m.hip}`:"",m.thigh!=null?`腿 ${m.thigh}`:""].filter(Boolean).join("　");
-    return `<div class="hist-row"><span class="dot" style="background:var(--${m.person})"></span>
-      <div>${m.weight!=null?`<b>${m.weight} kg</b>　`:""}<small>${esc(extra)}</small></div><small>${m.date.slice(5)}</small></div>`;
-  }).join(""):`<p class="empty">还没有记录。每周日早上空腹量一次。</p>`;
-  box.innerHTML=chartSVG("weight","体重","kg")+`<div style="height:8px"></div>`+chartSVG("waist","腰围","cm")+
-    `<section class="sec" style="margin-top:20px"><div class="sec-h"><h3>历史记录</h3></div><div class="card hist">${rows}</div></section>`;
+  box.innerHTML=`<section class="sec">${secH("📈","趋势")}${trendCard()}</section>
+    <section class="sec">${secH("🕒","最近更新","两个人的记录")}<div class="card">${feedRows()}</div></section>`;
 }
 function viewRecord(){
   const today=ymd(new Date());
   const ex=store.measures[me+"_"+today]||{};
   const v=k=>ex[k]!=null?ex[k]:"";
+  const tiles=[["weight","晨起体重","kg",0.1,30,200],["waist","腰围","cm",0.5,40,160]].concat(me==="wife"?[["hip","臀围","cm",0.5,50,160],["thigh","大腿围","cm",0.5,30,100]]:[]);
+  const tile=([k,l,u,st,mn,mx])=>{ const pv=prevValue(me,k,today);
+    return `<label class="mtile"><span class="ml">${l}</span><span class="mv"><input type="number" inputmode="decimal" step="${st}" min="${mn}" max="${mx}" name="${k}" value="${v(k)}" placeholder="${pv!=null?pv:"—"}" data-prev="${pv!=null?pv:""}" data-unit="${u}"><i>${u}</i></span>
+      <span class="md" data-delta="${k}">${pv!=null?`上次 ${pv} ${u}`:"还没有记录"}</span></label>`; };
+  const tokenCard = CLOUD ? `<section class="sec">${secH("🔑","家庭同步口令")}
+    <div class="card"><div class="token"><span class="k">${family?"🔒 "+esc(family.slice(0,4))+"••••••":"还没设置口令"}</span>
+      ${family?`<button class="btn primary" data-code-copy>复制邀请链接</button>`:`<button class="btn primary" data-open-code>去设置</button>`}</div>
+      ${family?`<button class="linkbtn" data-open-code>查看或修改口令</button>`:`<p class="empty" style="padding-top:8px">两台手机填同一个口令，数据才会同步到一起。</p>`}</div></section>` : "";
   $("#view").innerHTML=`
-  <section class="sec"><div class="sec-h"><h3>两个人的记录</h3></div><div class="pair" id="recPair"></div></section>
-  <section class="sec"><div class="sec-h"><h3>记录${PEOPLE[me].label}的数据</h3><span>看 3–4 周的趋势，别看单日</span></div>
-    <form class="card form" id="mForm">
-      <label class="full">日期<input type="date" name="date" value="${today}" max="${today}"></label>
-      <label>体重 kg<input type="number" inputmode="decimal" step="0.1" min="30" max="200" name="weight" value="${v("weight")}"></label>
-      <label>腰围 cm<input type="number" inputmode="decimal" step="0.5" min="40" max="160" name="waist" value="${v("waist")}"></label>
-      ${me==="wife"?`<label>臀围 cm<input type="number" inputmode="decimal" step="0.5" min="50" max="160" name="hip" value="${v("hip")}"></label>
-      <label>大腿围 cm<input type="number" inputmode="decimal" step="0.5" min="30" max="100" name="thigh" value="${v("thigh")}"></label>`:""}
-      <button class="btn primary full" type="submit">保存记录</button>
+  <section class="sec" id="recInsight"></section>
+  <section class="sec">${secH("👫","两个人的记录")}<div class="pair" id="recPair"></div></section>
+  <section class="sec">${secH("📝","记录"+PEOPLE[me].label+"的数据")}
+    <form class="card form2" id="mForm">
+      <div class="fh"><span>记在哪天</span><input type="date" name="date" value="${today}" max="${today}" aria-label="日期"></div>
+      <div class="mtiles">${tiles.map(tile).join("")}</div>
+      <button class="cta" type="submit">☁️ 保存记录</button>
     </form>
-    ${me==="wife"?`<p class="note" style="margin-top:8px">体重不怎么动、围度在变小，就说明方向对了。</p>`:""}
-  </section><div id="recData"></div>
-  ${CLOUD?`<section class="sec"><div class="sec-h"><h3>同步设置</h3></div><div class="card train-today"><div><h4 style="font-size:15px">家庭口令</h4><p>${family?"已设置，可以复制邀请链接给对方":"还没设置"}</p></div><button class="btn ghost" data-open-code>${family?"查看":"去设置"}</button></div></section>`:""}`;
+  </section><div id="recData"></div>${tokenCard}`;
   renderRecordData();
+  $("#mForm").addEventListener("input",e=>{
+    const i=e.target; if(!i.dataset || i.name==="date") return;
+    const d=$(`[data-delta="${i.name}"]`); if(!d) return;
+    const pv=i.dataset.prev, u=i.dataset.unit;
+    d.textContent = i.value!=="" && pv!=="" ? "较上次 "+fmtDelta(Number(i.value)-Number(pv),u) : (pv!==""?`上次 ${pv} ${u}`:"还没有记录");
+  });
   $("#mForm").addEventListener("submit",e=>{
     e.preventDefault(); const f=new FormData(e.target); const body={person:me,date:f.get("date")||today};
     let any=false;
@@ -960,9 +1097,16 @@ function startRun(key){
 function stopTimer(){ clearInterval(timer); timer=null; }
 function closeRun(){ stopTimer(); runState=null; $("#run").classList.remove("open"); document.body.style.overflow=""; render(); }
 function nextStep(){ stopTimer(); runState.i++; runState.running=false; drawRun(); }
+const RUN_C=2*Math.PI*88;
+function timerRing(sec,total){
+  return `<div class="tring"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="88" fill="none" stroke="var(--sunk)" stroke-width="14"/>
+    <circle id="cdRing" cx="100" cy="100" r="88" fill="none" stroke="var(--me)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${RUN_C.toFixed(1)}" stroke-dashoffset="${(RUN_C*(1-sec/total)).toFixed(1)}"/></svg>
+    <div><b class="big" id="cd">${sec}</b><small>秒</small></div></div>`;
+}
 function countdown(sec,onEnd){
-  runState.sec=sec; stopTimer();
+  runState.sec=sec; runState.total=runState.total||sec; stopTimer();
   timer=setInterval(()=>{ runState.sec--; const el=$("#cd"); if(el) el.textContent=runState.sec;
+    const rg=$("#cdRing"); if(rg && runState.total) rg.style.strokeDashoffset=(RUN_C*(1-runState.sec/runState.total)).toFixed(1);
     if(runState.sec<=0){ stopTimer(); try{ navigator.vibrate&&navigator.vibrate(200);}catch(e){} onEnd(); } },1000);
 }
 function drawRun(){
@@ -970,27 +1114,32 @@ function drawRun(){
   const pct=Math.round(st.i/(st.steps.length-1)*100);
   let body="";
   if(s.type==="list"){
-    body=`<h2>${s.title}</h2><ul>${s.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
-      <div class="actions"><button class="btn primary" data-run="next">${s.btn}</button></div>`;
+    st.total=0;
+    body=`<div class="rcard"><span class="tag2 light">${s.title==="先热身"?"🔥 热身":"🌿 放松"}</span><h2>${s.title}</h2>
+      <ol class="rlist">${s.items.map((x,i)=>`<li><span>${i+1}</span>${esc(x)}</li>`).join("")}</ol></div>
+      <div class="actions"><button class="cta" data-run="next">${s.btn}</button></div>`;
   }else if(s.type==="move"){
     const timed=!!s.m.sec;
-    body=`<div class="media">动作示意图待添加</div>
-      <h2>${esc(s.m.n)}</h2><p class="reps">${esc(s.m.r)}</p><p class="cue">${esc(s.m.c)}</p>
-      ${timed?`<div class="big" id="cd">${st.running?st.sec:s.m.sec}</div><p class="sub">秒</p>`:""}
-      <div class="actions">${timed&&!st.running?`<button class="btn primary" data-run="timer">开始计时</button>`:""}
+    st.total = timed ? s.m.sec : 0;
+    body=`<div class="rcard"><div class="media"><img src="assets/avatar-${me}.png" alt="" width="72" height="72"><span>动作示意图待添加</span></div>
+      <span class="tag2 light">第 ${s.round} 轮 · 动作 ${s.idx}/${w.moves.length}</span>
+      <h2>${esc(s.m.n)}</h2><p class="reps">${esc(s.m.r)}</p><p class="cue">💡 ${esc(s.m.c)}</p></div>
+      ${timed?timerRing(st.running?st.sec:s.m.sec,s.m.sec):""}
+      <div class="actions">${timed&&!st.running?`<button class="cta" data-run="timer">▶ 开始计时</button>`:""}
       ${timed&&st.running?`<button class="btn ghost" data-run="next">提前结束</button>`:""}
-      ${!timed?`<button class="btn primary" data-run="next">做完了</button>`:""}</div>`;
+      ${!timed?`<button class="cta" data-run="next">✓ 做完了</button>`:""}</div>`;
   }else if(s.type==="rest"){
-    body=`<h2>${s.round?"这一轮完成，休息一下":"休息"}</h2>
-      <div class="big" id="cd">${s.sec}</div><p class="sub">下一个：${esc(s.next)}</p>
+    st.total=s.sec;
+    body=`<div class="rrest"><h2>${s.round?"这一轮完成，休息一下 🎉":"休息一下"}</h2>
+      ${timerRing(s.sec,s.sec)}
+      <p class="next">下一个 <b>${esc(s.next)}</b></p></div>
       <div class="actions"><button class="btn ghost" data-run="next">跳过休息</button></div>`;
   }else{
-    body=`<h2>练完了</h2><p class="cue">${w.name}，${w.rounds} 轮全部完成。</p>
-      <div class="actions">${w.who==="both"?"":`<button class="btn primary" data-run="finish">记录完成并返回</button>`}
+    body=`<div class="rend"><img src="assets/avatar-${me}.png" alt="${PEOPLE[me].label}的形象" width="140" height="140"><h2>练完了 ✨</h2><p class="cue">${w.name}，${w.rounds} 轮全部完成。</p></div>
+      <div class="actions">${w.who==="both"?"":`<button class="cta" data-run="finish">记录完成并返回</button>`}
       <button class="btn ghost" data-run="close">返回</button></div>`;
   }
-  const where = s.type==="move" ? `第 ${s.round} 轮（共 ${w.rounds} 轮），动作 ${s.idx}/${w.moves.length}` : w.name;
-  $("#runBody").innerHTML=`<div class="run-top"><button data-run="close">退出</button><span>${where}</span></div>
+  $("#runBody").innerHTML=`<div class="run-top"><button data-run="close">✕ 退出</button><span>${w.name}</span><span class="pc">${pct}%</span></div>
     <div class="bar"><i style="width:${pct}%"></i></div>${body}`;
   if(s.type==="rest") countdown(s.sec,nextStep);
 }
@@ -1015,6 +1164,7 @@ document.addEventListener("click",e=>{
   if(t.hasAttribute("data-pick-cancel")){ closePicker(); return; }
   if(t.hasAttribute("data-open-picker")){ openPicker(true); return; }
   if(t.dataset.view){ viewP=t.dataset.view; lastTab=null; render(); return; }
+  if(t.dataset.recField){ recField=t.dataset.recField; renderRecordData(); return; }
   if(t.dataset.tab){ tab=t.dataset.tab; document.querySelectorAll(".tabs button").forEach(b=>{ if(b===t) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
     lastTab=null; render(); window.scrollTo(0,0); return; }
   if(t.dataset.meal){
