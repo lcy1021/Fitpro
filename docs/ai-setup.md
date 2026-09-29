@@ -1,0 +1,62 @@
+# 开启 AI 估算热量
+
+「记一下实际吃了什么」默认用 App 内置的食物库识别。开启 AI 后，弹窗里会多一个「🤖 让 AI 估算这一顿」按钮：食物库认不出、或者吃的东西比较复杂时，点一下让 Claude 按整句话估算。
+
+**大约 10 分钟，只需要做一次。** API Key 只存在 Supabase 的密钥设置里，不会出现在页面和公开仓库中。
+
+## 费用
+
+- 每次估算调用一次 Claude（`claude-opus-5-5`，低推理强度），大约几分钱人民币。
+- 每个家庭每天最多 60 次（在 `supabase/functions/meal-kcal/index.ts` 的 `DAILY_LIMIT` 改），超过当天就不能再用，防止被滥用。
+- 想更省钱可以把函数里的 `model` 换成 `claude-haiku-4-5`（估算质量会差一些）。
+
+## 步骤
+
+### 1. 拿一个 Anthropic API Key
+
+1. 打开 https://console.anthropic.com ，登录后进入 **API Keys** → **Create Key**，名字填 `fitpro`。
+2. 复制生成的 Key（`sk-ant-` 开头），**不要发给任何人，也不要写进代码或提交到 GitHub**。
+3. 在 **Billing** 里充一点余额（最低档就够用很久）。
+
+### 2. 建限额表
+
+Supabase 控制台 → **SQL Editor** → **New query**，把 [`supabase-ai-setup.sql`](../supabase-ai-setup.sql) 全部粘贴进去 → **Run**，看到 `Success` 即可。
+
+### 3. 保存 API Key
+
+Supabase 控制台 → **Edge Functions** → **Secrets**（或 Project Settings → Edge Functions）→ 新增：
+
+- Name：`ANTHROPIC_API_KEY`
+- Value：第 1 步复制的 Key
+
+### 4. 部署函数
+
+Supabase 控制台 → **Edge Functions** → **Deploy a new function** → **Via Editor**：
+
+1. 函数名填 `meal-kcal`（必须一模一样）。
+2. 把 [`supabase/functions/meal-kcal/index.ts`](../supabase/functions/meal-kcal/index.ts) 的全部内容粘贴进去，替换默认代码 → **Deploy**。
+3. 部署完进入函数的 **Settings**（或 Details），把 **Enforce JWT Verification / Verify JWT** 关掉并保存。App 用的是公开密钥，函数自己会检查家庭口令。
+
+> 用命令行部署也可以：`supabase functions deploy meal-kcal --no-verify-jwt`。
+
+### 5. 打开开关
+
+把 `config.js` 里的 `AI_KCAL: false` 改成 `AI_KCAL: true`（或者告诉 Claude "AI 估算已经部署好了"，让它改完推送）。
+
+## 怎么确认生效
+
+1. 手机打开 App，确认已经设置了家庭口令、并且打过至少一次卡（函数只服务已经在用的家庭）。
+2. 点任意一餐的「📝 记一下实际吃了什么」，写一句话，点「🤖 让 AI 估算这一顿」。
+3. 几秒后出现带紫色 **AI** 标记的结果就说明成功了。
+
+| 提示 | 原因 |
+|---|---|
+| 先打一次卡同步一下 | 这个口令下还没有任何数据 |
+| 今天 AI 估算次数用完了 | 超过每天 60 次 |
+| AI 估算失败 | 看 Supabase → Edge Functions → meal-kcal → Logs；常见是 Key 没设、余额不足、JWT 验证没关 |
+
+## 安全说明
+
+- 函数只接受 GitHub Pages（`lcy1021.github.io`）和本地预览发来的请求。
+- 每次请求都要带一个**已经有数据的家庭口令**，并且按家庭每天限额；仓库里没有你们的口令，外人拿到公开密钥也用不了。
+- 发给 Claude 的只有你写的那句"吃了什么"，不含体重等其他数据。
