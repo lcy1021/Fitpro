@@ -404,6 +404,45 @@ p{margin:0}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);
   padding:9px 16px;border-radius:999px;font-size:13px;z-index:30;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
+/* 目标 */
+.goalf{display:grid;gap:14px}
+.gf2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gf2 label{display:grid;gap:4px;font-size:12px;color:var(--muted);font-weight:600}
+.gf2 input{font:inherit;font-size:20px;font-weight:800;color:var(--ink);background:var(--sunk);border:0;border-radius:var(--radius-s);padding:10px 14px;width:100%}
+.gf2 input:focus{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--me) 25%,transparent)}
+.pace{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pace label{cursor:pointer}
+.pace input{position:absolute;opacity:0;pointer-events:none}
+.pace span{display:block;padding:10px 12px;border-radius:var(--radius-s);background:var(--sunk);font-size:12px;color:var(--muted);box-shadow:inset 0 0 0 1.5px transparent}
+.pace span b{display:block;font-size:15px;color:var(--ink)}
+.pace input:checked+span{background:var(--me-soft);box-shadow:inset 0 0 0 1.5px var(--me)}
+.pace input:checked+span b{color:var(--me-ink)}
+.pace input:focus-visible+span{outline:3px solid color-mix(in srgb,var(--me) 45%,transparent)}
+.gprev{background:color-mix(in srgb,var(--me-soft) 55%,var(--surface));border-radius:var(--radius-s);padding:12px 14px;font-size:13px;color:var(--muted);line-height:1.6}
+.gprev b{color:var(--ink);font-size:15px}
+.gprev.bad{background:var(--sun-soft);color:var(--sun-ink)}
+.goal-card .gl{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0}
+.goal-card .gl div{background:var(--sunk);border-radius:var(--radius-s);padding:10px 8px;text-align:center;font-size:11px;color:var(--muted)}
+.goal-card .gl b{display:block;font-size:17px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.goal-card .gh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.goal-card h4{margin:0;font-size:16px;font-weight:800}
+.goal-card p{font-size:12px;color:var(--muted);line-height:1.6}
+.goal-bar{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden;margin-top:10px}
+.goal-bar i{display:block;height:100%;background:var(--me-grad);border-radius:99px}
+.sugg{background:var(--surface);border-radius:var(--radius-l);padding:14px;box-shadow:var(--shadow);margin-bottom:14px;background-image:linear-gradient(160deg,color-mix(in srgb,var(--me-soft) 80%,transparent) 0%,transparent 60%)}
+.sugg .sh{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sugg .sh img{width:48px;height:48px;object-fit:contain}
+.sugg .sh b{font-size:15px;font-weight:800}
+.sugg .sh small{display:block;font-size:12px;color:var(--muted)}
+.sugg ul{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px}
+.sugg li{background:var(--surface);border-radius:var(--radius-s);padding:9px 12px;font-size:13px;box-shadow:var(--shadow)}
+.sugg li b{display:block;font-size:14px}
+.sugg li small{color:var(--muted)}
+.sugg .acts{display:grid;grid-template-columns:1fr 2fr;gap:8px}
+.goal-cta{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;background:var(--surface);border-radius:var(--radius-m);padding:10px 12px 10px 10px;box-shadow:var(--shadow);margin-bottom:14px}
+.goal-cta img{width:56px;height:56px;object-fit:contain}
+.goal-cta b{display:block;font-size:14px;font-weight:800}
+.goal-cta small{display:block;font-size:12px;color:var(--muted);line-height:1.5}
 /* 形象反馈 */
 .react{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px) scale(.96);z-index:31;opacity:0;pointer-events:none;
   display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:24px;padding:10px 18px 10px 10px;box-shadow:var(--shadow-lift);width:max-content;max-width:calc(100vw - 32px);transition:opacity .25s,transform .25s}
@@ -460,6 +499,25 @@ p{margin:0}
   <button class="pick-btn wife" data-pick="wife"><b>我是老婆</b><span>居家臀腿跟练，每周 2–3 次</span><img src="assets/avatar-wife.png" alt=""></button>
   <button class="cancel" data-pick-cancel hidden>取消</button>
 </div></div>
+<div class="pick" id="goalDlg" role="dialog" aria-modal="true" aria-labelledby="goalTitle"><div class="inner">
+  <h1 id="goalTitle">设定你的目标</h1>
+  <p class="lead">填一次就好。App 会按你的身高、年龄和体重，算出每天吃多少、怎么练，之后每周根据体重变化给调整建议。</p>
+  <form class="card goalf" id="goalForm">
+    <div class="gf2">
+      <label>身高 cm<input type="number" inputmode="decimal" name="height" min="130" max="210" step="0.5" required></label>
+      <label>年龄<input type="number" inputmode="numeric" name="age" min="18" max="80" step="1" required></label>
+      <label>当前体重 kg<input type="number" inputmode="decimal" name="start" min="30" max="200" step="0.1" required></label>
+      <label>目标体重 kg<input type="number" inputmode="decimal" name="target" min="30" max="200" step="0.1" required></label>
+    </div>
+    <div class="pace" role="radiogroup" aria-label="速度">
+      <label><input type="radio" name="pace" value="gentle" checked><span><b>温和</b>每周约 0.3 kg</span></label>
+      <label><input type="radio" name="pace" value="standard"><span><b>标准</b>每周约 0.5 kg</span></label>
+    </div>
+    <div class="gprev" id="goalPrev">填完上面四项，这里会显示每天吃多少</div>
+    <button class="cta" type="submit">保存目标</button>
+  </form>
+  <button class="cancel" data-goal-close type="button">以后再说</button>
+</div></div>
 <div class="pick" id="codeDlg" role="dialog" aria-modal="true" aria-labelledby="codeTitle"><div class="inner">
   <h1 id="codeTitle">家庭口令</h1>
   <p class="lead">两台手机填同一个口令，数据才会同步到一起。口令就像你们家的钥匙，不要发到公开的地方。</p>
@@ -506,28 +564,29 @@ const MEAL_FOODS = {
     breakfast:{items:[
       {n:"水煮蛋",q:"2 个",k:[140,140]},
       {n:"纯牛奶",q:"250ml",k:[165,165],or:{n:"无糖豆浆",k:[80,80]}},
-      {n:"全麦面包",q:"2 片",k:[160,160],or:{n:"玉米 1 根",k:[110,110]}}]},
+      {n:"全麦面包",q:"2 片",k:[160,160],or:{n:"玉米 1 根",k:[110,110]},a:{g:2,min:1,max:3,step:1,kpg:80,u:"slice",pri:5}}]},
     lunch:{items:[
-      {n:"米饭",q:"2/3 碗（约 130g）",k:[150,150]},
+      {n:"米饭",q:"2/3 碗（约 130g）",k:[150,150],a:{g:130,min:80,max:250,step:10,kpg:1.16,u:"rice",pri:3}},
       {n:"荤菜一份",q:"约一个手掌大小",k:[250,350]},
       {n:"素菜一份",q:"一拳以上",k:[100,200]}]},
     snack:{items:[
       {n:"无糖酸奶",q:"1 盒",k:[100,130]},
-      {n:"水果",q:"1 个（苹果、橙子等）",k:[60,90]}],
+      {n:"水果",q:"1 个（苹果、橙子等）",k:[60,90]},
+      {n:"原味坚果",q:"",k:[0,0],a:{g:0,min:0,max:20,step:5,kpg:6,u:"nut",pri:2}}],
       alt:{n:"或者只喝一杯拿铁",k:[150,190]}},
     dinner:{items:[
-      {n:"瘦肉或鱼虾",q:"150g",k:[150,250]},
+      {n:"瘦肉或鱼虾",q:"150g",k:[150,250],a:{g:150,min:100,max:250,step:10,kpg:[1,1.67],u:"g",pri:4}},
       {n:"蔬菜",q:"300g",k:[60,90]},
-      {n:"米饭",q:"半碗（约 100g，可省）",k:[115,115],opt:true},
+      {n:"米饭",q:"半碗（约 100g，可省）",k:[115,115],opt:true,a:{g:100,min:0,max:200,step:10,kpg:1.16,u:"rice",pri:1}},
       {n:"做菜用油",q:"约半勺",k:[45,45]}]}
   },
   wife:{
     breakfast:{items:[
       {n:"水煮蛋",q:"1 个",k:[70,70]},
       {n:"纯牛奶",q:"250ml",k:[165,165],or:{n:"无糖豆浆",k:[80,80]}},
-      {n:"全麦面包",q:"1 片",k:[80,80],or:{n:"半根玉米",k:[55,55]}}]},
+      {n:"全麦面包",q:"1 片",k:[80,80],or:{n:"半根玉米",k:[55,55]},a:{g:1,min:1,max:2,step:1,kpg:80,u:"slice",pri:5}}]},
     lunch:{items:[
-      {n:"米饭",q:"半碗（约 100g）",k:[115,115]},
+      {n:"米饭",q:"半碗（约 100g）",k:[115,115],a:{g:100,min:60,max:180,step:10,kpg:1.16,u:"rice",pri:3}},
       {n:"荤菜一份",q:"约一个手掌大小",k:[250,350]},
       {n:"素菜一份",q:"一拳以上",k:[100,200]}]},
     snack:{pick1:true,items:[
@@ -535,9 +594,9 @@ const MEAL_FOODS = {
       {n:"水果",q:"1 个",k:[60,90]},
       {n:"拿铁",q:"1 杯",k:[150,190]}]},
     dinner:{items:[
-      {n:"瘦肉或鱼虾",q:"100g",k:[100,170]},
+      {n:"瘦肉或鱼虾",q:"100g",k:[100,170],a:{g:100,min:80,max:180,step:10,kpg:[1,1.7],u:"g",pri:4}},
       {n:"蔬菜",q:"250g",k:[50,75]},
-      {n:"米饭",q:"1/3 碗（可不吃）",k:[75,75],opt:true},
+      {n:"米饭",q:"1/3 碗（可不吃）",k:[75,75],opt:true,a:{g:75,min:0,max:150,step:10,kpg:1.16,u:"rice",pri:1}},
       {n:"做菜用油",q:"约半勺",k:[45,45]}]}
   }
 };
@@ -552,8 +611,108 @@ function mealRange(f){
   return [lo,hi];
 }
 const kcalText=r=>r[0]===r[1]?`${r[0]}`:`${r[0]}–${r[1]}`;
-function mealKcal(person,meal){ return kcalText(mealRange(MEAL_FOODS[person][meal])); }
-function dayKcal(person){ const t=MEALS.map(m=>mealRange(MEAL_FOODS[person][m])).reduce((a,r)=>[a[0]+r[0],a[1]+r[1]],[0,0]); return `约 ${kcalText(t)} kcal`; }
+function mealKcal(person,meal){ return kcalText(mealRange(menuFor(person)[meal])); }
+function dayRange(person){ return MEALS.map(m=>mealRange(menuFor(person)[m])).reduce((a,r)=>[a[0]+r[0],a[1]+r[1]],[0,0]); }
+function dayKcal(person){ return `约 ${kcalText(dayRange(person))} kcal`; }
+
+/* ---------- 目标：按身高、年龄、体重算每天热量，再调份量 ---------- */
+const GOAL_FLOOR={hus:1500,wife:1200};           // 每天热量下限
+const PACE={gentle:{def:300,label:"温和",kg:"约 0.3 kg"},standard:{def:500,label:"标准",kg:"约 0.5 kg"}};
+const MAX_LEVEL={hus:1,wife:1}, MIN_LEVEL={hus:-1,wife:0}; // 训练轮数在默认基础上最多 +1 / −1（老婆最少 2 轮）
+/* 目标存在身体记录的 goal 字段里：取最近一条带 goal 的记录 */
+function goalOf(person){ const ms=measureSeries(person); for(let i=ms.length-1;i>=0;i--) if(ms[i].goal) return ms[i].goal; return null; }
+function latestWeight(person){ const ms=measureSeries(person); for(let i=ms.length-1;i>=0;i--) if(typeof ms[i].weight==="number") return ms[i].weight; return null; }
+const minHealthy=h=>Math.ceil(18.5*(h/100)*(h/100)*10)/10;   // BMI 18.5 对应的体重
+function calcPlan(person,g,w){
+  const bmr=10*w+6.25*g.height-5*g.age+(person==="hus"?5:-161);
+  const tdee=Math.round(bmr*1.35/10)*10;                       // 久坐上班 + 每周练 3 次
+  const toGo=Math.round((w-g.target)*10)/10;
+  const maintain = g.mode==="maintain" || toGo<=0;
+  const deficit = maintain ? 0 : Math.min(PACE[g.pace||"gentle"].def, Math.round(w*0.01*7700/7)); // 每周不超过体重 1%
+  let kcal=Math.max(GOAL_FLOOR[person], Math.min(tdee-deficit+(g.adj||0), tdee+300));
+  kcal=Math.round(kcal/10)*10;
+  const perWeek = maintain ? 0 : Math.max(0.1, Math.round((tdee-kcal)*7/7700*10)/10);
+  const weeks = maintain ? 0 : Math.max(1, Math.ceil(toGo/perWeek));
+  return {g,w,tdee,kcal,toGo,maintain,perWeek,weeks,protein:Math.round(Math.min(w,g.target+5)*1.6/5)*5};
+}
+function planFor(person){ const g=goalOf(person); if(!g) return null; return calcPlan(person,g,latestWeight(person)||g.start); }
+
+const riceText=g=>{ const b=g/200; const t=b<=.35?"小半碗":b<=.55?"半碗":b<=.8?"大半碗":b<=1.1?"1 碗":"1 碗多"; return `${t}（约 ${g}g）`; };
+function knobItem(it,g){
+  const a=it.a, kp=Array.isArray(a.kpg)?a.kpg:[a.kpg,a.kpg];
+  const k=[Math.round(g*kp[0]/5)*5, Math.round(g*kp[1]/5)*5];
+  const q = a.u==="rice"?riceText(g):a.u==="slice"?`${g} 片`:a.u==="nut"?`${g}g（约一小把）`:`${g}g`;
+  const same=g===a.g;
+  return {...it, q: same?it.q:q, k: same?it.k:k, opt: same?it.opt:false, a:{...a,g}};
+}
+const midOf=r=>(r[0]+r[1])/2;
+let menuCache={};
+/* 按热量目标调份量：优先调晚餐米饭、坚果、午餐米饭，其次荤菜和面包 */
+function menuFor(person){
+  const plan=planFor(person); if(!plan) return MEAL_FOODS[person];
+  const key=person+plan.kcal; if(menuCache[key]) return menuCache[key];
+  const menu={}; MEALS.forEach(m=>{ menu[m]={...MEAL_FOODS[person][m], items:MEAL_FOODS[person][m].items.map(i=>({...i}))}; });
+  const knobs=[]; MEALS.forEach(m=>menu[m].items.forEach((it,idx)=>{ if(it.a) knobs.push({m,idx}); }));
+  knobs.sort((x,y)=>menu[x.m].items[x.idx].a.pri-menu[y.m].items[y.idx].a.pri);
+  const total=()=>MEALS.reduce((t,m)=>t+midOf(mealRange(menu[m])),0);
+  for(let n=0;n<120;n++){
+    const D=plan.kcal-total(); if(Math.abs(D)<35) break;
+    const dir=Math.sign(D); let moved=false;
+    for(const kb of knobs){
+      const it=menu[kb.m].items[kb.idx], a=it.a, ng=a.g+dir*a.step;
+      if(ng<a.min||ng>a.max) continue;
+      const stepK=a.step*midOf(Array.isArray(a.kpg)?a.kpg:[a.kpg,a.kpg]);
+      if(stepK/2>Math.abs(D)) continue;
+      menu[kb.m].items[kb.idx]=knobItem(it,ng); moved=true; break;
+    }
+    if(!moved) break;
+  }
+  MEALS.forEach(m=>{ menu[m].items=menu[m].items.filter(i=>!(i.a&&i.a.g===0)); });
+  return (menuCache[key]=menu);
+}
+
+/* ---------- 每周建议：看体重趋势和训练完成情况，确认后才改 ---------- */
+function weightTrend(person,days){
+  const since=addDays(new Date(),-days);
+  const pts=measureSeries(person).filter(m=>typeof m.weight==="number" && m.date>=ymd(since))
+    .map(m=>[(new Date(m.date+"T00:00:00")-since)/864e5, m.weight]);
+  if(pts.length<3 || pts[pts.length-1][0]-pts[0][0]<days*0.5) return null;
+  const n=pts.length, mx=pts.reduce((a,p)=>a+p[0],0)/n, my=pts.reduce((a,p)=>a+p[1],0)/n;
+  const sxy=pts.reduce((a,p)=>a+(p[0]-mx)*(p[1]-my),0), sxx=pts.reduce((a,p)=>a+(p[0]-mx)**2,0);
+  return sxx? sxy/sxx*7 : null; // kg/周，负数是在下降
+}
+function trainingDone(person,days){
+  let done=0, need=0;
+  for(let i=1;i<=days;i++){ const d=addDays(new Date(),-i); const s=scheduleFor(person,d);
+    if(s.kind==="train"){ need++; if(getCheckin(person,ymd(d)).workout==="done") done++; } }
+  return [done,need];
+}
+const daysSince=date=>Math.floor((new Date(ymd(new Date())+"T00:00:00")-new Date(date+"T00:00:00"))/864e5);
+function suggestionsFor(person){
+  const p=planFor(person); if(!p || daysSince(p.g.at)<7) return [];
+  const out=[], g=p.g, lv=g.level||0;
+  const fast=weightTrend(person,14), flat=weightTrend(person,21);
+  const [done,need]=trainingDone(person,14), lowDone = need>=4 && done<need/2; // 计划没怎么做时，体重不动不代表吃多了
+  if(!p.maintain && p.toGo<=1) out.push({k:"maintain",t:`离目标只差 ${p.toGo} kg 了`,d:"建议切换到维持：每天吃到消耗量，保持住就好"});
+  else if(fast!==null && -fast>p.w*0.01) out.push({k:"adj",v:150,t:`最近每周掉约 ${Math.abs(fast).toFixed(1)} kg，有点快`,d:"建议每天多吃约 150 kcal，减得稳一点更不容易反弹"});
+  else if(!p.maintain && flat!==null && Math.abs(flat)<0.1 && !lowDone){
+    if(p.kcal-150>=GOAL_FLOOR[person]) out.push({k:"adj",v:-150,t:"体重 3 周基本没动",d:"建议每天少吃约 150 kcal（主要减晚餐米饭）"});
+    if(!g.cardio) out.push({k:"cardio",t:"加一次快走",d:"周四加一次可选的快走 30 分钟，推婴儿车散步也算"});
+  }
+  if(need>=4 && done===need && lv<MAX_LEVEL[person]) out.push({k:"level",v:1,t:"这两周训练全部完成了 💪",d:`建议每次多练一轮（${roundsFor(person==="hus"?"A":"W",person)} 轮 → ${roundsFor(person==="hus"?"A":"W",person)+1} 轮）`});
+  else if(lowDone && lv>MIN_LEVEL[person]) out.push({k:"level",v:-1,t:"最近有点忙？",d:"建议先每次少练一轮，保持节奏比练多更重要"});
+  return out;
+}
+function roundsFor(key,person){
+  const w=WORKOUTS[key]; if(!w || key==="D" || key==="C") return w?w.rounds:1;
+  const g=goalOf(person); return w.rounds+((g&&g.level)||0);
+}
+/* 把目标写进今天的身体记录（和今天已有的体重、围度合并） */
+function saveGoal(person,patch){
+  const today=ymd(new Date()); const ex=store.measures[person+"_"+today]||{person,date:today};
+  const old=goalOf(person)||{};
+  putMeasure({...ex, person, date:today, goal:{...old, ...patch, at:today}});
+}
 const DINNERS = {
   1:{n:"番茄虾仁炒蛋 + 白灼菜心",h:"虾仁提前解冻，少油快炒",kcal:{hus:"380–480",wife:"260–330"}},
   2:{n:"空气炸锅鸡腿肉 + 凉拌黄瓜",h:"去皮鸡腿肉用黑胡椒、生抽腌好，200℃ 烤 15 分钟",kcal:{hus:"400–500",wife:"280–340"}},
@@ -593,6 +752,8 @@ const WORKOUTS = {
       {n:"后撤步弓步",img:"w-reverse-lunge",r:"每侧 8 次",c:"可以扶着墙或椅子保持平衡"},
       {n:"仰卧交替抬腿",img:"w-alt-leg-raise",r:"每侧 10 次",c:"下背部贴地，腹部收紧，慢慢放下"}
     ]},
+  C:{name:"快走 30 分钟",who:"both",rounds:1,restMove:0,restRound:0,equip:"一双舒服的鞋",warm:[],cool:[],
+    moves:[{n:"快走",img:"warm-march",r:"30 分钟",c:"微微出汗、能说话但唱不了歌的速度；推着婴儿车散步也算",sec:1800}]},
   D:{name:"工位 3 分钟",who:"both",rounds:1,restMove:5,restRound:0,equip:"不需要装备",warm:[],cool:[],
     moves:[
       {n:"坐姿夹臀",img:"d-seated-glute-squeeze",r:"15 次",c:"收紧臀部保持 3 秒再放松"},
@@ -631,6 +792,7 @@ function isoWeek(d){
 /* what does each person do on a given day */
 function scheduleFor(person,d){
   const w=d.getDay(); const even=isoWeek(d)%2===0;
+  if(w===4){ const g=goalOf(person); if(g&&g.cardio) return {kind:"flex",w:"C"}; }
   if(person==="hus"){
     if(w===1||w===5) return {kind:"train",w:even?"A":"B"};
     if(w===3) return {kind:"train",w:even?"B":"A"};
@@ -839,14 +1001,14 @@ function viewToday(){
       <button class="cta" data-start="D">▶ 工位 3 分钟</button></div>`;
   }else{
     const w=WORKOUTS[s.w]; const done=c.workout==="done";
-    const sub = s.kind==="flex" ? "可选：宝宝午睡时或者轮流带娃时练" : `${w.rounds} 轮，大约 ${me==="hus"?"20":"15"} 分钟 · ${w.equip}`;
+    const sub = s.w==="C" ? "可选：推着婴儿车散步也算" : s.kind==="flex" ? "可选：宝宝午睡时或者轮流带娃时练" : `${roundsFor(s.w,me)} 轮，大约 ${Math.round((me==="hus"?20:15)*roundsFor(s.w,me)/w.rounds)} 分钟 · ${w.equip}`;
     trainCard=`<div class="obs"><span class="tag2">${s.kind==="flex"?"☁️ 今天可选":"💪 今天训练"} · ${PEOPLE[me].label}</span>
       <h4>${w.name}</h4><p>${sub}</p>
       <div class="moves-chips">${w.moves.map(m=>`<span>${esc(m.n)}<em>${esc(m.r)}</em></span>`).join("")}</div>
       ${done?`<button class="cta done" data-undo-workout>✓ 今天已完成</button>`:`<button class="cta" data-start="${s.w}">▶ 开始训练</button>`}</div>`;
   }
 
-  const foodList=(person,m)=>{ const f=MEAL_FOODS[person][m];
+  const foodList=(person,m)=>{ const f=menuFor(person)[m];
     const row=i=>`<li><span>${esc(i.n)}<small>${esc(i.q)}${i.or?` · 或${esc(i.or.n)} ${kcalText(i.or.k)}`:""}</small></span><b>${kcalText(i.k)}</b></li>`;
     return `<ul class="foods">${f.items.map(row).join("")}</ul>`+
       (f.pick1?`<p class="foods-note">三样里选一样</p>`:"")+
@@ -864,9 +1026,11 @@ function viewToday(){
   const todayAny = (c.meals&&Object.keys(c.meals).length) || c.workout;
   const miss = todayAny ? 0 : yesterdayMissing(me);
   const missed = miss ? `<div class="missed"><img src="${mood(me,"day-missed")}" alt=""><div><b>昨天还差 ${miss} 项没打卡</b><small>没关系，今天重新开始就好。先把早餐打个卡吧</small></div></div>` : "";
-  $("#view").innerHTML = missed + together + duo + `
+  const gp=planFor(me);
+  const goalTop = gp ? suggCard() : `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>设定你的目标</b><small>按你的体重安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
+  $("#view").innerHTML = missed + goalTop + together + duo + `
     <section class="sec">${secH("💪","今天的训练")}${trainCard}</section>
-    <section class="sec">${secH("🍽️","今天吃什么",`全天${dayKcal(me)}<br>蛋白质${plan.protein}`)}
+    <section class="sec">${secH("🍽️","今天吃什么",gp?`今日目标约 ${gp.kcal} kcal<br>蛋白质约 ${gp.protein}g`:`全天${dayKcal(me)}<br>蛋白质${plan.protein}`)}
       <div class="stack">${meals}</div>${overNote}</section>
     <section class="sec">${secH("🪑","工位起身")}
       <div class="card counter"><span class="ic" aria-hidden="true">🧘</span><div class="txt"><h4>起来动一动</h4><p>每坐 1 小时起身 2–3 分钟，今天目标 6 次</p></div>
@@ -882,12 +1046,12 @@ function peekSwitch(){
 function eatenToday(person){
   const c=getCheckin(person,ymd(new Date())); let lo=0, hi=0, n=0;
   MEALS.forEach(m=>{ const v=c.meals&&c.meals[m]; if(!v) return; n++;
-    const r=mealRange(MEAL_FOODS[person][m]);
+    const r=mealRange(menuFor(person)[m]);
     if(v==="plan"){ lo+=r[0]; hi+=r[1]; } else if(v==="over"){ lo+=r[1]; hi+=r[1]; } });
   return {lo,hi,n,c};
 }
 function ringCard(person){
-  const e=eatenToday(person); const day=MEALS.map(m=>mealRange(MEAL_FOODS[person][m])).reduce((a,r)=>[a[0]+r[0],a[1]+r[1]],[0,0]);
+  const e=eatenToday(person); const day=dayRange(person);
   const mid=Math.round((e.lo+e.hi)/2), dayMid=(day[0]+day[1])/2;
   const pct=Math.min(1,mid/dayMid); const R=54, C=2*Math.PI*R;
   const gid="rg-"+person;
@@ -945,7 +1109,7 @@ function planCard(key,canStart){
   if(key==="D") return `<div class="card"><div class="plan-h"><div><h4 style="margin:0 0 2px;font-size:16px;font-weight:800">🧘 ${w.name}</h4><p style="font-size:12px;color:var(--muted)">不计入训练打卡，久坐时随时做</p></div>
       ${canStart?`<button class="btn primary" data-start="D">开始</button>`:""}</div>
     <div class="desk" style="margin-top:12px">${w.moves.map(m=>`<div><span class="art" style="display:block"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意" loading="lazy"></span><h5>${esc(m.n)}</h5><p>${esc(m.r)}</p></div>`).join("")}</div></div>`;
-  return `<div class="obs plan ${viewP}"><div class="plan-h"><span class="tag2">${viewP===me?"我的训练":PEOPLE[viewP].label+"的训练"}</span><span class="theirs">${w.rounds} 轮 · ${w.equip}</span></div>
+  return `<div class="obs plan ${viewP}"><div class="plan-h"><span class="tag2">${viewP===me?"我的训练":PEOPLE[viewP].label+"的训练"}</span><span class="theirs">${roundsFor(key,viewP)} 轮 · ${w.equip}</span></div>
     <h4>${w.name}</h4><p>动作间休息 ${w.restMove} 秒，轮间 ${w.restRound} 秒</p>
     <ol class="ol">${w.moves.map((m,i)=>`<li class="has-art"><span class="art"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意" loading="lazy" width="76" height="57"><span class="n">${i+1}</span></span><div><h5>${esc(m.n)}</h5><small>${esc(m.c)}</small></div><span class="r">${esc(m.r)}</span></li>`).join("")}</ol>
     ${canStart?`<button class="cta" data-start="${key}">▶ 开始跟练</button>`:""}</div>`;
@@ -1043,12 +1207,14 @@ function whoCard(p){
     if(base){ const d=Math.round((w.weight-base.weight)*10)/10; trend=`近 4 周 ${d===0?"持平":(d>0?"+":"−")+Math.abs(d)+" kg"}`; }
   }
   const extra=[waist?`腰 ${waist.waist}`:"", ...(p==="wife"?[["hip","臀"],["thigh","腿"]].map(([k,l])=>{ const m=lastOf(k); return m?`${l} ${m[k]}`:""; }):[])].filter(Boolean).join(" · ");
-  const latest=ms.length?ms[ms.length-1].date:"";
+  const withData=ms.filter(m=>["weight","waist","hip","thigh"].some(k=>typeof m[k]==="number"));
+  const latest=withData.length?withData[withData.length-1].date:"";
+  const gp=planFor(p);
   return `<div class="who-card ${p}">
     <div class="ava"><img src="assets/avatar-${p}.png" alt="${PEOPLE[p].label}的形象" width="70" height="70"></div>
     <h4>${PEOPLE[p].label}</h4>
-    ${ms.length?`<div class="w">${w?`${w.weight}<small>kg</small>`:"—"}</div>
-    ${extra?`<p>${esc(extra)}</p>`:""}${trend?`<p>${trend}</p>`:""}<p>最新 ${+latest.slice(5,7)}/${+latest.slice(8)}</p>`
+    ${withData.length?`<div class="w">${w?`${w.weight}<small>kg</small>`:"—"}</div>
+    ${extra?`<p>${esc(extra)}</p>`:""}${trend?`<p>${trend}</p>`:""}${gp?`<span class="chip me2">${gp.maintain?"🎯 维持中":`🎯 还差 ${gp.toGo} kg`}</span>`:""}${latest?`<p>最新 ${+latest.slice(5,7)}/${+latest.slice(8)}</p>`:""}`
     :`<p>还没有记录</p>`}
   </div>`;
 }
@@ -1072,7 +1238,7 @@ function insightCard(){
     <img src="${mood(me,"weigh")}" alt="" width="72" height="72"></div>${row("hus")}${row("wife")}</div>`;
 }
 function feedRows(){
-  const hist=Object.values(store.measures).sort((a,b)=>a.date<b.date?1:-1).slice(0,6);
+  const hist=Object.values(store.measures).filter(m=>["weight","waist","hip","thigh"].some(k=>typeof m[k]==="number")).sort((a,b)=>a.date<b.date?1:-1).slice(0,6);
   if(!hist.length) return `<p class="empty empty-mood"><img src="${mood(me,"sad")}" alt="">还没有记录。每周日早上空腹量一次。</p>`;
   return hist.map(m=>{
     const extra=[m.waist!=null?`腰围 ${m.waist}`:"",m.hip!=null?`臀围 ${m.hip}`:"",m.thigh!=null?`腿围 ${m.thigh}`:""].filter(Boolean).join(" · ");
@@ -1084,6 +1250,7 @@ function feedRows(){
 }
 function renderRecordData(){
   const pair=$("#recPair"); if(pair) pair.innerHTML=whoCard("hus")+whoCard("wife");
+  const gc=$("#recGoal"); if(gc) gc.innerHTML=goalCard();
   const ins=$("#recInsight"); if(ins) ins.innerHTML=insightCard();
   const box=$("#recData"); if(!box) return;
   box.innerHTML=`<section class="sec">${secH("📈","趋势")}${trendCard()}</section>
@@ -1103,6 +1270,7 @@ function viewRecord(){
       ${family?`<button class="linkbtn" data-open-code>查看或修改口令</button>`:`<p class="empty" style="padding-top:8px">两台手机填同一个口令，数据才会同步到一起。</p>`}</div></section>` : "";
   $("#view").innerHTML=`
   <section class="sec" id="recInsight"></section>
+  <section class="sec">${secH("🎯","我的目标")}<div id="recGoal">${goalCard()}</div></section>
   <section class="sec">${secH("👫","两个人的记录")}<div class="pair" id="recPair"></div></section>
   <section class="sec">${secH("📝","记录"+PEOPLE[me].label+"的数据")}
     <form class="card form2" id="mForm">
@@ -1119,7 +1287,7 @@ function viewRecord(){
     d.textContent = i.value!=="" && pv!=="" ? "较上次 "+fmtDelta(Number(i.value)-Number(pv),u) : (pv!==""?`上次 ${pv} ${u}`:"还没有记录");
   });
   $("#mForm").addEventListener("submit",e=>{
-    e.preventDefault(); const f=new FormData(e.target); const body={person:me,date:f.get("date")||today};
+    e.preventDefault(); const f=new FormData(e.target); const d0=f.get("date")||today; const body={...(store.measures[me+"_"+d0]||{}),person:me,date:d0};
     let any=false;
     ["weight","waist","hip","thigh"].forEach(k=>{ const raw=f.get(k); if(raw!==null && raw!==""){ const n=Number(raw); if(!isNaN(n)){ body[k]=n; any=true; } } });
     if(!any){ toast("至少填一项再保存"); return; }
@@ -1143,12 +1311,13 @@ let runState=null, timer=null;
 function buildSteps(key){
   const w=WORKOUTS[key]; const steps=[];
   if(w.warm.length) steps.push({type:"list",title:"先热身",items:w.warm,btn:"热身完成"});
-  for(let r=1;r<=w.rounds;r++){
+  const R=roundsFor(key,me);
+  for(let r=1;r<=R;r++){
     w.moves.forEach((m,i)=>{
       steps.push({type:"move",m,round:r,idx:i+1});
       const lastMove=i===w.moves.length-1;
       if(!lastMove && w.restMove) steps.push({type:"rest",sec:w.restMove,next:w.moves[i+1].n});
-      if(lastMove && r<w.rounds && w.restRound) steps.push({type:"rest",sec:w.restRound,next:"第 "+(r+1)+" 轮："+w.moves[0].n,round:true});
+      if(lastMove && r<R && w.restRound) steps.push({type:"rest",sec:w.restRound,next:"第 "+(r+1)+" 轮："+w.moves[0].n,round:true});
     });
   }
   if(w.cool.length) steps.push({type:"list",title:"放松一下",items:w.cool,btn:"放松完成"});
@@ -1200,7 +1369,7 @@ function drawRun(){
       <p class="next">下一个 <b>${esc(s.next)}</b></p></div>
       <div class="actions"><button class="btn ghost" data-run="next">跳过休息</button></div>`;
   }else{
-    body=`<div class="rend"><img src="${mood(me,"happy")}" alt="${PEOPLE[me].label}开心地庆祝" width="140" height="140"><h2>练完了 ✨</h2><p class="cue">${w.name}，${w.rounds} 轮全部完成。</p></div>
+    body=`<div class="rend"><img src="${mood(me,"happy")}" alt="${PEOPLE[me].label}开心地庆祝" width="140" height="140"><h2>练完了 ✨</h2><p class="cue">${w.name}，${roundsFor(st.key,me)} 轮全部完成。</p></div>
       <div class="actions">${w.who==="both"?"":`<button class="cta" data-run="finish">记录完成并返回</button>`}
       <button class="btn ghost" data-run="close">返回</button></div>`;
   }
@@ -1212,8 +1381,17 @@ function drawRun(){
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const t=e.target.closest("button"); if(!t) return;
-  if(t.dataset.pick){ me=t.dataset.pick; viewP=me; try{ localStorage.setItem(LS_ME,me);}catch(_){} closePicker(); lastTab=null; render(); if(CLOUD && !family) openCode(); return; }
+  if(t.dataset.pick){ me=t.dataset.pick; viewP=me; try{ localStorage.setItem(LS_ME,me);}catch(_){} closePicker(); lastTab=null; render(); if(!goalOf(me)) openGoal(); if(CLOUD && !family) openCode(); return; }
   if(t.hasAttribute("data-open-code")){ openCode(); return; }
+  if(t.hasAttribute("data-open-goal")){ openGoal(); return; }
+  if(t.hasAttribute("data-goal-close")){ closeGoal(); return; }
+  if(t.dataset.sugg){
+    const list=suggestionsFor(me), g=goalOf(me);
+    if(t.dataset.sugg==="skip"){ try{ localStorage.setItem("fatloss.sugg."+me, ymd(new Date()).slice(0,4)+"-"+isoWeek(new Date())+g.at); }catch(_){} lastTab=null; render(); return; }
+    const patch={adj:g.adj||0, level:g.level||0, cardio:!!g.cardio, mode:g.mode||null};
+    list.forEach(x=>{ if(x.k==="adj") patch.adj+=x.v; if(x.k==="level") patch.level+=x.v; if(x.k==="cardio") patch.cardio=true; if(x.k==="maintain") patch.mode="maintain"; });
+    saveGoal(me,patch); menuCache={}; lastTab=null; render(); react("happy","已按建议调整","新的份量和训练从今天开始"); return;
+  }
   if(t.hasAttribute("data-code-gen")){ $("#codeInput").value=genCode(); return; }
   if(t.hasAttribute("data-code-save")){
     const v=$("#codeInput").value.trim();
@@ -1290,10 +1468,58 @@ async function copyInvite(){
   const link=inviteLink();
   try{ await navigator.clipboard.writeText(link); toast("邀请链接已复制"); }catch(e){ window.prompt("长按复制这个链接",link); }
 }
+function openGoal(){
+  const f=$("#goalForm"); const g=goalOf(me)||{};
+  f.height.value=g.height||""; f.age.value=g.age||""; f.start.value=latestWeight(me)||g.start||""; f.target.value=g.target||"";
+  f.querySelector(`[name=pace][value="${g.pace||"gentle"}"]`).checked=true;
+  goalPreview(); $("#goalDlg").classList.add("open"); document.body.style.overflow="hidden";
+}
+function readGoalForm(){
+  const f=$("#goalForm"); const n=k=>Number(f[k].value);
+  return {height:n("height"),age:n("age"),start:n("start"),target:n("target"),pace:f.querySelector("[name=pace]:checked").value};
+}
+/* 返回 [可以保存, 预览文字] */
+function goalCheck(v){
+  if(!(v.height>=130&&v.height<=210&&v.age>=18&&v.age<=80&&v.start>=30&&v.target>=30)) return [false,"填完上面四项，这里会显示每天吃多少"];
+  const floor=minHealthy(v.height);
+  if(v.target<floor) return [false,`这个目标低于健康体重下限（BMI 18.5，约 ${floor} kg），换一个高一点的目标吧`];
+  const p=calcPlan(me,{...v,adj:0,level:0},v.start);
+  if(p.maintain) return [true,`目标不低于当前体重，按<b>维持</b>来安排：每天约 <b>${p.kcal} kcal</b>，蛋白质约 ${p.protein}g`];
+  return [true,`每天约 <b>${p.kcal} kcal</b>（消耗约 ${p.tdee}），每周约 −${p.perWeek} kg，大约 <b>${p.weeks} 周</b>到目标；蛋白质约 ${p.protein}g`];
+}
+function goalPreview(){ const [ok,t]=goalCheck(readGoalForm()); const el=$("#goalPrev"); el.innerHTML=t; el.className="gprev"+(ok||t.startsWith("填完")?"":" bad"); }
+function closeGoal(){ $("#goalDlg").classList.remove("open"); document.body.style.overflow=""; }
+function suggCard(){
+  const list=suggestionsFor(me); if(!list.length) return "";
+  const wk=ymd(new Date()).slice(0,4)+"-"+isoWeek(new Date());
+  try{ if(localStorage.getItem("fatloss.sugg."+me)===wk+goalOf(me).at) return ""; }catch(e){}
+  return `<div class="sugg"><div class="sh"><img src="${mood(me,list.some(x=>x.k==="adj"&&x.v<0)?"weigh":"happy")}" alt=""><div><b>这周的调整建议</b><small>根据最近的体重和训练情况</small></div></div>
+    <ul>${list.map(x=>`<li><b>${esc(x.t)}</b><small>${esc(x.d)}</small></li>`).join("")}</ul>
+    <div class="acts"><button class="btn ghost" data-sugg="skip">先不用</button><button class="btn primary" data-sugg="ok">按建议调整</button></div></div>`;
+}
+function goalCard(){
+  const p=planFor(me);
+  if(!p) return `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>还没设定目标</b><small>填身高、体重和目标，按你的情况安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
+  const pct = p.g.start>p.g.target ? Math.max(0,Math.min(100,Math.round((p.g.start-p.w)/(p.g.start-p.g.target)*100))) : 100;
+  const R=roundsFor(me==="hus"?"A":"W",me);
+  return `<div class="card goal-card"><div class="gh"><h4>🎯 我的目标 ${p.g.target} kg</h4><button class="linkbtn" style="padding:0" data-open-goal>修改</button></div>
+    <p>${p.maintain?"已经到目标附近，按维持来安排，保持住就好":`还差 ${p.toGo} kg · 按计划约 ${p.weeks} 周`} · ${PACE[p.g.pace||"gentle"].label}速度</p>
+    <div class="goal-bar"><i style="width:${pct}%"></i></div>
+    <div class="gl"><div><b>${p.kcal}</b>每天 kcal</div><div><b>${p.protein}g</b>蛋白质</div><div><b>${R} 轮</b>每次训练${p.g.cardio?" + 快走":""}</div></div>
+    <p>每周日量完体重后，会根据趋势给调整建议，点确认才会改。</p></div>`;
+}
 function closePicker(){ $("#pick").classList.remove("open"); document.body.style.overflow=""; }
 
 /* ---------- boot ---------- */
 render();
+$("#goalForm").addEventListener("input",goalPreview);
+$("#goalForm").addEventListener("submit",e=>{
+  e.preventDefault(); const v=readGoalForm(); const [ok]=goalCheck(v); if(!ok){ goalPreview(); return; }
+  const today=ymd(new Date()); const ex=store.measures[me+"_"+today]||{};
+  const old=goalOf(me)||{};
+  putMeasure({...ex, person:me, date:today, weight:v.start, goal:{height:v.height,age:v.age,start:v.start,target:v.target,pace:v.pace,adj:0,level:old.level||0,cardio:!!old.cardio,mode:null,at:today}});
+  menuCache={}; closeGoal(); lastTab=null; render(); react("weigh","目标已保存","今天吃什么已经按你的目标调好了");
+});
 if(storedMe!=="hus" && storedMe!=="wife") openPicker(false);
 else if(CLOUD && !family) openCode();
 if(CLOUD){
