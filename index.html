@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>两个人的减脂打卡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF1EF; --surface:#FFFFFF; --sunk:#E3E9E6; --ink:#17262B; --muted:#5E6E72; --line:#D3DCD8;
+  --hus:#1F6F5C; --hus-soft:#D5E9E2; --wife:#A2476F; --wife-soft:#F2DCE6; --sun:#E0A020; --sun-soft:#F8EACB;
+  --danger:#B23A3A;
+  --radius-l:22px; --radius-m:14px; --radius-s:10px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1719; --surface:#172225; --sunk:#1E2B2E; --ink:#E4EDEA; --muted:#93A4A1; --line:#2A393C;
+    --hus:#4DB394; --hus-soft:#1D3A33; --wife:#DA7CA5; --wife-soft:#3A2330; --sun:#EDB43C; --sun-soft:#3A3120; --danger:#E36B6B;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1719; --surface:#172225; --sunk:#1E2B2E; --ink:#E4EDEA; --muted:#93A4A1; --line:#2A393C;
+  --hus:#4DB394; --hus-soft:#1D3A33; --wife:#DA7CA5; --wife-soft:#3A2330; --sun:#EDB43C; --sun-soft:#3A3120; --danger:#E36B6B;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.wrap{max-width:520px;margin:0 auto;padding:12px 16px 96px}
+h1,h2,h3{margin:0;line-height:1.3}
+p{margin:0}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 14px}
+.date{font-size:13px;color:var(--muted)}
+.date strong{display:block;font-size:22px;color:var(--ink);font-weight:900;letter-spacing:.5px}
+.role{display:flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:6px 8px 6px 14px;font-size:14px;font-weight:700;color:#fff}
+.me-hus .role{background:var(--hus)} .me-wife .role{background:var(--wife)}
+.role small{font-size:12px;font-weight:500;background:rgba(255,255,255,.22);border-radius:999px;padding:2px 9px}
+
+/* role picker */
+.pick{position:fixed;inset:0;z-index:40;background:var(--bg);display:none;overflow:auto;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.pick.open{display:block}
+.pick .inner{max-width:420px;margin:0 auto;padding:12vh 20px 32px;display:grid;gap:14px}
+.pick h1{font-size:32px;font-weight:900;margin-bottom:2px}
+.pick .lead{color:var(--muted);font-size:14px;margin-bottom:14px}
+.pick-btn{border:0;border-radius:var(--radius-l);padding:22px 20px;text-align:left;color:#fff;display:grid;gap:4px}
+.pick-btn b{font-size:24px;font-weight:900}
+.pick-btn span{font-size:13px;opacity:.9}
+.pick-btn.hus{background:var(--hus)} .pick-btn.wife{background:var(--wife)}
+.pick .cancel{border:0;background:transparent;color:var(--muted);font-size:14px;padding:10px}
+
+/* whose plan switch */
+.peek{display:grid;grid-template-columns:1fr 1fr;background:var(--sunk);border-radius:999px;padding:3px;margin-bottom:18px}
+.peek button{border:0;background:transparent;border-radius:999px;padding:8px 0;font-size:14px;color:var(--muted);font-weight:500}
+.peek button[aria-pressed="true"].hus{background:var(--hus);color:#fff;font-weight:700}
+.peek button[aria-pressed="true"].wife{background:var(--wife);color:#fff;font-weight:700}
+.peek-note{font-size:12px;color:var(--muted);margin:-10px 4px 16px}
+
+/* both-person week */
+.wk2{display:grid;grid-template-columns:40px repeat(7,1fr);gap:4px;text-align:center;font-size:11px}
+.wk2 .h{color:var(--muted);padding-bottom:2px}
+.wk2 .h.now{color:var(--ink);font-weight:900}
+.wk2 .who2{font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:flex-start}
+.wk2 .who2.hus{color:var(--hus)} .wk2 .who2.wife{color:var(--wife)}
+.wk2 .c{padding:8px 0;border-radius:8px;background:var(--sunk);color:var(--muted);font-weight:700}
+.wk2 .c.t.hus{background:var(--hus-soft);color:var(--hus)} .wk2 .c.t.wife{background:var(--wife-soft);color:var(--wife)}
+.wk2 .c.f{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line)}
+.wk2 .c.now{outline:2px solid var(--ink);outline-offset:-2px}
+.wk2 .c.done.hus{background:var(--hus);color:#fff} .wk2 .c.done.wife{background:var(--wife);color:#fff}
+.plan .theirs{font-size:12px;color:var(--muted)}
+
+.sync{font-size:12px;color:var(--muted);margin:-6px 0 12px}
+.sync.warn{color:var(--danger)}
+
+/* hero: two tracks */
+.duo{background:var(--surface);border-radius:var(--radius-l);padding:18px 18px 16px;margin-bottom:18px}
+.duo h2{font-size:15px;font-weight:700;margin-bottom:14px}
+.track{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:10px;margin-bottom:12px}
+.track:last-child{margin-bottom:0}
+.track .name{font-weight:700;font-size:14px}
+.track.hus .name{color:var(--hus)} .track.wife .name{color:var(--wife)}
+.beads{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.bead{height:30px;border-radius:9px;background:var(--sunk);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted)}
+.track.hus .bead.on{background:var(--hus);color:#fff}
+.track.wife .bead.on{background:var(--wife);color:#fff}
+.bead.over{background:var(--sun-soft)!important;color:var(--ink)!important;box-shadow:inset 0 0 0 2px var(--sun)}
+.bead.rest{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line)}
+.duo .share{width:100%;margin-top:14px;padding:12px}
+.streak{font-size:12px;color:var(--muted);text-align:right;min-width:48px}
+.streak b{display:block;font-size:20px;color:var(--ink);font-weight:900;line-height:1.1}
+
+/* sections */
+.sec{margin-bottom:20px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;margin:0 4px 10px}
+.sec-h h3{font-size:16px;font-weight:700}
+.sec-h span{font-size:12px;color:var(--muted)}
+.card{background:var(--surface);border-radius:var(--radius-m);padding:14px 16px}
+.stack>.card+.card{margin-top:8px}
+
+.meal{display:grid;gap:10px}
+.meal-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.meal-top h4{margin:0;font-size:15px;font-weight:700}
+.meal-top time{font-size:12px;color:var(--muted)}
+.meal p{font-size:13px;color:var(--muted)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.seg button{border:1.5px solid var(--line);background:transparent;border-radius:var(--radius-s);padding:7px 4px;font-size:13px}
+.me-hus .seg button[aria-pressed="true"][data-v="plan"]{background:var(--hus);border-color:var(--hus);color:#fff}
+.me-wife .seg button[aria-pressed="true"][data-v="plan"]{background:var(--wife);border-color:var(--wife);color:#fff}
+.seg button[aria-pressed="true"][data-v="over"]{background:var(--sun-soft);border-color:var(--sun)}
+.seg button[aria-pressed="true"][data-v="skip"]{background:var(--sunk);border-color:var(--muted)}
+
+.train-today{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.train-today h4{margin:0 0 2px;font-size:17px;font-weight:900}
+.train-today p{font-size:13px;color:var(--muted)}
+.btn{border:0;border-radius:999px;padding:10px 18px;font-weight:700;font-size:14px;white-space:nowrap}
+.me-hus .btn.primary{background:var(--hus);color:#fff}
+.me-wife .btn.primary{background:var(--wife);color:#fff}
+.btn.ghost{background:var(--sunk)}
+.btn.done{background:var(--sunk);color:var(--muted)}
+.btn:disabled{opacity:.5;cursor:default}
+
+.counter{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.counter p{font-size:13px;color:var(--muted)}
+.counter .ctl{display:flex;align-items:center;gap:10px}
+.counter .ctl button{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);background:transparent;font-size:18px;line-height:1}
+.counter .ctl b{font-size:20px;font-weight:900;min-width:28px;text-align:center}
+
+.note{font-size:13px;color:var(--muted);padding:12px 16px;border-left:3px solid var(--sun);background:var(--sun-soft);border-radius:0 var(--radius-s) var(--radius-s) 0}
+
+/* diet tab */
+.list{margin:0;padding:0;list-style:none}
+.list li{padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.list li:last-child{border-bottom:0}
+.list li small{display:block;color:var(--muted);font-size:12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.two h4{margin:0 0 6px;font-size:14px}
+.two .good h4{color:var(--hus)} .two .bad h4{color:var(--danger)}
+.two ul{margin:0;padding-left:18px;font-size:13px}
+.two li{margin-bottom:4px}
+.dinner{display:grid;grid-template-columns:36px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.dinner:last-child{border-bottom:0}
+.dinner .d{font-weight:900;color:var(--muted);font-size:13px;padding-top:1px}
+.dinner.today .d{color:var(--ink)}
+.dinner h4{margin:0;font-size:14px}
+.dinner p{font-size:12px;color:var(--muted)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--sun);color:#1b1b1b;margin-left:6px;vertical-align:1px}
+
+/* training tab */
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.wk div{padding:8px 0 6px;border-radius:var(--radius-s);background:var(--sunk);font-size:11px;color:var(--muted)}
+.wk div b{display:block;font-size:13px;color:var(--ink)}
+.wk div.now{box-shadow:inset 0 0 0 2px var(--ink)}
+.plan{display:grid;gap:4px}
+.plan-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.plan-h h4{margin:0;font-size:16px;font-weight:900}
+.plan-h p{font-size:12px;color:var(--muted)}
+.move{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-top:1px solid var(--line)}
+.move h5{margin:0;font-size:14px;font-weight:700}
+.move span{font-size:13px;color:var(--muted);text-align:right}
+.move p{grid-column:1/-1;font-size:12px;color:var(--muted)}
+
+/* record tab */
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form label{display:grid;gap:4px;font-size:12px;color:var(--muted)}
+.form input{font:inherit;font-size:16px;color:var(--ink);background:var(--sunk);border:1.5px solid transparent;border-radius:var(--radius-s);padding:9px 10px;width:100%}
+.form input:focus{border-color:var(--line);outline:none}
+.form .full{grid-column:1/-1}
+.chart svg{width:100%;height:auto;display:block}
+.chart-h{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+.chart-h b{font-weight:700}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:4px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.hist{font-size:13px}
+.hist-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;padding:8px 0;border-top:1px solid var(--line);align-items:center}
+.hist-row .dot{width:8px;height:8px;border-radius:50%}
+.hist-row small{color:var(--muted)}
+.empty{font-size:13px;color:var(--muted);padding:6px 0}
+
+/* tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+.tabs nav{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tabs button{border:0;background:transparent;padding:10px 0 12px;font-size:12px;color:var(--muted);display:grid;justify-items:center;gap:2px}
+.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tabs button[aria-current="page"]{color:var(--ink);font-weight:700}
+
+/* workout overlay */
+.run{position:fixed;inset:0;background:var(--bg);z-index:20;display:none;overflow:auto;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.run.open{display:block}
+.run .wrap{padding-bottom:40px;min-height:100%;display:flex;flex-direction:column}
+.run-top{display:flex;justify-content:space-between;align-items:center;padding:6px 0 12px}
+.run-top button{border:0;background:var(--sunk);border-radius:999px;padding:6px 14px;font-size:13px}
+.run-top span{font-size:13px;color:var(--muted)}
+.bar{height:6px;background:var(--sunk);border-radius:99px;overflow:hidden;margin-bottom:18px}
+.bar i{display:block;height:100%;width:0;transition:width .3s}
+.me-hus .bar i{background:var(--hus)} .me-wife .bar i{background:var(--wife)}
+.media{aspect-ratio:4/3;border-radius:var(--radius-l);border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;margin-bottom:18px;background:var(--surface)}
+.run h2{font-size:28px;font-weight:900;margin-bottom:4px}
+.run .reps{font-size:18px;font-weight:700;margin-bottom:10px}
+.run .cue{font-size:14px;color:var(--muted);margin-bottom:24px}
+.run .big{font-size:72px;font-weight:900;text-align:center;line-height:1;margin:18px 0 8px;font-variant-numeric:tabular-nums}
+.run .sub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:24px}
+.run .actions{margin-top:auto;display:grid;gap:10px}
+.run .actions .btn{padding:15px;font-size:16px}
+.run ul{margin:0 0 20px;padding-left:20px}
+.run ul li{margin-bottom:6px}
+
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);
+  padding:9px 16px;border-radius:999px;font-size:13px;z-index:30;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+</head>
+<body class="me-hus">
+<div class="wrap">
+  <header class="top">
+    <div class="date" id="dateLabel"></div>
+    <button class="role" data-open-picker aria-label="切换身份"><span id="roleLabel">我是老公</span><small>切换</small></button>
+  </header>
+  <p class="sync" id="sync">数据保存在这台手机上</p>
+  <main id="view"></main>
+</div>
+
+<div class="tabs"><nav>
+  <button data-tab="today" aria-current="page"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M8 13l3 3 5-6"/></svg>今日</button>
+  <button data-tab="diet"><svg viewBox="0 0 24 24"><path d="M4 12h16a8 8 0 0 1-16 0zM8 8c0-2 2-2 2-4M13 8c0-2 2-2 2-4"/></svg>饮食</button>
+  <button data-tab="train"><svg viewBox="0 0 24 24"><path d="M3 10v4M6 7v10M18 7v10M21 10v4M6 12h12"/></svg>训练</button>
+  <button data-tab="record"><svg viewBox="0 0 24 24"><path d="M4 19h16M6 15l4-4 3 3 5-6"/></svg>记录</button>
+</nav></div>
+
+<div class="run" id="run" aria-live="polite"><div class="wrap" id="runBody"></div></div>
+<div class="toast" id="toast" role="status"></div>
+<div class="pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickTitle"><div class="inner">
+  <h1 id="pickTitle">你是谁？</h1>
+  <p class="lead">选好后，这台手机上的打卡、训练和记录都按你的身份来。</p>
+  <button class="pick-btn hus" data-pick="hus"><b>我是老公</b><span>哑铃力量训练 A、B 交替，每周 3 次</span></button>
+  <button class="pick-btn wife" data-pick="wife"><b>我是老婆</b><span>居家臀腿跟练，每周 2–3 次</span></button>
+  <button class="cancel" data-pick-cancel hidden>取消</button>
+</div></div>
+<div class="pick" id="codeDlg" role="dialog" aria-modal="true" aria-labelledby="codeTitle"><div class="inner">
+  <h1 id="codeTitle">家庭口令</h1>
+  <p class="lead">两台手机填同一个口令，数据才会同步到一起。口令就像你们家的钥匙，不要发到公开的地方。</p>
+  <div class="card form" style="grid-template-columns:1fr">
+    <label>口令（8 位以上字母或数字）<input id="codeInput" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40"></label>
+    <button class="btn ghost" data-code-gen type="button">我是第一个用的，帮我生成一个</button>
+    <button class="btn primary" data-code-save type="button">保存口令</button>
+  </div>
+  <p class="lead" id="codeShare" hidden>保存后，把下面的邀请链接发给对方一次，对方打开就会自动填好口令：</p>
+  <button class="btn ghost" data-code-copy hidden type="button">复制邀请链接</button>
+  <button class="cancel" data-code-close hidden>完成</button>
+</div></div>
+
+<script src="config.js"></script>
+<script>
+/* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
+const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
+const SUPABASE_KEY = String((window.FATLOSS_CONFIG||{}).SUPABASE_KEY||"").trim();
+(function(){
+"use strict";
+
+/* ---------- plan content ---------- */
+const PEOPLE = { hus:{label:"老公"}, wife:{label:"老婆"} };
+const MEALS = ["breakfast","lunch","snack","dinner"];
+const MEAL_PLAN = {
+  hus:{
+    breakfast:{t:"早餐",time:"7:00",food:"鸡蛋 2 个 + 牛奶或无糖豆浆 250ml + 全麦面包 2 片（或玉米 1 根）"},
+    lunch:{t:"午餐",time:"12:00",food:"外卖或食堂，米饭吃 2/3 份，一定要有一份明显的肉、蛋或鱼"},
+    snack:{t:"下午加餐",time:"16:00",food:"无糖酸奶 1 盒 + 1 个水果；喝拿铁的话就把它当加餐，不再吃别的"},
+    dinner:{t:"晚餐",time:"20:00 后",food:"瘦肉或鱼虾 150g + 蔬菜 300g + 少量主食（半碗饭，可省）"},
+    protein:"约 120–130g"
+  },
+  wife:{
+    breakfast:{t:"早餐",time:"7:00",food:"鸡蛋 1 个 + 牛奶或无糖豆浆 250ml + 全麦面包 1 片（或半根玉米）"},
+    lunch:{t:"午餐",time:"12:00",food:"同样的套餐，米饭吃 1/2 份，菜可以吃完"},
+    snack:{t:"下午加餐",time:"16:00",food:"无糖酸奶 1 盒，或 1 个水果，或一杯拿铁（三选一）"},
+    dinner:{t:"晚餐",time:"20:00 后",food:"瘦肉或鱼虾 100g + 蔬菜 250g，主食可以不吃"},
+    protein:"约 80–90g"
+  }
+};
+const DINNERS = {
+  1:{n:"番茄虾仁炒蛋 + 白灼菜心",h:"虾仁提前解冻，少油快炒"},
+  2:{n:"空气炸锅鸡腿肉 + 凉拌黄瓜",h:"去皮鸡腿肉用黑胡椒、生抽腌好，200℃ 烤 15 分钟"},
+  3:{n:"番茄牛肉菌菇汤",h:"牛肉片 + 番茄 + 金针菇 + 青菜，一锅出"},
+  4:{n:"清蒸鱼 + 蒜蓉西兰花",h:"龙利鱼或鲈鱼蒸 8–10 分钟，淋少量蒸鱼豉油"},
+  5:{n:"虾仁豆腐蔬菜汤 + 卤蛋",h:"豆腐补蛋白质，热乎又顶饱"}
+};
+const WORKOUTS = {
+  A:{name:"训练 A",who:"hus",rounds:3,restMove:15,restRound:60,equip:"一对哑铃 + 瑜伽垫",
+    warm:["开合跳 30 秒","徒手深蹲 10 个","手臂绕环 30 秒","原地高抬腿 30 秒"],
+    cool:["大腿前侧、后侧拉伸各 20 秒","胸部拉伸 20 秒","猫牛式 5 次"],
+    moves:[
+      {n:"高脚杯深蹲",r:"12 次",c:"双手捧哑铃在胸前，蹲到大腿平行地面，膝盖和脚尖同向"},
+      {n:"哑铃俯身划船",r:"每侧 10 次",c:"一手撑凳，背部平直，把哑铃拉向腰侧"},
+      {n:"俯卧撑",r:"8–12 次",c:"做不了就跪姿，身体保持一条直线"},
+      {n:"哑铃罗马尼亚硬拉",r:"12 次",c:"膝盖微屈，屁股往后推，背不弓，感受大腿后侧"},
+      {n:"平板支撑",r:"40 秒",c:"收紧腹部和臀部，不塌腰",sec:40}
+    ]},
+  B:{name:"训练 B",who:"hus",rounds:3,restMove:15,restRound:60,equip:"一对哑铃 + 瑜伽垫",
+    warm:["开合跳 30 秒","徒手深蹲 10 个","手臂绕环 30 秒","原地高抬腿 30 秒"],
+    cool:["大腿前侧、后侧拉伸各 20 秒","胸部拉伸 20 秒","猫牛式 5 次"],
+    moves:[
+      {n:"哑铃后撤步弓步蹲",r:"每侧 10 次",c:"向后跨步下蹲，前腿膝盖不内扣"},
+      {n:"哑铃站姿推举",r:"10 次",c:"收紧核心，不要后仰借力"},
+      {n:"哑铃臀桥",r:"15 次",c:"哑铃放髋部，顶到最高点夹紧臀部停 1 秒"},
+      {n:"地板哑铃卧推",r:"12 次",c:"躺在垫子上推，手肘碰地即可"},
+      {n:"死虫",r:"每侧 10 次",c:"下背部始终贴地，对侧手脚同时伸展"}
+    ]},
+  W:{name:"臀腿跟练",who:"wife",rounds:2,restMove:15,restRound:45,equip:"一张瑜伽垫",
+    warm:["原地踏步 30 秒","髋关节绕环每侧 10 次","徒手深蹲 8 个"],
+    cool:["婴儿式 30 秒","髋部拉伸每侧 20 秒"],
+    moves:[
+      {n:"臀桥",r:"15 次",c:"双脚与髋同宽，顶起时夹紧臀部，停 1 秒再放下"},
+      {n:"徒手深蹲",r:"12 次",c:"屁股往后坐，像坐椅子，膝盖不内扣"},
+      {n:"侧卧抬腿",r:"每侧 12 次",c:"身体侧躺成一条直线，上面的腿慢慢抬起放下"},
+      {n:"蚌式开合",r:"每侧 15 次",c:"侧躺屈膝，双脚并拢，打开上侧膝盖"},
+      {n:"后撤步弓步",r:"每侧 8 次",c:"可以扶着墙或椅子保持平衡"},
+      {n:"仰卧交替抬腿",r:"每侧 10 次",c:"下背部贴地，腹部收紧，慢慢放下"}
+    ]},
+  D:{name:"工位 3 分钟",who:"both",rounds:1,restMove:5,restRound:0,equip:"不需要装备",warm:[],cool:[],
+    moves:[
+      {n:"坐姿夹臀",r:"15 次",c:"收紧臀部保持 3 秒再放松"},
+      {n:"坐姿收腹",r:"15 次",c:"吸气时收紧腹部"},
+      {n:"颈部侧拉伸",r:"左右各 15 秒",c:"动作要慢，不要用力拽",sec:30},
+      {n:"站姿提踵",r:"10 次",c:"起身，脚跟抬起再慢慢放下"},
+      {n:"双手向上伸展",r:"15 秒",c:"双手交叉向上，拉长身体",sec:15}
+    ]}
+};
+const WEEK = ["日","一","二","三","四","五","六"];
+
+/* ---------- date helpers ---------- */
+const pad = n => String(n).padStart(2,"0");
+const ymd = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };
+function isoWeek(d){
+  const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+  const day=t.getUTCDay()||7; t.setUTCDate(t.getUTCDate()+4-day);
+  const y0=new Date(Date.UTC(t.getUTCFullYear(),0,1));
+  return Math.ceil(((t-y0)/864e5+1)/7);
+}
+/* what does each person do on a given day */
+function scheduleFor(person,d){
+  const w=d.getDay(); const even=isoWeek(d)%2===0;
+  if(person==="hus"){
+    if(w===1||w===5) return {kind:"train",w:even?"A":"B"};
+    if(w===3) return {kind:"train",w:even?"B":"A"};
+    if(w===6) return {kind:"flex",w:even?"B":"A"};
+    return {kind:"rest"};
+  }
+  if(w===1||w===3) return {kind:"train",w:"W"};
+  if(w===5||w===6) return {kind:"flex",w:"W"};
+  return {kind:"rest"};
+}
+
+/* ---------- state ---------- */
+const LS_ME="fatloss.me", LS_DATA="fatloss.local";
+const storedMe = (()=>{ try{ return localStorage.getItem(LS_ME); }catch(e){ return null; } })();
+let me = storedMe==="wife" ? "wife" : "hus";
+let viewP = me; // whose plan is shown in 饮食 / 训练
+let tab = "today";
+const LS_FAMILY="fatloss.family", LS_DIRTY="fatloss.dirty";
+const CLOUD = !!(SUPABASE_URL && SUPABASE_KEY);
+let family = (()=>{ try{ return localStorage.getItem(LS_FAMILY)||""; }catch(e){ return ""; } })();
+(function readHash(){ const m=location.hash.match(/k=([A-Za-z0-9]{8,40})/); if(m){ family=m[1]; try{ localStorage.setItem(LS_FAMILY,family);}catch(e){} history.replaceState(null,"",location.pathname+location.search); } })();
+let store = { checkins:{}, measures:{} };
+try{ const raw=localStorage.getItem(LS_DATA); if(raw){ const p=JSON.parse(raw); store.checkins=p.checkins||{}; store.measures=p.measures||{}; } }catch(e){}
+let dirty = (()=>{ try{ return JSON.parse(localStorage.getItem(LS_DIRTY)||"[]"); }catch(e){ return []; } })(); // ["c:<id>","m:<id>"]
+let syncState = CLOUD ? (family ? "idle" : "nocode") : "local"; // local | nocode | idle | syncing | ok | offline | error
+let lastSync = null;
+
+function saveLocal(){ try{ localStorage.setItem(LS_DATA,JSON.stringify(store)); localStorage.setItem(LS_DIRTY,JSON.stringify(dirty)); }catch(e){} }
+function markDirty(key){ if(!dirty.includes(key)) dirty.push(key); }
+
+async function rpc(fn,args){
+  const headers={"Content-Type":"application/json","apikey":SUPABASE_KEY};
+  if(!SUPABASE_KEY.startsWith("sb_")) headers["Authorization"]="Bearer "+SUPABASE_KEY;
+  const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),12000);
+  try{
+    const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/rest/v1/rpc/"+fn,{method:"POST",headers,body:JSON.stringify(args),signal:ctl.signal});
+    if(!r.ok){ const e=new Error("http "+r.status); e.status=r.status; e.text=await r.text().catch(()=> ""); throw e; }
+    const txt=await r.text(); return txt?JSON.parse(txt):null;
+  } finally { clearTimeout(t); }
+}
+
+let syncing=false, syncAgain=false;
+async function sync(){
+  if(!CLOUD || !family) return;
+  if(syncing){ syncAgain=true; return; }
+  syncing=true; syncState="syncing"; renderSync();
+  try{
+    // 1. push local changes
+    const pending=dirty.slice();
+    for(const key of pending){
+      const [kind,id]=[key.slice(0,1),key.slice(2)];
+      const body = kind==="c" ? store.checkins[id] : store.measures[id];
+      if(body) await rpc(kind==="c"?"fl_put_checkin":"fl_put_measure",{p_family:family,p_id:id,p_person:body.person,p_date:body.date,p_body:body});
+      dirty=dirty.filter(k=>k!==key); saveLocal();
+    }
+    // 2. pull everything for this family
+    const since=ymd(addDays(new Date(),-120));
+    const data=await rpc("fl_pull",{p_family:family,p_since:since});
+    const nextC={}, nextM={};
+    (data&&data.checkins||[]).forEach(r=>{ nextC[r.id]=r.body; });
+    (data&&data.measures||[]).forEach(r=>{ nextM[r.id]=r.body; });
+    dirty.forEach(k=>{ const id=k.slice(2); if(k[0]==="c"&&store.checkins[id]) nextC[id]=store.checkins[id]; if(k[0]==="m"&&store.measures[id]) nextM[id]=store.measures[id]; });
+    store.checkins=nextC; store.measures=nextM; saveLocal();
+    syncState="ok"; lastSync=new Date();
+  }catch(e){
+    syncState = (e && e.status) ? "error" : "offline";
+    if(e && e.status) console.warn("sync error",e.status,e.text);
+  }finally{
+    syncing=false; render();
+    if(syncAgain){ syncAgain=false; setTimeout(sync,300); }
+  }
+}
+let pushTimer=null;
+function schedulePush(delay){ clearTimeout(pushTimer); pushTimer=setTimeout(sync,delay||400); }
+
+function checkinId(person,date){ return person+"_"+date; }
+function getCheckin(person,date){
+  return store.checkins[checkinId(person,date)] || {person,date,meals:{},workout:null,stand:0};
+}
+function putCheckin(body,delay){
+  const id=checkinId(body.person,body.date);
+  body.updatedAt=Date.now(); store.checkins[id]=body; markDirty("c:"+id); saveLocal(); render();
+  schedulePush(delay);
+}
+function putMeasure(body){
+  const id=body.person+"_"+body.date;
+  store.measures[id]=body; markDirty("m:"+id); saveLocal(); render();
+  schedulePush(0);
+}
+const readOnly=false;
+
+/* ---------- completeness & streak ---------- */
+function dayDone(person,d){
+  const c=getCheckin(person,ymd(d));
+  const meals=MEALS.every(m=>c.meals && c.meals[m]);
+  const s=scheduleFor(person,d);
+  return meals && (s.kind!=="train" || c.workout==="done");
+}
+function streak(person){
+  const today=new Date(); let n=0; let d=today;
+  if(!dayDone(person,d)) d=addDays(d,-1);
+  for(let i=0;i<365;i++){ if(dayDone(person,d)){ n++; d=addDays(d,-1);} else break; }
+  return n;
+}
+
+/* ---------- render ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function renderHeader(){
+  const d=new Date();
+  $("#dateLabel").innerHTML=`<strong>${d.getMonth()+1} 月 ${d.getDate()} 日</strong>星期${WEEK[d.getDay()]}`;
+  $("#roleLabel").textContent="我是"+PEOPLE[me].label;
+  document.body.className="me-"+me;
+}
+function renderSync(){
+  const el=$("#sync"); let t="", warn=false;
+  const hm=d=>pad(d.getHours())+":"+pad(d.getMinutes());
+  switch(syncState){
+    case "local": t="数据只保存在这台手机上（没读到 config.js 里的 Supabase 配置）"; warn=true; break;
+    case "nocode": t="还没设置家庭口令，暂时不会同步"; warn=true; break;
+    case "syncing": t="正在同步…"; break;
+    case "ok": t="已同步，"+hm(lastSync)+" 更新"; break;
+    case "offline": t="网络不通，已存在本机，恢复后自动同步"; warn=true; break;
+    case "error": t="同步失败：请检查 Supabase 配置和建表脚本"; warn=true; break;
+    default: t="准备同步…";
+  }
+  if(dirty.length && syncState!=="syncing" && syncState!=="local") t+="（"+dirty.length+" 条待上传）";
+  el.textContent=t; el.className="sync"+(warn?" warn":"");
+}
+
+function beadsFor(person){
+  const today=new Date(); const date=ymd(today); const c=getCheckin(person,date);
+  const s=scheduleFor(person,today);
+  const labels={breakfast:"早",lunch:"午",snack:"加",dinner:"晚"};
+  let html=MEALS.map(m=>{
+    const v=c.meals&&c.meals[m];
+    const cls=v==="plan"?"on":v==="over"?"on over":v==="skip"?"on":"";
+    return `<div class="bead ${cls}" title="${labels[m]}">${labels[m]}</div>`;
+  }).join("");
+  const wcls = c.workout==="done" ? "on" : (s.kind==="rest" ? "rest" : "");
+  const wlabel = s.kind==="rest" ? "休" : "练";
+  html+=`<div class="bead ${wcls}">${wlabel}</div>`;
+  return html;
+}
+
+function viewToday(){
+  const today=new Date(); const date=ymd(today);
+  const c=getCheckin(me,date); const s=scheduleFor(me,today); const plan=MEAL_PLAN[me];
+  const duo=`<section class="duo" aria-label="两个人今天的进度">
+    <h2>今天两个人的进度</h2>
+    ${["hus","wife"].map(p=>`<div class="track ${p}"><span class="name">${PEOPLE[p].label}</span>
+      <div class="beads">${beadsFor(p)}</div>
+      <div class="streak"><b>${streak(p)}</b>连续天</div></div>`).join("")}
+  </section>`;
+
+  let trainCard;
+  if(s.kind==="rest"){
+    trainCard=`<div class="card train-today"><div><h4>今天休息</h4><p>工位上多起身就好</p></div>
+      <button class="btn ghost" data-start="D">工位 3 分钟</button></div>`;
+  }else{
+    const w=WORKOUTS[s.w]; const done=c.workout==="done";
+    const sub = s.kind==="flex" ? "可选：宝宝午睡时或者轮流带娃时练" : `${w.rounds} 轮，大约 ${me==="hus"?"20":"15"} 分钟`;
+    trainCard=`<div class="card train-today"><div><h4>${w.name}</h4><p>${sub}</p></div>
+      ${done?`<button class="btn done" data-undo-workout>已完成</button>`:`<button class="btn primary" data-start="${s.w}">开始训练</button>`}</div>`;
+  }
+
+  const meals=MEALS.map(m=>{
+    const v=c.meals&&c.meals[m]; const p=plan[m];
+    const b=(val,txt)=>`<button data-meal="${m}" data-v="${val}" aria-pressed="${v===val}">${txt}</button>`;
+    return `<div class="card meal"><div class="meal-top"><h4>${p.t}</h4><time>${p.time}</time></div>
+      <p>${esc(p.food)}</p><div class="seg" role="group" aria-label="${p.t}打卡">${b("plan","按计划吃了")}${b("over","吃多了")}${b("skip","没吃")}</div></div>`;
+  }).join("");
+
+  const overCount=MEALS.filter(m=>c.meals&&c.meals[m]==="over").length;
+  const overNote= overCount ? `<p class="note" style="margin-top:8px">吃多了没关系，下一顿正常吃就好，不用饿肚子补回来。</p>` : "";
+
+  $("#view").innerHTML = duo + `
+    <section class="sec"><div class="sec-h"><h3>今天的训练</h3></div>${trainCard}</section>
+    <section class="sec"><div class="sec-h"><h3>今天吃什么</h3><span>蛋白质目标 ${plan.protein}</span></div>
+      <div class="stack">${meals}</div>${overNote}</section>
+    <section class="sec"><div class="sec-h"><h3>工位起身</h3></div>
+      <div class="card counter"><p>每坐 1 小时起身活动 2–3 分钟，今天目标 6 次</p>
+      <div class="ctl"><button data-stand="-1" aria-label="减一次">−</button><b>${c.stand||0}</b><button data-stand="1" aria-label="加一次">+</button></div></div></section>`;
+}
+
+function peekSwitch(){
+  const b=p=>`<button class="${p}" data-view="${p}" aria-pressed="${viewP===p}">${PEOPLE[p].label}的计划${p===me?"（我）":""}</button>`;
+  return `<div class="peek" role="group" aria-label="看谁的计划">${b("hus")}${b("wife")}</div>`+
+    (viewP!==me?`<p class="peek-note">正在看对方的计划，打卡和训练仍按你自己的身份记录。</p>`:"");
+}
+function viewDiet(){
+  const plan=MEAL_PLAN[viewP]; const w=new Date().getDay();
+  const rows=MEALS.map(m=>`<li><b>${plan[m].t}</b>　${esc(plan[m].food)}<small>${plan[m].time}</small></li>`).join("");
+  const dinners=[1,2,3,4,5].map(d=>`<div class="dinner ${d===w?"today":""}"><span class="d">周${WEEK[d]}</span>
+    <div><h4>${DINNERS[d].n}${d===w?'<span class="tag">今晚</span>':""}</h4><p>${DINNERS[d].h}</p></div></div>`).join("");
+  $("#view").innerHTML=peekSwitch()+`
+  <section class="sec"><div class="sec-h"><h3>${PEOPLE[viewP].label}的一天</h3><span>蛋白质 ${plan.protein}</span></div>
+    <div class="card"><ul class="list">${rows}</ul></div></section>
+  <section class="sec"><div class="sec-h"><h3>晚餐轮换</h3><span>15 分钟快手菜</span></div>
+    <div class="card">${dinners}</div>
+    <p class="note" style="margin-top:8px">周日花 1 小时备菜：肉切好腌好分装冷冻，蔬菜洗好沥干装盒，工作日下锅就行。</p></section>
+  <section class="sec"><div class="sec-h"><h3>点外卖怎么选</h3></div>
+    <div class="two">
+      <div class="card good"><h4>优先选</h4><ul><li>一荤一素简餐</li><li>牛肉粉、鸡肉粉，粉吃一半</li><li>日式定食、去皮鸡腿饭</li><li>麻辣烫多选菜和肉，汤不喝</li></ul></div>
+      <div class="card bad"><h4>尽量少选</h4><ul><li>盖浇饭、黄焖鸡</li><li>炒饭炒面</li><li>汉堡炸鸡、披萨</li><li>重酱料的轻食沙拉</li></ul></div>
+    </div></section>
+  <section class="sec"><div class="sec-h"><h3>常见场景</h3></div>
+    <div class="card"><ul class="list">
+      <li><b>沙拉酱</b>选油醋汁，只倒一半；沙拉里要有肉蛋和一点主食</li>
+      <li><b>下午咖啡</b>美式随便喝；拿铁就当加餐；避开糖浆、生椰、厚乳；3–4 点前喝完</li>
+      <li><b>做饭用油</b>两人一顿控制在 1 勺以内</li>
+      <li><b>带娃</b>宝宝吃剩的饭和辅食不要自己吃掉</li>
+      <li><b>加班饿了</b>无糖酸奶、鸡蛋、小番茄、黄瓜</li>
+    </ul></div></section>`;
+}
+
+function planCard(key,canStart){
+  const w=WORKOUTS[key];
+  return `<div class="card plan"><div class="plan-h"><div><h4>${w.name}</h4><p>${w.rounds} 轮，${w.equip}</p></div>
+    ${canStart?`<button class="btn primary" data-start="${key}">开始</button>`:`<span class="theirs">${PEOPLE[viewP].label}的训练</span>`}</div>
+    ${w.moves.map(m=>`<div class="move"><h5>${m.n}</h5><span>${m.r}</span><p>${m.c}</p></div>`).join("")}</div>`;
+}
+function viewTrain(){
+  const today=new Date(); const mon=addDays(today,-((today.getDay()+6)%7));
+  const short=k=>k==="W"?"臀腿":k;
+  let grid=`<span></span>`+[0,1,2,3,4,5,6].map(i=>{ const d=addDays(mon,i);
+    return `<span class="h ${ymd(d)===ymd(today)?"now":""}">周${WEEK[d.getDay()]}</span>`; }).join("");
+  ["hus","wife"].forEach(p=>{
+    grid+=`<span class="who2 ${p}">${PEOPLE[p].label}</span>`;
+    for(let i=0;i<7;i++){
+      const d=addDays(mon,i); const s=scheduleFor(p,d); const now=ymd(d)===ymd(today)?" now":"";
+      const done = getCheckin(p,ymd(d)).workout==="done";
+      if(s.kind==="rest") grid+=`<span class="c${now}">休</span>`;
+      else if(s.kind==="flex") grid+=`<span class="c f ${p}${done?" done":""}${now}">${done?"✓":"可选"}</span>`;
+      else grid+=`<span class="c t ${p}${done?" done":""}${now}">${done?"✓":short(s.w)}</span>`;
+    }
+  });
+  const keys = viewP==="hus" ? ["A","B"] : ["W"];
+  const mine = viewP===me;
+  $("#view").innerHTML=`
+  <section class="sec"><div class="sec-h"><h3>这周两个人的安排</h3><span>✓ 是已完成的</span></div>
+    <div class="card"><div class="wk2">${grid}</div></div></section>
+  ${peekSwitch()}
+  <section class="sec"><div class="sec-h"><h3>${PEOPLE[viewP].label}的训练内容</h3>${viewP==="hus"?"<span>A、B 每周交替</span>":""}</div>
+    <div class="stack">${keys.map(k=>planCard(k,mine)).join("")}${mine?planCard("D",true):""}</div></section>
+  <p class="note">膝盖或腰出现疼痛（不是肌肉酸）就先停下。${viewP==="hus"?"3 轮都轻松完成时，下次加 1–2kg 或每组多做 2 次。":"适应 3–4 周后从 2 轮加到 3 轮，或套上弹力带做。"}</p>`;
+}
+
+function measureSeries(person){
+  return Object.values(store.measures).filter(m=>m.person===person).sort((a,b)=>a.date<b.date?-1:1);
+}
+function chartSVG(field,label,unit){
+  const W=320,H=130,P=26;
+  const series=["hus","wife"].map(p=>({p,pts:measureSeries(p).filter(m=>typeof m[field]==="number").slice(-12)}));
+  const all=series.flatMap(s=>s.pts.map(x=>x[field]));
+  if(!all.length) return `<div class="card chart"><div class="chart-h"><b>${label}</b></div><p class="empty">记录两次以上就能看到趋势</p></div>`;
+  let lo=Math.min(...all), hi=Math.max(...all); if(hi-lo<2){ lo-=1; hi+=1; }
+  const y=v=>H-P-((v-lo)/(hi-lo))*(H-2*P);
+  const lines=series.map(s=>{
+    if(!s.pts.length) return "";
+    const n=s.pts.length; const x=i=> n===1 ? W/2 : P+(i/(n-1))*(W-2*P);
+    const col=`var(--${s.p})`;
+    const pl=s.pts.map((m,i)=>`${x(i).toFixed(1)},${y(m[field]).toFixed(1)}`).join(" ");
+    const last=s.pts[n-1];
+    return `<polyline points="${pl}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`+
+      s.pts.map((m,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(m[field]).toFixed(1)}" r="3.5" fill="${col}"/>`).join("")+
+      `<text x="${(x(n-1)).toFixed(1)}" y="${(y(last[field])-9).toFixed(1)}" text-anchor="middle" font-size="11" fill="${col}" font-weight="700">${last[field]}</text>`;
+  }).join("");
+  const grid=`<line x1="${P}" x2="${W-P}" y1="${y(hi)}" y2="${y(hi)}" stroke="var(--line)"/><line x1="${P}" x2="${W-P}" y1="${y(lo)}" y2="${y(lo)}" stroke="var(--line)"/>
+    <text x="2" y="${y(hi)+4}" font-size="10" fill="var(--muted)">${hi.toFixed(0)}</text><text x="2" y="${y(lo)+4}" font-size="10" fill="var(--muted)">${lo.toFixed(0)}</text>`;
+  return `<div class="card chart"><div class="chart-h"><b>${label}</b><span style="color:var(--muted)">${unit}</span></div>
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}趋势">${grid}${lines}</svg>
+    <div class="legend"><span><i style="background:var(--hus)"></i>老公</span><span><i style="background:var(--wife)"></i>老婆</span></div>
+    </div>`;
+}
+function renderRecordData(){
+  const box=$("#recData"); if(!box) return;
+  const hist=Object.values(store.measures).sort((a,b)=>a.date<b.date?1:-1).slice(0,16);
+  const rows=hist.length?hist.map(m=>{
+    const extra=[m.waist!=null?`腰 ${m.waist}`:"",m.hip!=null?`臀 ${m.hip}`:"",m.thigh!=null?`腿 ${m.thigh}`:""].filter(Boolean).join("　");
+    return `<div class="hist-row"><span class="dot" style="background:var(--${m.person})"></span>
+      <div>${m.weight!=null?`<b>${m.weight} kg</b>　`:""}<small>${esc(extra)}</small></div><small>${m.date.slice(5)}</small></div>`;
+  }).join(""):`<p class="empty">还没有记录。每周日早上空腹量一次。</p>`;
+  box.innerHTML=chartSVG("weight","体重","kg")+`<div style="height:8px"></div>`+chartSVG("waist","腰围","cm")+
+    `<section class="sec" style="margin-top:20px"><div class="sec-h"><h3>历史记录</h3></div><div class="card hist">${rows}</div></section>`;
+}
+function viewRecord(){
+  const today=ymd(new Date());
+  const ex=store.measures[me+"_"+today]||{};
+  const v=k=>ex[k]!=null?ex[k]:"";
+  $("#view").innerHTML=`
+  <section class="sec"><div class="sec-h"><h3>记录${PEOPLE[me].label}的数据</h3><span>看 3–4 周的趋势，别看单日</span></div>
+    <form class="card form" id="mForm">
+      <label class="full">日期<input type="date" name="date" value="${today}" max="${today}"></label>
+      <label>体重 kg<input type="number" inputmode="decimal" step="0.1" min="30" max="200" name="weight" value="${v("weight")}"></label>
+      <label>腰围 cm<input type="number" inputmode="decimal" step="0.5" min="40" max="160" name="waist" value="${v("waist")}"></label>
+      ${me==="wife"?`<label>臀围 cm<input type="number" inputmode="decimal" step="0.5" min="50" max="160" name="hip" value="${v("hip")}"></label>
+      <label>大腿围 cm<input type="number" inputmode="decimal" step="0.5" min="30" max="100" name="thigh" value="${v("thigh")}"></label>`:""}
+      <button class="btn primary full" type="submit">保存记录</button>
+    </form>
+    ${me==="wife"?`<p class="note" style="margin-top:8px">体重不怎么动、围度在变小，就说明方向对了。</p>`:""}
+  </section><div id="recData"></div>
+  ${CLOUD?`<section class="sec"><div class="sec-h"><h3>同步设置</h3></div><div class="card train-today"><div><h4 style="font-size:15px">家庭口令</h4><p>${family?"已设置，可以复制邀请链接给对方":"还没设置"}</p></div><button class="btn ghost" data-open-code>${family?"查看":"去设置"}</button></div></section>`:""}`;
+  renderRecordData();
+  $("#mForm").addEventListener("submit",e=>{
+    e.preventDefault(); const f=new FormData(e.target); const body={person:me,date:f.get("date")||today};
+    let any=false;
+    ["weight","waist","hip","thigh"].forEach(k=>{ const raw=f.get(k); if(raw!==null && raw!==""){ const n=Number(raw); if(!isNaN(n)){ body[k]=n; any=true; } } });
+    if(!any){ toast("至少填一项再保存"); return; }
+    putMeasure(body); toast("已保存记录");
+  });
+}
+
+function render(){
+  renderHeader(); renderSync();
+  if(runState) return; // don't touch views mid-workout
+  if(tab==="today") viewToday();
+  else if(tab==="diet") viewDiet();
+  else if(tab==="train") viewTrain();
+  else if(tab==="record"){ if($("#mForm") && lastTab==="record" && lastMe===me) renderRecordData(); else viewRecord(); }
+  lastTab=tab; lastMe=me;
+}
+let lastTab=null,lastMe=null;
+
+/* ---------- workout runner ---------- */
+let runState=null, timer=null;
+function buildSteps(key){
+  const w=WORKOUTS[key]; const steps=[];
+  if(w.warm.length) steps.push({type:"list",title:"先热身",items:w.warm,btn:"热身完成"});
+  for(let r=1;r<=w.rounds;r++){
+    w.moves.forEach((m,i)=>{
+      steps.push({type:"move",m,round:r,idx:i+1});
+      const lastMove=i===w.moves.length-1;
+      if(!lastMove && w.restMove) steps.push({type:"rest",sec:w.restMove,next:w.moves[i+1].n});
+      if(lastMove && r<w.rounds && w.restRound) steps.push({type:"rest",sec:w.restRound,next:"第 "+(r+1)+" 轮："+w.moves[0].n,round:true});
+    });
+  }
+  if(w.cool.length) steps.push({type:"list",title:"放松一下",items:w.cool,btn:"放松完成"});
+  steps.push({type:"end"});
+  return steps;
+}
+function startRun(key){
+  runState={key,steps:buildSteps(key),i:0,sec:0,running:false};
+  $("#run").classList.add("open"); document.body.style.overflow="hidden"; drawRun();
+}
+function stopTimer(){ clearInterval(timer); timer=null; }
+function closeRun(){ stopTimer(); runState=null; $("#run").classList.remove("open"); document.body.style.overflow=""; render(); }
+function nextStep(){ stopTimer(); runState.i++; runState.running=false; drawRun(); }
+function countdown(sec,onEnd){
+  runState.sec=sec; stopTimer();
+  timer=setInterval(()=>{ runState.sec--; const el=$("#cd"); if(el) el.textContent=runState.sec;
+    if(runState.sec<=0){ stopTimer(); try{ navigator.vibrate&&navigator.vibrate(200);}catch(e){} onEnd(); } },1000);
+}
+function drawRun(){
+  const st=runState; const w=WORKOUTS[st.key]; const s=st.steps[st.i];
+  const pct=Math.round(st.i/(st.steps.length-1)*100);
+  let body="";
+  if(s.type==="list"){
+    body=`<h2>${s.title}</h2><ul>${s.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+      <div class="actions"><button class="btn primary" data-run="next">${s.btn}</button></div>`;
+  }else if(s.type==="move"){
+    const timed=!!s.m.sec;
+    body=`<div class="media">动作示意图待添加</div>
+      <h2>${esc(s.m.n)}</h2><p class="reps">${esc(s.m.r)}</p><p class="cue">${esc(s.m.c)}</p>
+      ${timed?`<div class="big" id="cd">${st.running?st.sec:s.m.sec}</div><p class="sub">秒</p>`:""}
+      <div class="actions">${timed&&!st.running?`<button class="btn primary" data-run="timer">开始计时</button>`:""}
+      ${timed&&st.running?`<button class="btn ghost" data-run="next">提前结束</button>`:""}
+      ${!timed?`<button class="btn primary" data-run="next">做完了</button>`:""}</div>`;
+  }else if(s.type==="rest"){
+    body=`<h2>${s.round?"这一轮完成，休息一下":"休息"}</h2>
+      <div class="big" id="cd">${s.sec}</div><p class="sub">下一个：${esc(s.next)}</p>
+      <div class="actions"><button class="btn ghost" data-run="next">跳过休息</button></div>`;
+  }else{
+    body=`<h2>练完了</h2><p class="cue">${w.name}，${w.rounds} 轮全部完成。</p>
+      <div class="actions">${w.who==="both"?"":`<button class="btn primary" data-run="finish">记录完成并返回</button>`}
+      <button class="btn ghost" data-run="close">返回</button></div>`;
+  }
+  const where = s.type==="move" ? `第 ${s.round} 轮（共 ${w.rounds} 轮），动作 ${s.idx}/${w.moves.length}` : w.name;
+  $("#runBody").innerHTML=`<div class="run-top"><button data-run="close">退出</button><span>${where}</span></div>
+    <div class="bar"><i style="width:${pct}%"></i></div>${body}`;
+  if(s.type==="rest") countdown(s.sec,nextStep);
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button"); if(!t) return;
+  if(t.dataset.pick){ me=t.dataset.pick; viewP=me; try{ localStorage.setItem(LS_ME,me);}catch(_){} closePicker(); lastTab=null; render(); if(CLOUD && !family) openCode(); return; }
+  if(t.hasAttribute("data-open-code")){ openCode(); return; }
+  if(t.hasAttribute("data-code-gen")){ $("#codeInput").value=genCode(); return; }
+  if(t.hasAttribute("data-code-save")){
+    const v=$("#codeInput").value.trim();
+    if(!/^[A-Za-z0-9]{8,40}$/.test(v)){ toast("口令需要 8 位以上，只能用字母和数字"); return; }
+    const changed = v!==family; family=v; try{ localStorage.setItem(LS_FAMILY,family);}catch(_){}
+    if(changed){ // new family: re-upload what's on this phone
+      Object.keys(store.checkins).forEach(id=>markDirty("c:"+id)); Object.keys(store.measures).forEach(id=>markDirty("m:"+id)); saveLocal();
+    }
+    syncState="idle"; toast("口令已保存"); showCodeShare(); sync(); return;
+  }
+  if(t.hasAttribute("data-code-copy")){ copyInvite(); return; }
+  if(t.hasAttribute("data-code-close")){ $("#codeDlg").classList.remove("open"); document.body.style.overflow=""; lastTab=null; render(); return; }
+  if(t.hasAttribute("data-pick-cancel")){ closePicker(); return; }
+  if(t.hasAttribute("data-open-picker")){ openPicker(true); return; }
+  if(t.dataset.view){ viewP=t.dataset.view; lastTab=null; render(); return; }
+  if(t.dataset.tab){ tab=t.dataset.tab; document.querySelectorAll(".tabs button").forEach(b=>{ if(b===t) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
+    lastTab=null; render(); window.scrollTo(0,0); return; }
+  if(t.dataset.meal){
+    if(readOnly){ toast("你现在只有查看权限"); return; }
+    const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date)));
+    c.meals=c.meals||{}; c.meals[t.dataset.meal] = c.meals[t.dataset.meal]===t.dataset.v ? null : t.dataset.v;
+    if(!c.meals[t.dataset.meal]) delete c.meals[t.dataset.meal];
+    putCheckin(c); return;
+  }
+  if(t.dataset.stand){
+    if(readOnly){ toast("你现在只有查看权限"); return; }
+    const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date)));
+    c.stand=Math.max(0,Math.min(20,(c.stand||0)+Number(t.dataset.stand))); putCheckin(c,700); return;
+  }
+  if(t.hasAttribute("data-undo-workout")){
+    if(readOnly) return;
+    if(!confirm("撤销今天的训练打卡？")) return;
+    const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date))); c.workout=null; putCheckin(c); return;
+  }
+  if(t.dataset.start){ startRun(t.dataset.start); return; }
+  if(t.dataset.run){
+    const a=t.dataset.run;
+    if(a==="next") nextStep();
+    else if(a==="close"){ if(runState && runState.steps[runState.i].type!=="end" && runState.i>0 && !confirm("训练还没做完，确定退出？")) return; closeRun(); }
+    else if(a==="timer"){ const s=runState.steps[runState.i]; runState.running=true; runState.sec=s.m.sec; drawRun(); countdown(s.m.sec,nextStep); }
+    else if(a==="finish"){
+      if(!readOnly){ const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date))); c.workout="done"; runState=null; putCheckin(c); toast("训练已打卡"); }
+      closeRun();
+    }
+  }
+});
+
+let toastT=null;
+function toast(msg){ const el=$("#toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),2600); }
+
+function openPicker(canCancel){
+  $("#pick").classList.add("open"); $("[data-pick-cancel]").hidden=!canCancel; document.body.style.overflow="hidden";
+}
+function genCode(){
+  const a="ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"; const r=new Uint32Array(14);
+  (window.crypto||{getRandomValues:x=>x.map(()=>Math.random()*4e9)}).getRandomValues(r);
+  return Array.from(r,x=>a[x%a.length]).join("");
+}
+function inviteLink(){ return location.origin+location.pathname+"#k="+family; }
+function showCodeShare(){ $("#codeShare").hidden=false; $("[data-code-copy]").hidden=false; $("[data-code-close]").hidden=false; }
+function openCode(){
+  $("#codeInput").value=family; $("#codeDlg").classList.add("open"); document.body.style.overflow="hidden";
+  $("#codeShare").hidden=!family; $("[data-code-copy]").hidden=!family; $("[data-code-close]").hidden=!family;
+}
+async function copyInvite(){
+  const link=inviteLink();
+  try{ await navigator.clipboard.writeText(link); toast("邀请链接已复制"); }catch(e){ window.prompt("长按复制这个链接",link); }
+}
+function closePicker(){ $("#pick").classList.remove("open"); document.body.style.overflow=""; }
+
+/* ---------- boot ---------- */
+render();
+if(storedMe!=="hus" && storedMe!=="wife") openPicker(false);
+else if(CLOUD && !family) openCode();
+if(CLOUD){
+  sync();
+  setInterval(()=>{ if(document.visibilityState==="visible") sync(); },30000);
+  document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") sync(); });
+  window.addEventListener("online",()=>sync());
+}
+})();
+</script>
+</body>
+</html>
