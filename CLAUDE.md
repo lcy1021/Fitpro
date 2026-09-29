@@ -94,6 +94,8 @@
 
 - 图标：24 个线性 SVG 图标，源文件 `UIset/icons/`，页面里是内联 `<symbol id="ic-名称">`，用 `icon(名称, "sm"|"lg")` 插入；改图标要同时改源文件和 `index.html` 里同名 symbol。没有图标的地方先用 emoji
 
+- App 图标：`assets/icons/`（由 `UIset/logo/fitpro-app-icon-fullbleed.png` 直接缩放，不裁切；源图要直角、背景铺满，手机系统会自己切圆角），`manifest.webmanifest` 和 `apple-mobile-web-app-title` 设主屏幕名称 Fitpro。不加载网络字体（国内访问 Google Fonts 会拖慢首屏）
+
 ## 协作约定
 
 - 用户是资深 B 端产品设计师，改界面时注重交互细节和一致性

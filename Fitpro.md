@@ -292,6 +292,7 @@ food?: { breakfast|lunch|snack|dinner: { text, items: [{ n, q, k }], kcal } }
 | `assets/avatar-hus.png`、`assets/avatar-wife.png` | 记录页的角色头像（由 `UIset/` 原图缩小到 256px） |
 | `UIset/` | 角色形象原图 |
 | `assets/mascots/`、`docs/mascot-design.md` | 角色状态图和设计规范（尚未接入页面） |
+| `assets/icons/`、`manifest.webmanifest` | 主屏幕图标（iPhone 180、安卓 192/512）、浏览器标签图标，主屏幕名称 Fitpro；源图 `UIset/logo/fitpro-app-icon-fullbleed.png` |
 | `assets/mood/` | 7 种表情 × 2 人的 256px 图（原图在 `assets/mascots/`，设计规范见 `docs/mascot-design.md`） |
 | `assets/moves/*.gif` | 32 个动作的循环动图 |
 | `index.html` 里的 `FOOD_DB` | 约 180 种常见食物的热量库（参考《中国食物成分表》第 6 版，外卖菜按常见一份估算） |
