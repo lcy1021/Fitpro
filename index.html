@@ -10,6 +10,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/app-icon-180.png">
 <meta name="apple-mobile-web-app-title" content="DuoFit">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
 <style>
 :root{
   --bg:#FDFAF6; --surface:#FFFFFF; --sunk:#F6F3EE; --ink:#192024; --muted:#64748B; --faint:#94A3B8; --line:rgba(25,32,36,.07);
@@ -631,12 +633,12 @@ p{margin:0}
 <!-- 首次进入 / 切换身份：两个云朵从远处跑近、会合，再弹出角色选择（设计见 UIset/login-motion） -->
 <div class="pick lm-pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickTitle"><div class="lm" id="lm" data-phase="choose">
   <div class="lm-grain" aria-hidden="true"></div>
-  <div class="lm-top"><span class="lm-brand"><img src="assets/icons/app-icon-180.png" alt="">DuoFit</span><button class="lm-skip" data-lm-skip type="button">跳过</button></div>
+  <div class="lm-top"><span class="lm-brand"><img src="assets/icons/favicon-64.png" alt="" width="31" height="31">DuoFit</span><button class="lm-skip" data-lm-skip type="button">跳过</button></div>
   <div class="lm-copy"><span class="lm-tag">TOGETHER, EVERY DAY</span><h2>两个人，<br><span>一起动起来。</span></h2><p>减脂计划，从并肩出发开始</p></div>
   <div class="lm-track" aria-hidden="true">
     <span class="lm-speed left"></span><span class="lm-speed right"></span>
-    <div class="lm-runner hus"><img src="assets/login/hus-running.png" alt=""></div>
-    <div class="lm-runner wife"><img src="assets/login/wife-running.png" alt=""></div>
+    <div class="lm-runner hus"><img src="assets/login/hus-running.webp" alt=""></div>
+    <div class="lm-runner wife"><img src="assets/login/wife-running.webp" alt=""></div>
     <div class="lm-spark"></div>
   </div>
   <div class="lm-line">每一步，都有人和你一起</div>
@@ -645,8 +647,8 @@ p{margin:0}
     <h2 id="pickTitle">今天你是谁？</h2>
     <p class="lm-lead">选好后，这台手机上的打卡、训练和记录都按你的身份来。</p>
     <div class="lm-roles" role="group" aria-label="选择角色">
-      <button class="lm-role hus" data-lm-role="hus" aria-pressed="false" type="button"><img src="assets/login/hus-running.png" alt=""><span><strong>我是老公</strong><small>哑铃力量训练 A、B 交替，每周 3 次</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
-      <button class="lm-role wife" data-lm-role="wife" aria-pressed="false" type="button"><img src="assets/login/wife-running.png" alt=""><span><strong>我是老婆</strong><small>居家臀腿跟练，每周 2–3 次</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
+      <button class="lm-role hus" data-lm-role="hus" aria-pressed="false" type="button"><img src="assets/login/hus-running.webp" alt=""><span><strong>我是老公</strong><small>哑铃力量训练 A、B 交替，每周 3 次</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
+      <button class="lm-role wife" data-lm-role="wife" aria-pressed="false" type="button"><img src="assets/login/wife-running.webp" alt=""><span><strong>我是老婆</strong><small>居家臀腿跟练，每周 2–3 次</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
     </div>
     <button class="lm-confirm" id="lmConfirm" type="button" disabled>先选择一个角色</button>
     <div class="lm-foot"><button class="lm-replay" data-lm-replay type="button">↺ 再看一次入场动效</button><button class="lm-replay" data-pick-cancel type="button" hidden>取消</button></div>
@@ -1872,6 +1874,12 @@ function toast(msg,ms){ const el=$("#toast"); el.textContent=msg; el.classList.a
 let lmTimers=[], lmRole=null;
 function lmPhase(name){ $("#lm").dataset.phase=name; const ready=name==="choose"; $("#lmChoice").inert=!ready; $("#lmChoice").setAttribute("aria-hidden",String(!ready)); }
 function lmClear(){ lmTimers.forEach(clearTimeout); lmTimers=[]; }
+/* 跑步图解码好再开跑，最多等 1.2 秒，避免"动画在播、人还没出来" */
+function lmReady(){
+  const imgs=[...document.querySelectorAll(".lm-runner img")];
+  const decoded=Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{}):Promise.resolve()));
+  return Promise.race([decoded,new Promise(r=>setTimeout(r,1200))]);
+}
 function lmSelect(role){
   lmRole=role;
   document.querySelectorAll("[data-lm-role]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lmRole===role)));
@@ -1882,7 +1890,8 @@ function lmSelect(role){
 function lmPlay(){
   lmClear(); lmSelect(null); lmPhase("start");
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmPhase("choose"); return; }
-  lmTimers.push(setTimeout(()=>lmPhase("run"),160), setTimeout(()=>lmPhase("meet"),1940), setTimeout(()=>lmPhase("choose"),2650));
+  lmReady().then(()=>{ if($("#lm").dataset.phase!=="start") return;
+    lmTimers.push(setTimeout(()=>lmPhase("run"),60), setTimeout(()=>lmPhase("meet"),1840), setTimeout(()=>lmPhase("choose"),2550)); });
 }
 /* 每次打开 App：已经选过身份的，播完跑近会合直接进主页（点任意处或"跳过"可提前进入）；首次打开播完弹出选择卡片 */
 function openSplash(after){
@@ -1893,7 +1902,8 @@ function openSplash(after){
     pk.classList.add("leaving"); setTimeout(()=>{ pk.classList.remove("open","leaving"); document.body.style.overflow=""; lmPhase("choose"); if(after) after(); },450); };
   lm.onclick=done;
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmTimers.push(setTimeout(done,600)); return; }
-  lmTimers.push(setTimeout(()=>lmPhase("run"),160), setTimeout(()=>lmPhase("meet"),1940), setTimeout(done,2500));
+  lmReady().then(()=>{ if(!lm.classList.contains("splash")) return;
+    lmTimers.push(setTimeout(()=>lmPhase("run"),60), setTimeout(()=>lmPhase("meet"),1840), setTimeout(done,2400)); });
 }
 function openPicker(canCancel){
   $("#lm").classList.remove("splash"); $("#lm").onclick=null; $("#pick").classList.remove("leaving");
@@ -2045,6 +2055,7 @@ $("#goalForm").addEventListener("submit",e=>{
   putMeasure({...ex, person:me, date:today, weight:v.start, goal:{height:v.height,age:v.age,start:v.start,target:v.target,pace:v.pace,adj:0,level:old.level||0,cardio:!!old.cardio,mode:null,at:today}});
   menuCache={}; closeGoal(); lastTab=null; render(); react("weigh","目标已保存","今天吃什么已经按你的目标调好了");
 });
+if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
 if(storedMe!=="hus" && storedMe!=="wife") openPicker(false);
 else openSplash(()=>{ if(CLOUD && !family) openCode(); });
 if(CLOUD){

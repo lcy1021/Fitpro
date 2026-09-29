@@ -38,7 +38,7 @@
 
 ## 功能结构
 
-- 每次打开：选过身份的播 `openSplash`（跑近会合后淡出进主页，点任意处可跳过，之后再弹家庭口令等）；首次进入：登录动效（`#pick` 里的 `.lm` 场景，阶段 start→run→meet→choose，设计源在 `UIset/login-motion/`，跑步形象 `assets/login/`），再选择"我是老公 / 我是老婆"（切换身份时直接到选择这一步）；然后设定目标（身高、年龄、当前/目标体重、速度）和家庭口令；右上角可切换身份
+- 每次打开：选过身份的播 `openSplash`（跑近会合后淡出进主页，点任意处可跳过，之后再弹家庭口令等）；首次进入：登录动效（`#pick` 里的 `.lm` 场景，阶段 start→run→meet→choose，设计源在 `UIset/login-motion/`，跑步形象 `assets/login/*.webp`，在 `<head>` 里预加载，解码完再开跑），再选择"我是老公 / 我是老婆"（切换身份时直接到选择这一步）；然后设定目标（身高、年龄、当前/目标体重、速度）和家庭口令；右上角可切换身份
 - **目标与个性化计划**（`calcPlan` / `menuFor` / `suggestionsFor` / `roundsFor`）：
   - **计算**：基础代谢按 Mifflin-St Jeor 公式（身高、年龄、体重、性别），× 1.35（久坐上班 + 每周练 3 次）得到每天消耗；温和速度每天少吃 300 kcal、标准少吃 500 kcal。
   - **安全限制**：每周减重不超过体重的 1%；每天热量不低于老公 1500 / 老婆 1200 kcal；目标体重不能低于 BMI 18.5（低于时不能保存）；目标不低于当前体重时按维持安排。蛋白质按体重 × 1.6 g。
@@ -95,6 +95,8 @@
 - 图标：24 个线性 SVG 图标，源文件 `UIset/icons/`，页面里是内联 `<symbol id="ic-名称">`，用 `icon(名称, "sm"|"lg")` 插入；改图标要同时改源文件和 `index.html` 里同名 symbol。没有图标的地方先用 emoji
 
 - App 图标：`assets/icons/`（由 `UIset/logo/duofit-app-icon-fullbleed.png` 直接缩放，不裁切；源图要直角、背景铺满，手机系统会自己切圆角），`manifest.webmanifest` 和 `apple-mobile-web-app-title` 设主屏幕名称 DuoFit。不加载网络字体（国内访问 Google Fonts 会拖慢首屏）
+
+- 离线缓存 `sw.js`：本站文件"先用缓存、后台更新"（秒开，**推送后要第二次打开才看到新版**）；Supabase 和 AI 请求不经过缓存。改了缓存逻辑或要强制刷新时，改 `sw.js` 里的 `CACHE` 版本号
 
 ## 协作约定
 
