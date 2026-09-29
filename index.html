@@ -1818,9 +1818,21 @@ function openFood(m){
   drawFood(); $("#foodDlg").classList.add("open"); document.body.style.overflow="hidden";
   setTimeout(()=>$("#foodText").focus(),50);
 }
+/* 估算过的原话记在本机，同一句话再算时直接用，不再调用 AI（最多记 60 条） */
+const LS_AI="fatloss.aicache";
+const aiCache={ get(t){ try{ return (JSON.parse(localStorage.getItem(LS_AI)||"{}"))[t]||null; }catch(e){ return null; } },
+  set(t,v){ try{ const c=JSON.parse(localStorage.getItem(LS_AI)||"{}"); c[t]={...v,at:Date.now()};
+    const keys=Object.keys(c).sort((a,b)=>c[b].at-c[a].at); keys.slice(60).forEach(k=>delete c[k]); localStorage.setItem(LS_AI,JSON.stringify(c)); }catch(e){} } };
+function showAi(d){
+  foodRows=d.items.map(i=>({n:i.name,q:i.amount,k:i.kcal,ai:true}));
+  const note=$("#foodNote"); note.hidden=!d.note; note.textContent=d.note?"🤖 "+d.note:"";
+  drawFood();
+}
 async function aiFood(){
   const text=$("#foodText").value.trim(); if(!text){ toast("先写一下吃了什么"); return; }
-  const btn=$("[data-food-ai]"); btn.disabled=true; btn.textContent="🤖 正在估算…";
+  const hit=aiCache.get(text); if(hit){ showAi(hit); toast("这句话之前估算过，直接用了上次的结果"); return; }
+  const btn=$("[data-food-ai]"); btn.disabled=true; const t0=Date.now();
+  const tick=()=>{ btn.textContent=`🤖 正在估算… ${Math.round((Date.now()-t0)/1000)}s`; }; tick(); const tk=setInterval(tick,1000);
   try{
     const headers={"Content-Type":"application/json","apikey":SUPABASE_KEY};
     if(!SUPABASE_KEY.startsWith("sb_")) headers["Authorization"]="Bearer "+SUPABASE_KEY;
@@ -1828,11 +1840,9 @@ async function aiFood(){
     const d=await r.json().catch(()=>({}));
     if(!r.ok){ toast({daily_limit:"今天 AI 估算次数用完了，明天再试",unknown_family:"先打一次卡同步一下，再用 AI 估算",busy:"AI 有点忙，稍后再试",bad_key:"AI 的 Key 不对或余额不足，检查一下 Supabase 里的设置",unreachable:"服务器连不上 AI 接口，试试换地区或配置中转"}[d.error]||("AI 估算失败"+(d.detail?"："+d.detail.slice(0,80):"")+"，可以先手动填热量"),6000); console.warn("meal-kcal",r.status,d); return; }
     if(!d.items||!d.items.length){ toast(d.note||"没看出吃了什么，换个说法试试"); return; }
-    foodRows=d.items.map(i=>({n:i.name,q:i.amount,k:i.kcal,ai:true}));
-    const note=$("#foodNote"); note.hidden=!d.note; note.textContent=d.note?"🤖 "+d.note:"";
-    drawFood();
+    aiCache.set(text,{items:d.items,note:d.note||""}); showAi(d);
   }catch(e){ toast("网络不通，AI 估算失败，可以先手动填热量"); }
-  finally{ btn.disabled=false; btn.textContent="🤖 让 AI 估算这一顿"; }
+  finally{ clearInterval(tk); btn.disabled=false; btn.textContent="🤖 让 AI 估算这一顿"; }
 }
 function closeFood(){ if(document.activeElement) document.activeElement.blur(); $("#foodDlg").classList.remove("open"); document.body.style.overflow=""; }
 function foodStatus(total){ const hi=mealRange(menuFor(me)[foodMeal])[1]; return total>hi*1.1 ? ["over",`比计划多约 ${total-hi} kcal，记为"吃多了"`] : ["plan",`在计划范围内（上限约 ${hi}），记为"按计划吃了"`]; }

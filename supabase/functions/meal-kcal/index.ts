@@ -80,23 +80,13 @@ async function estimate(text: string): Promise<Result | "refused"> {
     if (r.stop_reason === "refusal") return "refused";
     return JSON.parse(firstText(r.content));
   }
-  // 中转或其他兼容接口（如 DeepSeek）：不一定支持结构化输出，所以同时在提示词里要求只输出 JSON；
-  // 带结构化输出被拒（400/404/422）时去掉它再试一次
-  const system = SYSTEM + JSON_ONLY;
-  try {
-    const r = await anthropic.messages.create({
-      model: MODEL,
-      max_tokens: 4000,
-      output_config: { format: { type: "json_schema", schema: SCHEMA } },
-      system,
-      messages: [{ role: "user", content: text }],
-    });
-    if (r.stop_reason === "refusal") return "refused";
-    return pickJson(firstText(r.content));
-  } catch (err) {
-    if (!(err instanceof Anthropic.APIError) || ![400, 404, 422].includes(err.status ?? 0)) throw err;
-  }
-  const r = await anthropic.messages.create({ model: MODEL, max_tokens: 4000, system, messages: [{ role: "user", content: text }] });
+  // 中转或其他兼容接口（如 DeepSeek）：大多不支持结构化输出，直接在提示词里要求只输出 JSON，只请求一次（省掉被拒后再请求的时间）
+  const r = await anthropic.messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    system: SYSTEM + JSON_ONLY,
+    messages: [{ role: "user", content: text }],
+  });
   if (r.stop_reason === "refusal") return "refused";
   return pickJson(firstText(r.content));
 }
@@ -140,7 +130,9 @@ Deno.serve(async (req) => {
   if (quota.data !== true) return reply(429, { error: "daily_limit" });
 
   try {
+    const t0 = Date.now();
     const out = await estimate(text);
+    console.log("estimate", MODEL, `${Date.now() - t0}ms`, `${text.length} chars`);
     if (out === "refused") return reply(422, { error: "refused" });
     if (!out) return reply(502, { error: "no_output" });
     const items = (Array.isArray(out.items) ? out.items : []).slice(0, 20).map((i: Item) => ({
