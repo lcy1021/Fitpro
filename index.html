@@ -98,6 +98,7 @@ p{margin:0}
 .duo .share{width:100%;margin-top:14px;padding:12px}
 .streak{font-size:12px;color:var(--muted);text-align:right;min-width:48px}
 .streak b{display:block;font-size:20px;color:var(--ink);font-weight:900;line-height:1.1}
+.track .last{grid-column:2/-1;margin-top:-6px;font-size:11px;color:var(--muted)}
 
 /* sections */
 .sec{margin-bottom:20px}
@@ -112,6 +113,15 @@ p{margin:0}
 .meal-top h4{margin:0;font-size:15px;font-weight:700}
 .meal-top time{font-size:12px;color:var(--muted)}
 .meal p{font-size:13px;color:var(--muted)}
+.meal-top time{margin-left:6px;font-weight:400}
+.meal-top .kcal{font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap}
+.foods{margin:0;padding:0;list-style:none;background:var(--sunk);border-radius:var(--radius-s);padding:4px 12px}
+.foods li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 0;font-size:14px}
+.foods li+li{border-top:1px solid var(--line)}
+.foods li small{display:block;font-size:12px;color:var(--muted)}
+.foods li b{font-size:13px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.foods li b::after{content:" kcal";font-size:11px;font-weight:500;color:var(--muted)}
+.meal .foods-note{font-size:12px;margin-top:-4px}
 .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .seg button{border:1.5px solid var(--line);background:transparent;border-radius:var(--radius-s);padding:7px 4px;font-size:13px}
 .me-hus .seg button[aria-pressed="true"][data-v="plan"]{background:var(--hus);border-color:var(--hus);color:#fff}
@@ -184,6 +194,17 @@ p{margin:0}
 .hist-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;padding:8px 0;border-top:1px solid var(--line);align-items:center}
 .hist-row .dot{width:8px;height:8px;border-radius:50%}
 .hist-row small{color:var(--muted)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.who-card{background:var(--surface);border-radius:var(--radius-l);padding:14px 12px 16px;display:grid;justify-items:center;text-align:center;gap:2px}
+.who-card .ava{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:6px}
+.who-card.hus .ava{background:var(--hus-soft);box-shadow:inset 0 0 0 3px var(--hus)}
+.who-card.wife .ava{background:var(--wife-soft);box-shadow:inset 0 0 0 3px var(--wife)}
+.who-card .ava img{width:70px;height:70px;object-fit:contain}
+.who-card h4{margin:0;font-size:14px;font-weight:700}
+.who-card.hus h4{color:var(--hus)} .who-card.wife h4{color:var(--wife)}
+.who-card .w{font-size:20px;font-weight:900;line-height:1.3}
+.who-card .w small{font-size:12px;font-weight:500;color:var(--muted);margin-left:2px}
+.who-card p{font-size:12px;color:var(--muted)}
 .empty{font-size:13px;color:var(--muted);padding:6px 0}
 
 /* tab bar */
@@ -274,20 +295,74 @@ const PEOPLE = { hus:{label:"老公"}, wife:{label:"老婆"} };
 const MEALS = ["breakfast","lunch","snack","dinner"];
 const MEAL_PLAN = {
   hus:{
-    breakfast:{t:"早餐",time:"7:00",food:"鸡蛋 2 个 + 牛奶或无糖豆浆 250ml + 全麦面包 2 片（或玉米 1 根）",kcal:"350–480"},
-    lunch:{t:"午餐",time:"12:00",food:"外卖或食堂，米饭吃 2/3 份，一定要有一份明显的肉、蛋或鱼",kcal:"550–750"},
-    snack:{t:"下午加餐",time:"16:00",food:"无糖酸奶 1 盒 + 1 个水果；喝拿铁的话就把它当加餐，不再吃别的",kcal:"150–250"},
-    dinner:{t:"晚餐",time:"20:00 后",food:"瘦肉或鱼虾 150g + 蔬菜 300g + 少量主食（半碗饭，可省）",kcal:"300–500"},
-    kcal:"约 1350–1950 kcal",protein:"约 120–130g"
+    breakfast:{t:"早餐",time:"7:00",food:"鸡蛋 2 个 + 牛奶或无糖豆浆 250ml + 全麦面包 2 片（或玉米 1 根）"},
+    lunch:{t:"午餐",time:"12:00",food:"外卖或食堂，米饭吃 2/3 份，一定要有一份明显的肉、蛋或鱼"},
+    snack:{t:"下午加餐",time:"16:00",food:"无糖酸奶 1 盒 + 1 个水果；喝拿铁的话就把它当加餐，不再吃别的"},
+    dinner:{t:"晚餐",time:"20:00 后",food:"瘦肉或鱼虾 150g + 蔬菜 300g + 少量主食（半碗饭，可省）"},
+    protein:"约 120–130g"
   },
   wife:{
-    breakfast:{t:"早餐",time:"7:00",food:"鸡蛋 1 个 + 牛奶或无糖豆浆 250ml + 全麦面包 1 片（或半根玉米）",kcal:"220–320"},
-    lunch:{t:"午餐",time:"12:00",food:"同样的套餐，米饭吃 1/2 份，菜可以吃完",kcal:"450–600"},
-    snack:{t:"下午加餐",time:"16:00",food:"无糖酸奶 1 盒，或 1 个水果，或一杯拿铁（三选一）",kcal:"80–200"},
-    dinner:{t:"晚餐",time:"20:00 后",food:"瘦肉或鱼虾 100g + 蔬菜 250g，主食可以不吃",kcal:"200–340"},
-    kcal:"约 1000–1450 kcal",protein:"约 80–90g"
+    breakfast:{t:"早餐",time:"7:00",food:"鸡蛋 1 个 + 牛奶或无糖豆浆 250ml + 全麦面包 1 片（或半根玉米）"},
+    lunch:{t:"午餐",time:"12:00",food:"同样的套餐，米饭吃 1/2 份，菜可以吃完"},
+    snack:{t:"下午加餐",time:"16:00",food:"无糖酸奶 1 盒，或 1 个水果，或一杯拿铁（三选一）"},
+    dinner:{t:"晚餐",time:"20:00 后",food:"瘦肉或鱼虾 100g + 蔬菜 250g，主食可以不吃"},
+    protein:"约 80–90g"
   }
 };
+/* 每餐的具体食物：k 是热量区间 [低, 高] kcal；or 是可替换的选项；opt 表示可省；pick1 表示几样里选一样 */
+const MEAL_FOODS = {
+  hus:{
+    breakfast:{items:[
+      {n:"水煮蛋",q:"2 个",k:[140,140]},
+      {n:"纯牛奶",q:"250ml",k:[165,165],or:{n:"无糖豆浆",k:[80,80]}},
+      {n:"全麦面包",q:"2 片",k:[160,160],or:{n:"玉米 1 根",k:[110,110]}}]},
+    lunch:{items:[
+      {n:"米饭",q:"2/3 碗（约 130g）",k:[150,150]},
+      {n:"荤菜一份",q:"约一个手掌大小",k:[250,350]},
+      {n:"素菜一份",q:"一拳以上",k:[100,200]}]},
+    snack:{items:[
+      {n:"无糖酸奶",q:"1 盒",k:[100,130]},
+      {n:"水果",q:"1 个（苹果、橙子等）",k:[60,90]}],
+      alt:{n:"或者只喝一杯拿铁",k:[150,190]}},
+    dinner:{items:[
+      {n:"瘦肉或鱼虾",q:"150g",k:[150,250]},
+      {n:"蔬菜",q:"300g",k:[60,90]},
+      {n:"米饭",q:"半碗（约 100g，可省）",k:[115,115],opt:true},
+      {n:"做菜用油",q:"约半勺",k:[45,45]}]}
+  },
+  wife:{
+    breakfast:{items:[
+      {n:"水煮蛋",q:"1 个",k:[70,70]},
+      {n:"纯牛奶",q:"250ml",k:[165,165],or:{n:"无糖豆浆",k:[80,80]}},
+      {n:"全麦面包",q:"1 片",k:[80,80],or:{n:"半根玉米",k:[55,55]}}]},
+    lunch:{items:[
+      {n:"米饭",q:"半碗（约 100g）",k:[115,115]},
+      {n:"荤菜一份",q:"约一个手掌大小",k:[250,350]},
+      {n:"素菜一份",q:"一拳以上",k:[100,200]}]},
+    snack:{pick1:true,items:[
+      {n:"无糖酸奶",q:"1 盒",k:[100,130]},
+      {n:"水果",q:"1 个",k:[60,90]},
+      {n:"拿铁",q:"1 杯",k:[150,190]}]},
+    dinner:{items:[
+      {n:"瘦肉或鱼虾",q:"100g",k:[100,170]},
+      {n:"蔬菜",q:"250g",k:[50,75]},
+      {n:"米饭",q:"1/3 碗（可不吃）",k:[75,75],opt:true},
+      {n:"做菜用油",q:"约半勺",k:[45,45]}]}
+  }
+};
+function mealRange(f){
+  let lo, hi;
+  if(f.pick1){ lo=Math.min(...f.items.map(i=>i.k[0])); hi=Math.max(...f.items.map(i=>i.k[1])); }
+  else{
+    lo=0; hi=0;
+    f.items.forEach(i=>{ const l=i.or?Math.min(i.k[0],i.or.k[0]):i.k[0], h=i.or?Math.max(i.k[1],i.or.k[1]):i.k[1]; lo+=i.opt?0:l; hi+=h; });
+    if(f.alt){ lo=Math.min(lo,f.alt.k[0]); hi=Math.max(hi,f.alt.k[1]); }
+  }
+  return [lo,hi];
+}
+const kcalText=r=>r[0]===r[1]?`${r[0]}`:`${r[0]}–${r[1]}`;
+function mealKcal(person,meal){ return kcalText(mealRange(MEAL_FOODS[person][meal])); }
+function dayKcal(person){ const t=MEALS.map(m=>mealRange(MEAL_FOODS[person][m])).reduce((a,r)=>[a[0]+r[0],a[1]+r[1]],[0,0]); return `约 ${kcalText(t)} kcal`; }
 const DINNERS = {
   1:{n:"番茄虾仁炒蛋 + 白灼菜心",h:"虾仁提前解冻，少油快炒",kcal:{hus:"380–480",wife:"260–330"}},
   2:{n:"空气炸锅鸡腿肉 + 凉拌黄瓜",h:"去皮鸡腿肉用黑胡椒、生抽腌好，200℃ 烤 15 分钟",kcal:{hus:"400–500",wife:"280–340"}},
@@ -504,7 +579,8 @@ function viewToday(){
     <h2>今天两个人的进度</h2>
     ${["hus","wife"].map(p=>`<div class="track ${p}"><span class="name">${PEOPLE[p].label}</span>
       <div class="beads">${beadsFor(p)}</div>
-      <div class="streak"><b>${streak(p)}</b>连续天</div></div>`).join("")}
+      <div class="streak"><b>${streak(p)}</b>连续天</div>
+      <span class="last">${(t=>t?"最近打卡 "+whenText(t):"还没有打卡")(lastCheckinAt(p))}</span></div>`).join("")}
   </section>`;
 
   let trainCard;
@@ -518,11 +594,16 @@ function viewToday(){
       ${done?`<button class="btn done" data-undo-workout>已完成</button>`:`<button class="btn primary" data-start="${s.w}">开始训练</button>`}</div>`;
   }
 
+  const foodList=(person,m)=>{ const f=MEAL_FOODS[person][m];
+    const row=i=>`<li><span>${esc(i.n)}<small>${esc(i.q)}${i.or?` · 或${esc(i.or.n)} ${kcalText(i.or.k)}`:""}</small></span><b>${kcalText(i.k)}</b></li>`;
+    return `<ul class="foods">${f.items.map(row).join("")}</ul>`+
+      (f.pick1?`<p class="foods-note">三样里选一样</p>`:"")+
+      (f.alt?`<p class="foods-note">${esc(f.alt.n)}（约 ${kcalText(f.alt.k)} kcal），就不再吃别的</p>`:""); };
   const meals=MEALS.map(m=>{
     const v=c.meals&&c.meals[m]; const p=plan[m];
     const b=(val,txt)=>`<button data-meal="${m}" data-v="${val}" aria-pressed="${v===val}">${txt}</button>`;
-    return `<div class="card meal"><div class="meal-top"><h4>${p.t}</h4><time>${p.time}</time></div>
-      <p>${esc(p.food)}</p><div class="seg" role="group" aria-label="${p.t}打卡">${b("plan","按计划吃了")}${b("over","吃多了")}${b("skip","没吃")}</div></div>`;
+    return `<div class="card meal"><div class="meal-top"><h4>${p.t} <time>${p.time}</time></h4><span class="kcal">约 ${mealKcal(me,m)} kcal</span></div>
+      ${foodList(me,m)}<div class="seg" role="group" aria-label="${p.t}打卡">${b("plan","按计划吃了")}${b("over","吃多了")}${b("skip","没吃")}</div></div>`;
   }).join("");
 
   const overCount=MEALS.filter(m=>c.meals&&c.meals[m]==="over").length;
@@ -530,7 +611,7 @@ function viewToday(){
 
   $("#view").innerHTML = duo + `
     <section class="sec"><div class="sec-h"><h3>今天的训练</h3></div>${trainCard}</section>
-    <section class="sec"><div class="sec-h"><h3>今天吃什么</h3><span>蛋白质目标 ${plan.protein}</span></div>
+    <section class="sec"><div class="sec-h"><h3>今天吃什么</h3><span>全天${dayKcal(me)} · 蛋白质${plan.protein}</span></div>
       <div class="stack">${meals}</div>${overNote}</section>
     <section class="sec"><div class="sec-h"><h3>工位起身</h3></div>
       <div class="card counter"><p>每坐 1 小时起身活动 2–3 分钟，今天目标 6 次</p>
@@ -544,11 +625,11 @@ function peekSwitch(){
 }
 function viewDiet(){
   const plan=MEAL_PLAN[viewP]; const w=new Date().getDay();
-  const rows=MEALS.map(m=>`<li><b>${plan[m].t}</b>　${esc(plan[m].food)}<small>${plan[m].time}　约 ${plan[m].kcal} kcal</small></li>`).join("");
+  const rows=MEALS.map(m=>`<li><b>${plan[m].t}</b>　${esc(plan[m].food)}<small>${plan[m].time}　约 ${mealKcal(viewP,m)} kcal</small></li>`).join("");
   const dinners=[1,2,3,4,5].map(d=>`<div class="dinner ${d===w?"today":""}"><span class="d">周${WEEK[d]}</span>
     <div><h4>${DINNERS[d].n}${d===w?'<span class="tag">今晚</span>':""}</h4><p>${DINNERS[d].h}</p><p>约 ${DINNERS[d].kcal[viewP]} kcal</p></div></div>`).join("");
   $("#view").innerHTML=peekSwitch()+`
-  <section class="sec"><div class="sec-h"><h3>${PEOPLE[viewP].label}的一天</h3><span>全天${plan.kcal} · 蛋白质 ${plan.protein}</span></div>
+  <section class="sec"><div class="sec-h"><h3>${PEOPLE[viewP].label}的一天</h3><span>全天${dayKcal(viewP)} · 蛋白质 ${plan.protein}</span></div>
     <div class="card"><ul class="list">${rows}</ul></div></section>
   <section class="sec"><div class="sec-h"><h3>晚餐轮换</h3><span>15 分钟快手菜</span></div>
     <div class="card">${dinners}</div>
@@ -600,6 +681,16 @@ function viewTrain(){
   <p class="note">膝盖或腰出现疼痛（不是肌肉酸）就先停下。${viewP==="hus"?"3 轮都轻松完成时，下次加 1–2kg 或每组多做 2 次。":"适应 3–4 周后从 2 轮加到 3 轮，或套上弹力带做。"}</p>`;
 }
 
+function lastCheckinAt(person){
+  let t=0; Object.values(store.checkins).forEach(c=>{ if(c.person===person && c.updatedAt>t) t=c.updatedAt; });
+  return t;
+}
+function whenText(t){
+  const d=new Date(t), now=new Date(); const hm=pad(d.getHours())+":"+pad(d.getMinutes());
+  if(ymd(d)===ymd(now)) return "今天 "+hm;
+  if(ymd(d)===ymd(addDays(now,-1))) return "昨天 "+hm;
+  return (d.getMonth()+1)+"/"+d.getDate()+" "+hm;
+}
 function measureSeries(person){
   return Object.values(store.measures).filter(m=>m.person===person).sort((a,b)=>a.date<b.date?-1:1);
 }
@@ -627,7 +718,28 @@ function chartSVG(field,label,unit){
     <div class="legend"><span><i style="background:var(--hus)"></i>老公</span><span><i style="background:var(--wife)"></i>老婆</span></div>
     </div>`;
 }
+function whoCard(p){
+  const ms=measureSeries(p);
+  const lastOf=k=>{ for(let i=ms.length-1;i>=0;i--) if(typeof ms[i][k]==="number") return ms[i]; return null; };
+  const w=lastOf("weight"), waist=lastOf("waist");
+  let trend="";
+  if(w){
+    const from=ymd(addDays(new Date(w.date+"T00:00:00"),-28));
+    const base=ms.find(m=>typeof m.weight==="number" && m.date>=from && m.date<w.date);
+    if(base){ const d=Math.round((w.weight-base.weight)*10)/10; trend=`近 4 周 ${d===0?"持平":(d>0?"+":"−")+Math.abs(d)+" kg"}`; }
+  }
+  const extra=[waist?`腰 ${waist.waist}`:"", ...(p==="wife"?[["hip","臀"],["thigh","腿"]].map(([k,l])=>{ const m=lastOf(k); return m?`${l} ${m[k]}`:""; }):[])].filter(Boolean).join(" · ");
+  const latest=ms.length?ms[ms.length-1].date:"";
+  return `<div class="who-card ${p}">
+    <div class="ava"><img src="assets/avatar-${p}.png" alt="${PEOPLE[p].label}的形象" width="70" height="70"></div>
+    <h4>${PEOPLE[p].label}</h4>
+    ${ms.length?`<div class="w">${w?`${w.weight}<small>kg</small>`:"—"}</div>
+    ${extra?`<p>${esc(extra)}</p>`:""}${trend?`<p>${trend}</p>`:""}<p>最新 ${+latest.slice(5,7)}/${+latest.slice(8)}</p>`
+    :`<p>还没有记录</p>`}
+  </div>`;
+}
 function renderRecordData(){
+  const pair=$("#recPair"); if(pair) pair.innerHTML=whoCard("hus")+whoCard("wife");
   const box=$("#recData"); if(!box) return;
   const hist=Object.values(store.measures).sort((a,b)=>a.date<b.date?1:-1).slice(0,16);
   const rows=hist.length?hist.map(m=>{
@@ -643,6 +755,7 @@ function viewRecord(){
   const ex=store.measures[me+"_"+today]||{};
   const v=k=>ex[k]!=null?ex[k]:"";
   $("#view").innerHTML=`
+  <section class="sec"><div class="sec-h"><h3>两个人的记录</h3></div><div class="pair" id="recPair"></div></section>
   <section class="sec"><div class="sec-h"><h3>记录${PEOPLE[me].label}的数据</h3><span>看 3–4 周的趋势，别看单日</span></div>
     <form class="card form" id="mForm">
       <label class="full">日期<input type="date" name="date" value="${today}" max="${today}"></label>
