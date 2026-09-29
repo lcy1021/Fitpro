@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta content="mobile_tab" name="shell-type"/>
+<title>Gentler Couple - 记录 (老婆端)</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;family=Noto+Sans+SC:wght@400;500;600;700;800;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "gentler-canvas": "#FAF8F5",
+            "gentler-pink": "#FF4B72",
+            "gentler-pink-soft": "#FFF0F4",
+            "gentler-peach": "#FF7B90",
+            "gentler-sky": "#38BDF8",
+            "gentler-sky-soft": "#E0F2FE",
+            "gentler-green": "#20B26C",
+            "gentler-green-soft": "#E8F8F0",
+            "gentler-dark": "#1E1F24",
+            "gentler-muted": "#8A8D99"
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans SC"', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: {
+            'gentler': '28px',
+            'gentler-lg': '32px',
+            'gentler-pill': '9999px',
+          },
+          boxShadow: {
+            'gentler-card': '0 8px 30px rgba(255, 75, 114, 0.05), 0 2px 10px rgba(0, 0, 0, 0.02)',
+            'gentler-glow-pink': '0 10px 28px rgba(255, 75, 114, 0.32)',
+            'gentler-subtle': '0 2px 12px rgba(0, 0, 0, 0.03)',
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      html, body {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        background-color: #FAF8F5;
+        font-family: "Plus Jakarta Sans", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-outlined.outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    .soft-mesh {
+      background: radial-gradient(circle at 12% 10%, rgba(255, 214, 226, 0.65) 0%, transparent 45%),
+                  radial-gradient(circle at 88% 22%, rgba(255, 236, 218, 0.6) 0%, transparent 48%),
+                  radial-gradient(circle at 50% 80%, rgba(255, 225, 235, 0.5) 0%, transparent 58%),
+                  #FAF8F5;
+    }
+  </style>
+</head>
+<body class="soft-mesh min-h-screen text-[#1E1F24] antialiased flex flex-col selection:bg-gentler-pink/20">
+<!-- Header: Gentler Apple-like frosted nav bar with Wife Identity Switch -->
+<header class="fixed top-0 inset-x-0 z-50 bg-[#FAF8F5]/85 backdrop-blur-2xl border-b border-black/[0.04] pt-safe">
+<div class="h-16 px-5 flex items-center justify-between max-w-md mx-auto">
+<!-- Left brand / title -->
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#FF4B72] to-[#FF8DA1] p-[2px] shadow-sm flex items-center justify-center">
+<div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px] text-[#FF4B72]">insights</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-xl font-black tracking-tight text-[#1E1F24] flex items-center gap-1.5 leading-none">
+          记录
+          <span class="w-2 h-2 rounded-full bg-[#FF4B72] inline-block animate-pulse"></span>
+</span>
+<span class="text-[11px] font-semibold text-[#8A8D99] mt-0.5 tracking-tight">Gentler Couple</span>
+</div>
+</div>
+<!-- Right couple switch pill & wife mascot avatar -->
+<div class="flex items-center gap-2.5">
+<button class="h-9 px-3.5 rounded-full bg-white/95 border border-[#FFE1E8] shadow-sm flex items-center gap-2 active:scale-95 transition-all text-xs font-bold text-[#45474F] hover:bg-white" type="button">
+<span class="text-[#8A8D99]">老公</span>
+<span class="material-symbols-outlined text-[14px] text-[#FF4B72]">sync_alt</span>
+<span class="text-[#FF4B72] font-black bg-[#FFF0F4] px-2 py-0.5 rounded-full shadow-[inset_0_0_0_1px_rgba(255,75,114,0.15)]">老婆</span>
+</button>
+<div class="w-10 h-10 rounded-full p-[2px] bg-gradient-to-br from-[#FF8DA1] to-[#FF4B72] shadow-sm flex-shrink-0">
+<img alt="Wife Mascot Avatar" class="w-full h-full rounded-full object-cover bg-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnlWG4URDdFSsGOplpwAYZPOWN_peSrTamIb3-IBE6luEY7QB3cMZG7-qxYnNa4cnezvz1IJrebtDFklkenyRS-N1X-h7o8QmxGNw1YTc47uRDx1hgW4fq2DxZ6Wh4DBOt08m763UzSVU8vD-MTDYnBSYUaj8MViX5xBcSdpQ5V_yEU3R5Ek0SQGrBMUj5hDnKUa6ijRIPENIZcFUAt29L6JndMa7_cQNc505J2fE3enbcdZj4Rbe6KcMqeC-GnLt-E1Q"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Flow -->
+<main class="flex-1 flex flex-col w-full max-w-md mx-auto px-4 pt-[76px] pb-28 gap-4">
+<!-- 2. Top Streak Ambient Capsule -->
+<section class="w-full flex items-center justify-between px-4 py-3 rounded-full bg-white/90 border border-white shadow-gentler-subtle backdrop-blur-md">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="text-base flex-shrink-0">💗</span>
+<span class="text-[13px] text-[#2C2E36] font-bold truncate">
+        两人并肩记录 <span class="text-[#FF4B72] text-[15px] font-extrabold">18</span> 天 · 状态温柔达标
+      </span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-[#FFF0F4] text-[#FF4B72] text-[11px] font-extrabold flex-shrink-0 border border-[#FFD9E2]">
+      超同频
+    </span>
+</section>
+<!-- 3. Healing Body State Insight Card (元气洞察柔粉大卡) -->
+<section class="w-full rounded-gentler bg-gradient-to-br from-white via-[#FFF8FA] to-[#FFF0F4] border border-[#FFE4EB] shadow-gentler-card p-5 relative overflow-hidden flex flex-col gap-4">
+<!-- Ambient glowing subtle circles -->
+<div class="absolute -top-10 -right-10 w-44 h-44 rounded-full bg-[#FF4B72]/10 blur-2xl pointer-events-none"></div>
+<div class="absolute -bottom-8 -left-8 w-36 h-36 rounded-full bg-[#FF7B90]/10 blur-xl pointer-events-none"></div>
+<div class="flex items-start justify-between gap-3 relative z-10">
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center gap-2">
+<span class="text-[17px] font-black text-[#1E1F24] tracking-tight">元气温养洞察</span>
+<span class="px-2.5 py-0.5 rounded-full bg-[#FF4B72] text-white text-[11px] font-bold shadow-sm">治愈中</span>
+</div>
+<p class="text-[13px] text-[#555866] mt-2 leading-relaxed font-medium">
+          体重大多反映水分变化，看 3-4 周平滑趋势！只要腰围和臀腿围度在变紧致，就说明方向完全正确，别为单日的小波动焦虑～🌸
+        </p>
+</div>
+<!-- Wife Mascot Top Card Visual -->
+<div class="w-16 h-16 rounded-2xl bg-white p-1 flex-shrink-0 shadow-sm border border-[#FFE1E8] flex items-center justify-center overflow-hidden">
+<img alt="Wife Mascot" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4yPqZcOhe8e-j7xwX4Ivv5hXRkGXIBV3h57z77j79WNdz3rmG_CSMV-yH7NBv_6n0Vnewvdunq0AiJgEVVmp1Dng2CbdbDnXSEgd7-AkdjfMhAHP1VcdsLeex956O8MLCgcsSaSl35L4PQ_LEz01lo7F8lANs1_Jrwr3uM_l5wGBRHvJLD139KJ5wgba6mfdPg3US5-RCD2gQjnKMZdGAt9Pw8Naq0yPxEK4wlmYV-CAjZWdwt2Y6FIkKBxTyfU0mjS0"/>
+</div>
+</div>
+<!-- Dual Streak Pill Modules -->
+<div class="flex flex-col gap-2 pt-1 relative z-10">
+<div class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-white/95 border border-[#FFE1E8] shadow-sm">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[#FF4B72] text-[18px] flex-shrink-0">verified</span>
+<span class="text-[12px] font-bold text-[#30323B] truncate">老婆连续打卡 16 天达成 · 紧致体态</span>
+</div>
+<span class="text-[11px] text-[#FF4B72] font-black flex-shrink-0 ml-1">稳步前行</span>
+</div>
+<div class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-white/80 border border-[#E9EBEF]">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[#0284C7] text-[18px] flex-shrink-0">check_circle</span>
+<span class="text-[12px] font-semibold text-[#5E6270] truncate">老公连续打卡 18 天达成 · 增肌减脂</span>
+</div>
+<span class="text-[11px] text-[#0284C7] font-bold flex-shrink-0 ml-1">伴行中</span>
+</div>
+</div>
+</section>
+<!-- 4. Record Today Form (女生专属 4 项围度管理软糖卡片) -->
+<section class="w-full rounded-gentler bg-white border border-[#F3ECE6] shadow-gentler-card p-5 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#FFF0F4] flex items-center justify-center">
+<span class="material-symbols-outlined text-[#FF4B72] text-[18px]">edit_calendar</span>
+</div>
+<span class="text-[17px] font-extrabold text-[#1E1F24]">记录今日体态</span>
+</div>
+<span class="px-3 py-1 rounded-full bg-[#FAF8F5] border border-[#EFECE6] text-[11px] text-[#787B87] font-bold">今天 9月29日</span>
+</div>
+<!-- 4 Trough-style Inset Measure Tiles (2x2 Grid) -->
+<div class="grid grid-cols-2 gap-3">
+<!-- 1. Weight -->
+<div class="flex flex-col p-3.5 rounded-2xl bg-[#FFF9FA] border border-[#FFE8EE]">
+<span class="text-[11px] font-semibold text-[#8A8D99]">晨起体重</span>
+<div class="flex items-baseline gap-1 my-1.5">
+<span class="text-[26px] font-black text-[#1E1F24] leading-none">54.6</span>
+<span class="text-[12px] font-bold text-[#8A8D99]">kg</span>
+</div>
+<span class="w-fit px-2 py-0.5 rounded-full bg-[#FFF0F4] text-[#FF4B72] text-[10px] font-extrabold border border-[#FFD9E2]">较上周 -0.3 kg</span>
+</div>
+<!-- 2. Waist -->
+<div class="flex flex-col p-3.5 rounded-2xl bg-[#FFF9FA] border border-[#FFE8EE]">
+<span class="text-[11px] font-semibold text-[#8A8D99]">核心腰围</span>
+<div class="flex items-baseline gap-1 my-1.5">
+<span class="text-[26px] font-black text-[#1E1F24] leading-none">65.2</span>
+<span class="text-[12px] font-bold text-[#8A8D99]">cm</span>
+</div>
+<span class="w-fit px-2 py-0.5 rounded-full bg-[#FFF0F4] text-[#FF4B72] text-[10px] font-extrabold border border-[#FFD9E2]">较上周 -0.6 cm</span>
+</div>
+<!-- 3. Hip -->
+<div class="flex flex-col p-3.5 rounded-2xl bg-[#FAF8F5] border border-[#EFEBE4]">
+<span class="text-[11px] font-semibold text-[#8A8D99]">蜜桃臀围</span>
+<div class="flex items-baseline gap-1 my-1.5">
+<span class="text-[26px] font-black text-[#1E1F24] leading-none">92.0</span>
+<span class="text-[12px] font-bold text-[#8A8D99]">cm</span>
+</div>
+<span class="w-fit px-2 py-0.5 rounded-full bg-[#EBF8F2] text-[#20B26C] text-[10px] font-extrabold border border-[#CDEFE0]">线条更紧致</span>
+</div>
+<!-- 4. Thigh -->
+<div class="flex flex-col p-3.5 rounded-2xl bg-[#FAF8F5] border border-[#EFEBE4]">
+<span class="text-[11px] font-semibold text-[#8A8D99]">大腿围度</span>
+<div class="flex items-baseline gap-1 my-1.5">
+<span class="text-[26px] font-black text-[#1E1F24] leading-none">51.2</span>
+<span class="text-[12px] font-bold text-[#8A8D99]">cm</span>
+</div>
+<span class="w-fit px-2 py-0.5 rounded-full bg-[#EBF8F2] text-[#20B26C] text-[10px] font-extrabold border border-[#CDEFE0]">柔和改善</span>
+</div>
+</div>
+<!-- Body Sensation Pills -->
+<div class="flex flex-col gap-2 pt-1">
+<span class="text-[12px] font-bold text-[#555866]">今日身体感受 (点选状态)</span>
+<div class="grid grid-cols-2 gap-2" id="feelingSelector">
+<button class="px-3 py-2 rounded-2xl text-[12px] font-bold bg-[#FF4B72] text-white shadow-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all border border-[#FF4B72]" onclick="toggleFeeling(this)" type="button">
+<span>✨</span><span>轻松轻盈</span>
+</button>
+<button class="px-3 py-2 rounded-2xl text-[12px] font-bold bg-[#FAF8F5] text-[#45474F] hover:bg-[#F2EFE9] flex items-center justify-center gap-1.5 active:scale-95 transition-all border border-[#EFECE5]" onclick="toggleFeeling(this)" type="button">
+<span>🌿</span><span>微微酸胀</span>
+</button>
+<button class="px-3 py-2 rounded-2xl text-[12px] font-bold bg-[#FAF8F5] text-[#45474F] hover:bg-[#F2EFE9] flex items-center justify-center gap-1.5 active:scale-95 transition-all border border-[#EFECE5]" onclick="toggleFeeling(this)" type="button">
+<span>💧</span><span>喝足水分</span>
+</button>
+<button class="px-3 py-2 rounded-2xl text-[12px] font-bold bg-[#FAF8F5] text-[#45474F] hover:bg-[#F2EFE9] flex items-center justify-center gap-1.5 active:scale-95 transition-all border border-[#EFECE5]" onclick="toggleFeeling(this)" type="button">
+<span>🌸</span><span>经期温养</span>
+</button>
+</div>
+</div>
+<!-- Strawberry Pink Glowing Jelly Action Button -->
+<button class="w-full py-4 mt-1 rounded-full bg-gradient-to-r from-[#FF4B72] to-[#FF7B90] text-white text-[15px] font-black shadow-gentler-glow-pink active:scale-98 transition-all flex items-center justify-center gap-2 tracking-wide" id="saveBodyBtn" onclick="saveRecord()" type="button">
+<span class="text-base">☁️</span>
+<span>保存并同步到家庭云端</span>
+</button>
+</section>
+<!-- 5. Couple Dynamic Trend Wave Chart (Gentler 动能波浪流体) -->
+<section class="w-full rounded-gentler bg-white border border-[#F3ECE6] shadow-gentler-card p-5 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-[17px] font-extrabold text-[#1E1F24]">双人体态平滑趋势</span>
+<span class="text-[11px] text-[#20B26C] font-bold mt-0.5">同步渐入佳境 💫</span>
+</div>
+<div class="flex items-center p-1 rounded-full bg-[#FAF8F5] border border-[#EFECE5] gap-0.5">
+<button class="px-3 py-1 rounded-full bg-[#FF4B72] text-white text-[11px] font-black shadow-sm" type="button">体重</button>
+<button class="px-2.5 py-1 rounded-full text-[#787B87] text-[11px] font-bold hover:text-[#1E1F24]" type="button">腰围</button>
+<button class="px-2.5 py-1 rounded-full text-[#787B87] text-[11px] font-bold hover:text-[#1E1F24]" type="button">臀围</button>
+</div>
+</div>
+<!-- Legend -->
+<div class="flex items-center justify-between text-[11px] pt-1">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-[#FF4B72]"></span>
+<span class="text-[#1E1F24] font-bold">老婆 (54.6 kg 平稳下行)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-[#38BDF8]"></span>
+<span class="text-[#6C707E] font-medium">老公 (74.2 kg)</span>
+</div>
+</div>
+<!-- Inline SVG Sinusoidal Wave Chart (Wife Pink on top, Husband Sky Blue below) -->
+<div class="w-full h-44 relative flex items-center justify-center rounded-2xl bg-gradient-to-b from-[#FFF5F7] via-[#FAF8F5] to-white border border-[#F6EBEF] overflow-hidden p-2">
+<svg class="w-full h-full" fill="none" preserveaspectratio="none" viewbox="0 0 340 130">
+<defs>
+<!-- Wife Soft Strawberry Glow Gradient -->
+<lineargradient id="wifePinkArea" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#FF4B72" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#FF4B72" stop-opacity="0.01"></stop>
+</lineargradient>
+<!-- Husband Subtle Sky Glow -->
+<lineargradient id="husbandSkyArea" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#38BDF8" stop-opacity="0.12"></stop>
+<stop offset="100%" stop-color="#38BDF8" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Husband Reference Sky Blue Ribbon & Area -->
+<path d="M 10,88 C 65,92 125,82 185,84 C 245,86 295,80 330,78 L 330,125 L 10,125 Z" fill="url(#husbandSkyArea)"></path>
+<path d="M 10,88 C 65,92 125,82 185,84 C 245,86 295,80 330,78" stroke="#38BDF8" stroke-dasharray="4 4" stroke-linecap="round" stroke-width="2.5"></path>
+<circle cx="330" cy="78" fill="#38BDF8" r="4.5" stroke="#ffffff" stroke-width="2"></circle>
+<!-- Wife Gentle Ribbon Glow Area -->
+<path d="M 10,42 C 75,32 135,54 195,38 C 255,24 295,34 330,24 L 330,125 L 10,125 Z" fill="url(#wifePinkArea)"></path>
+<!-- Wife Soft Strawberry Continuous Ribbon Stroke -->
+<path d="M 10,42 C 75,32 135,54 195,38 C 255,24 295,34 330,24" stroke="#FF4B72" stroke-linecap="round" stroke-width="4"></path>
+<!-- Wife Glowing Data Nodes -->
+<circle cx="10" cy="42" fill="#FF4B72" r="4.5" stroke="#ffffff" stroke-width="2"></circle>
+<circle cx="195" cy="38" fill="#FF4B72" r="4.5" stroke="#ffffff" stroke-width="2"></circle>
+<circle cx="330" cy="24" fill="#FF4B72" r="6" stroke="#ffffff" stroke-width="2.5"></circle>
+</svg>
+<div class="absolute bottom-2.5 right-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[11px] text-[#FF4B72] font-black shadow-sm border border-[#FFE1E8] flex items-center gap-1">
+<span>🌸</span><span>持续在舒适温和区间</span>
+</div>
+</div>
+</section>
+<!-- 6. Recent Logs River (近期双人流水) -->
+<section class="w-full rounded-gentler bg-white border border-[#F3ECE6] shadow-gentler-card p-5 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="text-[17px] font-extrabold text-[#1E1F24]">最近更新流水</span>
+<span class="text-[11px] text-[#8A8D99] font-bold">全家同步</span>
+</div>
+<div class="flex flex-col gap-2.5">
+<!-- Item 1: Wife Entry with Female Mascot -->
+<div class="flex items-center justify-between p-3.5 rounded-2xl bg-[#FFF9FA] border border-[#FFE8EE]">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-11 h-11 rounded-2xl bg-white p-0.5 flex-shrink-0 flex items-center justify-center overflow-hidden border border-[#FFD9E2] shadow-sm">
+<img alt="Wife Record Avatar" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuf1yThlVuSC5R37VXXwJbA76D9PLljx-l4Lz2pdr5DY_HklVB-353z2YCQJUcKPcnBwOuVF9-GM4RnnzTogotyzqsv3pLmqZDSaxRvmh2RE0gwPQBmQdQ2knYFSbi_tZo97rUfh7WSxQ10b7w_u2udqE3mwad5mhIt49UicPy1iX_ES7XvvD8EMnfQrShStFwoWvHSmKCt8GiplSH9KPeXkf72P8QbLhTh0gbJ2zMFAjNGJBwutvNi-OA8Lr3uSAbH5c"/>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="text-[13px] text-[#1E1F24] font-bold truncate">老婆 · 晨间记录</span>
+<span class="px-2 py-0.5 rounded-full bg-[#FFF0F4] text-[#FF4B72] text-[10px] font-bold border border-[#FFD9E2]">昨日</span>
+</div>
+<span class="text-[11px] text-[#8A8D99] font-medium truncate mt-0.5">腰围 65.2cm · 臀围 92.0cm</span>
+</div>
+</div>
+<div class="flex flex-col items-end flex-shrink-0 ml-2">
+<span class="text-[15px] font-black text-[#FF4B72]">54.6 kg</span>
+<span class="text-[11px] text-[#20B26C] font-extrabold mt-0.5">-0.3 kg</span>
+</div>
+</div>
+<!-- Item 2: Husband Entry with Male Mascot -->
+<div class="flex items-center justify-between p-3.5 rounded-2xl bg-[#FAF8F5] border border-[#EFECE5]">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-11 h-11 rounded-2xl bg-white p-0.5 flex-shrink-0 flex items-center justify-center overflow-hidden border border-[#E0F2FE] shadow-sm">
+<img alt="Husband Record Avatar" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVcWJC8h03Kmn2dTW7C44htaRS7n4-m0hK49vDQUN7eRi4i0XJmI7W2f_AgLh0jDGjG7LOY09YAqaiyfIrCW4b5bKebA5501ZQekDJfWa9QFJMJ3ArZw4tpxhPVWryQb-YXMuxeX1yghbIdUdHVf94Rrp10G5KoxXgDjnPzRfQgFFpOak87d6DGuh_H88ZYRPhveUNv2wXTB3Fwg3zAUKnZc6RR2teB_If7lxTCKWpvyWADbxqYJtZl74eoRCPZQA5oWg"/>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="text-[13px] text-[#1E1F24] font-bold truncate">老公 · 运动后补录</span>
+<span class="px-2 py-0.5 rounded-full bg-[#E0F2FE] text-[#0284C7] text-[10px] font-bold border border-[#BAE6FD]">今日</span>
+</div>
+<span class="text-[11px] text-[#8A8D99] font-medium truncate mt-0.5">深蹲恢复 · 喝水 2200ml</span>
+</div>
+</div>
+<div class="flex flex-col items-end flex-shrink-0 ml-2">
+<span class="text-[15px] font-black text-[#1E1F24]">74.2 kg</span>
+<span class="text-[11px] text-[#8A8D99] font-bold mt-0.5">保持稳定</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Family Sync Code Capsule Card -->
+<section class="w-full rounded-gentler bg-white border border-[#F3ECE6] shadow-gentler-card p-5 flex flex-col gap-3">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#FFF0F4] flex items-center justify-center">
+<span class="material-symbols-outlined text-[#FF4B72] text-[18px]">key</span>
+</div>
+<span class="text-[17px] font-extrabold text-[#1E1F24]">双人家庭同步口令</span>
+</div>
+<div class="flex items-center justify-between p-2.5 pl-4 rounded-full bg-[#FAF8F5] border border-[#EFECE5] gap-2">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[#8A8D99] text-[18px] flex-shrink-0">lock</span>
+<span class="text-[12px] text-[#1E1F24] tracking-wider font-extrabold truncate">LOVE-FIT-2025-COUPLE</span>
+</div>
+<button class="px-4 py-2 rounded-full bg-gradient-to-r from-[#FF4B72] to-[#FF7B90] text-white text-[12px] font-black shadow-sm active:scale-95 transition-transform flex-shrink-0" id="copyCodeBtn" onclick="copySyncCode()" type="button">
+        复制邀请码
+      </button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar: Gentler Style Frosted Dock (Record Tab Active in Strawberry Pink) -->
+<nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-[#FAF8F5]/90 backdrop-blur-2xl border-t border-black/[0.04] shadow-[0_-10px_30px_rgba(0,0,0,0.03)]">
+<div class="flex justify-around items-center h-[70px] max-w-md mx-auto px-4">
+<!-- Tab 1: Today -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#989BA8] hover:text-[#525562] font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">sunny</span>
+<span class="text-[11px] leading-tight tracking-tight">今日</span>
+</a>
+<!-- Tab 2: Nutrition -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#989BA8] hover:text-[#525562] font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">restaurant</span>
+<span class="text-[11px] leading-tight tracking-tight">饮食</span>
+</a>
+<!-- Tab 3: Workout -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#989BA8] hover:text-[#525562] font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">directions_run</span>
+<span class="text-[11px] leading-tight tracking-tight">训练</span>
+</a>
+<!-- Tab 4: Progress / Record (Active in Strawberry Pink #FF4B72) -->
+<a class="relative flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#FF4B72] font-extrabold transition-all" href="#">
+<span class="material-symbols-outlined text-[24px]">insights</span>
+<span class="text-[11px] leading-tight tracking-tight font-black">记录</span>
+<span class="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[#FF4B72] shadow-[0_0_8px_rgba(255,75,114,0.8)]"></span>
+</a>
+</div>
+</nav>
+<!-- Interactive Scripts -->
+<script>
+  function toggleFeeling(button) {
+    const isSelected = button.classList.contains('bg-[#FF4B72]');
+    if (isSelected) {
+      button.classList.remove('bg-[#FF4B72]', 'text-white', 'border-[#FF4B72]');
+      button.classList.add('bg-[#FAF8F5]', 'text-[#45474F]', 'border-[#EFECE5]');
+    } else {
+      button.classList.remove('bg-[#FAF8F5]', 'text-[#45474F]', 'border-[#EFECE5]');
+      button.classList.add('bg-[#FF4B72]', 'text-white', 'border-[#FF4B72]');
+    }
+  }
+
+  function saveRecord() {
+    const btn = document.getElementById('saveBodyBtn');
+    if (!btn) return;
+    btn.innerHTML = '<span>✨</span><span>已同步至云端 💕</span>';
+    btn.classList.remove('from-[#FF4B72]', 'to-[#FF7B90]');
+    btn.classList.add('from-[#20B26C]', 'to-[#42D392]');
+    setTimeout(() => {
+      btn.innerHTML = '<span class="text-base">☁️</span><span>保存并同步到家庭云端</span>';
+      btn.classList.remove('from-[#20B26C]', 'to-[#42D392]');
+      btn.classList.add('from-[#FF4B72]', 'to-[#FF7B90]');
+    }, 2200);
+  }
+
+  function copySyncCode() {
+    const btn = document.getElementById('copyCodeBtn');
+    if (!btn) return;
+    btn.innerText = '已复制!';
+    setTimeout(() => {
+      btn.innerText = '复制邀请码';
+    }, 1800);
+  }
+</script>
+</body></html>

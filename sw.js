@@ -1,10 +1,11 @@
 // DuoFit 离线缓存：打开时先用手机里存的页面和图片（秒开），同时在后台拿最新版，下次打开生效。
 // 只缓存本站的文件；Supabase 数据同步和 AI 请求（其他域名）一律不经过缓存。
-const CACHE = "duofit-v1";
+const CACHE = "duofit-v2";
 const CORE = [
   "./", "index.html", "config.js", "manifest.webmanifest",
   "assets/icons/favicon-64.png", "assets/icons/app-icon-180.png",
   "assets/login/hus-running.webp", "assets/login/wife-running.webp",
+  "assets/brand/duofit-wordmark.svg",
   "assets/avatar-hus.png", "assets/avatar-wife.png",
 ];
 

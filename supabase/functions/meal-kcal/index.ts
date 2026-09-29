@@ -44,7 +44,8 @@ const SCHEMA = {
 };
 
 const BASE_URL = Deno.env.get("ANTHROPIC_BASE_URL") || undefined;
-const MODEL = Deno.env.get("AI_MODEL") || "claude-opus-5-5";
+// 米醋 vip_4 不提供 Claude 通道；未显式设 AI_MODEL 时选该分组可用的国产模型。
+const MODEL = Deno.env.get("AI_MODEL") || (BASE_URL?.includes("micuapi.ai") ? "deepseek-v4-pro" : "claude-opus-5-5");
 const RELAY = !!BASE_URL; // 走中转时只用最基础的请求参数，兼容性更好
 const anthropic = new Anthropic({
   apiKey: Deno.env.get("ANTHROPIC_API_KEY") || null,
@@ -123,6 +124,10 @@ Deno.serve(async (req) => {
     db.from("checkins").select("id").eq("family", family).limit(1),
     db.from("measures").select("id").eq("family", family).limit(1),
   ]);
+  if (c.error || m.error) {
+    console.error("family lookup failed", c.error?.message, m.error?.message);
+    return reply(500, { error: "family_check_failed" });
+  }
   if (!(c.data?.length || m.data?.length)) return reply(403, { error: "unknown_family" });
 
   const quota = await db.rpc("fl_ai_quota", { p_family: family, p_limit: DAILY_LIMIT });
@@ -149,6 +154,9 @@ Deno.serve(async (req) => {
       // 把上游（官方或中转）的报错原因简短带回来，方便排查；不含 Key
       const detail = String(err.message ?? "").replace(/sk-[A-Za-z0-9_-]+/g, "sk-***").slice(0, 300);
       console.error("upstream error", err.status, detail);
+      if (/model_not_found|No available channel/i.test(detail)) {
+        return reply(502, { error: "model_unavailable", model: MODEL });
+      }
       return reply(502, { error: "upstream", status: err.status, detail, model: MODEL });
     }
     console.error("internal error", err);

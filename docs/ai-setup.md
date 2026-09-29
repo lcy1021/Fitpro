@@ -73,9 +73,9 @@ Supabase 控制台 → **Project Settings** → **General**，看 **Region**：
 | `ANTHROPIC_BASE_URL` | 中转地址，例如 `https://api.example.com` | 不要带 `/v1/messages`；设了这一项就会走中转 |
 | `ANTHROPIC_API_KEY` | 中转给你的 Key | 中转用 `x-api-key` 认证时填这个 |
 | `ANTHROPIC_AUTH_TOKEN` | 中转给你的 Key | 中转要求 `Authorization: Bearer` 时改填这个（和上一项二选一） |
-| `AI_MODEL` | 中转那边的模型名，例如 `claude-opus-5-5` | 不填默认 `claude-opus-5-5`；中转改了名字时必须填 |
+| `AI_MODEL` | 中转分组实际支持的模型名 | 米醋地址未填此项时默认 `deepseek-v4-pro`；其他地址未填时默认 `claude-opus-5-5`。显式填了不支持的模型仍会报错 |
 
-走中转时，函数会先用结构化输出请求；如果中转不支持（返回 400/404/422），会自动退回"让模型只输出 JSON"的方式，一般都能用。
+走中转时，函数只请求一次，在提示词里要求模型直接输出 JSON；中转不需要支持结构化输出参数。
 
 **选中转的注意事项**：你写的那句"吃了什么"会经过中转服务商的服务器。只发送饮食描述，不含体重等其他数据，但还是建议选口碑好的服务商。
 
@@ -116,7 +116,7 @@ DeepSeek 官方提供兼容 Anthropic 格式的接口，不需要中转，费用
 
 
 
-1. 手机打开 App，确认已经设置了家庭口令、并且打过至少一次卡（函数只服务已经在用的家庭）。
+1. 手机打开 App，确认已经设置了家庭口令、并且保存过目标或打过至少一次卡，等待同步成功（函数只服务已经在用的家庭）。
 2. 点任意一餐的「📝 记一下实际吃了什么」，写一句话，点「🤖 让 AI 估算这一顿」。
 3. 几秒后出现带紫色 **AI** 标记的结果就说明成功了。
 
@@ -127,6 +127,10 @@ DeepSeek 官方提供兼容 Anthropic 格式的接口，不需要中转，费用
 | AI 的 Key 不对或余额不足 | 检查 Secrets 里的 Key；中转的话确认该用 `ANTHROPIC_API_KEY` 还是 `ANTHROPIC_AUTH_TOKEN` |
 | 服务器连不上 AI 接口 | `AI_REGION` 和项目地区不一致，或者官方接口不通 → 配置中转 |
 | AI 估算失败 | 看 Supabase → Edge Functions → meal-kcal → Logs；常见是 JWT 验证没关、中转模型名不对 |
+| 家庭口令下还没有同步记录 | 目标或打卡尚未同步，先等同步完成再试 |
+| AI 次数表还没配置好 | 运行 `supabase-ai-setup.sql`，检查 `fl_ai_quota` |
+| AI 服务无法读取家庭记录 | 检查 Edge Function 的服务端数据库配置和函数日志 |
+| 当前模型在中转分组不可用 / `model_not_found` | 在 Supabase → Edge Functions → Secrets 核对 `AI_MODEL` 和中转令牌分组；米醋 `vip_4` 可选其模型广场当前列出的模型，例如 `deepseek-v4-pro`。改 Secret 后重试；若换了函数代码，还要重新部署 `meal-kcal` |
 
 ## 安全说明
 

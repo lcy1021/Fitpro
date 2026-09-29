@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta content="mobile_tab" name="shell-type"/>
+<title>Gentler Couple - 饮食</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Noto+Sans+SC:wght@400;500;600;700;800;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "sky-primary": "#0284c7",
+            "sky-light": "#e0f2fe",
+            "gentler-dark": "#1E2229",
+            "gentler-muted": "#687082"
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans SC"', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: {
+            'card': '26px',
+            'card-sm': '18px',
+            'pill': '9999px',
+          },
+          boxShadow: {
+            'gentler-card': '0 8px 30px rgba(2, 132, 199, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02)',
+            'gentler-glow': '0 8px 20px rgba(2, 132, 199, 0.28)',
+            'gentler-inner': 'inset 0 1px 1px rgba(255, 255, 255, 0.95)',
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      html, body {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        background-color: #F8FAFD;
+        font-family: "Plus Jakarta Sans", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-outlined.outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    .sky-mesh {
+      background: radial-gradient(circle at 15% 10%, rgba(224, 242, 254, 0.85) 0%, transparent 45%),
+                  radial-gradient(circle at 88% 22%, rgba(186, 230, 253, 0.5) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 80%, rgba(240, 249, 255, 0.9) 0%, transparent 60%),
+                  #F8FAFD;
+    }
+  </style>
+</head>
+<body class="sky-mesh min-h-screen text-[#1E2229] antialiased flex flex-col selection:bg-sky-200">
+<!-- Header: Gentler Apple-like frosted nav bar -->
+<header class="fixed top-0 inset-x-0 z-50 bg-[#F8FAFD]/85 backdrop-blur-2xl border-b border-sky-100/60 pt-safe">
+<div class="h-16 px-5 flex items-center justify-between">
+<!-- Left brand / title -->
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#0284c7] to-[#38bdf8] p-[2px] shadow-sm flex items-center justify-center">
+<div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
+<span class="text-xl">🥗</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-xl font-extrabold tracking-tight text-[#1E2229] flex items-center gap-1.5 leading-tight">
+            今日
+            <span class="w-2 h-2 rounded-full bg-[#10b981] inline-block animate-pulse"></span>
+</span>
+<span class="text-[11px] font-semibold text-gentler-muted tracking-tight">Gentler Couple</span>
+</div>
+</div>
+<!-- Right couple switch pill & mascot avatar -->
+<div class="flex items-center gap-2.5"><div class="h-9 px-3.5 rounded-full bg-white/95 border border-sky-100 shadow-sm flex items-center gap-2 text-xs font-bold"><span class="text-[#0284c7] font-black bg-sky-50 px-2 py-0.5 rounded-full">老公</span><span class="material-symbols-outlined text-[13px] text-[#0284c7]">sync_alt</span><span class="text-[#94a3b8]">老婆</span></div><div class="w-10 h-10 rounded-full p-[2px] bg-gradient-to-br from-[#38bdf8] to-[#0284c7] shadow-sm shrink-0"><img alt="老公吉祥物" class="w-full h-full rounded-full object-cover bg-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDae_NL5d24dITLKIVW3nTLHccezCjqj5n24FzAXJsBi6Ee7El_87mWWF7ofbq9-cF0XJUfoUGILe4qcaZ5Swxp0XjV9jJlTGPTquEr0wXaK1HFU_uB3y5Qm8PpZbyRdATcYvIMeHaR7ewcjpIiKPTAIWP6HYddZQ6_YhS-MCINkZpcXkt589HpKYqFlur5e--OlPOnbb3jNpmuVdQoGGFHnaGlaRK9BSpTkqBE8h7aYOf_BovfXsfv-7cwZrmS8Lsdjeg"/></div></div>
+</div>
+</header>
+<!-- Main Content Flow -->
+<main class="flex-1 flex flex-col w-full max-w-md mx-auto px-4 pt-[76px] pb-32 gap-4"><!-- 1. Top Gentle Streak Pill Badge -->
+<div class="w-full bg-white/95 backdrop-blur-sm rounded-full p-2.5 px-3.5 shadow-sm border border-sky-100/80 flex items-center justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center text-[#0284c7] shrink-0">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-[13px] font-bold text-[#1E2229] truncate">并肩营养滋养 12 天</span>
+<span class="text-[11px] font-semibold text-[#0284c7] truncate">状态轻盈恢复中 · 稳态滋养</span>
+</div>
+</div>
+<span class="text-[11px] font-bold px-3 py-1 bg-[#E8F8F0] text-[#10b981] rounded-full shrink-0 shadow-sm">
+稳态达标
+</span>
+</div>
+<!-- 2. Nutrition Breeze Ring & Husband Mascot Duo Card -->
+<div class="w-full bg-white rounded-2xl p-5 shadow-sm border border-sky-100/80 relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-40 h-40 bg-sky-100/50 rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute -left-6 -bottom-6 w-36 h-36 bg-amber-50/60 rounded-full blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-4">
+<!-- Header info -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-[19px] font-extrabold text-[#1E2229] tracking-tight">优质蛋白摄入</span>
+<span class="text-[11px] font-bold bg-sky-50 text-[#0284c7] px-2.5 py-0.5 rounded-full border border-sky-100">
+老公端 120-130g
+</span>
+</div>
+<span class="text-[12px] font-semibold text-[#687082] flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-[#0284c7]">fitness_center</span>
+深层修复中
+</span>
+</div>
+<!-- Ring + Mascot Duo -->
+<div class="flex items-center justify-between gap-4 pt-1">
+<!-- SVG Circular Ring -->
+<div class="relative w-32 h-32 shrink-0 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90 transform" viewbox="0 0 120 120">
+<circle class="text-slate-100" cx="60" cy="60" fill="none" stroke="currentColor" stroke-width="12"></circle>
+<defs>
+<lineargradient id="ringSkyGrad" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#38bdf8"></stop>
+<stop offset="100%" stop-color="#0284c7"></stop>
+</lineargradient>
+</defs>
+<circle cx="60" cy="60" fill="none" r="50" stroke="url(#ringSkyGrad)" stroke-dasharray="314.16" stroke-dashoffset="84.8" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<div class="flex items-baseline leading-none">
+<span class="text-[34px] font-extrabold text-[#1E2229] tracking-tight">73</span>
+<span class="text-[14px] font-black text-[#0284c7] ml-0.5">%</span>
+</div>
+<span class="text-[11px] font-bold text-[#687082] mt-1">95g / 130g</span>
+</div>
+</div>
+<!-- Mascot Image & Encouraging Note -->
+<div class="flex flex-col items-center sm:items-start text-center sm:text-left min-w-0 flex-1">
+<div class="w-20 h-20 rounded-full bg-gradient-to-b from-sky-50 to-sky-100/70 p-1 mb-2 shadow-sm shrink-0 flex items-center justify-center border border-sky-100">
+<img alt="Fit Cloud Mascot Male" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBOIV_UGWFoEley5vrLeoif3KMToH0_9nVz7Nz9-3PVvHrn-l0s4syrlZ139iGJ0Daewxv-VvD4ScCxKP2hGsGvBk_ugc9unhpz-gH_DTgDkyTot87vGu_DPrXA8Jyubq9VLxLs6XneI9TV765Q8-kmPDwOUgBGFqURA0VJdZAgbLpiCEP0pwK2KnJi_xOHcoWwFtU4-HYYQw-0L0m3lv9ONZ4FM8LHq3Dk3T7HVtQM0LjH_Hyin0KTgFNQ8R-t3Tmwy4"/>
+</div>
+<p class="text-[12px] font-bold text-[#475569] leading-snug">
+蛋白充足，深层肌纤维与代谢正在强力修复 ⚡
+</p>
+</div>
+</div>
+<!-- 3 Macronutrient Progress Bars matching Wife card -->
+<div class="grid grid-cols-3 gap-2.5 pt-2">
+<!-- Protein -->
+<div class="bg-sky-50/70 border border-sky-100/80 rounded-2xl p-2.5 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-bold text-[#475569]">优质蛋白</span>
+<span class="text-[12px] font-extrabold text-[#0284c7]">95g</span>
+</div>
+<div class="w-full bg-white rounded-full h-2 overflow-hidden shadow-inner">
+<div class="bg-gradient-to-r from-[#38bdf8] to-[#0284c7] h-full rounded-full" style="width: 73%"></div>
+</div>
+<span class="text-[10px] font-medium text-slate-500">目标 130g</span>
+</div>
+<!-- Carbs -->
+<div class="bg-amber-50/70 border border-amber-100 rounded-2xl p-2.5 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-bold text-[#475569]">复合慢碳</span>
+<span class="text-[12px] font-extrabold text-[#f97316]">180g</span>
+</div>
+<div class="w-full bg-white rounded-full h-2 overflow-hidden shadow-inner">
+<div class="bg-gradient-to-r from-orange-300 to-[#f97316] h-full rounded-full" style="width: 85%"></div>
+</div>
+<span class="text-[10px] font-medium text-slate-500">目标 210g</span>
+</div>
+<!-- Fiber -->
+<div class="bg-[#F3EFFF] border border-purple-100 rounded-2xl p-2.5 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-bold text-[#475569]">膳食纤维</span>
+<span class="text-[12px] font-extrabold text-[#8C6FF7]">28g</span>
+</div>
+<div class="w-full bg-white rounded-full h-2 overflow-hidden shadow-inner">
+<div class="bg-gradient-to-r from-emerald-300 to-[#10b981] h-full rounded-full" style="width: 93%"></div>
+</div>
+<span class="text-[10px] font-medium text-slate-500">目标 30g</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. One-Day Gentle Meal Rhythm (一日舒心四餐卡片) -->
+<div class="flex flex-col gap-3 pt-1">
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[20px] text-[#0284c7]">restaurant_menu</span>
+<span class="text-[18px] font-extrabold text-[#1E2229] tracking-tight">一日舒心四餐</span>
+</div>
+<span class="text-[11px] font-bold text-[#687082]">依体感进食 · 不设负罪感</span>
+</div>
+<!-- Meal 1: Breakfast -->
+<div class="bg-white rounded-2xl p-4 shadow-sm border border-sky-100/70 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-sky-50 text-[#0284c7] font-black text-xs flex items-center justify-center">早</span>
+<span class="text-[15px] font-bold text-[#1E2229]">温润唤醒早餐</span>
+<span class="text-[11px] font-medium text-[#94a3b8]">07:00 - 08:30</span>
+</div>
+<span class="text-[11px] font-bold text-[#0284c7] bg-sky-50 px-2.5 py-0.5 rounded-full">约 26g 蛋白</span>
+</div>
+<p class="text-[13px] text-[#475569] leading-relaxed pl-9">
+水煮蛋 2 个 + 温热无糖黑豆浆 250ml + 全麦吐司 2 片
+</p>
+<div class="flex items-center justify-end gap-2 pt-1 pl-9">
+<button class="px-4 py-1.5 rounded-full bg-gradient-to-r from-sky-500 to-[#0284c7] text-white text-[12px] font-bold shadow-sm flex items-center gap-1 active:scale-95 transition-all" onclick="toggleMealDone(this)">
+<span class="material-symbols-outlined text-[15px]">check</span>
+按计划吃啦
+</button>
+</div>
+</div>
+<!-- Meal 2: Lunch -->
+<div class="bg-white rounded-2xl p-4 shadow-sm border border-sky-100/70 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-[#E8F8F0] text-[#10b981] font-black text-xs flex items-center justify-center">午</span>
+<span class="text-[15px] font-bold text-[#1E2229]">稳态能量午餐</span>
+<span class="text-[11px] font-medium text-[#94a3b8]">12:00 - 13:00</span>
+</div>
+<span class="text-[11px] font-bold text-[#10b981] bg-[#E8F8F0] px-2.5 py-0.5 rounded-full">约 38g 蛋白</span>
+</div>
+<p class="text-[13px] text-[#475569] leading-relaxed pl-9">
+优质瘦牛肉 / 煎鸡胸肉 120g + 米饭约 2/3 拳 + 绿叶深色蔬菜一大碗
+</p>
+<div class="flex items-center justify-end gap-2 pt-1 pl-9">
+<button class="px-4 py-1.5 rounded-full bg-gradient-to-r from-sky-500 to-[#0284c7] text-white text-[12px] font-bold shadow-sm flex items-center gap-1 active:scale-95 transition-all" onclick="toggleMealDone(this)">
+<span class="material-symbols-outlined text-[15px]">check</span>
+按计划吃啦
+</button>
+</div>
+</div>
+<!-- Meal 3: Work Snack -->
+<div class="bg-white rounded-2xl p-4 shadow-sm border border-sky-100/70 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-sky-50 text-[#0284c7] font-black text-xs flex items-center justify-center">歇</span>
+<span class="text-[15px] font-bold text-[#1E2229]">工位加餐防暴食</span>
+<span class="text-[11px] font-medium text-[#94a3b8]">16:00 黄金时段</span>
+</div>
+<span class="text-[11px] font-bold text-[#0284c7] bg-sky-50 px-2.5 py-0.5 rounded-full">约 12g 蛋白</span>
+</div>
+<p class="text-[13px] text-[#475569] leading-relaxed pl-9">
+浓稠无糖希腊酸奶 1 杯 + 原味坚果半包 或 冰美式 1 杯
+</p>
+<div class="flex items-center justify-end gap-2 pt-1">
+<button class="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-sky-500 to-[#0284c7] text-white text-[12px] font-bold shadow-sm active:scale-95 transition-all" onclick="setThreeState(this, 'active')">
+按计划 ✨
+</button>
+<button class="px-3 py-1.5 rounded-full bg-slate-100 text-[#475569] text-[12px] font-bold active:scale-95 transition-all" onclick="setThreeState(this, 'neutral')">
+稍吃多 🍰
+</button>
+<button class="px-3 py-1.5 rounded-full bg-slate-100 text-[#475569] text-[12px] font-bold active:scale-95 transition-all" onclick="setThreeState(this, 'neutral')">
+还没吃 ⏳
+</button>
+</div>
+</div>
+<!-- Meal 4: Dinner -->
+<div class="bg-white rounded-2xl p-4 shadow-sm border border-sky-100/70 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-sky-50 text-[#0284c7] font-black text-xs flex items-center justify-center">晚</span>
+<span class="text-[15px] font-bold text-[#1E2229]">舒缓夜间正餐</span>
+<span class="text-[11px] font-medium text-[#94a3b8]">19:30 - 20:30</span>
+</div>
+<span class="text-[11px] font-bold text-[#0284c7] bg-sky-50 px-2.5 py-0.5 rounded-full">约 32g 蛋白</span>
+</div>
+<p class="text-[13px] text-[#475569] leading-relaxed pl-9">
+手剥大虾仁 / 去皮鸡腿肉 150g + 温热白灼深色青菜 300g
+</p>
+<div class="flex items-center justify-end gap-2 pt-1">
+<button class="px-3.5 py-1.5 rounded-full bg-slate-100 text-[#475569] text-[12px] font-bold active:scale-95 transition-all" onclick="setThreeState(this, 'neutral')">
+按计划 ✨
+</button>
+<button class="px-3 py-1.5 rounded-full bg-slate-100 text-[#475569] text-[12px] font-bold active:scale-95 transition-all" onclick="setThreeState(this, 'neutral')">
+稍吃多 🍰
+</button>
+<button class="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-sky-500 to-[#0284c7] text-white text-[12px] font-bold shadow-sm active:scale-95 transition-all" onclick="setThreeState(this, 'active')">
+还没吃 ⏳
+</button>
+</div>
+</div>
+</div>
+<!-- 4. 15-Minute Easy High-Protein Dinner Rotation -->
+<div class="w-full bg-white rounded-2xl p-5 shadow-sm border border-sky-100/70 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-[#0284c7]">timer</span>
+<span class="text-[17px] font-extrabold text-[#1E2229] tracking-tight">15min 快手高蛋白轮换</span>
+</div>
+<span class="text-[11px] font-bold text-[#10b981]">今晚推荐 · 周一至周五省心灵感</span>
+</div>
+<div class="bg-sky-50/60 border border-sky-100 rounded-2xl p-3.5 flex flex-col gap-2">
+<div class="flex items-center justify-between flex-wrap gap-1">
+<span class="text-[14px] font-bold text-[#1E2229]">今晚菜单：空气炸锅鸡腿肉 + 凉拌黄瓜</span>
+<span class="text-[11px] font-bold bg-[#E8F8F0] text-[#10b981] px-2.5 py-0.5 rounded-full">
+用时 12min · 已完成 ✓
+</span>
+</div>
+<p class="text-[12px] text-[#475569] leading-relaxed">
+💡 <strong class="text-[#1E2229] font-bold">备菜小心机：</strong>去皮低卡腌制 10 分钟，空气炸锅 180℃ 烤 12 分钟，外皮香脆内里汁水充盈，蛋白质满满无需繁重洗锅。
+</p>
+</div>
+</div>
+<!-- 5. Takeout Ordering Relief Guide -->
+<div class="w-full bg-white rounded-2xl p-5 shadow-sm border border-sky-100/70 flex flex-col gap-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-[#0284c7]">takeout_dining</span>
+<span class="text-[17px] font-extrabold text-[#1E2229] tracking-tight">外卖增肌减脂点餐指南</span>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<div class="bg-[#F0FAF5] border border-emerald-100 rounded-2xl p-3 flex flex-col gap-1.5">
+<div class="flex items-center gap-1.5 text-[#10b981]">
+<span class="material-symbols-outlined text-[16px]">sentiment_satisfied</span>
+<span class="text-[12px] font-bold">舒心优先选</span>
+</div>
+<p class="text-[11px] text-[#475569] leading-relaxed">
+白灼清蒸牛羊肉/海鲜，米饭主动留 1/3，汤浸菜过水沥油，吃得饱足无负担。
+</p>
+</div>
+<div class="bg-amber-50/70 border border-amber-100 rounded-2xl p-3 flex flex-col gap-1.5">
+<div class="flex items-center gap-1.5 text-amber-800">
+<span class="material-symbols-outlined text-[16px]">healing</span>
+<span class="text-[12px] font-bold">少焦虑避坑</span>
+</div>
+<p class="text-[11px] text-[#475569] leading-relaxed">
+避开碎肉丸子与重酱芡汁，少点裹粉油炸配菜，汤水单放更健康。
+</p>
+</div>
+</div>
+</div>
+<!-- 6. Warm Reassurance FAQ -->
+<div class="w-full bg-white rounded-2xl p-5 shadow-sm border border-sky-100/70 flex flex-col gap-2.5">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[20px] text-[#0284c7]">psychology_alt</span>
+<span class="text-[17px] font-extrabold text-[#1E2229] tracking-tight">温和体贴回应</span>
+</div>
+<details class="group bg-slate-50/80 rounded-2xl p-3.5 cursor-pointer">
+<summary class="flex items-center justify-between text-[13px] font-bold text-[#1E2229]">
+<span>聚餐不小心吃多了怎么办？</span>
+<span class="material-symbols-outlined text-[18px] text-[#687082] group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<p class="text-[12px] text-[#475569] mt-2 leading-relaxed">
+完全不必内疚！热量盈余会自然充盈肌糖原。明天多喝两杯水，午餐保持清淡高蛋白，肌肉与代谢会迅速利用多余能量。
+</p>
+</details>
+<details class="group bg-slate-50/80 rounded-2xl p-3.5 cursor-pointer">
+<summary class="flex items-center justify-between text-[13px] font-bold text-[#1E2229]">
+<span>晚上加班太晚肚子饿了怎么办？</span>
+<span class="material-symbols-outlined text-[18px] text-[#687082] group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<p class="text-[12px] text-[#475569] mt-2 leading-relaxed">
+微波炉加热一盒 200ml 温热高钙纯牛奶，或吃两颗白煮蛋清。温热液体不仅抚慰胃部与神经，还能提供夜间肌纤维修护蛋白，安心好眠。
+</p>
+</details>
+</div>
+<!-- 7. Bottom Main Log Action Button -->
+<div class="pt-2 pb-2">
+<button class="w-full py-4 px-6 rounded-full bg-gradient-to-r from-sky-500 via-[#0284c7] to-sky-600 text-white font-extrabold text-[16px] shadow-sm flex items-center justify-center gap-2 active:scale-95 transition-all" id="recordCompleteBtn" onclick="celebrateLog()">
+<span class="text-xl">🥑</span>
+<span>记录完毕，今天也照顾好两个人的胃</span>
+</button>
+</div></main>
+<!-- Bottom Navigation Bar: Gentler Style Frosted Dock -->
+<nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-[#F8FAFD]/90 backdrop-blur-2xl border-t border-sky-100/70 shadow-[0_-8px_25px_rgba(2,132,199,0.04)]">
+<div class="flex justify-around items-center h-[70px] max-w-md mx-auto px-4">
+<!-- Tab 1: Today -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#94a3b8] hover:text-slate-600 font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">sunny</span>
+<span class="text-[11px] leading-tight tracking-tight">今日</span>
+</a>
+<!-- Tab 2: Nutrition (Active) -->
+<a class="relative flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#0284c7] font-extrabold transition-all" href="#">
+<span class="material-symbols-outlined text-[24px]">restaurant</span>
+<span class="text-[11px] leading-tight tracking-tight">饮食</span>
+<span class="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[#0284c7] shadow-[0_0_8px_rgba(2,132,199,0.9)]"></span>
+</a>
+<!-- Tab 3: Workout -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#94a3b8] hover:text-slate-600 font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">directions_run</span>
+<span class="text-[11px] leading-tight tracking-tight">训练</span>
+</a>
+<!-- Tab 4: Progress -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#94a3b8] hover:text-slate-600 font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">insights</span>
+<span class="text-[11px] leading-tight tracking-tight">记录</span>
+</a>
+</div>
+</nav>
+<!-- Interactive Scripts -->
+<script>
+    function toggleMealDone(btn) {
+      if (btn.dataset.done === 'true') {
+        btn.className = 'px-4 py-2 rounded-full bg-gradient-to-r from-sky-500 to-sky-600 text-white text-xs font-bold shadow-gentler-glow flex items-center gap-1 active:scale-95 transition-all';
+        btn.innerHTML = '<span class="material-symbols-outlined text-[15px]">check_circle</span><span>按计划吃啦</span>';
+        btn.dataset.done = 'false';
+      } else {
+        btn.className = 'px-4 py-2 rounded-full bg-emerald-500 text-white text-xs font-bold shadow-md flex items-center gap-1 active:scale-95 transition-all';
+        btn.innerHTML = '<span class="material-symbols-outlined text-[15px]">done_all</span><span>已完成记录 ✨</span>';
+        btn.dataset.done = 'true';
+      }
+    }
+
+    function setThreeState(btn, type) {
+      const parent = btn.parentElement;
+      const buttons = parent.querySelectorAll('button');
+      buttons.forEach(b => {
+        b.className = 'px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold transition-all active:scale-95';
+      });
+      btn.className = 'px-3.5 py-1.5 rounded-full bg-gradient-to-r from-sky-500 to-sky-600 text-white text-xs font-bold shadow-gentler-glow transition-all active:scale-95';
+    }
+
+    function celebrateLog() {
+      const btn = document.getElementById('finish-log-btn');
+      if (btn) {
+        btn.innerHTML = '<span class="text-xl">✨</span><span>已完成今日营养记录 · 双人体感绝佳</span>';
+        btn.classList.remove('from-sky-500', 'to-sky-600');
+        btn.classList.add('from-emerald-500', 'to-teal-600');
+      }
+    }
+  </script>
+</body></html>

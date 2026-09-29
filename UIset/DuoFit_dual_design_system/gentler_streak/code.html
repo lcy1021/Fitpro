@@ -1,0 +1,497 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+<meta content="mobile_tab" name="shell-type">
+<title>Gentler Couple - 今日 (老婆端)</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Noto+Sans+SC:wght@400;500;700;800;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "gentler-canvas": "#FAF8F5",
+            "gentler-card": "#FFFFFF",
+            "gentler-pink": "#FF4B72",
+            "gentler-pink-soft": "#FFF0F4",
+            "gentler-peach": "#FF7B90",
+            "gentler-green": "#20B26C",
+            "gentler-green-soft": "#E8F8F0",
+            "gentler-blue": "#0284C7",
+            "gentler-dark": "#1E1F24",
+            "gentler-muted": "#8A8D99"
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans SC"', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: {
+            'gentler': '30px',
+            'gentler-lg': '34px',
+            'gentler-pill': '9999px',
+          },
+          boxShadow: {
+            'gentler-card': '0 12px 36px rgba(45, 30, 20, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02)',
+            'gentler-hover': '0 16px 44px rgba(255, 75, 114, 0.15)',
+            'gentler-glow-pink': '0 8px 24px rgba(255, 75, 114, 0.35)',
+            'gentler-inner': 'inset 0 1px 1px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(0, 0, 0, 0.02)',
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      html, body {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        background-color: #FAF8F5;
+        font-family: "Plus Jakarta Sans", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-outlined.outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    .soft-mesh {
+      background: radial-gradient(circle at 10% 15%, rgba(255, 214, 226, 0.7) 0%, transparent 45%),
+                  radial-gradient(circle at 90% 25%, rgba(255, 238, 220, 0.65) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 85%, rgba(255, 225, 235, 0.5) 0%, transparent 60%),
+                  #FAF8F5;
+    }
+  </style>
+</head>
+<body class="soft-mesh min-h-screen text-[#1E1F24] antialiased flex flex-col selection:bg-gentler-pink/20">
+<!-- Header: Gentler Apple-like frosted nav bar with Wife Identity Switch -->
+<header class="fixed top-0 inset-x-0 z-50 bg-[#FAF8F5]/85 backdrop-blur-2xl border-b border-black/[0.03] pt-safe">
+<div class="h-16 px-5 flex items-center justify-between">
+<!-- Left brand / title -->
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#FF4B72] to-[#FF8DA1] p-[2px] shadow-sm flex items-center justify-center">
+<div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
+<span class="text-xl">🌸</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-xl font-extrabold tracking-tight text-[#1E1F24] flex items-center gap-1.5 leading-none">
+            今日
+            <span class="w-2 h-2 rounded-full bg-[#FF4B72] inline-block animate-pulse"></span>
+</span>
+<span class="text-[11px] font-semibold text-[#8A8D99] mt-0.5 tracking-tight">Gentler Couple</span>
+</div>
+</div>
+<!-- Right couple switch pill & wife mascot avatar -->
+<div class="flex items-center gap-2">
+<button class="h-9 px-3.5 rounded-gentler-pill bg-white/90 border border-pink-100 shadow-sm flex items-center gap-2 active:scale-95 transition-all text-xs font-bold text-[#45474F] hover:bg-white">
+<span class="text-[#8A8D99]">老公</span>
+<span class="material-symbols-outlined text-[14px] text-[#FF4B72]">sync_alt</span>
+<span class="text-[#FF4B72] font-black bg-pink-50 px-1.5 py-0.5 rounded-full">老婆</span>
+</button>
+<div class="w-9 h-9 rounded-full p-[2px] bg-gradient-to-br from-[#FF7B90] to-[#FF4B72] shadow-sm flex-shrink-0">
+<img alt="Wife Mascot Avatar" class="w-full h-full rounded-full object-cover bg-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0L6oJkNkWZZnBinco0vkxehXUj1aZgbspF3G-z3oWupu4_DRY9aTE6h88ArkA8Z1si8TIBbQZii_qsekvz_eoWdosFLpWU5XBxLN_YY-1zIa2-0Vh2TSauBBd06VDud4FQL_w81Bhtdb-B3xlHhrFNXnYlTcF6DvO9U7bBFONYzOC7XICWul2p55apnOcoCI6n5oBz7WJkM2IYyRd3XseRsIqLUlGqFhnBJrSkIC4e8CUL_1gjZcyJbA08lrOBCZ65ho">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Flow -->
+<main class="flex-1 flex flex-col w-full max-w-md mx-auto px-4 pt-[74px] pb-28 gap-4">
+<!-- 0. Streak / Companionship Jelly Pill -->
+<div class="w-full bg-white/80 backdrop-blur-md border border-white rounded-gentler-pill px-4 py-2.5 shadow-gentler-card flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-gradient-to-tr from-[#FFE4EC] to-[#FFD0DC] flex items-center justify-center text-sm shadow-inner">⚡</div>
+<span class="text-xs font-bold text-[#2A2B30]">并肩同频打卡 <span class="text-[#FF4B72] text-sm font-extrabold">12</span> 天</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-[#20B26C] text-[11px] font-extrabold tracking-tight border border-emerald-100 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#20B26C]"></span>极佳默契度
+</span>
+</div>
+<!-- 1. Activity Path & Sweet Spot Hero Card (Gentler Streak Wave Curve - Wife Edition) -->
+<section class="relative bg-white rounded-gentler p-5 shadow-gentler-card border border-white/80 overflow-hidden">
+<div class="absolute -top-16 -right-16 w-52 h-52 rounded-full bg-gradient-to-br from-[#FFE3EC]/80 to-[#FFD3DF]/60 blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#FFE7EE]/80 to-[#FFF0EA]/60 blur-3xl pointer-events-none"></div>
+<div class="relative z-10">
+<div class="flex items-start justify-between">
+<div class="flex-1 pr-2">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-gentler-pill bg-[#FFE7EE] text-[#FF4B72] text-xs font-extrabold mb-2 border border-pink-200/60">
+<span class="w-2 h-2 rounded-full bg-[#FF4B72] animate-ping"></span>今日状态 · 恢复指数 96%
+</div>
+<h2 class="text-2xl font-black tracking-tight text-[#17181C] leading-snug">今日状态轻盈！</h2>
+<p class="text-xs font-medium text-[#7C808E] mt-1 leading-relaxed">身体处于极佳的自如拉伸期，心率温和，享受专属于你的放松节奏。</p>
+</div>
+<div class="relative w-24 h-24 -mt-1 flex-shrink-0 flex items-center justify-center">
+<div class="absolute inset-2 bg-gradient-to-tr from-[#FFE3EC] to-[#FFBACD] rounded-full blur-md"></div>
+<img alt="老婆吉祥物" class="relative w-20 h-20 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300 select-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOM-u3-lmjxB9HUt6VXxGRA8h9tZCq5yw03dG4AmYnT6Nm5Lmdn8DXjhTjeIPbscPa6iGCMBiA4GH2Gb4OeIRgUrVs4OwrMiSsEQkmF6VuUqhigmF5uuGwWbT5fqKngLp8a8_5Pt50FCREIF8RJg24_Wx95xO5IaDWnpZCwoGn7j8f9R-crTSTI4ULTaif_3EN9JS8nqHL1-qd5CDRpINf9dBbI1nuVuu3x_2gduCO0Twc9JZYUK4GML85ckxlWWKnB34">
+</div>
+</div>
+<div class="mt-4 pt-1">
+<div class="flex items-center justify-between text-[11px] font-bold text-[#989BA8] mb-2 px-1">
+<span class="flex items-center gap-1 text-[#20B26C]"><span class="material-symbols-outlined text-[14px]">spa</span>修整充足</span>
+<span class="text-[#FF4B72] font-extrabold flex items-center gap-1 bg-[#FFF0F4] px-2.5 py-0.5 rounded-full border border-pink-200">Sweet Spot · 恰到好处</span>
+<span class="flex items-center gap-1 text-[#FF8566]">温和拉伸<span class="material-symbols-outlined text-[13px]">self_improvement</span></span>
+</div>
+<!-- Gentler Streak Stream Flow Wave -->
+<div class="relative w-full h-28 bg-[#FFF4F7]/70 rounded-[24px] p-2 flex items-center justify-center overflow-hidden border border-[#FFDFE7] shadow-inner">
+<svg class="w-full h-full" fill="none" preserveAspectRatio="none" viewBox="0 0 340 100">
+<defs>
+<linearGradient id="sweetSpotBandWife" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#FF9EAF" stop-opacity="0.22"></stop>
+<stop offset="35%" stop-color="#FF5C8D" stop-opacity="0.32"></stop>
+<stop offset="70%" stop-color="#FF4B72" stop-opacity="0.28"></stop>
+<stop offset="100%" stop-color="#FF7B90" stop-opacity="0.2"></stop>
+</linearGradient>
+<linearGradient id="optimalLineWife" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#FFA4B6"></stop>
+<stop offset="35%" stop-color="#FF5C8D"></stop>
+<stop offset="70%" stop-color="#FF4B72"></stop>
+<stop offset="100%" stop-color="#FF7B90"></stop>
+</linearGradient>
+<filter height="160%" id="pinkWifeGlow" width="160%" x="-30%" y="-30%">
+<feDropShadow dx="0" dy="3" flood-color="#FF4B72" flood-opacity="0.5" stdDeviation="3"></feDropShadow>
+</filter>
+<filter height="160%" id="blueHusbandGlow" width="160%" x="-30%" y="-30%">
+<feDropShadow dx="0" dy="3" flood-color="#0284C7" flood-opacity="0.4" stdDeviation="3"></feDropShadow>
+</filter>
+</defs>
+<line stroke="#FFDFE7" stroke-dasharray="3 3" stroke-width="1" x1="10" x2="330" y1="78" y2="78"></line>
+<line stroke="#FFDFE7" stroke-dasharray="3 3" stroke-width="1" x1="10" x2="330" y1="22" y2="22"></line>
+<path d="M 0 64 C 50 68, 85 45, 130 42 C 180 39, 215 56, 260 50 C 295 45, 320 35, 340 38 L 340 76 C 310 74, 280 82, 240 80 C 195 78, 160 68, 120 72 C 70 76, 40 85, 0 84 Z" fill="url(#sweetSpotBandWife)"></path>
+<path d="M 0 74 C 55 76, 85 52, 130 50 C 175 48, 215 65, 255 58 C 295 51, 320 42, 340 46" stroke="url(#optimalLineWife)" stroke-linecap="round" stroke-width="6"></path>
+<!-- Wife Marker Node (Sweet spot peak) -->
+<g transform="translate(142, 50)">
+<circle fill="#FF4B72" fill-opacity="0.25" r="13"></circle>
+<circle fill="#FF4B72" filter="url(#pinkWifeGlow)" r="7"></circle>
+<circle fill="#FFFFFF" r="2.5"></circle>
+</g>
+<!-- Husband Marker Node (Stable pace) -->
+<g transform="translate(205, 59)">
+<circle fill="#0284C7" fill-opacity="0.25" r="11"></circle>
+<circle fill="#0284C7" filter="url(#blueHusbandGlow)" r="6"></circle>
+<circle fill="#FFFFFF" r="2"></circle>
+</g>
+</svg>
+<div class="absolute left-20 top-2 bg-white/95 shadow-sm border border-pink-200 rounded-full px-2 py-0.5 flex items-center gap-1 text-[10px] font-extrabold text-[#FF4B72]">
+<span>❤️ 我 (老婆) · 极佳</span>
+</div>
+<div class="absolute right-16 bottom-2 bg-white/95 shadow-sm border border-sky-100 rounded-full px-2 py-0.5 flex items-center gap-1 text-[10px] font-extrabold text-[#0284C7]">
+<span>⚡ 老公 · 状态稳定</span>
+</div>
+</div>
+<div class="mt-3 p-3 bg-[#FFF0F4]/70 rounded-[22px] flex items-center justify-between border border-[#FFDEE6]">
+<div class="flex items-center gap-2">
+<span class="text-base">🌸</span>
+<span class="text-xs font-semibold text-[#3D404A]">身心轻快，今天适合轻松激活臀腿与核心</span>
+</div>
+<span class="text-xs font-black text-[#FF4B72] bg-[#FFE1E9] px-2.5 py-1 rounded-full">轻盈 96% · 准备就绪</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Couple Sync Rhythm (Gentler Insight Beads Style) -->
+<section class="bg-white rounded-gentler p-5 shadow-gentler-card border border-white/80 flex flex-col gap-3.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-[#FFE7EE] flex items-center justify-center text-[#FF4B72]">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</div>
+<div>
+<h3 class="text-base font-extrabold text-[#17181C]">双人同频节奏</h3>
+<p class="text-[11px] text-[#8C909F] font-medium">像 Gentler 洞察一样温和记录</p>
+</div>
+</div>
+<span class="text-xs font-extrabold text-[#20B26C] bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">同频进度 100%</span>
+</div>
+<!-- Wife Row (User Self) -->
+<div class="p-3.5 rounded-[24px] bg-[#FFF8FA] border border-[#FFE7EE] flex items-center justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-10 h-10 rounded-2xl bg-white p-0.5 border border-pink-100 shadow-sm flex-shrink-0 overflow-hidden flex items-center justify-center">
+<img alt="老婆吉祥物" class="w-full h-full object-cover rounded-[14px] bg-[#FFF8FA]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTPgdNUASvRoccKCL6UWWK4zTiVC1AUdk_myr7ispzVXgIPbh1OT5ECsZZgXLpwPsdwhV_oj6hgt4Me_H2SP7W-7m9nVTWTBAPe_bdlxnuq52gznGqCWphbd7xKRZNl4EoOIpx9-NLbv1vE6Dulw2aOm8tYOk6rU3bWceJJO3p-elsWHkSe5jnMkqcPHRBw8BROrMrlidmBeg84wZd1ki6bvFRBxcNWp1h5nxA0aN18ara0Ylqfp0z8IxnURUBcKidXIc">
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="text-xs font-extrabold text-[#1E1F24] truncate">我 (老婆)</span>
+<span class="text-[10px] bg-pink-100 text-[#FF4B72] px-1.5 py-0.2 rounded font-bold">轻盈待练</span>
+</div>
+<span class="text-[11px] text-[#7F8392] font-medium">目标：舒展臀腿 + 喝足温水</span>
+</div>
+</div>
+<!-- 5 Habit Jelly Beads -->
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<div class="w-7 h-7 rounded-full bg-[#FF4B72] text-white text-[11px] font-black flex items-center justify-center shadow-[0_2px_8px_rgba(255,75,114,0.35)]" title="早餐">✓</div>
+<div class="w-7 h-7 rounded-full bg-[#FF4B72] text-white text-[11px] font-black flex items-center justify-center shadow-[0_2px_8px_rgba(255,75,114,0.35)]" title="午餐">✓</div>
+<div class="w-7 h-7 rounded-full bg-[#EFE8EB] text-[#A69EA1] text-[10px] font-bold flex items-center justify-center" title="加餐">·</div>
+<div class="w-7 h-7 rounded-full bg-[#EFE8EB] text-[#A69EA1] text-[10px] font-bold flex items-center justify-center" title="晚餐">·</div>
+<div class="w-7 h-7 rounded-full bg-gradient-to-tr from-[#FF4B72] to-[#FF7B90] text-white text-[11px] font-extrabold flex items-center justify-center shadow-[0_2px_8px_rgba(255,75,114,0.35)]" title="训练">练</div>
+</div>
+</div>
+<!-- Husband Row -->
+<div class="p-3.5 rounded-[24px] bg-[#F0F9FF]/50 border border-sky-100 flex items-center justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-10 h-10 rounded-2xl bg-white p-0.5 border border-sky-200 shadow-sm flex-shrink-0 overflow-hidden flex items-center justify-center">
+<img alt="老公吉祥物" class="w-full h-full object-cover rounded-[14px] bg-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ3P4w1tOa9Zh64UQKfqt2HPx3eZ14xu7jW3WR7-B1gTJ6WBaMG0hRweh2ToJRLmUB_uPt4ri-qIqwQq4ckxxOHway6c4niv7wxX4gltSOGEGRD30RN7X9Gegm3Tm1jCPnd91Sqg0goWSc7JKwW1ON5vz1VeOCdjUjAfWmntAkqGhH7NLwUz7pGe7dR5DBcthTmrTYt8TM9-qW7H1uZTCfLmm0bg-rAeSu8w7ASqB2w3Af09AO0WQ38E5onjylS2CgKuM">
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="text-xs font-extrabold text-[#1E1F24] truncate">老公</span>
+<span class="text-[10px] bg-sky-100 text-[#0284C7] px-1.5 py-0.2 rounded font-bold">刚刚达成</span>
+</div>
+<span class="text-[11px] text-[#0284C7] font-semibold">刚搞定力量练！超棒 👏</span>
+</div>
+</div>
+<!-- 5 Habit Beads -->
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<div class="w-7 h-7 rounded-full bg-[#20B26C] text-white text-[11px] font-black flex items-center justify-center shadow-[0_2px_8px_rgba(32,178,108,0.35)]">✓</div>
+<div class="w-7 h-7 rounded-full bg-[#20B26C] text-white text-[11px] font-black flex items-center justify-center shadow-[0_2px_8px_rgba(32,178,108,0.35)]">✓</div>
+<div class="w-7 h-7 rounded-full bg-[#20B26C] text-white text-[11px] font-black flex items-center justify-center shadow-[0_2px_8px_rgba(32,178,108,0.35)]">✓</div>
+<div class="w-7 h-7 rounded-full bg-[#E5E2D8] text-[#9A978E] text-[10px] font-bold flex items-center justify-center">·</div>
+<div class="w-7 h-7 rounded-full bg-[#20B26C] text-white text-[11px] font-black flex items-center justify-center shadow-[0_2px_8px_rgba(32,178,108,0.35)]">✓</div>
+</div>
+</div>
+<!-- Sweet Cheer Banner for Husband -->
+<div class="p-3 bg-gradient-to-r from-[#FFF0F4] to-[#FFE7EE] rounded-[22px] border border-pink-100 flex items-center justify-between transition-all" id="cheerBanner">
+<div class="flex items-center gap-2 min-w-0">
+<span class="text-xl flex-shrink-0">☕</span>
+<p class="text-xs font-bold text-[#FF4B72] truncate">老公刚结束力量训练，给他能量打气：</p>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<button class="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#FF4B72] to-[#FF758C] text-white text-xs font-extrabold shadow-[0_4px_14px_rgba(255,75,114,0.35)] flex items-center gap-1 active:scale-95 transition-transform" id="cheerBtn" onclick="triggerCheer()">
+<span>送冰美式</span><span>☕</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-[#FF4B72] text-sm font-bold shadow-sm flex items-center justify-center active:scale-95 transition-transform" onclick="triggerPunch()">
+👊
+</button>
+</div>
+</div>
+</section>
+<!-- 3. Gentler Workout Hero Card (Obsidian Dark Luxury Aesthetic + Wife Strawberry/Peach Highlights) -->
+<section class="relative bg-gradient-to-b from-[#1C1D22] to-[#121316] text-white rounded-gentler p-5 shadow-2xl border border-white/10 overflow-hidden">
+<div class="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-gradient-to-br from-[#FF4B72]/35 to-[#FF7B90]/15 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-pink-300 text-xs font-extrabold border border-white/10">
+<span class="material-symbols-outlined text-[15px]">self_improvement</span>今日跟练安排 · 居家徒手
+</div>
+<span class="text-xs font-bold text-white/60">建议心率: 110-130 BPM</span>
+</div>
+<div>
+<h3 class="text-2xl font-black tracking-tight text-white mt-1">15 分钟温和臀腿塑形</h3>
+<p class="text-xs text-white/70 font-medium mt-1">零器械无跳跃 · 呵护膝盖与关节 · 激活深层肌群</p>
+</div>
+<!-- Movement Chips -->
+<div class="flex flex-wrap gap-2 pt-1">
+<span class="px-3 py-1.5 rounded-2xl bg-white/10 text-white text-xs font-bold flex items-center gap-1.5 border border-white/5">
+<span class="text-[#FF7B90]">🍑</span> 臀桥舒展 15次
+</span>
+<span class="px-3 py-1.5 rounded-2xl bg-white/10 text-white text-xs font-bold flex items-center gap-1.5 border border-white/5">
+<span>🐚</span> 蚌式开合 12次/侧
+</span>
+<span class="px-3 py-1.5 rounded-2xl bg-white/10 text-white text-xs font-bold flex items-center gap-1.5 border border-white/5">
+<span>🩰</span> 站姿后抬腿 15次
+</span>
+<span class="px-3 py-1.5 rounded-2xl bg-white/10 text-white text-xs font-bold flex items-center gap-1.5 border border-white/5">
+<span>🧘‍♀️</span> 徒手慢蹲 10次
+</span>
+<span class="px-3 py-1.5 rounded-2xl bg-white/10 text-white text-xs font-bold flex items-center gap-1.5 border border-white/5">
+<span class="text-[#FF4B72]">●</span> 2 轮轻循环
+</span>
+</div>
+<!-- Main Pink Jelly Glow CTA Button -->
+<button class="mt-2 w-full h-14 rounded-gentler-pill bg-gradient-to-r from-[#FF4B72] to-[#FF758C] text-white font-extrabold text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(255,75,114,0.45)] border-t border-white/30 active:scale-[0.98] transition-all">
+<span class="text-lg">▶</span>
+<span>开始舒展跟练</span>
+<span class="text-xs opacity-90 font-normal">(陪伴轻音乐)</span>
+</button>
+</div>
+</section>
+<!-- 4. Guilt-free Nutrition Check-in (Gentler Soft Philosophy - Wife Pink Edition) -->
+<section class="bg-white rounded-gentler p-5 shadow-gentler-card border border-white/80 flex flex-col gap-3.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-[#FFE7EE] flex items-center justify-center text-[#FF4B72]">
+<span class="material-symbols-outlined text-[18px]">restaurant_menu</span>
+</div>
+<div>
+<h3 class="text-base font-extrabold text-[#17181C]">温和滋养饮食</h3>
+<p class="text-[11px] text-[#8C909F] font-medium">目标：80-90g 优质蛋白质 · 听从身体饱腹感</p>
+</div>
+</div>
+<span class="text-xs font-extrabold text-[#FF4B72] bg-[#FFE7EE] px-2.5 py-1 rounded-full border border-pink-100">无压力模式</span>
+</div>
+<div class="p-3.5 rounded-[22px] bg-[#FAF8F5] border border-[#ECE8DC] flex items-start gap-2.5" id="mindsetBubble">
+<span class="text-xl leading-none mt-0.5">🥑</span>
+<div class="flex-1">
+<h4 class="text-xs font-extrabold text-[#1E1F24]">爱身体的小默契：</h4>
+<p class="text-xs text-[#6C707E] mt-0.5 leading-relaxed font-medium" id="mindsetText">吃得开心很重要！吃多一点也没关系，下一餐按原计划正常吃，不要惩罚性节食哦。</p>
+</div>
+</div>
+<div class="flex flex-col gap-2.5">
+<!-- Breakfast -->
+<div class="p-3.5 rounded-[22px] bg-[#FFF8FA] border border-pink-100 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-base shadow-sm">🍳</div>
+<div>
+<span class="text-xs font-bold text-[#1E1F24] block">早餐 · 燕麦鸡蛋温牛奶</span>
+<span class="text-[10px] text-[#8C909F]">水煮蛋 1颗 + 温热浓豆浆 300ml</span>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full bg-gradient-to-r from-[#FF4B72] to-[#FF758C] text-white text-xs font-extrabold shadow-sm flex items-center gap-1">
+<span>✓</span> 已记录
+</span>
+</div>
+<!-- Lunch -->
+<div class="p-3.5 rounded-[22px] bg-[#FFF8FA] border border-pink-100 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-base shadow-sm">🥗</div>
+<div>
+<span class="text-xs font-bold text-[#1E1F24] block">午餐 · 香煎鸡胸肉便当</span>
+<span class="text-[10px] text-[#8C909F]">低温香煎鸡胸肉 + 彩椒紫甘蓝轻食</span>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full bg-gradient-to-r from-[#FF4B72] to-[#FF758C] text-white text-xs font-extrabold shadow-sm flex items-center gap-1">
+<span>✓</span> 按计划吃啦
+</span>
+</div>
+<!-- Snack -->
+<div class="p-3.5 rounded-[22px] bg-white border-2 border-pink-200 shadow-sm flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-[#FFE7EE] flex items-center justify-center text-base shadow-sm text-[#FF4B72]">🫐</div>
+<div>
+<span class="text-xs font-bold text-[#1E1F24] block">加餐 · 希腊酸奶与一把坚果</span>
+<span class="text-[10px] text-[#8C909F]">希腊无糖酸奶 1盒 + 7颗烘焙坚果</span>
+</div>
+</div>
+<span class="text-xs font-bold text-[#8C909F]" id="snackStatus">尚未选择</span>
+</div>
+<div class="grid grid-cols-3 gap-1.5 pt-1">
+<button class="meal-btn h-9 rounded-gentler-pill bg-[#FAF8F5] border border-[#E9E5D8] text-[#3D404A] text-xs font-bold active:scale-95 transition-all text-center flex items-center justify-center" onclick="selectMealStatus(this, '按计划吃了 ✨', '按计划补充了健康好脂肪与果莓，下午心情甜润充沛！')">按计划 ✨</button>
+<button class="meal-btn h-9 rounded-gentler-pill bg-[#FAF8F5] border border-[#E9E5D8] text-[#3D404A] text-xs font-bold active:scale-95 transition-all text-center flex items-center justify-center" onclick="selectMealStatus(this, '稍稍吃多了 🍰', '吃饱了才有好心情！下一餐正常吃就好，完全无须焦虑～')">稍吃多 🍰</button>
+<button class="meal-btn h-9 rounded-gentler-pill bg-[#FAF8F5] border border-[#E9E5D8] text-[#3D404A] text-xs font-bold active:scale-95 transition-all text-center flex items-center justify-center" onclick="selectMealStatus(this, '还没吃 ⏳', '不饿就不必强求吃，听从身体自然的舒服信号即可。')">还没吃 ⏳</button>
+</div>
+</div>
+<!-- Dinner -->
+<div class="p-3.5 rounded-[22px] bg-[#FAF8F5] border border-[#ECE8DC] flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-base shadow-sm">🍲</div>
+<div>
+<span class="text-xs font-bold text-[#1E1F24] block">晚餐 · 待晚上和老公一起吃</span>
+<span class="text-[10px] text-[#8C909F]">二人温馨晚餐时刻</span>
+</div>
+</div>
+<span class="text-xs font-bold text-[#A5A8B6] bg-white/70 px-2.5 py-1 rounded-full">晚间开启</span>
+</div>
+</div>
+</section>
+<!-- 5. Desk Activity & Hydration Stepper (Gentler Big Rounded Widget - Wife Pink Style) -->
+<section class="bg-white rounded-gentler p-5 shadow-gentler-card border border-white/80 flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-[22px] bg-gradient-to-tr from-[#FFE7EE] to-[#FFF0F4] flex items-center justify-center text-[#FF4B72] shadow-inner">
+<span class="material-symbols-outlined text-2xl">water_drop</span>
+</div>
+<div>
+<h4 class="text-base font-extrabold text-[#17181C]">工位喝水 &amp; 舒展</h4>
+<p class="text-xs font-medium text-[#8C909F]">保持喉咙与肌肤润泽 · 转转脖子</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-[#FAF8F5] p-1.5 rounded-gentler-pill border border-[#EBE7DC]">
+<button class="w-10 h-10 rounded-full bg-white text-[#1E1F24] flex items-center justify-center shadow-sm active:scale-90 transition-transform" onclick="adjustStand(-1)">
+<span class="material-symbols-outlined text-lg">remove</span>
+</button>
+<div class="flex flex-col items-center w-12 px-1">
+<span class="text-xl font-black text-[#FF4B72] leading-none" id="standCount">5</span>
+<span class="text-[10px] font-bold text-[#9DA0AF] mt-0.5">/ 8 次</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-gradient-to-r from-[#FF4B72] to-[#FF758C] text-white flex items-center justify-center shadow-[0_2px_10px_rgba(255,75,114,0.4)] active:scale-90 transition-transform" onclick="adjustStand(1)">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar: Gentler Style Frosted Dock (Wife Pink Active) -->
+<nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-[#FAF8F5]/90 backdrop-blur-2xl border-t border-black/[0.04] shadow-[0_-10px_30px_rgba(0,0,0,0.03)]">
+<div class="flex justify-around items-center h-[70px] max-w-md mx-auto px-4">
+<!-- Tab 1: Today (Active Wife) -->
+<a class="relative flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#FF4B72] font-extrabold transition-all" href="#">
+<span class="material-symbols-outlined text-[24px]">sunny</span>
+<span class="text-[11px] leading-tight tracking-tight">今日</span>
+<span class="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[#FF4B72] shadow-[0_0_8px_rgba(255,75,114,0.8)]"></span>
+</a>
+<!-- Tab 2: Nutrition -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#989BA8] hover:text-[#525562] font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">restaurant</span>
+<span class="text-[11px] leading-tight tracking-tight">饮食</span>
+</a>
+<!-- Tab 3: Workout -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#989BA8] hover:text-[#525562] font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">directions_run</span>
+<span class="text-[11px] leading-tight tracking-tight">训练</span>
+</a>
+<!-- Tab 4: Progress -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#989BA8] hover:text-[#525562] font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">insights</span>
+<span class="text-[11px] leading-tight tracking-tight">记录</span>
+</a>
+</div>
+</nav>
+<!-- Interactive Scripts -->
+<script>
+    // Quick Stepper Interaction
+    let count = 5;
+    function adjustStand(delta) {
+      count = Math.max(0, Math.min(12, count + delta));
+      const countEl = document.getElementById('standCount');
+      if (countEl) countEl.innerText = count;
+    }
+
+    // Cheer Button Interaction for Husband
+    function triggerCheer() {
+      const btn = document.getElementById('cheerBtn');
+      if (btn) {
+        btn.innerHTML = '<span>已送达</span><span>☕💕</span>';
+        btn.classList.add('opacity-90');
+      }
+    }
+
+    function triggerPunch() {
+      alert('已给老公送去有力的拳头打气！👊');
+    }
+
+    // Meal Choice Interaction with Gentle Reassurance
+    function selectMealStatus(element, statusText, encouragement) {
+      const parent = element.parentElement;
+      if (parent) {
+        const buttons = parent.querySelectorAll('.meal-btn');
+        buttons.forEach(b => {
+          b.classList.remove('bg-gradient-to-r', 'from-[#FF4B72]', 'to-[#FF758C]', 'text-white', 'shadow-[0_2px_8px_rgba(255,75,114,0.3)]', 'border-transparent');
+          b.classList.add('bg-[#FAF8F5]', 'text-[#3D404A]', 'border-[#E9E5D8]');
+        });
+      }
+
+      element.classList.remove('bg-[#FAF8F5]', 'text-[#3D404A]', 'border-[#E9E5D8]');
+      element.classList.add('bg-gradient-to-r', 'from-[#FF4B72]', 'to-[#FF758C]', 'text-white', 'shadow-[0_2px_8px_rgba(255,75,114,0.3)]', 'border-transparent');
+
+      const statusBadge = document.getElementById('snackStatus');
+      if (statusBadge) {
+        statusBadge.innerText = statusText;
+        statusBadge.classList.remove('text-[#8C909F]');
+        statusBadge.classList.add('text-[#FF4B72]', 'font-black');
+      }
+
+      const mindsetText = document.getElementById('mindsetText');
+      if (mindsetText) {
+        mindsetText.innerText = encouragement;
+      }
+    }
+</script>
+</body></html>

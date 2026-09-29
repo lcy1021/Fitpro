@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>两个人的减脂打卡</title>
+<title>DuoFit · 两个人的减脂打卡</title>
 <meta name="theme-color" content="#FDFAF6">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/icons/favicon-64.png">
@@ -108,9 +108,11 @@ p{margin:0}
 .lm::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 4% 44%,color-mix(in srgb,var(--hus-soft) 90%,transparent) 0,transparent 42%),radial-gradient(circle at 102% 43%,color-mix(in srgb,var(--wife-soft) 90%,transparent) 0,transparent 45%),var(--bg)}
 .lm::after{content:"";position:absolute;width:270px;height:270px;border-radius:50%;top:190px;left:50%;transform:translateX(-50%);z-index:-1;background:radial-gradient(circle,color-mix(in srgb,var(--surface) 90%,transparent) 0,transparent 70%);filter:blur(3px)}
 .lm-grain{position:absolute;inset:0;opacity:.22;background-image:radial-gradient(var(--hus) 1px,transparent 1px);background-size:26px 26px;-webkit-mask-image:linear-gradient(180deg,transparent 18%,#000 55%,transparent 81%);mask-image:linear-gradient(180deg,transparent 18%,#000 55%,transparent 81%);pointer-events:none}
-.lm-top{position:absolute;z-index:6;left:24px;right:20px;top:calc(22px + env(safe-area-inset-top,0px));display:flex;justify-content:space-between;align-items:center}
-.lm-brand{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:900;letter-spacing:-.03em}
-.lm-brand img{width:31px;height:31px;border-radius:9px;box-shadow:0 3px 9px rgba(69,145,163,.16)}
+.lm-top{position:absolute;z-index:6;left:24px;right:20px;top:calc(22px + env(safe-area-inset-top,0px));display:flex;justify-content:flex-end;align-items:center}
+.lm-wordmark{position:absolute;z-index:3;top:calc(56px + env(safe-area-inset-top,0px));left:50%;width:176px;height:auto;opacity:0;visibility:hidden;transform:translate(-50%,12px) scale(.91);filter:drop-shadow(0 5px 6px rgba(54,125,151,.15));transition:opacity .55s,transform .55s,visibility .55s;pointer-events:none}
+.lm[data-phase="choose"] .lm-wordmark{opacity:1;visibility:visible;transform:translate(-50%,0) scale(1)}
+.lm-brandline{position:absolute;z-index:3;top:calc(105px + env(safe-area-inset-top,0px));left:12px;right:12px;margin:0;text-align:center;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.08em;opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .55s,transform .55s,visibility .55s;pointer-events:none}
+.lm[data-phase="choose"] .lm-brandline{opacity:1;visibility:visible;transform:none}
 .lm-skip{border:0;background:color-mix(in srgb,var(--surface) 72%,transparent);color:var(--muted);border-radius:999px;padding:8px 13px;font-size:12px;font-weight:700;transition:opacity .3s,visibility .3s}
 .lm[data-phase="choose"] .lm-skip{opacity:0;visibility:hidden}
 .lm-copy{position:absolute;left:26px;right:26px;top:calc(100px + env(safe-area-inset-top,0px));z-index:2;text-align:center;transition:opacity .45s,transform .45s}
@@ -166,7 +168,7 @@ p{margin:0}
 .lm-confirm:disabled{background:var(--sunk);color:var(--faint);box-shadow:none;cursor:default}
 .lm-foot{display:flex;justify-content:center;gap:12px;margin-top:9px}
 .lm-replay{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:4px 8px}
-@media(max-height:720px){.lm-copy{top:calc(87px + env(safe-area-inset-top,0px))}.lm-track{top:calc(182px + env(safe-area-inset-top,0px));height:305px}.lm-runner{width:62%}.lm[data-phase="choose"] .lm-track{transform:translateY(-135px) scale(.65)}.lm-line{top:calc(515px + env(safe-area-inset-top,0px))}.lm-choice{padding-top:19px}.lm-lead{margin-bottom:9px}.lm-role{min-height:69px;grid-template-columns:57px minmax(0,1fr) 19px}.lm-role img{width:57px;height:57px}.lm-confirm{margin-top:11px}}
+@media(max-height:720px){.lm-copy{top:calc(87px + env(safe-area-inset-top,0px))}.lm-wordmark{top:calc(24px + env(safe-area-inset-top,0px));width:148px}.lm-brandline{top:calc(67px + env(safe-area-inset-top,0px))}.lm-track{top:calc(182px + env(safe-area-inset-top,0px));height:305px}.lm-runner{width:62%}.lm[data-phase="choose"] .lm-track{transform:translateY(-95px) scale(.65)}.lm-line{top:calc(515px + env(safe-area-inset-top,0px))}.lm-choice{padding-top:19px}.lm-lead{margin-bottom:9px}.lm-role{min-height:69px;grid-template-columns:57px minmax(0,1fr) 19px}.lm-role img{width:57px;height:57px}.lm-confirm{margin-top:11px}}
 @media (prefers-reduced-motion: reduce){.lm *,.lm *::before,.lm *::after{animation:none!important;transition-duration:.01ms!important}}
 
 /* whose plan switch */
@@ -633,7 +635,9 @@ p{margin:0}
 <!-- 首次进入 / 切换身份：两个云朵从远处跑近、会合，再弹出角色选择（设计见 UIset/login-motion） -->
 <div class="pick lm-pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickTitle"><div class="lm" id="lm" data-phase="choose">
   <div class="lm-grain" aria-hidden="true"></div>
-  <div class="lm-top"><span class="lm-brand"><img src="assets/icons/favicon-64.png" alt="" width="31" height="31">DuoFit</span><button class="lm-skip" data-lm-skip type="button">跳过</button></div>
+  <div class="lm-top"><button class="lm-skip" data-lm-skip type="button">跳过</button></div>
+  <img class="lm-wordmark" src="assets/brand/duofit-wordmark.svg" alt="DuoFit">
+  <p class="lm-brandline">两个人，一起动起来</p>
   <div class="lm-copy"><span class="lm-tag">TOGETHER, EVERY DAY</span><h2>两个人，<br><span>一起动起来。</span></h2><p>减脂计划，从并肩出发开始</p></div>
   <div class="lm-track" aria-hidden="true">
     <span class="lm-speed left"></span><span class="lm-speed right"></span>
@@ -644,7 +648,7 @@ p{margin:0}
   <div class="lm-line">每一步，都有人和你一起</div>
   <section class="lm-choice" id="lmChoice">
     <span class="lm-eyebrow">START TOGETHER</span>
-    <h2 id="pickTitle">今天你是谁？</h2>
+    <h2 id="pickTitle">你是谁？</h2>
     <p class="lm-lead">选好后，这台手机上的打卡、训练和记录都按你的身份来。</p>
     <div class="lm-roles" role="group" aria-label="选择角色">
       <button class="lm-role hus" data-lm-role="hus" aria-pressed="false" type="button"><img src="assets/login/hus-running.webp" alt=""><span><strong>我是老公</strong><small>哑铃力量训练 A、B 交替，每周 3 次</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
@@ -690,14 +694,14 @@ p{margin:0}
 </div></div>
 <div class="pick" id="codeDlg" role="dialog" aria-modal="true" aria-labelledby="codeTitle"><div class="inner">
   <h1 id="codeTitle">家庭口令</h1>
-  <p class="lead">两台手机填同一个口令，数据才会同步到一起。口令就像你们家的钥匙，不要发到公开的地方。</p>
+  <p class="lead">收到邀请后，输入对方发来的家庭口令；第一个使用时，可以生成新口令。两台手机使用同一个口令，数据才会同步。</p>
   <div class="card form" style="grid-template-columns:1fr">
     <label>口令（8 位以上字母或数字）<input id="codeInput" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40"></label>
     <button class="btn ghost" data-code-gen type="button">我是第一个用的，帮我生成一个</button>
-    <button class="btn primary" data-code-save type="button">保存口令</button>
+    <button class="btn primary" data-code-save type="button">确认口令并继续</button>
   </div>
-  <p class="lead" id="codeShare" hidden>保存后，把下面的邀请链接发给对方一次，对方打开就会自动填好口令：</p>
-  <button class="btn ghost" data-code-copy hidden type="button">复制邀请链接</button>
+  <p class="lead" id="codeShare" hidden>把邀请信息发给对方：链接不含口令，对方打开后需要自己输入。</p>
+  <button class="btn ghost" data-code-copy hidden type="button">复制邀请信息</button>
   <button class="cancel" data-code-close hidden>完成</button>
 </div></div>
 
@@ -1220,7 +1224,8 @@ let tab = "today";
 const LS_FAMILY="fatloss.family", LS_DIRTY="fatloss.dirty";
 const CLOUD = !!(SUPABASE_URL && SUPABASE_KEY);
 let family = (()=>{ try{ return localStorage.getItem(LS_FAMILY)||""; }catch(e){ return ""; } })();
-(function readHash(){ const m=location.hash.match(/k=([A-Za-z0-9]{8,40})/); if(m){ family=m[1]; try{ localStorage.setItem(LS_FAMILY,family);}catch(e){} history.replaceState(null,"",location.pathname+location.search); } })();
+/* 旧邀请链接曾把口令放在 URL 中；清掉片段，不再自动保存口令。 */
+if(/^#k=/.test(location.hash)) history.replaceState(null,"",location.pathname+location.search);
 let store = { checkins:{}, measures:{} };
 try{ const raw=localStorage.getItem(LS_DATA); if(raw){ const p=JSON.parse(raw); store.checkins=p.checkins||{}; store.measures=p.measures||{}; } }catch(e){}
 let dirty = (()=>{ try{ return JSON.parse(localStorage.getItem(LS_DIRTY)||"[]"); }catch(e){ return []; } })(); // ["c:<id>","m:<id>"]
@@ -1676,7 +1681,7 @@ function viewRecord(){
       <span class="md" data-delta="${k}">${pv!=null?`上次 ${pv} ${u}`:"还没有记录"}</span></label>`; };
   const tokenCard = CLOUD ? `<section class="sec">${secH("key","家庭同步口令")}
     <div class="card"><div class="token"><span class="k">${family?icon("key","sm")+" "+esc(family.slice(0,4))+"••••••":"还没设置口令"}</span>
-      ${family?`<button class="btn primary" data-code-copy>复制邀请链接</button>`:`<button class="btn primary" data-open-code>去设置</button>`}</div>
+      ${family?`<button class="btn primary" data-code-copy>复制邀请信息</button>`:`<button class="btn primary" data-open-code>去设置</button>`}</div>
       ${family?`<button class="linkbtn" data-open-code>查看或修改口令</button>`:`<p class="empty" style="padding-top:8px">两台手机填同一个口令，数据才会同步到一起。</p>`}</div></section>` : "";
   $("#view").innerHTML=`
   <section class="sec" id="recInsight"></section>
@@ -1791,7 +1796,7 @@ function drawRun(){
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const t=e.target.closest("button"); if(!t) return;
-  if(t.dataset.pick){ me=t.dataset.pick; viewP=me; try{ localStorage.setItem(LS_ME,me);}catch(_){} closePicker(); lastTab=null; render(); if(!goalOf(me)) openGoal(); if(CLOUD && !family) openCode(); return; }
+  if(t.dataset.pick){ me=t.dataset.pick; viewP=me; try{ localStorage.setItem(LS_ME,me);}catch(_){} closePicker(); lastTab=null; render(); if(CLOUD && !family) openCode(true); else if(!goalOf(me)) openGoal(); return; }
   if(t.hasAttribute("data-open-code")){ openCode(); return; }
   if(t.hasAttribute("data-open-goal")){ openGoal(); return; }
   if(t.dataset.food){ openFood(t.dataset.food); return; }
@@ -1809,18 +1814,10 @@ document.addEventListener("click",e=>{
     list.forEach(x=>{ if(x.k==="adj") patch.adj+=x.v; if(x.k==="level") patch.level+=x.v; if(x.k==="cardio") patch.cardio=true; if(x.k==="maintain") patch.mode="maintain"; });
     saveGoal(me,patch); menuCache={}; lastTab=null; render(); react("happy","已按建议调整","新的份量和训练从今天开始"); return;
   }
-  if(t.hasAttribute("data-code-gen")){ $("#codeInput").value=genCode(); return; }
-  if(t.hasAttribute("data-code-save")){
-    const v=$("#codeInput").value.trim();
-    if(!/^[A-Za-z0-9]{8,40}$/.test(v)){ toast("口令需要 8 位以上，只能用字母和数字"); return; }
-    const changed = v!==family; family=v; try{ localStorage.setItem(LS_FAMILY,family);}catch(_){}
-    if(changed){ // new family: re-upload what's on this phone
-      Object.keys(store.checkins).forEach(id=>markDirty("c:"+id)); Object.keys(store.measures).forEach(id=>markDirty("m:"+id)); saveLocal();
-    }
-    syncState="idle"; toast("口令已保存"); showCodeShare(); sync(); return;
-  }
+  if(t.hasAttribute("data-code-gen")){ codeCreating=true; $("#codeInput").value=genCode(); return; }
+  if(t.hasAttribute("data-code-save")){ saveCode(); return; }
   if(t.hasAttribute("data-code-copy")){ copyInvite(); return; }
-  if(t.hasAttribute("data-code-close")){ $("#codeDlg").classList.remove("open"); document.body.style.overflow=""; lastTab=null; render(); return; }
+  if(t.hasAttribute("data-code-close")){ codeNextGoal=false; $("#codeDlg").classList.remove("open"); document.body.style.overflow=""; lastTab=null; render(); return; }
   if(t.hasAttribute("data-pick-cancel")){ closePicker(); return; }
   if(t.dataset.lmRole){ lmSelect(t.dataset.lmRole); return; }
   if(t.hasAttribute("data-lm-skip")){ if($("#lm").classList.contains("splash")){ $("#lm").onclick(); return; } lmClear(); lmPhase("choose"); return; }
@@ -1915,15 +1912,41 @@ function genCode(){
   (window.crypto||{getRandomValues:x=>x.map(()=>Math.random()*4e9)}).getRandomValues(r);
   return Array.from(r,x=>a[x%a.length]).join("");
 }
-function inviteLink(){ return location.origin+location.pathname+"#k="+family; }
+function inviteLink(){ return location.origin+location.pathname; }
 function showCodeShare(){ $("#codeShare").hidden=false; $("[data-code-copy]").hidden=false; $("[data-code-close]").hidden=false; }
-function openCode(){
+let codeCreating=false, codeNextGoal=false;
+function openCode(afterPick=false){
+  codeCreating=false; codeNextGoal=afterPick;
   $("#codeInput").value=family; $("#codeDlg").classList.add("open"); document.body.style.overflow="hidden";
   $("#codeShare").hidden=!family; $("[data-code-copy]").hidden=!family; $("[data-code-close]").hidden=!family;
 }
+async function saveCode(){
+  const v=$("#codeInput").value.trim();
+  if(!/^[A-Za-z0-9]{8,40}$/.test(v)){ toast("口令需要 8 位以上，只能用字母和数字"); return; }
+  const btn=$("[data-code-save]"); btn.disabled=true; btn.textContent="正在确认口令…";
+  try{
+    if(CLOUD && v!==family && !codeCreating){
+      const data=await rpc("fl_pull",{p_family:v,p_since:ymd(addDays(new Date(),-120))});
+      if(!(data?.checkins?.length || data?.measures?.length)){
+        toast("没找到这个口令的同步记录，请检查口令，或让对方先保存目标",5000); return;
+      }
+    }
+    const changed=v!==family; family=v; try{ localStorage.setItem(LS_FAMILY,family); }catch(_){}
+    if(changed){
+      Object.keys(store.checkins).forEach(id=>markDirty("c:"+id)); Object.keys(store.measures).forEach(id=>markDirty("m:"+id)); saveLocal();
+    }
+    syncState="idle"; await sync();
+    if(codeNextGoal){
+      codeNextGoal=false; $("#codeDlg").classList.remove("open"); document.body.style.overflow="";
+      lastTab=null; render(); if(!goalOf(me)) openGoal();
+    }else showCodeShare();
+    toast("家庭口令已确认");
+  }catch(e){ toast("无法验证口令，请检查网络后重试",5000); }
+  finally{ btn.disabled=false; btn.textContent="确认口令并继续"; }
+}
 async function copyInvite(){
-  const link=inviteLink();
-  try{ await navigator.clipboard.writeText(link); toast("邀请链接已复制"); }catch(e){ window.prompt("长按复制这个链接",link); }
+  const invite=`一起用 DuoFit 打卡：\n${inviteLink()}\n家庭口令：${family}\n打开链接后，选好角色并输入家庭口令。`;
+  try{ await navigator.clipboard.writeText(invite); toast("邀请信息已复制"); }catch(e){ window.prompt("长按复制邀请信息",invite); }
 }
 /* ---------- 记录一顿吃了什么 ---------- */
 let foodMeal=null, foodRows=[];
@@ -1953,15 +1976,26 @@ function showAi(d){
 }
 async function aiFood(){
   const text=$("#foodText").value.trim(); if(!text){ toast("先写一下吃了什么"); return; }
+  clearTimeout(foodT);
   const hit=aiCache.get(text); if(hit){ showAi(hit); toast("这句话之前估算过，直接用了上次的结果"); return; }
   const btn=$("[data-food-ai]"); btn.disabled=true; const t0=Date.now();
   const tick=()=>{ btn.textContent=`🤖 正在估算… ${Math.round((Date.now()-t0)/1000)}s`; }; tick(); const tk=setInterval(tick,1000);
   try{
+    if(!Object.keys(store.checkins).length && !Object.keys(store.measures).length){ toast("先设定目标或打一次卡，完成同步后再试 AI 估算",5000); return; }
+    if(dirty.length){
+      await sync();
+      if(syncState!=="ok"){ toast("打卡记录还没同步成功，请联网后再试 AI 估算",5000); return; }
+    }
     const headers={"Content-Type":"application/json","apikey":SUPABASE_KEY};
     if(!SUPABASE_KEY.startsWith("sb_")) headers["Authorization"]="Bearer "+SUPABASE_KEY;
     const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/functions/v1/meal-kcal"+(AI_REGION?"?forceFunctionRegion="+encodeURIComponent(AI_REGION):""),{method:"POST",headers,body:JSON.stringify({family,text})});
     const d=await r.json().catch(()=>({}));
-    if(!r.ok){ toast({daily_limit:"今天 AI 估算次数用完了，明天再试",unknown_family:"先打一次卡同步一下，再用 AI 估算",busy:"AI 有点忙，稍后再试",bad_key:"AI 的 Key 不对或余额不足，检查一下 Supabase 里的设置",unreachable:"服务器连不上 AI 接口，试试换地区或配置中转"}[d.error]||("AI 估算失败"+(d.detail?"："+d.detail.slice(0,80):"")+"，可以先手动填热量"),6000); console.warn("meal-kcal",r.status,d); return; }
+    if(!r.ok){
+      const known={daily_limit:"今天 AI 估算次数用完了，明天再试",unknown_family:"家庭口令下还没有同步记录，请先完成目标设定或打卡并等待同步",family_check_failed:"AI 服务无法读取家庭记录，请检查 Supabase 函数日志",busy:"AI 有点忙，稍后再试",bad_key:"AI 服务的密钥或余额有问题，请检查 Supabase Secrets",unreachable:"服务器连不上 AI 接口，请检查函数地区或中转地址",quota_check_failed:"AI 次数表还没配置好，请运行 supabase-ai-setup.sql",model_unavailable:"当前模型在中转分组不可用，请检查 Supabase Secrets 里的 AI_MODEL 与令牌分组",no_output:"AI 没有返回可识别的结果，请换种说法再试",refused:"AI 没有处理这段描述，请换种说法再试",bad_family:"家庭口令格式不正确，请重新设置",upstream:"AI 上游服务返回错误，请检查模型名、密钥和余额"};
+      const detail=d.detail?`：${String(d.detail).slice(0,100)}`:"";
+      const modelMissing=/model_not_found|No available channel/i.test(detail);
+      toast(modelMissing?known.model_unavailable:(known[d.error]||"AI 估算失败")+detail,7000); console.warn("meal-kcal",r.status,d); return;
+    }
     if(!d.items||!d.items.length){ toast(d.note||"没看出吃了什么，换个说法试试"); return; }
     aiCache.set(text,{items:d.items,note:d.note||""}); showAi(d);
   }catch(e){ toast("网络不通，AI 估算失败，可以先手动填热量"); }
@@ -2045,6 +2079,7 @@ function closePicker(){ lmClear(); $("#pick").classList.remove("open"); document
 /* ---------- boot ---------- */
 render();
 $("#goalForm").addEventListener("input",goalPreview);
+$("#codeInput").addEventListener("input",()=>{ codeCreating=false; });
 $("#foodText").addEventListener("input",onFoodText);
 $("#foodRes").addEventListener("input",e=>{ const i=e.target.dataset.fk; if(i==null) return; const v=e.target.value;
   foodRows[+i].k = v===""?null:Math.max(0,Math.round(Number(v))); drawFoodTotal(); });
@@ -2057,7 +2092,7 @@ $("#goalForm").addEventListener("submit",e=>{
 });
 if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
 if(storedMe!=="hus" && storedMe!=="wife") openPicker(false);
-else openSplash(()=>{ if(CLOUD && !family) openCode(); });
+else openSplash(()=>{ if(CLOUD && !family) openCode(true); });
 if(CLOUD){
   sync();
   setInterval(()=>{ if(document.visibilityState==="visible") sync(); },30000);

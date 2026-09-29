@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta content="mobile_tab" name="shell-type"/>
+<title>Gentler Couple - 饮食 (老婆端)</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Noto+Sans+SC:wght@400;500;700;800;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "gentler-canvas": "#FCF9F6",
+            "gentler-pink": "#FF4B72",
+            "gentler-peach": "#FF7B90",
+            "gentler-pink-soft": "#FFF0F4",
+            "gentler-pink-light": "#FFE4EB",
+            "gentler-green": "#20B26C",
+            "gentler-green-soft": "#E8F8F0",
+            "gentler-orange": "#FF8A3D",
+            "gentler-purple": "#8C6FF7",
+            "gentler-purple-soft": "#F3EFFF",
+            "gentler-dark": "#1E1F24",
+            "gentler-muted": "#8A8D99"
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans SC"', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: {
+            'gentler-sm': '18px',
+            'gentler': '26px',
+            'gentler-lg': '32px',
+            'gentler-pill': '9999px',
+          },
+          boxShadow: {
+            'gentler-card': '0 10px 30px rgba(255, 75, 114, 0.05), 0 2px 10px rgba(0, 0, 0, 0.02)',
+            'gentler-glow-pink': '0 8px 24px rgba(255, 75, 114, 0.28)',
+            'gentler-subtle': '0 4px 16px rgba(45, 30, 20, 0.04)',
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      html, body {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        background-color: #FAF6F4;
+        font-family: "Plus Jakarta Sans", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-outlined.outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    .healing-mesh {
+      background: radial-gradient(circle at 15% 10%, rgba(255, 200, 218, 0.55) 0%, transparent 48%),
+                  radial-gradient(circle at 88% 22%, rgba(255, 230, 215, 0.55) 0%, transparent 45%),
+                  radial-gradient(circle at 50% 75%, rgba(255, 214, 230, 0.45) 0%, transparent 55%),
+                  #FAF6F4;
+    }
+  </style>
+</head>
+<body class="healing-mesh min-h-screen text-[#1E1F24] antialiased flex flex-col selection:bg-gentler-pink/20">
+<!-- Header: Gentler Apple-like frosted nav bar with Wife Identity Switch -->
+<header class="fixed top-0 inset-x-0 z-50 bg-[#FAF6F4]/85 backdrop-blur-2xl border-b border-black/[0.03] pt-safe">
+<div class="h-16 px-5 flex items-center justify-between">
+<!-- Left brand / title -->
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#FF4B72] to-[#FFA3B5] p-[2px] shadow-sm flex items-center justify-center">
+<div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
+<span class="text-xl">🌸</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-[19px] font-extrabold tracking-tight text-[#1E1F24] flex items-center gap-1.5 leading-none">
+          今日
+          <span class="w-2 h-2 rounded-full bg-[#FF4B72] inline-block animate-pulse"></span>
+</span>
+<span class="text-[11px] font-semibold text-[#8A8D99] mt-1 tracking-tight">Gentler Couple</span>
+</div>
+</div>
+<!-- Right couple switch pill & wife mascot avatar -->
+<div class="flex items-center gap-2">
+<div class="h-9 px-3.5 rounded-gentler-pill bg-white/95 border border-pink-100 shadow-sm flex items-center gap-2 text-xs font-bold">
+<span class="text-[#8A8D99]">老公</span>
+<span class="material-symbols-outlined text-[13px] text-[#FF4B72]">sync_alt</span>
+<span class="text-[#FF4B72] font-black bg-[#FFF0F4] px-2 py-0.5 rounded-full">老婆</span>
+</div>
+<div class="w-10 h-10 rounded-full p-[2px] bg-gradient-to-br from-[#FF7B90] to-[#FF4B72] shadow-sm shrink-0">
+<img alt="Wife Mascot Avatar" class="w-full h-full rounded-full object-cover bg-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADmlmftBUL8DMrUH6eyGhhqpXX8-IL_na_2tJVr_CPGTTRZOLlGSIy3aCu3sH1S9fjUyGWVfL9JxAaSOo1dJxr6UHfelbC1TBPSe8kXhtSCWeYuL3a6Fg1gBlrfECCaloyQ8NugiGrDxbjD3w7iOgZzYuVji-ch065CK1x_fRft0kovbXMIxEZk5W6JXn14vbhx8SBpZloH5m36ZdUnfXN16r1VSeGj4IAWj7uZ5bA4cg65inVWDjEw-PDOABol0OMIZo"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Flow -->
+<main class="flex-1 flex flex-col w-full max-w-md mx-auto px-4 pt-[76px] pb-28 gap-4">
+<!-- 1. Top Gentle Streak Pill Badge -->
+<div class="w-full bg-white/95 backdrop-blur-sm rounded-gentler-pill p-2.5 px-3.5 shadow-gentler-subtle border border-pink-50 flex items-center justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-full bg-[#FFF0F4] flex items-center justify-center text-[#FF4B72] shrink-0">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-[13px] font-bold text-[#1E1F24] truncate">并肩营养滋养 12 天</span>
+<span class="text-[11px] font-semibold text-[#FF4B72] truncate">状态轻盈恢复中 · 和煦节奏</span>
+</div>
+</div>
+<span class="text-[11px] font-bold px-3 py-1 bg-[#E8F8F0] text-[#1E945A] rounded-full shrink-0 shadow-sm">
+      温柔达标
+    </span>
+</div>
+<!-- 2. Nutrition Breeze Ring & Female Gentle Energy Card -->
+<div class="w-full bg-white rounded-gentler p-5 shadow-gentler-card border border-pink-50/80 relative overflow-hidden">
+<!-- Soft diffuse glow blobs -->
+<div class="absolute -right-8 -top-8 w-40 h-40 bg-[#FFE5EC]/70 rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute -left-6 -bottom-6 w-36 h-36 bg-[#FFF2DE]/60 rounded-full blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col space-y-4">
+<!-- Header info -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-[19px] font-extrabold text-[#1E1F24] tracking-tight">营养微风环</span>
+<span class="text-[11px] font-bold bg-[#FFF0F4] text-[#FF4B72] px-2.5 py-0.5 rounded-full border border-pink-100">
+            老婆端 80-90g
+          </span>
+</div>
+<span class="text-[12px] font-semibold text-[#8A8D99] flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-[#FF4B72]">spa</span>
+          舒缓吸收中
+        </span>
+</div>
+<!-- Ring + Cloud Mascot Duo -->
+<div class="flex items-center justify-between gap-4 pt-1">
+<!-- SVG Circular Ring -->
+<div class="relative w-32 h-32 shrink-0 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90 transform" viewbox="0 0 120 120">
+<circle class="text-[#FAF2F4]" cx="60" cy="60" fill="none" stroke="currentColor" stroke-width="12"></circle>
+<!-- Gentle strawberry pink gradient ring -->
+<defs>
+<lineargradient id="ringPinkGrad" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#FFA8BA"></stop>
+<stop offset="100%" stop-color="#FF4B72"></stop>
+</lineargradient>
+</defs>
+<circle cx="60" cy="60" fill="none" r="50" stroke="url(#ringPinkGrad)" stroke-dasharray="314.16" stroke-dashoffset="37.7" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<div class="flex items-baseline leading-none">
+<span class="text-[34px] font-extrabold text-[#1E1F24] tracking-tight">88</span>
+<span class="text-[14px] font-black text-[#FF4B72] ml-0.5">%</span>
+</div>
+<span class="text-[11px] font-bold text-[#8A8D99] mt-1">75g / 85g</span>
+</div>
+</div>
+<!-- Mascot Image & Gentle Note -->
+<div class="flex flex-col items-center sm:items-start text-center sm:text-left min-w-0 flex-1">
+<div class="w-20 h-20 rounded-full bg-gradient-to-b from-[#FFF2F5] to-[#FFE3EB] p-1 mb-2 shadow-sm shrink-0 flex items-center justify-center border border-pink-100">
+<img alt="Fit Cloud Mascot Female" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtNxA-1DeCXQgU0D9oscehWxCkQ8mAGDgAbYKIOu6tPAg6OmrsLKoGNNVREjC65_rqMMV37A4ttdaFP51APShODIaSEIlVg4hxzu-YbYtTn7UMe1SZgqteOJvZgT_HzQZNNWjh82-HR4x36pgVz-NgIxkTFYkPRTxG0h-Kif-t-uh0IYb403PAO5B_z2hXD65JsuxAE5x-s6FkjLcEaymTpkwC12Nm5oFomRCTo6FTfJl4NtSOt5zUNHEDHj8gIjNf9zc"/>
+</div>
+<p class="text-[12px] font-bold text-[#45474F] leading-snug">
+            蛋白滋润充盈，气色与线条正在悄悄改善 🌸
+          </p>
+</div>
+</div>
+<!-- 3 Macronutrient Warm Progress Bars -->
+<div class="grid grid-cols-3 gap-2.5 pt-2">
+<!-- Protein -->
+<div class="bg-[#FFF5F7] border border-pink-100/70 rounded-2xl p-2.5 flex flex-col space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-bold text-[#71737E]">优质蛋白</span>
+<span class="text-[12px] font-extrabold text-[#FF4B72]">75g</span>
+</div>
+<div class="w-full bg-white rounded-full h-2 overflow-hidden shadow-inner">
+<div class="bg-gradient-to-r from-[#FF7B90] to-[#FF4B72] h-full rounded-full" style="width: 88%"></div>
+</div>
+<span class="text-[10px] font-medium text-[#9E9E9E]">目标 85g</span>
+</div>
+<!-- Carbs -->
+<div class="bg-[#F0FAF5] border border-emerald-100/70 rounded-2xl p-2.5 flex flex-col space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-bold text-[#71737E]">复合慢碳</span>
+<span class="text-[12px] font-extrabold text-[#20B26C]">120g</span>
+</div>
+<div class="w-full bg-white rounded-full h-2 overflow-hidden shadow-inner">
+<div class="bg-gradient-to-r from-[#59D498] to-[#20B26C] h-full rounded-full" style="width: 78%"></div>
+</div>
+<span class="text-[10px] font-medium text-[#9E9E9E]">目标 140g</span>
+</div>
+<!-- Fiber -->
+<div class="bg-[#F6F3FF] border border-purple-100/70 rounded-2xl p-2.5 flex flex-col space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-bold text-[#71737E]">膳食纤维</span>
+<span class="text-[12px] font-extrabold text-[#8C6FF7]">25g</span>
+</div>
+<div class="w-full bg-white rounded-full h-2 overflow-hidden shadow-inner">
+<div class="bg-gradient-to-r from-[#B19EFF] to-[#8C6FF7] h-full rounded-full" style="width: 92%"></div>
+</div>
+<span class="text-[10px] font-medium text-[#9E9E9E]">目标 26g</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. One-Day Gentle Meal Rhythm (一日舒心四餐卡片) -->
+<div class="flex flex-col space-y-3 pt-1">
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[20px] text-[#FF4B72]">restaurant_menu</span>
+<span class="text-[18px] font-extrabold text-[#1E1F24] tracking-tight">一日舒心四餐</span>
+</div>
+<span class="text-[11px] font-bold text-[#8A8D99]">按体感享受营养</span>
+</div>
+<!-- Meal 1: Breakfast -->
+<div class="bg-white rounded-gentler p-4 shadow-gentler-card border border-pink-50/60 flex flex-col space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-[#FFF0F4] text-[#FF4B72] font-black text-xs flex items-center justify-center">早</span>
+<span class="text-[15px] font-bold text-[#1E1F24]">温暖晨起餐</span>
+<span class="text-[11px] font-medium text-[#9E9E9E]">07:00 - 08:30</span>
+</div>
+<span class="text-[11px] font-bold text-[#FF4B72] bg-[#FFF0F4] px-2.5 py-0.5 rounded-full">约 18g 蛋白</span>
+</div>
+<p class="text-[13px] text-[#555865] leading-relaxed pl-9">
+        鸡蛋 1 个 + 温热无糖黑豆浆 250ml + 全麦面包 1 片
+      </p>
+<div class="flex items-center justify-end gap-2 pt-1 pl-9">
+<button class="px-4 py-1.5 rounded-gentler-pill bg-gradient-to-r from-[#FF4B72] to-[#FF7B90] text-white text-[12px] font-bold shadow-gentler-glow-pink flex items-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[15px]">check</span>
+          按计划吃啦
+        </button>
+</div>
+</div>
+<!-- Meal 2: Lunch -->
+<div class="bg-white rounded-gentler p-4 shadow-gentler-card border border-pink-50/60 flex flex-col space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-[#E8F8F0] text-[#20B26C] font-black text-xs flex items-center justify-center">午</span>
+<span class="text-[15px] font-bold text-[#1E1F24]">轻盈午间补给</span>
+<span class="text-[11px] font-medium text-[#9E9E9E]">12:00 - 13:00</span>
+</div>
+<span class="text-[11px] font-bold text-[#20B26C] bg-[#E8F8F0] px-2.5 py-0.5 rounded-full">约 30g 蛋白</span>
+</div>
+<p class="text-[13px] text-[#555865] leading-relaxed pl-9">
+        外卖轻食半份米饭 + 清蒸龙利鱼/鸡胸肉 + 绿叶深色蔬菜
+      </p>
+<div class="flex items-center justify-end gap-2 pt-1 pl-9">
+<button class="px-4 py-1.5 rounded-gentler-pill bg-gradient-to-r from-[#FF4B72] to-[#FF7B90] text-white text-[12px] font-bold shadow-gentler-glow-pink flex items-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[15px]">check</span>
+          按计划吃啦
+        </button>
+</div>
+</div>
+<!-- Meal 3: Work Afternoon Snack -->
+<div class="bg-white rounded-gentler p-4 shadow-gentler-card border border-pink-50/60 flex flex-col space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-[#F3EFFF] text-[#8C6FF7] font-black text-xs flex items-center justify-center">歇</span>
+<span class="text-[15px] font-bold text-[#1E1F24]">工位黄金缓冲加餐</span>
+<span class="text-[11px] font-medium text-[#9E9E9E]">16:00 黄金时段</span>
+</div>
+<span class="text-[11px] font-bold text-[#8C6FF7] bg-[#F3EFFF] px-2.5 py-0.5 rounded-full">约 10g 蛋白</span>
+</div>
+<p class="text-[13px] text-[#555865] leading-relaxed pl-9">
+        希腊无糖酸奶 1 盒 + 7 颗烘焙坚果 或 热燕麦拿铁
+      </p>
+<div class="flex items-center justify-end gap-2 pt-1">
+<button class="px-3.5 py-1.5 rounded-gentler-pill bg-gradient-to-r from-[#FF4B72] to-[#FF7B90] text-white text-[12px] font-bold shadow-gentler-glow-pink active:scale-95 transition-transform">
+          按计划 ✨
+        </button>
+<button class="px-3 py-1.5 rounded-gentler-pill bg-[#FAF6F4] text-[#555865] hover:bg-[#F3EFEA] text-[12px] font-bold border border-black/[0.04] active:scale-95 transition-transform">
+          稍吃多 🍰
+        </button>
+<button class="px-3 py-1.5 rounded-gentler-pill bg-[#FAF6F4] text-[#555865] hover:bg-[#F3EFEA] text-[12px] font-bold border border-black/[0.04] active:scale-95 transition-transform">
+          还没吃 ⏳
+        </button>
+</div>
+</div>
+<!-- Meal 4: Dinner -->
+<div class="bg-white rounded-gentler p-4 shadow-gentler-card border border-pink-50/60 flex flex-col space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-[#FFF0F4] text-[#FF4B72] font-black text-xs flex items-center justify-center">晚</span>
+<span class="text-[15px] font-bold text-[#1E1F24]">轻盈温热晚饭</span>
+<span class="text-[11px] font-medium text-[#9E9E9E]">20:00 前后</span>
+</div>
+<span class="text-[11px] font-bold text-[#FF4B72] bg-[#FFF0F4] px-2.5 py-0.5 rounded-full">约 22g 蛋白</span>
+</div>
+<p class="text-[13px] text-[#555865] leading-relaxed pl-9">
+        手剥大虾仁 100g + 烫深色青菜 250g + 少量玉米粒
+      </p>
+<div class="flex items-center justify-end gap-2 pt-1">
+<button class="px-3.5 py-1.5 rounded-gentler-pill bg-gradient-to-r from-[#FF4B72] to-[#FF7B90] text-white text-[12px] font-bold shadow-gentler-glow-pink active:scale-95 transition-transform">
+          按计划 ✨
+        </button>
+<button class="px-3 py-1.5 rounded-gentler-pill bg-[#FAF6F4] text-[#555865] hover:bg-[#F3EFEA] text-[12px] font-bold border border-black/[0.04] active:scale-95 transition-transform">
+          稍吃多 🍰
+        </button>
+<button class="px-3 py-1.5 rounded-gentler-pill bg-[#FAF6F4] text-[#555865] hover:bg-[#F3EFEA] text-[12px] font-bold border border-black/[0.04] active:scale-95 transition-transform">
+          还没吃 ⏳
+        </button>
+</div>
+</div>
+</div>
+<!-- 4. 15-Minute Easy Dinner Rotation & Kitchen Tips -->
+<div class="w-full bg-white rounded-gentler p-5 shadow-gentler-card border border-pink-50/60 flex flex-col space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-[#FF4B72]">timer</span>
+<span class="text-[17px] font-extrabold text-[#1E1F24] tracking-tight">15min 快手晚餐轮换</span>
+</div>
+<span class="text-[11px] font-bold text-[#20B26C]">周一至周五省心灵感</span>
+</div>
+<!-- Tonight's Active Recipe -->
+<div class="bg-[#FFF8FA] border border-pink-100/80 rounded-2xl p-3.5 flex flex-col space-y-2">
+<div class="flex items-center justify-between flex-wrap gap-1">
+<span class="text-[14px] font-bold text-[#1E1F24]">今晚菜单：番茄虾仁炒蛋 + 白灼菜心</span>
+<span class="text-[11px] font-bold bg-[#E8F8F0] text-[#1E945A] px-2.5 py-0.5 rounded-full">
+          用时 12min · 已完成 ✓
+        </span>
+</div>
+<p class="text-[12px] text-[#5B5E6D] leading-relaxed">
+        💡 <strong class="text-[#1E1F24] font-bold">备菜小心机：</strong>冷冻去虾线青虾仁提前冷藏泡温水 5 分钟解冻，小番茄手撕下锅出汁更快，热油转小火，下蛋液 5 秒凝固即起锅。
+      </p>
+</div>
+</div>
+<!-- 5. Takeout Ordering Relief Guide -->
+<div class="w-full bg-white rounded-gentler p-5 shadow-gentler-card border border-pink-50/60 flex flex-col space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-[#FF7B90]">takeout_dining</span>
+<span class="text-[17px] font-extrabold text-[#1E1F24] tracking-tight">外卖点餐减负指南</span>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<div class="bg-[#F0FAF5] border border-emerald-100/60 rounded-2xl p-3 flex flex-col space-y-1.5">
+<div class="flex items-center gap-1.5 text-[#20B26C]">
+<span class="material-symbols-outlined text-[16px]">sentiment_satisfied</span>
+<span class="text-[12px] font-bold">舒心优先选</span>
+</div>
+<p class="text-[11px] text-[#555865] leading-relaxed">
+          白灼、清蒸、少油盐，米饭主动拨出半碗，多要一份清炒时蔬。
+        </p>
+</div>
+<div class="bg-[#FFF5F7] border border-pink-100/60 rounded-2xl p-3 flex flex-col space-y-1.5">
+<div class="flex items-center gap-1.5 text-[#FF4B72]">
+<span class="material-symbols-outlined text-[16px]">healing</span>
+<span class="text-[12px] font-bold">少焦虑避坑</span>
+</div>
+<p class="text-[11px] text-[#555865] leading-relaxed">
+          避开浓稠红油芡汁与油炸裹粉，汤水单放，吃得舒适毫无负担。
+        </p>
+</div>
+</div>
+</div>
+<!-- 6. Warm Reassurance FAQ -->
+<div class="w-full bg-white rounded-gentler p-5 shadow-gentler-card border border-pink-50/60 flex flex-col space-y-2.5">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[20px] text-[#8C6FF7]">psychology_alt</span>
+<span class="text-[17px] font-extrabold text-[#1E1F24] tracking-tight">温和体贴回应</span>
+</div>
+<!-- FAQ 1 -->
+<details class="group bg-[#FAF6F4] rounded-2xl p-3.5 [&amp;_summary::-webkit-details-marker]:none cursor-pointer">
+<summary class="flex items-center justify-between text-[13px] font-bold text-[#1E1F24]">
+<span>聚餐不小心吃多了怎么办？</span>
+<span class="material-symbols-outlined text-[18px] text-[#8A8D99] group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<p class="text-[12px] text-[#606373] mt-2 leading-relaxed">
+        完全不必内疚！一顿开心的聚餐是给心灵充电。明天多喝两杯温润红茶，晚餐换成温热蔬菜豆腐汤，身体自然会恢复轻盈节律。
+      </p>
+</details>
+<!-- FAQ 2 -->
+<details class="group bg-[#FAF6F4] rounded-2xl p-3.5 [&amp;_summary::-webkit-details-marker]:none cursor-pointer">
+<summary class="flex items-center justify-between text-[13px] font-bold text-[#1E1F24]">
+<span>晚上加班太晚肚子饿了怎么办？</span>
+<span class="material-symbols-outlined text-[18px] text-[#8A8D99] group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<p class="text-[12px] text-[#606373] mt-2 leading-relaxed">
+        微波炉加热一盒 200ml 温热全脂或脱脂纯牛奶，或者吃一小把水煮毛豆。温热的液体会安抚神经，不会囤积多余负担，睡个好觉最重要。
+      </p>
+</details>
+</div>
+<!-- Bottom Strawberry Pink Jelly Action Button -->
+<div class="pt-2 pb-2">
+<button class="w-full py-4 px-6 rounded-gentler-pill bg-gradient-to-r from-[#FF4B72] via-[#FF6685] to-[#FF7B90] text-white font-extrabold text-[16px] shadow-gentler-glow-pink flex items-center justify-center gap-2 active:scale-95 transition-all" id="recordCompleteBtn" onclick="handleCompletion()">
+<span class="text-xl">🥑</span>
+<span>记录完毕，今天也很爱惜身体</span>
+</button>
+</div>
+</main>
+<!-- Bottom Navigation Bar: Gentler Style Frosted Dock (Wife Pink Active on 饮食) -->
+<nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-[#FAF6F4]/90 backdrop-blur-2xl border-t border-black/[0.04] shadow-[0_-10px_30px_rgba(0,0,0,0.03)]">
+<div class="flex justify-around items-center h-[70px] max-w-md mx-auto px-4">
+<!-- Tab 1: Today -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#989BA8] hover:text-[#525562] font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">sunny</span>
+<span class="text-[11px] leading-tight tracking-tight">今日</span>
+</a>
+<!-- Tab 2: Nutrition (Active Wife Pink) -->
+<a class="relative flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#FF4B72] font-extrabold transition-all" href="#">
+<span class="material-symbols-outlined text-[24px]">restaurant</span>
+<span class="text-[11px] leading-tight tracking-tight">饮食</span>
+<span class="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[#FF4B72] shadow-[0_0_8px_rgba(255,75,114,0.8)]"></span>
+</a>
+<!-- Tab 3: Workout -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#989BA8] hover:text-[#525562] font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">directions_run</span>
+<span class="text-[11px] leading-tight tracking-tight">训练</span>
+</a>
+<!-- Tab 4: Progress -->
+<a class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-[#989BA8] hover:text-[#525562] font-semibold transition-all" href="#">
+<span class="material-symbols-outlined outlined text-[24px]">insights</span>
+<span class="text-[11px] leading-tight tracking-tight">记录</span>
+</a>
+</div>
+</nav>
+<script>
+  function handleCompletion() {
+    const btn = document.getElementById('recordCompleteBtn');
+    if (btn) {
+      btn.innerHTML = '<span class="text-xl">🌸</span><span>已温柔同步给老公 · 治愈达成</span>';
+      btn.classList.remove('from-[#FF4B72]', 'via-[#FF6685]', 'to-[#FF7B90]');
+      btn.classList.add('bg-gradient-to-r', 'from-[#20B26C]', 'to-[#45D18D]');
+    }
+  }
+</script>
+</body></html>
