@@ -152,7 +152,13 @@ Deno.serve(async (req) => {
     if (err instanceof Anthropic.RateLimitError) return reply(429, { error: "busy" });
     if (err instanceof Anthropic.AuthenticationError) return reply(502, { error: "bad_key" });
     if (err instanceof Anthropic.APIConnectionError) return reply(502, { error: "unreachable" });
-    if (err instanceof Anthropic.APIError) return reply(502, { error: "upstream", status: err.status });
-    return reply(500, { error: "internal" });
+    if (err instanceof Anthropic.APIError) {
+      // 把上游（官方或中转）的报错原因简短带回来，方便排查；不含 Key
+      const detail = String(err.message ?? "").replace(/sk-[A-Za-z0-9_-]+/g, "sk-***").slice(0, 300);
+      console.error("upstream error", err.status, detail);
+      return reply(502, { error: "upstream", status: err.status, detail, model: MODEL });
+    }
+    console.error("internal error", err);
+    return reply(500, { error: "internal", detail: String(err).slice(0, 200) });
   }
 });

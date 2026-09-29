@@ -402,7 +402,7 @@ p{margin:0}
 .run ul li{margin-bottom:6px}
 
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);
-  padding:9px 16px;border-radius:999px;font-size:13px;z-index:30;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
+  padding:9px 16px;border-radius:999px;font-size:13px;z-index:60;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
 /* 记录吃了什么 */
 .foodf{display:grid;gap:12px}
@@ -469,7 +469,7 @@ p{margin:0}
 .goal-cta b{display:block;font-size:14px;font-weight:800}
 .goal-cta small{display:block;font-size:12px;color:var(--muted);line-height:1.5}
 /* 形象反馈 */
-.react{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px) scale(.96);z-index:31;opacity:0;pointer-events:none;
+.react{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px) scale(.96);z-index:61;opacity:0;pointer-events:none;
   display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:24px;padding:10px 18px 10px 10px;box-shadow:var(--shadow-lift);width:max-content;max-width:calc(100vw - 32px);transition:opacity .25s,transform .25s}
 .react.show{opacity:1;transform:translate(-50%,0) scale(1)}
 .react img{width:64px;height:64px;object-fit:contain;flex:none}
@@ -684,7 +684,11 @@ const FOOD_DB=[
   ["红薯","地瓜|烤红薯",86,{个:200,块:100},"个"],
   ["紫薯","",106,{个:150},"个"],
   ["土豆","马铃薯",77,{个:150},"个"],
-  ["包子","肉包|肉包子|菜包",227,{个:80},"个"],
+  ["包子","肉包|肉包子|鲜肉包|大肉包",227,{个:80},"个"],
+  ["菜包","青菜包|香菇青菜包|萝卜丝包|素包|菜包子|粉丝包",190,{个:80},"个"],
+  ["五丁包","三丁包|五丁包子|三丁包子",250,{个:110},"个"],
+  ["豆沙包","奶黄包|流沙包|叉烧包",260,{个:60},"个"],
+  ["生煎包","生煎",230,{个:40,两:200},"个"],
   ["小笼包","小笼",230,{个:25,笼:200},"个"],
   ["饺子","水饺|煮饺子",220,{个:20,两:100,盘:300,份:300},"个"],
   ["煎饺","锅贴",260,{个:25,份:250},"个"],
@@ -762,7 +766,7 @@ const FOOD_DB=[
   ["煎蛋","荷包蛋|煎鸡蛋",200,{个:50},"个"],
   ["蒸蛋","鸡蛋羹|蛋羹",80,{碗:150,份:150},"碗"],
   ["牛奶","纯牛奶|全脂奶|鲜奶",65,{杯:250,盒:250,瓶:250,ml:1},"盒"],
-  ["脱脂奶","脱脂牛奶|低脂奶|低脂牛奶",35,{杯:250,盒:250,ml:1},"盒"],
+  ["脱脂奶","脱脂牛奶|低脂奶|低脂牛奶|脱脂高钙牛奶|脱脂高钙奶|高钙脱脂奶|高钙低脂奶|低脂高钙奶|高钙牛奶|高钙奶",35,{杯:250,盒:250,瓶:250,个:250,ml:1},"盒"],
   ["无糖豆浆","豆浆",31,{杯:250,碗:300,ml:1},"杯"],
   ["甜豆浆","",52,{杯:250,碗:300,ml:1},"杯"],
   ["无糖酸奶","原味酸奶|希腊酸奶",72,{盒:100,杯:150,碗:150},"盒"],
@@ -847,6 +851,7 @@ const UNITS="碗|个|只|份|杯|罐|瓶|片|块|根|串|盒|勺|包|两|盘|条
 const CN_NUM={半:.5,一:1,二:2,两:2,俩:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9,十:10};
 const numOf=t=>{ if(!t) return null; if(/^\d/.test(t)) return parseFloat(t); if(t==="十") return 10; if(t.length===2&&t[0]==="十") return 10+(CN_NUM[t[1]]||0); if(t.length===2&&t[1]==="十") return (CN_NUM[t[0]]||1)*10; return CN_NUM[t]??null; };
 const QTY_PRE=new RegExp("(\\d+(?:\\.\\d+)?|[半一二两俩三四五六七八九十]{1,2})?\\s*(小|大|中)?\\s*("+UNITS+")?\\s*(?:的)?\\s*$");
+const QTY_PRE_LOOSE=new RegExp("(\\d+(?:\\.\\d+)?|[半一二两俩三四五六七八九十]{1,2})\\s*(小|大|中)?\\s*("+UNITS+")\\s*(?:的)?[\\u4e00-\\u9fa5]{0,6}$");
 const QTY_SUF=new RegExp("^\\s*(\\d+(?:\\.\\d+)?|[半一二两俩三四五六七八九十]{1,2})?\\s*(小|大|中)?\\s*("+UNITS+")?");
 function foodKcal(f,num,size,unit){
   const units=f[3]; let n=num==null?1:num, u=unit, grams;
@@ -878,6 +883,7 @@ function parseMeal(text){
     hits.forEach((h,j)=>{
       const pre=seg.slice((j?hits[j-1].e:0)+used,h.s), sufEnd=j<hits.length-1?hits[j+1].s:seg.length, suf=seg.slice(h.e,sufEnd);
       let m=pre.match(QTY_PRE); used=0;
+      if(!m||(!m[1]&&!m[3])){ const m2=pre.match(QTY_PRE_LOOSE); if(m2) m=m2; } // "200ml的脱脂高钙" 这类量词和食物之间有修饰词
       if(!m||(!m[1]&&!m[3])){ m=suf.match(QTY_SUF); if(m&&(m[1]||m[3])) used=m[0].length; }
       out.push(foodKcal(h.f, m?numOf(m[1]):null, m?m[2]:null, m?m[3]:null));
     });
@@ -1729,7 +1735,7 @@ document.addEventListener("click",e=>{
 });
 
 let toastT=null;
-function toast(msg){ const el=$("#toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),2600); }
+function toast(msg,ms){ const el=$("#toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),ms||2600); }
 
 function openPicker(canCancel){
   $("#pick").classList.add("open"); $("[data-pick-cancel]").hidden=!canCancel; document.body.style.overflow="hidden";
@@ -1773,7 +1779,7 @@ async function aiFood(){
     if(!SUPABASE_KEY.startsWith("sb_")) headers["Authorization"]="Bearer "+SUPABASE_KEY;
     const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/functions/v1/meal-kcal"+(AI_REGION?"?forceFunctionRegion="+encodeURIComponent(AI_REGION):""),{method:"POST",headers,body:JSON.stringify({family,text})});
     const d=await r.json().catch(()=>({}));
-    if(!r.ok){ toast({daily_limit:"今天 AI 估算次数用完了，明天再试",unknown_family:"先打一次卡同步一下，再用 AI 估算",busy:"AI 有点忙，稍后再试",bad_key:"AI 的 Key 不对或余额不足，检查一下 Supabase 里的设置",unreachable:"服务器连不上 AI 接口，试试换地区或配置中转"}[d.error]||"AI 估算失败，可以先手动填热量"); return; }
+    if(!r.ok){ toast({daily_limit:"今天 AI 估算次数用完了，明天再试",unknown_family:"先打一次卡同步一下，再用 AI 估算",busy:"AI 有点忙，稍后再试",bad_key:"AI 的 Key 不对或余额不足，检查一下 Supabase 里的设置",unreachable:"服务器连不上 AI 接口，试试换地区或配置中转"}[d.error]||("AI 估算失败"+(d.detail?"："+d.detail.slice(0,80):"")+"，可以先手动填热量"),6000); console.warn("meal-kcal",r.status,d); return; }
     if(!d.items||!d.items.length){ toast(d.note||"没看出吃了什么，换个说法试试"); return; }
     foodRows=d.items.map(i=>({n:i.name,q:i.amount,k:i.kcal,ai:true}));
     const note=$("#foodNote"); note.hidden=!d.note; note.textContent=d.note?"🤖 "+d.note:"";
