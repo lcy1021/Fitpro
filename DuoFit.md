@@ -1,4 +1,4 @@
-# Fitpro · 两个人的减脂打卡
+# DuoFit · 两个人的减脂打卡
 
 夫妻两人共用的手机端减脂打卡工具。
 
@@ -214,7 +214,7 @@ App 的主页，从上到下依次是：
 
 ### 4.1 设计原则
 
-视觉风格对标 Gentler Streak 的治愈系：温暖、柔软、零焦虑。设计来源是 `UIset/Fitpro_dual_design_system/` 里的规范和 Stitch 稿。
+视觉风格对标 Gentler Streak 的治愈系：温暖、柔软、零焦虑。设计来源是 `UIset/DuoFit_dual_design_system/` 里的规范和 Stitch 稿。
 
 - **"一天 × 两个人"是产品的基本单位**：首页先放两人的进度，再放自己的操作。
 - **双端镜像**：老公端和老婆端结构完全一样，只有身份色、形象和计划数据不同。
@@ -294,14 +294,14 @@ food?: { breakfast|lunch|snack|dinner: { text, items: [{ n, q, k }], kcal } }
 | `assets/avatar-hus.png`、`assets/avatar-wife.png` | 记录页的角色头像（由 `UIset/` 原图缩小到 256px） |
 | `UIset/` | 角色形象原图 |
 | `assets/mascots/`、`docs/mascot-design.md` | 角色状态图和设计规范（尚未接入页面） |
-| `assets/icons/`、`manifest.webmanifest` | 主屏幕图标（iPhone 180、安卓 192/512）、浏览器标签图标，主屏幕名称 Fitpro；源图 `UIset/logo/fitpro-app-icon-fullbleed.png` |
+| `assets/icons/`、`manifest.webmanifest` | 主屏幕图标（iPhone 180、安卓 192/512）、浏览器标签图标，主屏幕名称 DuoFit；源图 `UIset/logo/duofit-app-icon-fullbleed.png` |
 | `assets/mood/` | 7 种表情 × 2 人的 256px 图（原图在 `assets/mascots/`，设计规范见 `docs/mascot-design.md`） |
 | `assets/moves/*.gif` | 32 个动作的循环动图 |
 | `index.html` 里的 `FOOD_DB` | 约 180 种常见食物的热量库（参考《中国食物成分表》第 6 版，外卖菜按常见一份估算） |
 | `docs/exercise-illustrations.md` | 32 个训练、热身、放松动作的示意图说明和文件名 |
 | `.stitch/DESIGN.md` | 设计规范，供 Stitch 等设计工具读取 |
 | `CLAUDE.md` | 给 AI 协作的项目说明和约定 |
-| `Fitpro.md` | 本文档 |
+| `DuoFit.md` | 本文档 |
 
 ---
 

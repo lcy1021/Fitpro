@@ -24,7 +24,7 @@
 
 ### 1. 拿一个 Anthropic API Key
 
-1. 打开 https://console.anthropic.com ，登录后进入 **API Keys** → **Create Key**，名字填 `fitpro`。
+1. 打开 https://console.anthropic.com ，登录后进入 **API Keys** → **Create Key**，名字填 `duofit`。
 2. 复制生成的 Key（`sk-ant-` 开头），**不要发给任何人，也不要写进代码或提交到 GitHub**。
 3. 在 **Billing** 里充一点余额（最低档就够用很久）。
 

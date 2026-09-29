@@ -88,13 +88,13 @@
 
 ## 视觉
 
-- 设计规范以 `.stitch/DESIGN.md` 为准（来源：`UIset/Fitpro_dual_design_system/`）。老公蔚蓝 `#0284C7`、老婆草莓粉 `#FF4B72`，奶油底、白卡柔光晕、大圆角、深曜石训练卡
+- 设计规范以 `.stitch/DESIGN.md` 为准（来源：`UIset/DuoFit_dual_design_system/`）。老公蔚蓝 `#0284C7`、老婆草莓粉 `#FF4B72`，奶油底、白卡柔光晕、大圆角、深曜石训练卡
 - CSS 里 `--me*` 是当前身份色（`body.me-hus/.me-wife`），`--p*` 是某个人的颜色（元素上加 `.hus/.wife`），新组件优先用这两组变量
 - 只展示真实数据，不要照搬 Stitch 稿里的心率、恢复指数、默契度等虚构指标
 
 - 图标：24 个线性 SVG 图标，源文件 `UIset/icons/`，页面里是内联 `<symbol id="ic-名称">`，用 `icon(名称, "sm"|"lg")` 插入；改图标要同时改源文件和 `index.html` 里同名 symbol。没有图标的地方先用 emoji
 
-- App 图标：`assets/icons/`（由 `UIset/logo/fitpro-app-icon-fullbleed.png` 直接缩放，不裁切；源图要直角、背景铺满，手机系统会自己切圆角），`manifest.webmanifest` 和 `apple-mobile-web-app-title` 设主屏幕名称 Fitpro。不加载网络字体（国内访问 Google Fonts 会拖慢首屏）
+- App 图标：`assets/icons/`（由 `UIset/logo/duofit-app-icon-fullbleed.png` 直接缩放，不裁切；源图要直角、背景铺满，手机系统会自己切圆角），`manifest.webmanifest` 和 `apple-mobile-web-app-title` 设主屏幕名称 DuoFit。不加载网络字体（国内访问 Google Fonts 会拖慢首屏）
 
 ## 协作约定
 
@@ -102,4 +102,4 @@
 - 较大的改动先用 Markdown 说明方案，确认后再改代码
 - 文案用中文，简洁口语化
 - 每次改完用手机尺寸预览检查；提交前说明改了什么
-- 用户说"修改"时，默认要同步改 `index.html`（界面和内容），不能只改文档。`Fitpro.md`、`.stitch/DESIGN.md`、`CLAUDE.md` 要和 `index.html` 保持一致：改了其中一处，其他相关的地方一起更新
+- 用户说"修改"时，默认要同步改 `index.html`（界面和内容），不能只改文档。`DuoFit.md`、`.stitch/DESIGN.md`、`CLAUDE.md` 要和 `index.html` 保持一致：改了其中一处，其他相关的地方一起更新
