@@ -98,7 +98,10 @@ p{margin:0}
 .pick .cancel{border:0;background:transparent;color:var(--muted);font-size:14px;padding:10px}
 
 /* 登录动效（首次进入 / 切换身份） */
-.pick.lm-pick{padding:0;background:var(--bg);overflow:hidden}
+.pick.lm-pick{padding:0;background:var(--bg);overflow:hidden;transition:opacity .45s ease}
+.pick.lm-pick.leaving{opacity:0;pointer-events:none}
+.lm.splash .lm-choice{display:none}
+.lm.splash{cursor:pointer}
 .lm{position:relative;max-width:440px;height:100dvh;min-height:560px;margin:0 auto;overflow:hidden;isolation:isolate;color:var(--ink)}
 .lm::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 4% 44%,color-mix(in srgb,var(--hus-soft) 90%,transparent) 0,transparent 42%),radial-gradient(circle at 102% 43%,color-mix(in srgb,var(--wife-soft) 90%,transparent) 0,transparent 45%),var(--bg)}
 .lm::after{content:"";position:absolute;width:270px;height:270px;border-radius:50%;top:190px;left:50%;transform:translateX(-50%);z-index:-1;background:radial-gradient(circle,color-mix(in srgb,var(--surface) 90%,transparent) 0,transparent 70%);filter:blur(3px)}
@@ -1818,7 +1821,7 @@ document.addEventListener("click",e=>{
   if(t.hasAttribute("data-code-close")){ $("#codeDlg").classList.remove("open"); document.body.style.overflow=""; lastTab=null; render(); return; }
   if(t.hasAttribute("data-pick-cancel")){ closePicker(); return; }
   if(t.dataset.lmRole){ lmSelect(t.dataset.lmRole); return; }
-  if(t.hasAttribute("data-lm-skip")){ lmClear(); lmPhase("choose"); return; }
+  if(t.hasAttribute("data-lm-skip")){ if($("#lm").classList.contains("splash")){ $("#lm").onclick(); return; } lmClear(); lmPhase("choose"); return; }
   if(t.hasAttribute("data-lm-replay")){ lmPlay(); return; }
   if(t.hasAttribute("data-open-picker")){ openPicker(true); return; }
   if(t.dataset.view){ viewP=t.dataset.view; lastTab=null; render(); return; }
@@ -1881,7 +1884,19 @@ function lmPlay(){
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmPhase("choose"); return; }
   lmTimers.push(setTimeout(()=>lmPhase("run"),160), setTimeout(()=>lmPhase("meet"),1940), setTimeout(()=>lmPhase("choose"),2650));
 }
+/* 每次打开 App：已经选过身份的，播完跑近会合直接进主页（点任意处或"跳过"可提前进入）；首次打开播完弹出选择卡片 */
+function openSplash(after){
+  const pk=$("#pick"), lm=$("#lm");
+  lm.classList.add("splash"); pk.classList.remove("leaving"); pk.classList.add("open"); document.body.style.overflow="hidden";
+  lmClear(); lmPhase("start");
+  const done=()=>{ if(!lm.classList.contains("splash")) return; lmClear(); lm.classList.remove("splash"); lm.onclick=null;
+    pk.classList.add("leaving"); setTimeout(()=>{ pk.classList.remove("open","leaving"); document.body.style.overflow=""; lmPhase("choose"); if(after) after(); },450); };
+  lm.onclick=done;
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmTimers.push(setTimeout(done,600)); return; }
+  lmTimers.push(setTimeout(()=>lmPhase("run"),160), setTimeout(()=>lmPhase("meet"),1940), setTimeout(done,2500));
+}
 function openPicker(canCancel){
+  $("#lm").classList.remove("splash"); $("#lm").onclick=null; $("#pick").classList.remove("leaving");
   $("#pick").classList.add("open"); $("[data-pick-cancel]").hidden=!canCancel; document.body.style.overflow="hidden";
   if(canCancel){ lmClear(); lmSelect(me); lmPhase("choose"); } else lmPlay();
 }
@@ -2031,7 +2046,7 @@ $("#goalForm").addEventListener("submit",e=>{
   menuCache={}; closeGoal(); lastTab=null; render(); react("weigh","目标已保存","今天吃什么已经按你的目标调好了");
 });
 if(storedMe!=="hus" && storedMe!=="wife") openPicker(false);
-else if(CLOUD && !family) openCode();
+else openSplash(()=>{ if(CLOUD && !family) openCode(); });
 if(CLOUD){
   sync();
   setInterval(()=>{ if(document.visibilityState==="visible") sync(); },30000);
