@@ -274,26 +274,26 @@ const PEOPLE = { hus:{label:"老公"}, wife:{label:"老婆"} };
 const MEALS = ["breakfast","lunch","snack","dinner"];
 const MEAL_PLAN = {
   hus:{
-    breakfast:{t:"早餐",time:"7:00",food:"鸡蛋 2 个 + 牛奶或无糖豆浆 250ml + 全麦面包 2 片（或玉米 1 根）"},
-    lunch:{t:"午餐",time:"12:00",food:"外卖或食堂，米饭吃 2/3 份，一定要有一份明显的肉、蛋或鱼"},
-    snack:{t:"下午加餐",time:"16:00",food:"无糖酸奶 1 盒 + 1 个水果；喝拿铁的话就把它当加餐，不再吃别的"},
-    dinner:{t:"晚餐",time:"20:00 后",food:"瘦肉或鱼虾 150g + 蔬菜 300g + 少量主食（半碗饭，可省）"},
-    protein:"约 120–130g"
+    breakfast:{t:"早餐",time:"7:00",food:"鸡蛋 2 个 + 牛奶或无糖豆浆 250ml + 全麦面包 2 片（或玉米 1 根）",kcal:"350–480"},
+    lunch:{t:"午餐",time:"12:00",food:"外卖或食堂，米饭吃 2/3 份，一定要有一份明显的肉、蛋或鱼",kcal:"550–750"},
+    snack:{t:"下午加餐",time:"16:00",food:"无糖酸奶 1 盒 + 1 个水果；喝拿铁的话就把它当加餐，不再吃别的",kcal:"150–250"},
+    dinner:{t:"晚餐",time:"20:00 后",food:"瘦肉或鱼虾 150g + 蔬菜 300g + 少量主食（半碗饭，可省）",kcal:"300–500"},
+    kcal:"约 1350–1950 kcal",protein:"约 120–130g"
   },
   wife:{
-    breakfast:{t:"早餐",time:"7:00",food:"鸡蛋 1 个 + 牛奶或无糖豆浆 250ml + 全麦面包 1 片（或半根玉米）"},
-    lunch:{t:"午餐",time:"12:00",food:"同样的套餐，米饭吃 1/2 份，菜可以吃完"},
-    snack:{t:"下午加餐",time:"16:00",food:"无糖酸奶 1 盒，或 1 个水果，或一杯拿铁（三选一）"},
-    dinner:{t:"晚餐",time:"20:00 后",food:"瘦肉或鱼虾 100g + 蔬菜 250g，主食可以不吃"},
-    protein:"约 80–90g"
+    breakfast:{t:"早餐",time:"7:00",food:"鸡蛋 1 个 + 牛奶或无糖豆浆 250ml + 全麦面包 1 片（或半根玉米）",kcal:"220–320"},
+    lunch:{t:"午餐",time:"12:00",food:"同样的套餐，米饭吃 1/2 份，菜可以吃完",kcal:"450–600"},
+    snack:{t:"下午加餐",time:"16:00",food:"无糖酸奶 1 盒，或 1 个水果，或一杯拿铁（三选一）",kcal:"80–200"},
+    dinner:{t:"晚餐",time:"20:00 后",food:"瘦肉或鱼虾 100g + 蔬菜 250g，主食可以不吃",kcal:"200–340"},
+    kcal:"约 1000–1450 kcal",protein:"约 80–90g"
   }
 };
 const DINNERS = {
-  1:{n:"番茄虾仁炒蛋 + 白灼菜心",h:"虾仁提前解冻，少油快炒"},
-  2:{n:"空气炸锅鸡腿肉 + 凉拌黄瓜",h:"去皮鸡腿肉用黑胡椒、生抽腌好，200℃ 烤 15 分钟"},
-  3:{n:"番茄牛肉菌菇汤",h:"牛肉片 + 番茄 + 金针菇 + 青菜，一锅出"},
-  4:{n:"清蒸鱼 + 蒜蓉西兰花",h:"龙利鱼或鲈鱼蒸 8–10 分钟，淋少量蒸鱼豉油"},
-  5:{n:"虾仁豆腐蔬菜汤 + 卤蛋",h:"豆腐补蛋白质，热乎又顶饱"}
+  1:{n:"番茄虾仁炒蛋 + 白灼菜心",h:"虾仁提前解冻，少油快炒",kcal:{hus:"380–480",wife:"260–330"}},
+  2:{n:"空气炸锅鸡腿肉 + 凉拌黄瓜",h:"去皮鸡腿肉用黑胡椒、生抽腌好，200℃ 烤 15 分钟",kcal:{hus:"400–500",wife:"280–340"}},
+  3:{n:"番茄牛肉菌菇汤",h:"牛肉片 + 番茄 + 金针菇 + 青菜，一锅出",kcal:{hus:"350–450",wife:"240–310"}},
+  4:{n:"清蒸鱼 + 蒜蓉西兰花",h:"龙利鱼或鲈鱼蒸 8–10 分钟，淋少量蒸鱼豉油",kcal:{hus:"300–400",wife:"200–270"}},
+  5:{n:"虾仁豆腐蔬菜汤 + 卤蛋",h:"豆腐补蛋白质，热乎又顶饱",kcal:{hus:"380–480",wife:"270–340"}}
 };
 const WORKOUTS = {
   A:{name:"训练 A",who:"hus",rounds:3,restMove:15,restRound:60,equip:"一对哑铃 + 瑜伽垫",
@@ -544,11 +544,11 @@ function peekSwitch(){
 }
 function viewDiet(){
   const plan=MEAL_PLAN[viewP]; const w=new Date().getDay();
-  const rows=MEALS.map(m=>`<li><b>${plan[m].t}</b>　${esc(plan[m].food)}<small>${plan[m].time}</small></li>`).join("");
+  const rows=MEALS.map(m=>`<li><b>${plan[m].t}</b>　${esc(plan[m].food)}<small>${plan[m].time}　约 ${plan[m].kcal} kcal</small></li>`).join("");
   const dinners=[1,2,3,4,5].map(d=>`<div class="dinner ${d===w?"today":""}"><span class="d">周${WEEK[d]}</span>
-    <div><h4>${DINNERS[d].n}${d===w?'<span class="tag">今晚</span>':""}</h4><p>${DINNERS[d].h}</p></div></div>`).join("");
+    <div><h4>${DINNERS[d].n}${d===w?'<span class="tag">今晚</span>':""}</h4><p>${DINNERS[d].h}</p><p>约 ${DINNERS[d].kcal[viewP]} kcal</p></div></div>`).join("");
   $("#view").innerHTML=peekSwitch()+`
-  <section class="sec"><div class="sec-h"><h3>${PEOPLE[viewP].label}的一天</h3><span>蛋白质 ${plan.protein}</span></div>
+  <section class="sec"><div class="sec-h"><h3>${PEOPLE[viewP].label}的一天</h3><span>全天${plan.kcal} · 蛋白质 ${plan.protein}</span></div>
     <div class="card"><ul class="list">${rows}</ul></div></section>
   <section class="sec"><div class="sec-h"><h3>晚餐轮换</h3><span>15 分钟快手菜</span></div>
     <div class="card">${dinners}</div>
