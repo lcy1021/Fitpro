@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FDF9F4">
+<title>Fitpro · 动态登录页预览</title>
+<style>
+  :root{font-family:"PingFang SC","Noto Sans SC",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:#20303C;background:#EDF3F6}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100dvh;background:radial-gradient(circle at 8% 9%,#D8F3FF 0,transparent 35%),radial-gradient(circle at 92% 85%,#FFE1EA 0,transparent 38%),#F5F7F8}
+  button{font:inherit;cursor:pointer}
+  .workspace{min-height:100dvh;display:grid;grid-template-columns:minmax(270px,410px) 390px;gap:clamp(30px,6vw,90px);align-items:center;justify-content:center;padding:28px}
+  .notes{max-width:400px}
+  .eyebrow{font-size:11px;font-weight:900;letter-spacing:.16em;color:#2785A9}
+  .notes h1{font-size:clamp(32px,4vw,48px);line-height:1.18;letter-spacing:-.055em;margin:15px 0 17px}
+  .notes h1 em{font-style:normal;color:#F55B81}
+  .notes p{line-height:1.75;color:#61717D;font-size:15px;max-width:370px}
+  .steps{display:grid;gap:12px;margin:29px 0}
+  .step{display:flex;align-items:center;gap:12px;color:#8998A3;font-size:13px;transition:color .3s}
+  .step i{width:31px;height:31px;border-radius:11px;background:#E7EEF2;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:900;transition:background .3s,color .3s}
+  .step.active{color:#233949;font-weight:800}
+  .step.active i{background:#D9F3FF;color:#057DB7}
+  .preview-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .preview-actions button{border:0;border-radius:14px;padding:12px 17px;font-size:13px;font-weight:800}
+  .replay-main{background:#15384B;color:white;box-shadow:0 8px 20px #205C7728}
+  .skip-main{background:#FFFFFF;color:#43606F;border:1px solid #DBE6EB!important}
+  .prototype-note{display:block;color:#92A0A9;font-size:12px;margin-top:17px;line-height:1.5}
+  .phone{width:390px;height:780px;border:7px solid #fff;border-radius:43px;box-shadow:0 38px 80px #1D536033,0 0 0 1px #A8BBC324;overflow:hidden;position:relative;background:#FDF9F4;isolation:isolate}
+  .phone::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 4% 44%,#D9F5FF 0,transparent 42%),radial-gradient(circle at 102% 43%,#FFE2EB 0,transparent 45%),linear-gradient(180deg,#FFFDF9,#FDF9F4 65%,#F8F7F2);z-index:-2}
+  .phone::after{content:"";position:absolute;width:270px;height:270px;border-radius:50%;top:190px;left:50%;transform:translateX(-50%);background:radial-gradient(circle,#FFF 0,#FFFFFF64 45%,transparent 70%);filter:blur(3px);z-index:-1}
+  .grain{position:absolute;inset:0;opacity:.24;background-image:radial-gradient(#9DDCEB 1px,transparent 1px);background-size:26px 26px;mask-image:linear-gradient(180deg,transparent 18%,black 55%,transparent 81%);pointer-events:none}
+  .topbar{position:absolute;z-index:6;left:24px;right:20px;top:24px;display:flex;justify-content:space-between;align-items:center}
+  .brand{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:900;letter-spacing:-.035em}
+  .brand img{width:31px;height:31px;border-radius:9px;box-shadow:0 3px 9px #4591A329}
+  .skip-intro{border:0;background:#FFFFFFB8;color:#7A8A94;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:700;transition:opacity .3s,visibility .3s}
+  .phone[data-phase="choose"] .skip-intro{opacity:0;visibility:hidden}
+  .intro-copy{position:absolute;left:26px;right:26px;top:100px;z-index:2;transition:opacity .45s,transform .45s;text-align:center}
+  .intro-copy .tag{font-size:11px;letter-spacing:.17em;font-weight:900;color:#24A0BE}
+  .intro-copy h2{font-size:33px;line-height:1.2;letter-spacing:-.055em;margin:12px 0 9px;font-weight:900}
+  .intro-copy h2 span{color:#F45B81}
+  .intro-copy p{margin:0;color:#7C8B96;font-size:13px;line-height:1.5}
+  .phone[data-phase="choose"] .intro-copy{opacity:0;transform:translateY(-20px);pointer-events:none}
+  .track{position:absolute;z-index:1;top:222px;left:0;right:0;height:355px;transition:transform .7s cubic-bezier(.2,.72,.25,1),opacity .45s;transform-origin:50% 45%}
+  .track::before{content:"";position:absolute;left:9%;right:9%;height:55px;bottom:20px;background:radial-gradient(ellipse,#D9E7E791 0,#E9EFE950 48%,transparent 72%);filter:blur(6px)}
+  .track::after{content:"";position:absolute;left:19%;right:19%;height:3px;bottom:25px;border-radius:99px;background:linear-gradient(90deg,transparent,#BCD9DD99 18%,#BCD9DD99 82%,transparent)}
+  .phone[data-phase="choose"] .track{transform:translateY(-162px) scale(.72)}
+  .runner{position:absolute;bottom:27px;width:66%;z-index:2;opacity:1;transition:transform 1.72s cubic-bezier(.14,.68,.16,1),opacity .9s}
+  .runner.hus{left:-8%}.runner.wife{right:-8%}
+  .runner img{width:100%;height:auto;display:block;filter:drop-shadow(0 9px 8px #15698624)}
+  .runner.hus img{transform:rotate(-2deg)}.runner.wife img{transform:rotate(2deg)}
+  .phone[data-phase="start"] .runner.hus{transform:translate3d(-350px,74px,0) scale(.28);opacity:.18}
+  .phone[data-phase="start"] .runner.wife{transform:translate3d(350px,74px,0) scale(.28);opacity:.18}
+  .phone[data-phase="run"] .runner,.phone[data-phase="meet"] .runner,.phone[data-phase="choose"] .runner{transform:translate3d(0,0,0) scale(1)}
+  .phone[data-phase="run"] .runner.hus img{animation:stride-hus .31s ease-in-out infinite alternate}
+  .phone[data-phase="run"] .runner.wife img{animation:stride-wife .31s ease-in-out infinite alternate-reverse}
+  @keyframes stride-hus{from{transform:translateY(3px) rotate(-4deg)}to{transform:translateY(-9px) rotate(2deg)}}
+  @keyframes stride-wife{from{transform:translateY(3px) rotate(4deg)}to{transform:translateY(-9px) rotate(-2deg)}}
+  .speed{position:absolute;z-index:0;top:57%;height:3px;width:64px;border-radius:10px;opacity:0;filter:blur(.5px);transition:opacity .3s}
+  .speed.left{left:2%;background:linear-gradient(90deg,transparent,#76D5E9)}
+  .speed.right{right:2%;background:linear-gradient(90deg,#FF9EB5,transparent)}
+  .phone[data-phase="run"] .speed{opacity:.75;animation:speed .35s linear infinite alternate}
+  @keyframes speed{from{transform:translateY(-13px) scaleX(.7)}to{transform:translateY(19px) scaleX(1)}}
+  .spark{position:absolute;left:50%;top:34%;width:55px;height:55px;transform:translate(-50%,-50%) scale(.2);opacity:0;z-index:5;pointer-events:none}
+  .spark::before,.spark::after{content:"";position:absolute;inset:0;background:#FFD264;clip-path:polygon(50% 0,59% 38%,100% 50%,59% 60%,50% 100%,41% 60%,0 50%,41% 38%);filter:drop-shadow(0 0 8px #FFD264)}
+  .spark::after{inset:16px;background:#FFFFFF}
+  .phone[data-phase="meet"] .spark{animation:meeting .65s ease-out both}
+  @keyframes meeting{0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-30deg)}45%{opacity:1;transform:translate(-50%,-50%) scale(1.1) rotate(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5) rotate(20deg)}}
+  .scene-line{position:absolute;top:590px;left:18px;right:18px;text-align:center;color:#91A1A8;font-size:12px;transition:opacity .35s}
+  .phone[data-phase="choose"] .scene-line{opacity:0}
+  .choice{position:absolute;z-index:4;left:0;right:0;bottom:0;min-height:424px;padding:25px 22px 22px;border-radius:32px 32px 0 0;background:linear-gradient(180deg,#FFFFFFF7,#FFF);box-shadow:0 -12px 40px #5375851F;transform:translateY(105%);opacity:0;visibility:hidden;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s,visibility .5s}
+  .phone[data-phase="choose"] .choice{transform:translateY(0);opacity:1;visibility:visible}
+  .choice::before{content:"";display:block;width:34px;height:4px;border-radius:99px;background:#DBE5EA;margin:-11px auto 19px}
+  .choice .eyebrow{font-size:10px;letter-spacing:.15em;color:#7EA6B4}
+  .choice h2{font-size:27px;letter-spacing:-.05em;margin:5px 0 4px;line-height:1.2}
+  .choice .lead{font-size:12px;line-height:1.5;color:#81919D;margin:0 0 14px}
+  .roles{display:grid;gap:9px}
+  .role-card{width:100%;min-height:80px;display:grid;grid-template-columns:68px 1fr 19px;align-items:center;gap:11px;border-radius:20px;border:1.5px solid transparent;text-align:left;padding:5px 13px 5px 5px;transition:transform .2s,border-color .2s,box-shadow .2s;background:#EDF9FE;color:#194B61}
+  .role-card:hover{transform:translateY(-2px)}
+  .role-card.wife{background:#FFF0F3;color:#983B57}
+  .role-card[aria-pressed="true"].hus{border-color:#38BDF8;box-shadow:0 5px 15px #38BDF82E}
+  .role-card[aria-pressed="true"].wife{border-color:#FF7893;box-shadow:0 5px 15px #FF78932E}
+  .role-card img{width:68px;height:68px;object-fit:contain;filter:drop-shadow(0 2px 2px #31546218)}
+  .role-card strong{font-size:17px;display:block;line-height:1.25}
+  .role-card small{display:block;color:#6C8B98;font-size:11px;margin-top:4px;line-height:1.3}
+  .role-card.wife small{color:#AB7887}
+  .role-card .arrow{font-size:23px;opacity:.65;align-self:center}
+  .confirm{width:100%;border:0;border-radius:16px;background:#1A3A4B;color:#fff;min-height:47px;font-size:14px;font-weight:800;margin-top:14px;box-shadow:0 7px 20px #22495B2A;transition:background .2s,transform .2s}
+  .confirm:not(:disabled):hover{transform:translateY(-2px)}
+  .confirm:disabled{background:#DCE5E9;color:#889BA5;box-shadow:none;cursor:default}
+  .choice-footer{display:flex;justify-content:center;align-items:center;margin-top:9px}
+  .replay-inline{border:0;background:transparent;color:#8C9CA6;font-size:12px;font-weight:700;padding:4px 8px}
+  .feedback{position:absolute;z-index:7;top:70px;left:24px;right:24px;background:#1C3D4F;color:#fff;border-radius:15px;padding:13px 16px;font-size:13px;font-weight:700;text-align:center;box-shadow:0 9px 24px #1C3D4F33;opacity:0;transform:translateY(-9px);pointer-events:none;transition:opacity .3s,transform .3s}
+  .feedback.show{opacity:1;transform:translateY(0)}
+  @media(max-width:850px){.workspace{grid-template-columns:1fr;justify-items:center}.notes{display:none}}
+  @media(max-width:450px){body{background:#FDF9F4}.workspace{display:block;padding:0}.notes{display:none}.phone{width:100vw;height:100dvh;min-height:620px;border:0;border-radius:0;box-shadow:none}.topbar{top:calc(22px + env(safe-area-inset-top,0px))}.choice{padding-bottom:calc(17px + env(safe-area-inset-bottom,0px))}}
+  @media(max-height:730px) and (min-width:451px){.phone{height:680px}.track{top:195px;height:315px}.runner{width:59%}.scene-line{top:540px}.choice{min-height:405px;padding-top:22px}.choice .lead{margin-bottom:9px}.role-card{min-height:72px}.role-card img{height:60px;width:60px}}
+  @media(max-height:720px) and (max-width:450px){.phone{min-height:0}.intro-copy{top:87px}.track{top:182px;height:305px}.runner{width:62%}.phone[data-phase="choose"] .track{transform:translateY(-135px) scale(.65)}.scene-line{top:515px}.choice{min-height:384px;padding-top:19px}.choice .lead{margin-bottom:9px}.role-card{min-height:69px}.role-card img{width:57px;height:57px}.role-card{grid-template-columns:57px 1fr 19px}.confirm{margin-top:11px}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="workspace">
+  <aside class="notes">
+    <div class="eyebrow">FITPRO · LOGIN MOTION PREVIEW</div>
+    <h1>两个人，<br><em>跑向同一个目标。</em></h1>
+    <p>蓝色与粉色云朵从远处跑近，在画面中央会合；随后角色选择卡片出现，两位形象继续留在界面里。</p>
+    <div class="steps" aria-hidden="true">
+      <div class="step active" data-step="start"><i>01</i> 从远处出发</div>
+      <div class="step" data-step="meet"><i>02</i> 在中间会合</div>
+      <div class="step" data-step="choose"><i>03</i> 选择自己的角色</div>
+    </div>
+    <div class="preview-actions"><button class="replay-main" data-replay>↺ 重播动效</button><button class="skip-main" data-skip>直接看选择页</button></div>
+    <small class="prototype-note">交互原型 · 选择角色仅演示反馈，不会改动真实打卡数据。</small>
+  </aside>
+  <main class="phone" id="phone" data-phase="start" aria-label="Fitpro 动态登录页预览">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="topbar"><span class="brand"><img src="app-logo.png" alt="">Fitpro</span><button class="skip-intro" data-skip>跳过</button></div>
+    <div class="intro-copy"><span class="tag">TOGETHER, EVERY DAY</span><h2>两个人，<br><span>一起动起来。</span></h2><p>减脂计划，从并肩出发开始</p></div>
+    <div class="track" aria-hidden="true">
+      <span class="speed left"></span><span class="speed right"></span>
+      <div class="runner hus"><img src="hus-running.png" alt=""></div>
+      <div class="runner wife"><img src="wife-running.png" alt=""></div>
+      <div class="spark"></div>
+    </div>
+    <div class="scene-line">每一步，都有人和你一起</div>
+    <section class="choice" id="choice" aria-hidden="true" aria-labelledby="choiceTitle" inert>
+      <span class="eyebrow">START TOGETHER</span>
+      <h2 id="choiceTitle">今天你是谁？</h2>
+      <p class="lead">选好后，训练与打卡会按你的身份显示。</p>
+      <div class="roles" role="group" aria-label="选择角色">
+        <button class="role-card hus" data-role="hus" aria-pressed="false"><img src="hus-running.png" alt=""><span><strong>我是老公</strong><small>哑铃力量 · 每周 3 次</small></span><span class="arrow" aria-hidden="true">›</span></button>
+        <button class="role-card wife" data-role="wife" aria-pressed="false"><img src="wife-running.png" alt=""><span><strong>我是老婆</strong><small>居家臀腿 · 每周 2–3 次</small></span><span class="arrow" aria-hidden="true">›</span></button>
+      </div>
+      <button class="confirm" id="confirm" disabled>先选择一个角色</button>
+      <div class="choice-footer"><button class="replay-inline" data-replay>↺ 再看一次入场动效</button></div>
+    </section>
+    <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+  </main>
+</div>
+<script>
+(() => {
+  const phone=document.getElementById('phone');
+  const panel=document.getElementById('choice');
+  const confirm=document.getElementById('confirm');
+  const feedback=document.getElementById('feedback');
+  const roleButtons=[...document.querySelectorAll('[data-role]')];
+  const steps=[...document.querySelectorAll('[data-step]')];
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  let timers=[];
+  let chosen=null;
+  function later(callback,delay){timers.push(setTimeout(callback,delay))}
+  function clearTimers(){timers.forEach(clearTimeout);timers=[]}
+  function phase(name){
+    phone.dataset.phase=name;
+    const ready=name==='choose';
+    panel.inert=!ready;
+    panel.setAttribute('aria-hidden',String(!ready));
+    const active=name==='choose'?'choose':name==='meet'?'meet':'start';
+    steps.forEach(step=>step.classList.toggle('active',step.dataset.step===active));
+  }
+  function resetChoice(){
+    chosen=null;
+    roleButtons.forEach(button=>button.setAttribute('aria-pressed','false'));
+    confirm.disabled=true;
+    confirm.textContent='先选择一个角色';
+    feedback.classList.remove('show');
+  }
+  function play(){
+    clearTimers();resetChoice();
+    phase('start');
+    if(reduced.matches){phase('choose');return}
+    later(()=>phase('run'),160);
+    later(()=>phase('meet'),1940);
+    later(()=>phase('choose'),2650);
+  }
+  function skip(){clearTimers();phase('choose')}
+  document.querySelectorAll('[data-replay]').forEach(button=>button.addEventListener('click',play));
+  document.querySelectorAll('[data-skip]').forEach(button=>button.addEventListener('click',skip));
+  roleButtons.forEach(button=>button.addEventListener('click',()=>{
+    chosen=button.dataset.role;
+    roleButtons.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+    confirm.disabled=false;
+    confirm.textContent=`以${chosen==='hus'?'老公':'老婆'}身份继续`;
+  }));
+  confirm.addEventListener('click',()=>{
+    if(!chosen)return;
+    feedback.textContent=`已选择${chosen==='hus'?'老公':'老婆'} · 这里是动效预览`;
+    feedback.classList.add('show');
+    later(()=>feedback.classList.remove('show'),2800);
+  });
+  play();
+})();
+</script>
+</body>
+</html>

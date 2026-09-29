@@ -95,11 +95,74 @@ p{margin:0}
 .pick .inner{max-width:420px;margin:0 auto;padding:10vh 20px 32px;display:grid;gap:14px}
 .pick h1{font-size:30px;font-weight:800;margin-bottom:2px}
 .pick .lead{color:var(--muted);font-size:14px;margin-bottom:10px}
-.pick-btn{border:0;border-radius:var(--radius-l);padding:18px 20px;text-align:left;color:#fff;display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 12px;background:var(--p-grad);box-shadow:var(--p-glow)}
-.pick-btn b{font-size:22px;font-weight:800}
-.pick-btn span{font-size:13px;opacity:.92;grid-column:1}
-.pick-btn img{grid-column:2;grid-row:1/3;width:64px;height:64px;object-fit:contain;background:rgba(255,255,255,.25);border-radius:50%;padding:4px}
 .pick .cancel{border:0;background:transparent;color:var(--muted);font-size:14px;padding:10px}
+
+/* 登录动效（首次进入 / 切换身份） */
+.pick.lm-pick{padding:0;background:var(--bg);overflow:hidden}
+.lm{position:relative;max-width:440px;height:100dvh;min-height:560px;margin:0 auto;overflow:hidden;isolation:isolate;color:var(--ink)}
+.lm::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 4% 44%,color-mix(in srgb,var(--hus-soft) 90%,transparent) 0,transparent 42%),radial-gradient(circle at 102% 43%,color-mix(in srgb,var(--wife-soft) 90%,transparent) 0,transparent 45%),var(--bg)}
+.lm::after{content:"";position:absolute;width:270px;height:270px;border-radius:50%;top:190px;left:50%;transform:translateX(-50%);z-index:-1;background:radial-gradient(circle,color-mix(in srgb,var(--surface) 90%,transparent) 0,transparent 70%);filter:blur(3px)}
+.lm-grain{position:absolute;inset:0;opacity:.22;background-image:radial-gradient(var(--hus) 1px,transparent 1px);background-size:26px 26px;-webkit-mask-image:linear-gradient(180deg,transparent 18%,#000 55%,transparent 81%);mask-image:linear-gradient(180deg,transparent 18%,#000 55%,transparent 81%);pointer-events:none}
+.lm-top{position:absolute;z-index:6;left:24px;right:20px;top:calc(22px + env(safe-area-inset-top,0px));display:flex;justify-content:space-between;align-items:center}
+.lm-brand{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:900;letter-spacing:-.03em}
+.lm-brand img{width:31px;height:31px;border-radius:9px;box-shadow:0 3px 9px rgba(69,145,163,.16)}
+.lm-skip{border:0;background:color-mix(in srgb,var(--surface) 72%,transparent);color:var(--muted);border-radius:999px;padding:8px 13px;font-size:12px;font-weight:700;transition:opacity .3s,visibility .3s}
+.lm[data-phase="choose"] .lm-skip{opacity:0;visibility:hidden}
+.lm-copy{position:absolute;left:26px;right:26px;top:calc(100px + env(safe-area-inset-top,0px));z-index:2;text-align:center;transition:opacity .45s,transform .45s}
+.lm-tag{font-size:11px;letter-spacing:.17em;font-weight:900;color:var(--hus-ink)}
+.lm-copy h2{font-size:33px;line-height:1.2;letter-spacing:-.05em;margin:12px 0 9px;font-weight:900}
+.lm-copy h2 span{color:var(--wife)}
+.lm-copy p{margin:0;color:var(--muted);font-size:13px}
+.lm[data-phase="choose"] .lm-copy{opacity:0;transform:translateY(-20px);pointer-events:none}
+.lm-track{position:absolute;z-index:1;top:calc(222px + env(safe-area-inset-top,0px));left:0;right:0;height:355px;transform-origin:50% 45%;transition:transform .7s cubic-bezier(.2,.72,.25,1),opacity .45s}
+.lm-track::before{content:"";position:absolute;left:9%;right:9%;height:55px;bottom:20px;background:radial-gradient(ellipse,color-mix(in srgb,var(--muted) 22%,transparent) 0,transparent 72%);filter:blur(6px)}
+.lm-track::after{content:"";position:absolute;left:19%;right:19%;height:3px;bottom:25px;border-radius:99px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--muted) 35%,transparent) 18%,color-mix(in srgb,var(--muted) 35%,transparent) 82%,transparent)}
+.lm[data-phase="choose"] .lm-track{transform:translateY(-162px) scale(.72)}
+.lm-runner{position:absolute;bottom:27px;width:66%;z-index:2;transition:transform 1.72s cubic-bezier(.14,.68,.16,1),opacity .9s}
+.lm-runner.hus{left:-8%} .lm-runner.wife{right:-8%}
+.lm-runner img{width:100%;height:auto;display:block;filter:drop-shadow(0 9px 8px rgba(21,105,134,.14))}
+.lm-runner.hus img{transform:rotate(-2deg)} .lm-runner.wife img{transform:rotate(2deg)}
+.lm[data-phase="start"] .lm-runner.hus{transform:translate3d(-350px,74px,0) scale(.28);opacity:.18}
+.lm[data-phase="start"] .lm-runner.wife{transform:translate3d(350px,74px,0) scale(.28);opacity:.18}
+.lm[data-phase="run"] .lm-runner.hus img{animation:lm-stride-hus .31s ease-in-out infinite alternate}
+.lm[data-phase="run"] .lm-runner.wife img{animation:lm-stride-wife .31s ease-in-out infinite alternate-reverse}
+@keyframes lm-stride-hus{from{transform:translateY(3px) rotate(-4deg)}to{transform:translateY(-9px) rotate(2deg)}}
+@keyframes lm-stride-wife{from{transform:translateY(3px) rotate(4deg)}to{transform:translateY(-9px) rotate(-2deg)}}
+.lm-speed{position:absolute;z-index:0;top:57%;height:3px;width:64px;border-radius:10px;opacity:0;filter:blur(.5px);transition:opacity .3s}
+.lm-speed.left{left:2%;background:linear-gradient(90deg,transparent,var(--hus))}
+.lm-speed.right{right:2%;background:linear-gradient(90deg,var(--wife),transparent)}
+.lm[data-phase="run"] .lm-speed{opacity:.75;animation:lm-speed .35s linear infinite alternate}
+@keyframes lm-speed{from{transform:translateY(-13px) scaleX(.7)}to{transform:translateY(19px) scaleX(1)}}
+.lm-spark{position:absolute;left:50%;top:34%;width:55px;height:55px;transform:translate(-50%,-50%) scale(.2);opacity:0;z-index:5;pointer-events:none}
+.lm-spark::before,.lm-spark::after{content:"";position:absolute;inset:0;background:#FFD264;clip-path:polygon(50% 0,59% 38%,100% 50%,59% 60%,50% 100%,41% 60%,0 50%,41% 38%);filter:drop-shadow(0 0 8px #FFD264)}
+.lm-spark::after{inset:16px;background:#fff}
+.lm[data-phase="meet"] .lm-spark{animation:lm-meet .65s ease-out both}
+@keyframes lm-meet{0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-30deg)}45%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5) rotate(20deg)}}
+.lm-line{position:absolute;top:calc(590px + env(safe-area-inset-top,0px));left:18px;right:18px;text-align:center;color:var(--muted);font-size:12px;transition:opacity .35s}
+.lm[data-phase="choose"] .lm-line{opacity:0}
+.lm-choice{position:absolute;z-index:4;left:0;right:0;bottom:0;padding:25px 22px calc(18px + env(safe-area-inset-bottom,0px));border-radius:32px 32px 0 0;background:var(--surface);box-shadow:0 -12px 40px rgba(83,117,133,.12);transform:translateY(105%);opacity:0;visibility:hidden;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s,visibility .5s}
+.lm[data-phase="choose"] .lm-choice{transform:none;opacity:1;visibility:visible}
+.lm-choice::before{content:"";display:block;width:34px;height:4px;border-radius:99px;background:var(--line);margin:-11px auto 19px}
+.lm-eyebrow{font-size:10px;letter-spacing:.15em;font-weight:900;color:var(--muted)}
+.lm-choice h2{font-size:27px;letter-spacing:-.05em;margin:5px 0 4px;line-height:1.2;font-weight:900}
+.lm-lead{font-size:12px;line-height:1.5;color:var(--muted);margin:0 0 14px}
+.lm-roles{display:grid;gap:9px}
+.lm-role{width:100%;min-height:80px;display:grid;grid-template-columns:68px minmax(0,1fr) 19px;align-items:center;gap:11px;border-radius:20px;border:1.5px solid transparent;text-align:left;padding:5px 13px 5px 5px;background:var(--hus-soft);color:var(--hus-ink);transition:transform .2s,border-color .2s,box-shadow .2s}
+.lm-role.wife{background:var(--wife-soft);color:var(--wife-ink)}
+.lm-role[aria-pressed="true"].hus{border-color:var(--hus);box-shadow:var(--hus-glow)}
+.lm-role[aria-pressed="true"].wife{border-color:var(--wife);box-shadow:var(--wife-glow)}
+.lm-role img{width:68px;height:68px;object-fit:contain}
+.lm-role strong{font-size:17px;display:block;line-height:1.25}
+.lm-role small{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.3}
+.lm-arrow{font-size:23px;opacity:.65}
+.lm-confirm{width:100%;border:0;border-radius:16px;background:var(--ink);color:var(--bg);min-height:47px;font-size:15px;font-weight:800;margin-top:14px;transition:background .2s,transform .2s}
+.lm-confirm.hus{background:var(--hus-grad);color:#fff;box-shadow:var(--hus-glow)}
+.lm-confirm.wife{background:var(--wife-grad);color:#fff;box-shadow:var(--wife-glow)}
+.lm-confirm:disabled{background:var(--sunk);color:var(--faint);box-shadow:none;cursor:default}
+.lm-foot{display:flex;justify-content:center;gap:12px;margin-top:9px}
+.lm-replay{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:4px 8px}
+@media(max-height:720px){.lm-copy{top:calc(87px + env(safe-area-inset-top,0px))}.lm-track{top:calc(182px + env(safe-area-inset-top,0px));height:305px}.lm-runner{width:62%}.lm[data-phase="choose"] .lm-track{transform:translateY(-135px) scale(.65)}.lm-line{top:calc(515px + env(safe-area-inset-top,0px))}.lm-choice{padding-top:19px}.lm-lead{margin-bottom:9px}.lm-role{min-height:69px;grid-template-columns:57px minmax(0,1fr) 19px}.lm-role img{width:57px;height:57px}.lm-confirm{margin-top:11px}}
+@media (prefers-reduced-motion: reduce){.lm *,.lm *::before,.lm *::after{animation:none!important;transition-duration:.01ms!important}}
 
 /* whose plan switch */
 .peek{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);box-shadow:var(--shadow);border-radius:999px;padding:4px;margin-bottom:16px}
@@ -562,12 +625,29 @@ p{margin:0}
 <div class="run" id="run" aria-live="polite"><div class="wrap" id="runBody"></div></div>
 <div class="toast" id="toast" role="status"></div>
 <div class="react" id="react" role="status" aria-live="polite"></div>
-<div class="pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickTitle"><div class="inner">
-  <h1 id="pickTitle">你是谁？</h1>
-  <p class="lead">选好后，这台手机上的打卡、训练和记录都按你的身份来。</p>
-  <button class="pick-btn hus" data-pick="hus"><b>我是老公</b><span>哑铃力量训练 A、B 交替，每周 3 次</span><img src="assets/avatar-hus.png" alt=""></button>
-  <button class="pick-btn wife" data-pick="wife"><b>我是老婆</b><span>居家臀腿跟练，每周 2–3 次</span><img src="assets/avatar-wife.png" alt=""></button>
-  <button class="cancel" data-pick-cancel hidden>取消</button>
+<!-- 首次进入 / 切换身份：两个云朵从远处跑近、会合，再弹出角色选择（设计见 UIset/login-motion） -->
+<div class="pick lm-pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickTitle"><div class="lm" id="lm" data-phase="choose">
+  <div class="lm-grain" aria-hidden="true"></div>
+  <div class="lm-top"><span class="lm-brand"><img src="assets/icons/app-icon-180.png" alt="">Fitpro</span><button class="lm-skip" data-lm-skip type="button">跳过</button></div>
+  <div class="lm-copy"><span class="lm-tag">TOGETHER, EVERY DAY</span><h2>两个人，<br><span>一起动起来。</span></h2><p>减脂计划，从并肩出发开始</p></div>
+  <div class="lm-track" aria-hidden="true">
+    <span class="lm-speed left"></span><span class="lm-speed right"></span>
+    <div class="lm-runner hus"><img src="assets/login/hus-running.png" alt=""></div>
+    <div class="lm-runner wife"><img src="assets/login/wife-running.png" alt=""></div>
+    <div class="lm-spark"></div>
+  </div>
+  <div class="lm-line">每一步，都有人和你一起</div>
+  <section class="lm-choice" id="lmChoice">
+    <span class="lm-eyebrow">START TOGETHER</span>
+    <h2 id="pickTitle">今天你是谁？</h2>
+    <p class="lm-lead">选好后，这台手机上的打卡、训练和记录都按你的身份来。</p>
+    <div class="lm-roles" role="group" aria-label="选择角色">
+      <button class="lm-role hus" data-lm-role="hus" aria-pressed="false" type="button"><img src="assets/login/hus-running.png" alt=""><span><strong>我是老公</strong><small>哑铃力量训练 A、B 交替，每周 3 次</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
+      <button class="lm-role wife" data-lm-role="wife" aria-pressed="false" type="button"><img src="assets/login/wife-running.png" alt=""><span><strong>我是老婆</strong><small>居家臀腿跟练，每周 2–3 次</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
+    </div>
+    <button class="lm-confirm" id="lmConfirm" type="button" disabled>先选择一个角色</button>
+    <div class="lm-foot"><button class="lm-replay" data-lm-replay type="button">↺ 再看一次入场动效</button><button class="lm-replay" data-pick-cancel type="button" hidden>取消</button></div>
+  </section>
 </div></div>
 <div class="pick" id="foodDlg" role="dialog" aria-modal="true" aria-labelledby="foodTitle"><div class="inner">
   <h1 id="foodTitle">吃了什么</h1>
@@ -1737,6 +1817,9 @@ document.addEventListener("click",e=>{
   if(t.hasAttribute("data-code-copy")){ copyInvite(); return; }
   if(t.hasAttribute("data-code-close")){ $("#codeDlg").classList.remove("open"); document.body.style.overflow=""; lastTab=null; render(); return; }
   if(t.hasAttribute("data-pick-cancel")){ closePicker(); return; }
+  if(t.dataset.lmRole){ lmSelect(t.dataset.lmRole); return; }
+  if(t.hasAttribute("data-lm-skip")){ lmClear(); lmPhase("choose"); return; }
+  if(t.hasAttribute("data-lm-replay")){ lmPlay(); return; }
   if(t.hasAttribute("data-open-picker")){ openPicker(true); return; }
   if(t.dataset.view){ viewP=t.dataset.view; lastTab=null; render(); return; }
   if(t.dataset.recField){ recField=t.dataset.recField; renderRecordData(); return; }
@@ -1782,8 +1865,25 @@ document.addEventListener("click",e=>{
 let toastT=null;
 function toast(msg,ms){ const el=$("#toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),ms||2600); }
 
+/* 登录动效：start → run → meet → choose。首次进入播放；右上角切换身份时直接到选择这一步 */
+let lmTimers=[], lmRole=null;
+function lmPhase(name){ $("#lm").dataset.phase=name; const ready=name==="choose"; $("#lmChoice").inert=!ready; $("#lmChoice").setAttribute("aria-hidden",String(!ready)); }
+function lmClear(){ lmTimers.forEach(clearTimeout); lmTimers=[]; }
+function lmSelect(role){
+  lmRole=role;
+  document.querySelectorAll("[data-lm-role]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lmRole===role)));
+  const c=$("#lmConfirm"); c.disabled=!role; c.className="lm-confirm"+(role?" "+role:"");
+  c.textContent=role?`以${PEOPLE[role].label}身份继续`:"先选择一个角色";
+  if(role) c.dataset.pick=role; else delete c.dataset.pick;
+}
+function lmPlay(){
+  lmClear(); lmSelect(null); lmPhase("start");
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmPhase("choose"); return; }
+  lmTimers.push(setTimeout(()=>lmPhase("run"),160), setTimeout(()=>lmPhase("meet"),1940), setTimeout(()=>lmPhase("choose"),2650));
+}
 function openPicker(canCancel){
   $("#pick").classList.add("open"); $("[data-pick-cancel]").hidden=!canCancel; document.body.style.overflow="hidden";
+  if(canCancel){ lmClear(); lmSelect(me); lmPhase("choose"); } else lmPlay();
 }
 function genCode(){
   const a="ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"; const r=new Uint32Array(14);
@@ -1915,7 +2015,7 @@ function goalCard(){
     <div class="gl"><div><b>${p.kcal}</b>每天 kcal</div><div><b>${p.protein}g</b>蛋白质</div><div><b>${R} 轮</b>每次训练${p.g.cardio?" + 快走":""}</div></div>
     <p>每周日量完体重后，会根据趋势给调整建议，点确认才会改。</p></div>`;
 }
-function closePicker(){ $("#pick").classList.remove("open"); document.body.style.overflow=""; }
+function closePicker(){ lmClear(); $("#pick").classList.remove("open"); document.body.style.overflow=""; }
 
 /* ---------- boot ---------- */
 render();
