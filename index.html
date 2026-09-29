@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>两个人的减脂打卡</title>
+<meta name="theme-color" content="#FDFAF6">
+<link rel="icon" type="image/png" sizes="32x32" href="UIset/logo/fitpro-app-icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="UIset/logo/fitpro-app-icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="UIset/logo/fitpro-app-icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -189,7 +194,7 @@ p{margin:0}
 .seg button[aria-pressed="true"][data-v="skip"]{background:var(--ink);color:var(--bg)}
 
 .note{font-size:13px;color:var(--ink);padding:12px 14px;background:var(--sun-soft);border-radius:var(--radius-m);display:flex;gap:10px;align-items:flex-start}
-.note::before{content:"🥑";font-size:16px;line-height:1.4}
+.note::before{content:"";flex:none;width:18px;height:18px;margin-top:2px;background:var(--sun-ink);-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.85%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8.5%2017c-.3-1.5-1.1-2.1-2-3.3A6%206%200%201%201%2017.5%2014c-.9%201.1-1.7%201.6-2%203H8.5ZM9%2020h6M10%2022h4%22/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.85%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8.5%2017c-.3-1.5-1.1-2.1-2-3.3A6%206%200%201%201%2017.5%2014c-.9%201.1-1.7%201.6-2%203H8.5ZM9%2020h6M10%2022h4%22/%3E%3C/svg%3E") center/contain no-repeat} /* 图标与 UIset/icons/bulb.svg 相同 */
 
 .train-today{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .train-today h4{margin:0 0 2px;font-size:16px;font-weight:800}
@@ -1253,12 +1258,12 @@ function beadsFor(person){
   const names={breakfast:"早餐",lunch:"午餐",snack:"加餐",dinner:"晚餐"};
   let html=MEALS.map(m=>{
     const v=c.meals&&c.meals[m];
-    const [cls,txt,st]=v==="plan"?["on","✓","按计划"]:v==="over"?["over","✓","吃多了"]:v==="skip"?["skip","–","没吃"]:["",labels[m],"未打卡"];
+    const [cls,txt,st]=v==="plan"?["on",icon("check","sm"),"按计划"]:v==="over"?["over",icon("check","sm"),"吃多了"]:v==="skip"?["skip","–","没吃"]:["",labels[m],"未打卡"];
     return `<span class="bead ${cls}" title="${names[m]}：${st}">${txt}</span>`;
   }).join("");
   const done=c.workout==="done";
   html+= s.kind==="rest" ? `<span class="bead rest" title="今天休息">休</span>`
-    : `<span class="bead ${done?"on":""}" title="训练：${done?"已完成":"未完成"}">${done?"✓":"练"}</span>`;
+    : `<span class="bead ${done?"on":""}" title="训练：${done?"已完成":"未完成"}">${done?icon("check","sm"):"练"}</span>`;
   return html;
 }
 /* 今天两人一共需要打卡几项、完成了几项 */
@@ -1447,15 +1452,15 @@ function viewTrain(){
       const d=addDays(mon,i); const s=scheduleFor(p,d); const now=ymd(d)===ymd(today)?" now":"";
       const done = getCheckin(p,ymd(d)).workout==="done";
       if(s.kind==="rest") cells+=`<span class="c${now}">休</span>`;
-      else if(s.kind==="flex") cells+=`<span class="c f${done?" done":""}${now}">${done?"✓":"可选"}</span>`;
-      else cells+=`<span class="c t${done?" done":""}${now}">${done?"✓":short(s.w)}</span>`;
+      else if(s.kind==="flex") cells+=`<span class="c f${done?" done":""}${now}">${done?icon("check","sm"):"可选"}</span>`;
+      else cells+=`<span class="c t${done?" done":""}${now}">${done?icon("check","sm"):short(s.w)}</span>`;
     }
     return `<div class="wkrow ${p}"><div class="who2">${PEOPLE[p].label}${p==="hus"?" · 哑铃力量":" · 居家臀腿"}</div><div class="wk2">${cells}</div></div>`;
   }).join("");
   const keys = viewP==="hus" ? ["A","B"] : ["W"];
   const mine = viewP===me;
   $("#view").innerHTML=`
-  <section class="sec">${secH("today","这周两个人的安排","✓ 是已完成的")}
+  <section class="sec">${secH("today","这周两个人的安排",icon("check","sm")+" 是已完成的")}
     <div class="card">${head}${rows}</div></section>
   ${peekSwitch()}
   <section class="sec">${secH("train",PEOPLE[viewP].label+"的训练内容",viewP==="hus"?"A、B 每周交替":"")}
