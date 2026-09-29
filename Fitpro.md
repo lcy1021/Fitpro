@@ -250,6 +250,7 @@ App 的主页，从上到下依次是：
 | `assets/avatar-hus.png`、`assets/avatar-wife.png` | 记录页的角色头像（由 `UIset/` 原图缩小到 256px） |
 | `UIset/` | 角色形象原图 |
 | `assets/mascots/`、`docs/mascot-design.md` | 角色状态图和设计规范（尚未接入页面） |
+| `docs/exercise-illustrations.md` | 32 个训练、热身、放松动作的示意图说明和文件名 |
 | `.stitch/DESIGN.md` | 设计规范，供 Stitch 等设计工具读取 |
 | `CLAUDE.md` | 给 AI 协作的项目说明和约定 |
 | `Fitpro.md` | 本文档 |
@@ -258,6 +259,6 @@ App 的主页，从上到下依次是：
 
 ## 7. 待办
 
-- [ ] 每个动作的示意动图：素材由用户提供（真人短视频或 Lottie），不使用来源不明的网络 GIF
+- [ ] 每个动作的示意图：逐个动作的画面说明和文件名见 [`docs/exercise-illustrations.md`](docs/exercise-illustrations.md)，做好后放进 `assets/moves/` 接入跟练页；不使用来源不明的网络 GIF
 - [ ] 数据导出和导入备份
 - [ ] 用 Stitch 按 `DESIGN.md` 优化界面
