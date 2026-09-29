@@ -30,6 +30,7 @@
 ### 数据格式（改动时必须保持兼容）
 
 - checkin id：`<person>_<YYYY-MM-DD>`，body：`{person, date, meals:{breakfast|lunch|snack|dinner: "plan"|"over"|"skip"}, workout: "done"|null, stand: number, updatedAt}`
+- checkin body 可选 `food:{breakfast|lunch|snack|dinner:{text, items:[{n,q,k}], kcal}}`：用一句话记录的实际吃的东西（text ≤200 字，n 食物名，q 份量文字，k 热量）。保存时自动设 meals 状态：不超过这顿计划上限 ×1.1 记 plan，否则 over；热量环优先用 kcal
 - measure id：`<person>_<YYYY-MM-DD>`，body：`{person, date, weight?, waist?, hip?, thigh?, goal?}`
 - `goal`：`{height, age, start, target, pace:"gentle"|"standard", adj(热量微调), level(训练轮数 ±), cardio(周四快走), mode:"maintain"|null, at(设定日期)}`，写在设定/调整当天的身体记录里，当前目标 = 最近一条带 goal 的记录（`goalOf`）。只有 goal 没有体重围度的记录不进图表和"最近更新"
 - 新增字段可以直接加进 body，不需要改数据库；**不要重命名已有字段、不要改 id 格式或 person 标识**，否则旧数据会对不上
@@ -66,7 +67,7 @@
 | 晚餐 20:00 后 | 瘦肉/鱼虾 150g + 蔬菜 300g + 少量主食 | 瘦肉/鱼虾 100g + 蔬菜 250g，主食可不吃 |
 | 蛋白质 | 约 120–130g | 约 80–90g |
 
-- 不做热量计算（不让用户输入、不算摄入超标）和食物搜索，只打卡"是否按计划吃"，降低门槛
+- 打卡本身仍然是一次点击（按计划吃了 / 吃多了 / 没吃）；**可选**地用一句话记"实际吃了什么"来算热量（内置食物库 `FOOD_DB` + `parseMeal`），不做食物搜索页、不做"超标"警告
 - 每餐的具体食物和热量在 `MEAL_FOODS`（每项 `k:[低,高]` kcal，`or` 替换选项，`opt` 可省，`pick1` 几样选一样），每餐和全天区间由 `mealRange` / `dayKcal` 加总得出，不要手写合计。今日页餐卡逐项显示食物和热量；饮食页每餐一行小字显示区间；晚餐轮换的区间写在 `DINNERS[d].kcal`，按当前查看的人显示。热量只作参考，打卡仍然不需要输入数字
 - "吃多了"不做负面提示，只提示下一顿正常吃
 - 老婆本身体重在正常范围，目标是体成分和线条改善，不是大幅减重；不要加入激进节食类内容
@@ -80,6 +81,7 @@
 
 ## 待办
 
+- 食物库 `FOOD_DB`：`[名称, 别名(|分隔), 每100g kcal, {单位:克数}, 默认单位]`，数值参考《中国食物成分表》第 6 版，外卖菜按常见一份估算。加新食物时别名不要用单个常见字（如"糖""油"之外的），避免误匹配；改完用几句常见说法测一下 `parseMeal`
 - 动作示意图已完成（`assets/moves/*.gif`，说明见 `docs/exercise-illustrations.md`）；新增动作时要同时补对应的动图，不要用来源不明的网络 GIF
 - 可能需要：数据导出/导入备份
 

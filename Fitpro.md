@@ -77,6 +77,7 @@ App 的主页，从上到下依次是：
    - 休息日：显示"工位上多起身就好"和工位动作胶囊，按钮是「▶ 工位 3 分钟」。
 6. **今天吃什么**：标题右侧显示全天热量区间和蛋白质目标。四张餐卡，每张逐项列出具体食物、份量和热量（例如"水煮蛋 · 2 个 · 140 kcal"，可替换的写在份量后面），右上角是这顿的热量合计，底部三个按钮：**按计划吃了 ✨ / 吃多了 🍰 / 没吃**。
    - 选了"吃多了"会出现温和提示："吃多了没关系，下一顿正常吃就好，不用饿肚子补回来。"
+   - **记一下实际吃了什么**（可选）：每张餐卡下有「📝 记一下实际吃了什么，算热量」。用一句话描述，比如"一碗米饭，宫保鸡丁半份，一杯奶茶"，App 拆成几行，每行显示食物、份量和热量（可以改、可以删）；认不出的会标黄，填个大概热量才能保存。上方有这一餐常吃的快捷标签。保存后自动打卡：不超过这顿计划上限的 1.1 倍记"按计划吃了"，否则记"吃多了"；餐卡上显示"实际吃了约 xxx kcal"，饮食页热量环优先用实际热量。
 7. **工位起身**：用 +/− 计数器记录今天起身的次数（目标 6 次）。
 
 ### 2.4 饮食
@@ -265,6 +266,9 @@ App 的主页，从上到下依次是：
 { person, date, meals: { breakfast|lunch|snack|dinner: "plan"|"over"|"skip" },
   workout: "done"|null, stand: number, updatedAt }
 
+// 打卡里可选的实际饮食记录
+food?: { breakfast|lunch|snack|dinner: { text, items: [{ n, q, k }], kcal } }
+
 // 身体数据  id: "<person>_<YYYY-MM-DD>"
 { person, date, weight?, waist?, hip?, thigh?,
   goal?: { height, age, start, target, pace: "gentle"|"standard",
@@ -288,6 +292,7 @@ App 的主页，从上到下依次是：
 | `assets/mascots/`、`docs/mascot-design.md` | 角色状态图和设计规范（尚未接入页面） |
 | `assets/mood/` | 7 种表情 × 2 人的 256px 图（原图在 `assets/mascots/`，设计规范见 `docs/mascot-design.md`） |
 | `assets/moves/*.gif` | 32 个动作的循环动图 |
+| `index.html` 里的 `FOOD_DB` | 约 180 种常见食物的热量库（参考《中国食物成分表》第 6 版，外卖菜按常见一份估算） |
 | `docs/exercise-illustrations.md` | 32 个训练、热身、放松动作的示意图说明和文件名 |
 | `.stitch/DESIGN.md` | 设计规范，供 Stitch 等设计工具读取 |
 | `CLAUDE.md` | 给 AI 协作的项目说明和约定 |
