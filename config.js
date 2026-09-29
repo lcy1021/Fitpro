@@ -3,6 +3,6 @@
 window.FATLOSS_CONFIG = {
   SUPABASE_URL: "https://qhbdszdwtyosgmhcihxp.supabase.co",  // 例如 https://abcdefgh.supabase.co
   SUPABASE_KEY: "sb_publishable_1BidwBeJl2Q4TWUD2CXPlQ_ZNTGVe0_",  // 公开密钥：sb_publishable_ 开头，或旧版 anon key（eyJ 开头）。不要填 secret / service_role
-  AI_KCAL: false,  // 按 docs/ai-setup.md 部署好 AI 估算后改成 true
+  AI_KCAL: true,  // 按 docs/ai-setup.md 部署好 AI 估算后改成 true
   AI_REGION: "ap-northeast-1"  // AI 函数在哪个地区运行，填 Supabase 项目所在地区（东京 ap-northeast-1 / 新加坡 ap-southeast-1）
 };
