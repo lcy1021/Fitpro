@@ -577,6 +577,7 @@ p{margin:0}
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
 const SUPABASE_KEY = String((window.FATLOSS_CONFIG||{}).SUPABASE_KEY||"").trim();
 const AI_KCAL = !!(window.FATLOSS_CONFIG||{}).AI_KCAL; // 部署了 meal-kcal 函数后在 config.js 里打开
+const AI_REGION = String((window.FATLOSS_CONFIG||{}).AI_REGION||"").trim(); // 固定函数运行的地区（和 Supabase 项目同一地区），避免被分到连不上 Claude 的节点
 (function(){
 "use strict";
 
@@ -1770,9 +1771,9 @@ async function aiFood(){
   try{
     const headers={"Content-Type":"application/json","apikey":SUPABASE_KEY};
     if(!SUPABASE_KEY.startsWith("sb_")) headers["Authorization"]="Bearer "+SUPABASE_KEY;
-    const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/functions/v1/meal-kcal",{method:"POST",headers,body:JSON.stringify({family,text})});
+    const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/functions/v1/meal-kcal"+(AI_REGION?"?forceFunctionRegion="+encodeURIComponent(AI_REGION):""),{method:"POST",headers,body:JSON.stringify({family,text})});
     const d=await r.json().catch(()=>({}));
-    if(!r.ok){ toast({daily_limit:"今天 AI 估算次数用完了，明天再试",unknown_family:"先打一次卡同步一下，再用 AI 估算",busy:"AI 有点忙，稍后再试"}[d.error]||"AI 估算失败，可以先手动填热量"); return; }
+    if(!r.ok){ toast({daily_limit:"今天 AI 估算次数用完了，明天再试",unknown_family:"先打一次卡同步一下，再用 AI 估算",busy:"AI 有点忙，稍后再试",bad_key:"AI 的 Key 不对或余额不足，检查一下 Supabase 里的设置",unreachable:"服务器连不上 AI 接口，试试换地区或配置中转"}[d.error]||"AI 估算失败，可以先手动填热量"); return; }
     if(!d.items||!d.items.length){ toast(d.note||"没看出吃了什么，换个说法试试"); return; }
     foodRows=d.items.map(i=>({n:i.name,q:i.amount,k:i.kcal,ai:true}));
     const note=$("#foodNote"); note.hidden=!d.note; note.textContent=d.note?"🤖 "+d.note:"";

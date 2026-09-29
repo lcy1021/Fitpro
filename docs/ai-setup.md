@@ -4,6 +4,16 @@
 
 **大约 10 分钟，只需要做一次。** API Key 只存在 Supabase 的密钥设置里，不会出现在页面和公开仓库中。
 
+## 网络：手机不用直连 Claude
+
+```
+手机 ──(国内能访问)──> Supabase 服务器（东京/新加坡）──> Claude 官方接口 或 你配置的中转
+```
+
+- **手机只连 Supabase**（和现在同步数据走的是同一条路），不需要能访问 Anthropic。真正调用 Claude 的是 Supabase 的服务器。
+- Supabase 的函数默认会在**离用户最近的节点**运行，从国内访问可能被分到香港节点，而 Claude 官方接口不对香港开放。所以 App 会用 `config.js` 里的 `AI_REGION` 把函数**固定在你的项目所在地区**（默认东京 `ap-northeast-1`）。
+- 如果官方接口还是连不上，或者你想用国内的 Claude 中转服务，按下面「用第三方中转」配置即可，不用改代码。
+
 ## 费用
 
 - 每次估算调用一次 Claude（`claude-opus-5-5`，低推理强度），大约几分钱人民币。
@@ -22,12 +32,14 @@
 
 Supabase 控制台 → **SQL Editor** → **New query**，把 [`supabase-ai-setup.sql`](../supabase-ai-setup.sql) 全部粘贴进去 → **Run**，看到 `Success` 即可。
 
-### 3. 保存 API Key
+### 3. 保存 API Key（官方或中转二选一）
 
 Supabase 控制台 → **Edge Functions** → **Secrets**（或 Project Settings → Edge Functions）→ 新增：
 
 - Name：`ANTHROPIC_API_KEY`
 - Value：第 1 步复制的 Key
+
+用第三方中转时，见下面「用第三方中转」，改填中转的地址和 Key。
 
 ### 4. 部署函数
 
@@ -39,9 +51,33 @@ Supabase 控制台 → **Edge Functions** → **Deploy a new function** → **Vi
 
 > 用命令行部署也可以：`supabase functions deploy meal-kcal --no-verify-jwt`。
 
-### 5. 打开开关
+### 5. 确认地区
+
+Supabase 控制台 → **Project Settings** → **General**，看 **Region**：
+
+- 东京（Northeast Asia / Tokyo）→ `ap-northeast-1`（默认值，不用改）
+- 新加坡（Southeast Asia / Singapore）→ 把 `config.js` 里的 `AI_REGION` 改成 `ap-southeast-1`
+
+### 6. 打开开关
 
 把 `config.js` 里的 `AI_KCAL: false` 改成 `AI_KCAL: true`（或者告诉 Claude "AI 估算已经部署好了"，让它改完推送）。
+
+## 用第三方中转
+
+中转服务需要**兼容 Anthropic Messages API**（接口路径是 `/v1/messages`，一般标注"支持 Claude Code""Anthropic 格式"）。只兼容 OpenAI 格式的不行。
+
+在 Supabase → Edge Functions → **Secrets** 里设置（不用改代码，改完立即生效）：
+
+| Name | 填什么 | 说明 |
+|---|---|---|
+| `ANTHROPIC_BASE_URL` | 中转地址，例如 `https://api.example.com` | 不要带 `/v1/messages`；设了这一项就会走中转 |
+| `ANTHROPIC_API_KEY` | 中转给你的 Key | 中转用 `x-api-key` 认证时填这个 |
+| `ANTHROPIC_AUTH_TOKEN` | 中转给你的 Key | 中转要求 `Authorization: Bearer` 时改填这个（和上一项二选一） |
+| `AI_MODEL` | 中转那边的模型名，例如 `claude-opus-5-5` | 不填默认 `claude-opus-5-5`；中转改了名字时必须填 |
+
+走中转时，函数会先用结构化输出请求；如果中转不支持（返回 400/404/422），会自动退回"让模型只输出 JSON"的方式，一般都能用。
+
+**选中转的注意事项**：你写的那句"吃了什么"会经过中转服务商的服务器。只发送饮食描述，不含体重等其他数据，但还是建议选口碑好的服务商。
 
 ## 怎么确认生效
 
@@ -53,7 +89,9 @@ Supabase 控制台 → **Edge Functions** → **Deploy a new function** → **Vi
 |---|---|
 | 先打一次卡同步一下 | 这个口令下还没有任何数据 |
 | 今天 AI 估算次数用完了 | 超过每天 60 次 |
-| AI 估算失败 | 看 Supabase → Edge Functions → meal-kcal → Logs；常见是 Key 没设、余额不足、JWT 验证没关 |
+| AI 的 Key 不对或余额不足 | 检查 Secrets 里的 Key；中转的话确认该用 `ANTHROPIC_API_KEY` 还是 `ANTHROPIC_AUTH_TOKEN` |
+| 服务器连不上 AI 接口 | `AI_REGION` 和项目地区不一致，或者官方接口不通 → 配置中转 |
+| AI 估算失败 | 看 Supabase → Edge Functions → meal-kcal → Logs；常见是 JWT 验证没关、中转模型名不对 |
 
 ## 安全说明
 
