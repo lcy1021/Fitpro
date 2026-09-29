@@ -4,6 +4,7 @@
 //   ANTHROPIC_AUTH_TOKEN  （可选）中转服务要求 "Authorization: Bearer" 时用这个代替上一项
 //   ANTHROPIC_BASE_URL    （可选）中转或兼容接口地址，需兼容 Anthropic Messages API，例如 https://api.deepseek.com/anthropic
 //   AI_MODEL              （可选）模型名，默认 claude-opus-5-5；中转服务的模型名不同时在这里改
+//   AI_USER_AGENT         （可选）中转要求特定 User-Agent 时填（例如米醋国产模型分组要求浏览器型 UA）
 // SUPABASE_URL 和 SUPABASE_SERVICE_ROLE_KEY 由 Supabase 自动提供。
 import Anthropic from "npm:@anthropic-ai/sdk";
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -49,6 +50,7 @@ const anthropic = new Anthropic({
   apiKey: Deno.env.get("ANTHROPIC_API_KEY") || null,
   authToken: Deno.env.get("ANTHROPIC_AUTH_TOKEN") || null,
   baseURL: BASE_URL,
+  defaultHeaders: Deno.env.get("AI_USER_AGENT") ? { "User-Agent": Deno.env.get("AI_USER_AGENT")! } : undefined,
 });
 
 const JSON_ONLY = `\n只输出一个 JSON 对象，不要输出任何其他文字或代码块标记，格式：{"items":[{"name":"米饭","amount":"1 碗约 200g","kcal":230}],"note":""}`;

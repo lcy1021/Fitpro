@@ -79,7 +79,25 @@ Supabase 控制台 → **Project Settings** → **General**，看 **Region**：
 
 **选中转的注意事项**：你写的那句"吃了什么"会经过中转服务商的服务器。只发送饮食描述，不含体重等其他数据，但还是建议选口碑好的服务商。
 
-## 用 DeepSeek（国内直接可用）
+## 用米醋的国产模型（如 DeepSeek）
+
+米醋的 Claude 分组只接受 Claude Code 客户端的请求，这个 App 用不了；国产模型分组 `vip_4` 可以外接调用。
+
+1. 在米醋「令牌」里新建一个 Key，**分组选 `vip_4`**。
+2. 在 Supabase → Edge Functions → **Secrets** 里设置：
+
+| Name | Value |
+|---|---|
+| `ANTHROPIC_BASE_URL` | `https://www.micuapi.ai` |
+| `ANTHROPIC_AUTH_TOKEN` | `vip_4` 分组的 Key（米醋要求 Bearer 认证） |
+| `AI_MODEL` | `deepseek-v4-pro`（也可以用 `deepseek-v4-flash`，更快更便宜） |
+| `AI_USER_AGENT` | `Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0` |
+
+- **删掉** `ANTHROPIC_API_KEY`（和 `ANTHROPIC_AUTH_TOKEN` 只能留一个）。
+- `AI_USER_AGENT` 是米醋文档对国产模型分组的要求（见 docs.micuapi.ai/new/external-ua），不填会被拒（403）。
+- 模型名以米醋「模型广场」里 `vip_4` 分组显示的为准。
+
+## 用 DeepSeek 官方（国内直接可用）
 
 DeepSeek 官方提供兼容 Anthropic 格式的接口，不需要中转，费用也很低。
 
