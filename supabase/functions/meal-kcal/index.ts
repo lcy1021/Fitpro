@@ -2,7 +2,7 @@
 // 部署步骤见 docs/ai-setup.md。在 Supabase 控制台 → Edge Functions → Secrets 里设置：
 //   ANTHROPIC_API_KEY     Anthropic 官方 Key（x-api-key 方式）；用中转服务时填中转给的 Key
 //   ANTHROPIC_AUTH_TOKEN  （可选）中转服务要求 "Authorization: Bearer" 时用这个代替上一项
-//   ANTHROPIC_BASE_URL    （可选）中转服务地址，需兼容 Anthropic Messages API，例如 https://api.example.com
+//   ANTHROPIC_BASE_URL    （可选）中转或兼容接口地址，需兼容 Anthropic Messages API，例如 https://api.deepseek.com/anthropic
 //   AI_MODEL              （可选）模型名，默认 claude-opus-5-5；中转服务的模型名不同时在这里改
 // SUPABASE_URL 和 SUPABASE_SERVICE_ROLE_KEY 由 Supabase 自动提供。
 import Anthropic from "npm:@anthropic-ai/sdk";
@@ -51,6 +51,8 @@ const anthropic = new Anthropic({
   baseURL: BASE_URL,
 });
 
+const JSON_ONLY = `\n只输出一个 JSON 对象，不要输出任何其他文字或代码块标记，格式：{"items":[{"name":"米饭","amount":"1 碗约 200g","kcal":230}],"note":""}`;
+
 type Item = { name: unknown; amount: unknown; kcal: unknown };
 type Result = { items: Item[]; note?: unknown } | null;
 const firstText = (content: Array<{ type: string; text?: string }>) => content.find((b) => b.type === "text")?.text ?? "";
@@ -76,13 +78,15 @@ async function estimate(text: string): Promise<Result | "refused"> {
     if (r.stop_reason === "refusal") return "refused";
     return JSON.parse(firstText(r.content));
   }
-  // 中转：先试结构化输出，中转不支持（400/404/422）时退回纯文字 JSON
+  // 中转或其他兼容接口（如 DeepSeek）：不一定支持结构化输出，所以同时在提示词里要求只输出 JSON；
+  // 带结构化输出被拒（400/404/422）时去掉它再试一次
+  const system = SYSTEM + JSON_ONLY;
   try {
     const r = await anthropic.messages.create({
       model: MODEL,
       max_tokens: 4000,
       output_config: { format: { type: "json_schema", schema: SCHEMA } },
-      system: SYSTEM,
+      system,
       messages: [{ role: "user", content: text }],
     });
     if (r.stop_reason === "refusal") return "refused";
@@ -90,12 +94,7 @@ async function estimate(text: string): Promise<Result | "refused"> {
   } catch (err) {
     if (!(err instanceof Anthropic.APIError) || ![400, 404, 422].includes(err.status ?? 0)) throw err;
   }
-  const r = await anthropic.messages.create({
-    model: MODEL,
-    max_tokens: 4000,
-    system: SYSTEM + `\n只输出一个 JSON 对象，不要输出其他文字，格式：{"items":[{"name":"米饭","amount":"1 碗约 200g","kcal":230}],"note":""}`,
-    messages: [{ role: "user", content: text }],
-  });
+  const r = await anthropic.messages.create({ model: MODEL, max_tokens: 4000, system, messages: [{ role: "user", content: text }] });
   if (r.stop_reason === "refusal") return "refused";
   return pickJson(firstText(r.content));
 }

@@ -79,7 +79,24 @@ Supabase 控制台 → **Project Settings** → **General**，看 **Region**：
 
 **选中转的注意事项**：你写的那句"吃了什么"会经过中转服务商的服务器。只发送饮食描述，不含体重等其他数据，但还是建议选口碑好的服务商。
 
-## 怎么确认生效
+## 用 DeepSeek（国内直接可用）
+
+DeepSeek 官方提供兼容 Anthropic 格式的接口，不需要中转，费用也很低。
+
+1. 打开 https://platform.deepseek.com ，注册登录，在 **API Keys** 里创建一个 Key，并充一点余额。
+2. 在 Supabase → Edge Functions → **Secrets** 里设置：
+
+| Name | Value |
+|---|---|
+| `ANTHROPIC_BASE_URL` | `https://api.deepseek.com/anthropic` |
+| `ANTHROPIC_API_KEY` | DeepSeek 的 Key |
+| `AI_MODEL` | `deepseek-v4-pro` |
+
+- 如果之前设过 `ANTHROPIC_AUTH_TOKEN`，删掉它。
+- DeepSeek 不支持结构化输出参数，函数会在提示词里要求它只输出 JSON，不用额外设置。
+- 注意：用 DeepSeek 时，估算热量的是 DeepSeek 的模型，不是 Claude。
+
+
 
 1. 手机打开 App，确认已经设置了家庭口令、并且打过至少一次卡（函数只服务已经在用的家庭）。
 2. 点任意一餐的「📝 记一下实际吃了什么」，写一句话，点「🤖 让 AI 估算这一顿」。

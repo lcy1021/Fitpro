@@ -81,7 +81,7 @@
 
 ## 待办
 
-- AI 估算（可选）：`supabase/functions/meal-kcal/index.ts`（Edge Function，调用 Claude `claude-opus-5-5` + 结构化输出，校验家庭口令、按家庭每日限额 `fl_ai_quota`，见 `supabase-ai-setup.sql`）；`config.js` 的 `AI_KCAL` 为 true 时弹窗才显示 AI 按钮，`AI_REGION` 用 `forceFunctionRegion` 把函数固定在项目地区（避免分到连不上 Claude 的香港节点）。支持第三方中转：Secrets 里的 `ANTHROPIC_BASE_URL`（兼容 Anthropic Messages API 的地址）、`ANTHROPIC_AUTH_TOKEN`（Bearer 认证）、`AI_MODEL`；走中转时不用 beta 参数，结构化输出不支持就退回纯文字 JSON**API Key 只能放在 Supabase Secrets，绝不能写进仓库或页面**
+- AI 估算（可选）：`supabase/functions/meal-kcal/index.ts`（Edge Function，调用 Claude `claude-opus-5-5` + 结构化输出，校验家庭口令、按家庭每日限额 `fl_ai_quota`，见 `supabase-ai-setup.sql`）；`config.js` 的 `AI_KCAL` 为 true 时弹窗才显示 AI 按钮，`AI_REGION` 用 `forceFunctionRegion` 把函数固定在项目地区（避免分到连不上 Claude 的香港节点）。支持第三方中转：Secrets 里的 `ANTHROPIC_BASE_URL`（兼容 Anthropic Messages API 的地址）、`ANTHROPIC_AUTH_TOKEN`（Bearer 认证）、`AI_MODEL`；走中转/兼容接口（如 DeepSeek `https://api.deepseek.com/anthropic`）时不用 beta 参数，提示词里同时要求只输出 JSON，结构化输出被拒就去掉再试**API Key 只能放在 Supabase Secrets，绝不能写进仓库或页面**
 - 食物库 `FOOD_DB`：`[名称, 别名(|分隔), 每100g kcal, {单位:克数}, 默认单位]`，数值参考《中国食物成分表》第 6 版，外卖菜按常见一份估算。加新食物时别名不要用单个常见字（如"糖""油"之外的），避免误匹配；改完用几句常见说法测一下 `parseMeal`
 - 动作示意图已完成（`assets/moves/*.gif`，说明见 `docs/exercise-illustrations.md`）；新增动作时要同时补对应的动图，不要用来源不明的网络 GIF
 - 可能需要：数据导出/导入备份
