@@ -18,7 +18,7 @@
 
 - 每次估算调用一次 Claude（`claude-opus-5-5`，低推理强度），大约几分钱人民币。
 - 每个家庭每天最多 60 次（在 `supabase/functions/meal-kcal/index.ts` 的 `DAILY_LIMIT` 改），超过当天就不能再用，防止被滥用。
-- 想更省钱可以把函数里的 `model` 换成 `claude-haiku-4-5`（估算质量会差一些）。
+- 想更省钱，可以在 Secrets 里加 `AI_MODEL` = `claude-haiku-4-5`，不用改代码（估算质量会差一些）。
 
 ## 步骤
 
