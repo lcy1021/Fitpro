@@ -162,18 +162,21 @@ p{margin:0}
 .lm-role img{width:68px;height:68px;object-fit:contain}
 .lm-role strong{font-size:17px;display:block;line-height:1.25}
 .lm-role small{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.3}
-.lm-arrow{font-size:23px;opacity:.65}
+.lm-arrow{width:20px;height:20px;display:grid;place-items:center;opacity:.68}
+.lm-arrow .ui-icon{width:20px;height:20px}
 .lm-confirm{width:100%;border:0;border-radius:16px;background:var(--ink);color:var(--bg);min-height:47px;font-size:15px;font-weight:800;margin-top:14px;transition:background .2s,transform .2s}
 .lm-confirm.hus{background:var(--hus-grad);color:#fff;box-shadow:var(--hus-glow)}
 .lm-confirm.wife{background:var(--wife-grad);color:#fff;box-shadow:var(--wife-glow)}
 .lm-confirm:disabled{background:var(--sunk);color:var(--faint);box-shadow:none;cursor:default}
-.lm-foot{display:flex;justify-content:center;gap:12px;margin-top:9px}
-.lm-replay{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:4px 8px}
+.lm-foot{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:9px}
+.lm-replay,.lm-recover{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:5px;border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:6px 8px;line-height:1.3}
+.lm-foot button[hidden]{display:none!important}
+.lm-replay .ui-icon{width:15px;height:15px}
 .lm-family{min-width:0;margin-top:12px;border:1px solid var(--line);border-radius:15px;background:var(--sunk);color:var(--muted);font-size:12px;overflow:hidden}
-.lm-family summary{display:flex;align-items:center;gap:8px;padding:11px 13px;cursor:pointer;list-style:none;font-weight:700}
+.lm-family summary{min-height:44px;display:flex;align-items:center;gap:8px;padding:10px 13px;cursor:pointer;list-style:none;font-weight:700}
 .lm-family summary::-webkit-details-marker{display:none}
-.lm-family summary::after{content:"⌄";margin-left:0;font-size:17px;line-height:1;transition:transform .2s}
-.lm-family[open] summary::after{transform:rotate(180deg)}
+.lm-family summary>.ui-icon{width:18px;height:18px;transition:transform .2s}
+.lm-family[open] summary>.ui-icon{transform:rotate(180deg)}
 .lm-family summary em{margin-left:auto;font-style:normal;font-size:10px;font-weight:700;color:var(--faint)}
 .lm-family-panel{min-width:0;padding:0 12px 12px}
 .lm-family-panel label{display:block;margin:0 0 6px;color:var(--muted);font-size:11px;font-weight:700}
@@ -181,7 +184,7 @@ p{margin:0}
 .lm-family input:focus{border-color:var(--hus);box-shadow:0 0 0 3px color-mix(in srgb,var(--hus) 15%,transparent)}
 .lm-family input::placeholder{color:var(--faint);letter-spacing:0}
 .lm-family p{margin:8px 1px 0;font-size:11px;line-height:1.5}
-.lm-entry-error{margin:10px 0 0;color:var(--danger);font-size:12px;line-height:1.45;text-align:center}.lm-recover{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:5px 8px}
+.lm-entry-error{margin:10px 0 0;color:var(--danger);font-size:12px;line-height:1.45;text-align:center}
 @media(max-width:400px){.lm-choice{padding-left:16px;padding-right:16px}.lm-foot{flex-wrap:wrap}.lm-role{grid-template-columns:58px minmax(0,1fr) 16px;gap:8px}.lm-role img{width:58px;height:58px}.lm-role strong{font-size:15px}.lm-role small{font-size:10px}}
 @media(max-height:720px){.lm-copy{top:calc(87px + env(safe-area-inset-top,0px))}.lm-wordmark{top:calc(24px + env(safe-area-inset-top,0px));width:148px}.lm-brandline{top:calc(67px + env(safe-area-inset-top,0px))}.lm-track{top:calc(182px + env(safe-area-inset-top,0px));height:305px}.lm-runner{width:62%}.lm[data-phase="choose"] .lm-track{transform:translateY(-95px) scale(.65)}.lm-line{top:calc(515px + env(safe-area-inset-top,0px))}.lm-choice{padding-top:19px}.lm-lead{margin-bottom:9px}.lm-role{min-height:69px;grid-template-columns:57px minmax(0,1fr) 19px}.lm-role img{width:57px;height:57px}.lm-confirm{margin-top:11px}}
 @media (prefers-reduced-motion: reduce){.lm *,.lm *::before,.lm *::after{animation:none!important;transition-duration:.01ms!important}}
@@ -199,8 +202,8 @@ p{margin:0}
 .card{background:var(--surface);border-radius:var(--radius-m);padding:16px;box-shadow:var(--shadow)}
 .stack{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
 .sec{margin-bottom:22px}
-.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 4px 10px}
-.sec-h h3{font-size:17px;font-weight:800;display:flex;align-items:center;gap:8px}
+.sec-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 4px 10px}
+.sec-h h3{font-size:17px;font-weight:800;display:flex;align-items:center;gap:8px;line-height:1.3}
 .sec-h h3 .si{font-style:normal;width:30px;height:30px;border-radius:11px;background:var(--me-soft);color:var(--me-ink);display:inline-flex;align-items:center;justify-content:center;flex:none}
 .sec-h h3 .si .ui-icon{width:19px;height:19px}
 .sec-h h3 .si.i-flame,.together .fire{background:var(--sun-soft);color:var(--sun-ink)}
@@ -458,14 +461,14 @@ p{margin:0}
 .plot{background:var(--sunk);border-radius:var(--radius-m);padding:6px}
 .chart-foot{font-size:11px;color:var(--faint);text-align:center;margin-top:8px}
 .private-settings{margin:14px 0 0;border-radius:16px;background:var(--surface);box-shadow:0 4px 16px #5c768519}
-.private-settings summary{list-style:none;display:flex;align-items:center;gap:8px;padding:13px 15px;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer}
+.private-settings summary{list-style:none;min-height:48px;display:flex;align-items:center;gap:10px;padding:12px 15px;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer}
 .private-settings summary::-webkit-details-marker{display:none}
-.private-settings summary .ui-icon{width:16px;height:16px}
-.private-settings summary::after{content:"⌄";margin-left:auto;font-size:18px;line-height:1}
-.private-settings[open] summary::after{transform:rotate(180deg)}
-.private-settings-body{display:grid;gap:8px;padding:0 15px 15px}
+.private-settings summary .ui-icon{width:19px;height:19px}
+.private-settings summary .settings-chevron{margin-left:auto;width:18px;height:18px;transition:transform .2s}
+.private-settings[open] summary .settings-chevron{transform:rotate(180deg)}
+.private-settings-body{box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:0 15px 15px}
 .private-settings-body p{margin:0 0 3px;color:var(--muted);font-size:12px;line-height:1.5}
-.private-settings-body button{width:100%;text-align:left;border:0;border-radius:10px;padding:11px 12px;background:var(--me-soft);color:var(--me-ink);font-size:13px;font-weight:700}
+.private-settings-body button{box-sizing:border-box;width:100%;min-width:0;text-align:left;border:0;border-radius:10px;padding:11px 12px;background:var(--me-soft);color:var(--me-ink);font-size:13px;font-weight:700}
 .private-settings-body button:last-child{background:var(--sunk);color:var(--muted)}
 .feed{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border-radius:var(--radius-m);background:color-mix(in srgb,var(--p-soft) 45%,var(--surface))}
 .feed+.feed{margin-top:8px}
@@ -672,6 +675,11 @@ p{margin:0}
   <symbol id="ic-note" viewBox="0 0 24 24"><rect x="4" y="3" width="14" height="18" rx="3"/><path d="M7.5 8h7M7.5 12h5M7.5 16h3M17.5 15.5l3-3 1.5 1.5-3 3-2.5.7.7-2.2Z"/></symbol>
   <symbol id="ic-key" viewBox="0 0 24 24"><circle cx="8" cy="10" r="4.5"/><path d="M11.3 13.3 20 22M15 17l2-2M17.3 19.4l2-2"/></symbol>
   <symbol id="ic-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M10 2.8h4l.6 2.2 1.7.8 2-.9 2.8 2.8-.9 2 .8 1.7 2.2.6v4l-2.2.6-.8 1.7.9 2-2.8 2.8-2-.9-1.7.8-.6 2.2h-4l-.6-2.2-1.7-.8-2 .9-2.8-2.8.9-2-.8-1.7-2.2-.6v-4l2.2-.6.8-1.7-.9-2 2.8-2.8 2 .9 1.7-.8.6-2.2Z"/></symbol>
+  <symbol id="ic-chevron-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="ic-chevron-down" viewBox="0 0 24 24"><path d="m5 9 7 7 7-7"/></symbol>
+  <symbol id="ic-replay" viewBox="0 0 24 24"><path d="M4.5 10a8 8 0 1 1-.2 4M4.5 4.5V10H10"/></symbol>
+  <symbol id="ic-close" viewBox="0 0 24 24"><path d="M6 6 18 18M18 6 6 18"/></symbol>
+  <symbol id="ic-back" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
   <symbol id="ic-stretch" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M12 8v7M7 20l5-5 5 5M4 8l4 3 4-3 4 3 4-3"/></symbol>
   <symbol id="ic-play" viewBox="0 0 24 24"><path d="m8 5.5 10 6.5-10 6.5v-13Z" fill="currentColor" stroke="none"/></symbol>
   <symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7 5.3-5.6"/></symbol>
@@ -717,13 +725,13 @@ p{margin:0}
     <h2 id="pickTitle">你是谁？</h2>
     <p class="lm-lead">选好角色，健康伙伴会带你用 4 步定好目标和计划。</p>
     <div class="lm-roles" role="group" aria-label="选择角色">
-      <button class="lm-role hus" data-lm-role="hus" aria-pressed="false" type="button"><img src="assets/login/hus-running.webp" alt=""><span><strong>我是老公</strong><small>聊聊目标，定制适合你的饮食和训练</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
-      <button class="lm-role wife" data-lm-role="wife" aria-pressed="false" type="button"><img src="assets/login/wife-running.webp" alt=""><span><strong>我是老婆</strong><small>聊聊身体状态和想改善的地方</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
+      <button class="lm-role hus" data-lm-role="hus" aria-pressed="false" type="button"><img src="assets/login/hus-running.webp" alt=""><span><strong>我是老公</strong><small>聊聊目标，定制适合你的饮食和训练</small></span><span class="lm-arrow" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><use href="#ic-chevron-right"/></svg></span></button>
+      <button class="lm-role wife" data-lm-role="wife" aria-pressed="false" type="button"><img src="assets/login/wife-running.webp" alt=""><span><strong>我是老婆</strong><small>聊聊身体状态和想改善的地方</small></span><span class="lm-arrow" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><use href="#ic-chevron-right"/></svg></span></button>
     </div>
-    <details class="lm-family"><summary><span>已有伴侣的家庭口令</span><em>选填</em></summary><div class="lm-family-panel"><label for="entryFamily">输入对方分享的口令</label><input id="entryFamily" type="text" inputmode="text" enterkeyhint="done" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="40" placeholder="8–40 位字母或数字"><p>第一次使用无需填写，完成计划后可邀请伴侣。</p></div></details>
+    <details class="lm-family"><summary><span>已有伴侣的家庭口令</span><em>选填</em><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-chevron-down"/></svg></summary><div class="lm-family-panel"><label for="entryFamily">输入对方分享的口令</label><input id="entryFamily" type="text" inputmode="text" enterkeyhint="done" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="40" placeholder="8–40 位字母或数字"><p>第一次使用无需填写，完成计划后可邀请伴侣。</p></div></details>
     <button class="lm-confirm" id="lmConfirm" type="button" disabled>先选择一个角色</button>
     <p class="lm-entry-error" id="entryIssue" hidden></p>
-    <div class="lm-foot"><button class="lm-replay" data-lm-replay type="button">↺ 再看一次入场动效</button><button class="lm-recover" data-coach="recover-open" type="button">换手机？找回档案</button><button class="lm-replay" data-pick-cancel type="button" hidden>取消</button></div>
+    <div class="lm-foot"><button class="lm-replay" data-lm-replay type="button"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-replay"/></svg>再看一次入场动效</button><button class="lm-recover" data-coach="recover-open" type="button">换手机？找回档案</button><button class="lm-replay" data-pick-cancel type="button" hidden>取消</button></div>
   </section>
 </div></div>
 <div class="pick" id="foodDlg" role="dialog" aria-modal="true" aria-labelledby="foodTitle"><div class="inner">
@@ -1833,7 +1841,7 @@ function viewRecord(){
       <div class="mtiles">${tiles.map(tile).join("")}</div>
       <button class="cta" type="submit">${icon("check","sm")} 保存记录</button>
     </form>
-  </section><div id="recData"></div>${privateCoach?.active?privateCoach.pushCard()+`<details class="private-settings"><summary>${icon("settings","sm")} 设置</summary><div class="private-settings-body"><p>私人档案仅自己可见。换手机前请保存个人恢复码。</p><button type="button" data-coach="show-recovery">生成新的个人恢复码</button><button type="button" data-coach="copy-family">复制家庭配对口令</button><button type="button" data-coach="signout">清除本机登录</button></div></details>`:""}${tokenCard}`;
+  </section><div id="recData"></div>${privateCoach?.active?privateCoach.pushCard()+`<details class="private-settings"><summary>${icon("settings")}<span>设置</span>${icon("chevron-down","settings-chevron")}</summary><div class="private-settings-body"><p>私人档案仅自己可见。换手机前请保存个人恢复码。</p><button type="button" data-coach="show-recovery">生成新的个人恢复码</button><button type="button" data-coach="copy-family">复制家庭配对口令</button><button type="button" data-coach="signout">清除本机登录</button></div></details>`:""}${tokenCard}`;
   renderRecordData();
   $("#mForm").addEventListener("input",e=>{
     const i=e.target; if(!i.dataset || i.name==="date") return;
