@@ -28,6 +28,7 @@ function json(text: string): Record<string, unknown> | null {
   return null;
 }
 const system = `你是减脂与健身产品里的健康伙伴。用简洁、温和的中文帮助成年人整理目标与制定低风险计划。你不能诊断疾病，不能替代医生、营养师或康复师。经期不适、近期生病、疼痛、慢性病变化时，本周训练应暂缓或降低强度；疼痛和生病时建议休息并视情况咨询专业人员。不能建议极端节食、补偿性运动或快速减重。只返回 JSON 对象，不要代码块。interpret 模式返回 {"summary":"复述理解","suggestions":{"goals":[],"focus":[],"health":[],"frequency":"","duration":"","equipment":[],"diet":""}}；plan/weekly 模式返回 {"summary":"一句解释","plan":{"days":{"YYYY-MM-DD":"REST|A|B|W|N"},"mealSwaps":{"breakfast":"具体食物和份量","lunch":"具体食物和份量","snack":"具体食物和份量","dinner":"具体食物和份量"},"reason":"一句解释"}}；daily 模式返回 {"summary":"一句解释","choice":"original|short|rest"}。日期只用用户给出的本周七天。A/B 为哑铃训练，W 为居家臀腿训练，N 为无需器械的全身训练，REST 为休息。四餐建议必须写明具体食物和大致份量，照顾用户的饮食禁忌，兼有蛋白质、蔬果和适量主食，总量大致接近输入的 targetKcal；不要声称精确热量。不提供具体医疗或药物建议。`;
+const quickSystem = `你是健身产品里的健康伙伴。用简短中文整理用户的话，不诊断疾病，不提供药物建议。只返回一个紧凑的 JSON 对象，不要解释或代码块。interpret 返回 {"summary":"一句复述","suggestions":{"goals":[],"focus":[],"health":[],"frequency":"","duration":"","equipment":[],"diet":""}}；daily 返回 {"summary":"一句建议","choice":"original|short|rest"}。疼痛、生病或经期不适时应降低强度或休息。`;
 Deno.serve(async req => {
   const headers = {...cors(req.headers.get("origin")), "Content-Type": "application/json"};
   const reply = (status: number, body: unknown) => new Response(JSON.stringify(body), {status, headers});
@@ -57,7 +58,9 @@ Deno.serve(async req => {
   const bmr = valid ? 10 * weight + 6.25 * height - 5 * age + (person === "hus" ? 5 : -161) : 0;
   const reducing = Array.isArray(userProfile.goals) && userProfile.goals.includes("减脂");
   const targetKcal = valid ? Math.round(Math.max(person === "hus" ? 1500 : 1200, bmr * 1.35 - (reducing ? 300 : 0)) / 10) * 10 : null;
-  const prompt = JSON.stringify({mode, text, profile, extra: body.extra || {}, person, weekDates: week, targetKcal});
+  const quick = mode === "interpret" || mode === "daily";
+  const quickProfile = Object.fromEntries(["goals", "focus", "health", "healthDetail", "frequency", "duration", "equipment", "diet"].filter(key => key in userProfile).map(key => [key, userProfile[key]]));
+  const prompt = JSON.stringify(quick ? {mode, text, profile: quickProfile, extra: body.extra || {}, person} : {mode, text, profile, extra: body.extra || {}, person, weekDates: week, targetKcal});
   const secret = Deno.env.get("ANTHROPIC_API_KEY") || Deno.env.get("ANTHROPIC_AUTH_TOKEN");
   if (!secret) return reply(503, {error: "ai_not_configured"});
   const relay = Deno.env.get("ANTHROPIC_BASE_URL");
@@ -67,8 +70,10 @@ Deno.serve(async req => {
   else aiHeaders["x-api-key"] = secret;
   try {
     let out: Record<string, unknown> | null = null;
-    for (let attempt = 0; attempt < 2; attempt++) {
-      const response = await fetch(base + "/v1/messages", {method: "POST", headers: aiHeaders, body: JSON.stringify({model: Deno.env.get("COACH_AI_MODEL") || Deno.env.get("AI_MODEL") || "claude-haiku-4-5", max_tokens: mode === "plan" || mode === "weekly" ? (attempt ? 3500 : 2600) : (attempt ? 1800 : 1200), system, messages: [{role: "user", content: attempt ? prompt + "\n请只返回一个完整、紧凑的 JSON 对象，不要解释或代码块。" : prompt}]})});
+    for (let attempt = 0; attempt < (quick ? 1 : 2); attempt++) {
+      const started = performance.now();
+      const response = await fetch(base + "/v1/messages", {method: "POST", headers: aiHeaders, signal: AbortSignal.timeout(quick ? 25000 : attempt ? 20000 : 35000), body: JSON.stringify({model: Deno.env.get("COACH_AI_MODEL") || Deno.env.get("AI_MODEL") || "claude-haiku-4-5", max_tokens: quick ? (mode === "daily" ? 300 : 650) : (attempt ? 3500 : 2600), system: quick ? quickSystem : system, messages: [{role: "user", content: attempt ? prompt + "\n请只返回一个完整、紧凑的 JSON 对象，不要解释或代码块。" : prompt}]})});
+      console.info("coach upstream timing", mode, attempt + 1, response.status, Math.round(performance.now() - started));
       if (!response.ok) { console.warn("coach upstream status", response.status); return reply(502, {error: "ai_unavailable"}); }
       const raw = await response.json();
       const text = Array.isArray(raw.content) ? raw.content.filter((x: {type: string}) => x.type === "text").map((x: {text: string}) => x.text || "").join("\n") : "";
@@ -103,5 +108,5 @@ Deno.serve(async req => {
     const mealSwaps: Record<string, string> = {};
     for (const meal of meals) mealSwaps[meal] = trim(rawMeals[meal], 100);
     return reply(200, {summary, plan: {days, mealSwaps, reason: trim(p.reason, 300)}});
-  } catch { return reply(502, {error: "ai_unavailable"}); }
+  } catch (error) { console.warn("coach upstream error", mode, error instanceof Error ? error.name : "unknown");return reply(error instanceof Error && error.name === "TimeoutError" ? 504 : 502, {error: error instanceof Error && error.name === "TimeoutError" ? "ai_timeout" : "ai_unavailable"}); }
 });

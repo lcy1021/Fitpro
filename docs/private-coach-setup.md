@@ -7,6 +7,8 @@
 1. 备份旧版 `checkins`、`measures` 两张表。先运行现有的 `supabase-setup.sql` 和 `supabase-ai-setup.sql`，再运行 `supabase-private-coach.sql`。新 SQL 会把认领角色的旧记录导入私有表，并撤销旧家庭口令 RPC 的公开调用权限。上线时要同步发布网页，因为旧缓存客户端的同步接口会被关闭。
 2. 在 Supabase Auth 设置中开启 **Allow anonymous sign-ins**。应用播放原入场动画并展示老公／老婆角色卡；后台匿名注册并保存本机会话。选择角色后立即进入 4 步目标设定，最后确认计划时完成云端角色认领和保存，不展示登录方式页。已有家庭口令可在角色卡下方展开填写；首次使用会自动生成。每个角色由一个独立匿名用户认领，同一个家庭角色不能重复认领。建议同时开启 Supabase 推荐的 CAPTCHA 或 Turnstile 防滥用。
 3. 部署 `supabase/functions/coach/index.ts` 为 `coach`，部署更新的 `supabase/functions/meal-kcal/index.ts`。把 `ANTHROPIC_API_KEY` 放入 Edge Functions Secrets；使用兼容 Anthropic 的中转时配置 `ANTHROPIC_BASE_URL`、`ANTHROPIC_AUTH_TOKEN`、`COACH_AI_MODEL`。`SUPABASE_URL` 和 `SUPABASE_SERVICE_ROLE_KEY` 在 Supabase 函数环境中提供。`coach` 默认启用 JWT 验证，也会在函数中再次校验用户；建档前可用当前匿名身份和所选角色调用 AI，完成 4 步后才认领家庭角色。AI 不可用时前端保留保守的训练安排；如果填了饮食限制却没有生成具体餐食，页面会隐藏默认菜品并提示不要照搬。没有哑铃时使用徒手全身训练。
+
+   如果 AI 分析明显缓慢，在 Edge Functions → `coach` → Logs 查看 `coach upstream timing`：它会记录模式、尝试次数、上游状态和耗时，不记录健康内容。`coach` 优先使用 Secret `COACH_AI_MODEL`，未设置时继承 `AI_MODEL`；请确认实际模型，并在所用服务商支持时为 `COACH_AI_MODEL` 选择响应更快的模型。短句识别只请求简短回复，云端等待 25 秒；完整计划首轮最多等 35 秒，格式不完整时才重试一次。修改函数代码后需要重新部署 `coach`，仅更新 GitHub Pages 不会改变函数行为。
 4. 更新静态文件 `index.html`、`private-coach.js`、`private-coach.css`、`sw.js`、`manifest.webmanifest`、`config.js` 及图片资源。首位用户完成 4 步并保存恢复码后，可复制家庭口令邀请伴侣；伴侣在角色页填写口令，再完成自己的 4 步并保存恢复码。
 
 恢复码为一次性凭据：在新设备上输入后，私人记录会转移到新匿名身份，原设备失去同步权限，并生成新的恢复码。家庭口令无法代替恢复码；清除浏览器数据前务必先保存它。
