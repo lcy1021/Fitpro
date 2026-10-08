@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>DuoFit · 两个人的减脂打卡</title>
-<meta name="theme-color" content="#FDFAF6">
+<meta name="theme-color" content="#FDFAF6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101318" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png?v=logo3">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/icons/favicon-64.png?v=logo3">
 <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=logo3">
@@ -14,6 +15,7 @@
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
 <style>
 :root{
+  color-scheme:light;
   --bg:#FDFAF6; --surface:#FFFFFF; --sunk:#F6F3EE; --ink:#192024; --muted:#64748B; --faint:#94A3B8; --line:rgba(25,32,36,.07);
   --hus:#0284C7; --hus-ink:#0369A1; --hus-soft:#E0F2FE; --hus-grad:linear-gradient(135deg,#38BDF8 0%,#0284C7 100%); --hus-glow:0 8px 24px -4px rgba(2,132,199,.35);
   --wife:#FF4B72; --wife-ink:#E11D48; --wife-soft:#FFE4E6; --wife-grad:linear-gradient(135deg,#FF758C 0%,#FF4B72 100%); --wife-glow:0 8px 24px -4px rgba(255,75,114,.35);
@@ -29,6 +31,7 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
+    color-scheme:dark;
     --bg:#101318; --surface:#191D24; --sunk:#222731; --ink:#EEF1F4; --muted:#9AA5B4; --faint:#6B7684; --line:rgba(255,255,255,.08);
     --hus:#38BDF8; --hus-ink:#7DD3FC; --hus-soft:#0C3246; --wife:#FF7A95; --wife-ink:#FDA4B8; --wife-soft:#4A1E2A;
     --sun:#FBBF24; --sun-ink:#FCD34D; --sun-soft:#3D2F12; --good:#4ADE80; --good-soft:#12301F; --lav:#C4B5FD; --lav-soft:#2A2145; --danger:#FB923C; --obsidian:#0B0D11; --obsidian-2:#1A1F28;
@@ -37,6 +40,7 @@
   }
 }
 :root[data-theme="dark"]{
+  color-scheme:dark;
   --bg:#101318; --surface:#191D24; --sunk:#222731; --ink:#EEF1F4; --muted:#9AA5B4; --faint:#6B7684; --line:rgba(255,255,255,.08);
   --hus:#38BDF8; --hus-ink:#7DD3FC; --hus-soft:#0C3246; --wife:#FF7A95; --wife-ink:#FDA4B8; --wife-soft:#4A1E2A;
   --sun:#FBBF24; --sun-ink:#FCD34D; --sun-soft:#3D2F12; --good:#4ADE80; --good-soft:#12301F; --lav:#C4B5FD; --lav-soft:#2A2145; --danger:#FB923C; --obsidian:#0B0D11; --obsidian-2:#1A1F28;
@@ -252,7 +256,7 @@ p{margin:0}
 .obs .moves-chips span em{font-style:normal;color:rgba(241,245,249,.6);margin-left:4px}
 .today-move-preview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
 .today-move-preview .item{min-width:0;border-radius:14px;background:rgba(255,255,255,.07);padding:6px;text-align:center}
-.today-move-preview img{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:10px;background:#FDFAF6}
+.today-move-preview img{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:10px;background:var(--sunk)}
 .today-move-preview b{display:block;margin-top:5px;font-size:11px;line-height:1.3;overflow-wrap:anywhere}
 .cta{width:100%;border:0;border-radius:999px;padding:15px;font-size:16px;font-weight:800;color:#fff;background:var(--me-grad);box-shadow:var(--me-glow),inset 0 1px 1px rgba(255,255,255,.35)}
 .obs .cta.done{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15);color:rgba(241,245,249,.8)}
@@ -393,7 +397,7 @@ p{margin:0}
 .extra-results{display:grid;gap:8px;max-height:440px;overflow:auto}
 .extra-move{display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:6px;text-align:left}
 .extra-move[aria-pressed="true"]{border-color:var(--me);background:var(--me-soft)}
-.extra-move img{display:block;width:72px;height:54px;object-fit:contain;border-radius:9px;background:#FDFAF6}
+.extra-move img{display:block;width:72px;height:54px;object-fit:contain;border-radius:9px;background:var(--sunk)}
 .extra-move span{min-width:0}
 .extra-move b,.extra-move small{display:block;overflow-wrap:anywhere}
 .extra-move b{font-size:13px}.extra-move small{font-size:11px;color:var(--muted)}
@@ -513,7 +517,7 @@ p{margin:0}
 .bar i{display:block;height:100%;width:0;transition:width .3s;background:var(--me-grad);border-radius:99px}
 .media{aspect-ratio:4/3;border-radius:var(--radius-m);border:2px dashed color-mix(in srgb,var(--me) 25%,var(--line));display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;color:var(--muted);font-size:12px;margin-bottom:14px;background:color-mix(in srgb,var(--me-soft) 45%,var(--surface))}
 .media img{width:72px;height:72px;object-fit:contain;opacity:.85}
-.media.exercise-media{display:block;border:0;background:#FDFAF6;overflow:hidden}
+.media.exercise-media{display:block;border:0;background:var(--sunk);overflow:hidden}
 .media.exercise-media img{display:block;width:100%;height:100%;object-fit:contain;opacity:1}
 .rcard{background:var(--surface);border-radius:var(--radius-l);padding:16px;box-shadow:var(--shadow);margin-bottom:16px}
 .tag2.light{display:inline-flex;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--me-soft);color:var(--me-ink);margin-bottom:8px}
@@ -521,7 +525,7 @@ p{margin:0}
 .rlist{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
 .rlist li{display:flex;align-items:center;gap:10px;background:var(--sunk);border-radius:var(--radius-s);padding:10px 12px;font-size:14px;font-weight:600}
 .rlist li span{width:24px;height:24px;border-radius:50%;background:var(--surface);color:var(--me-ink);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
-.rlist li img.list-art{width:80px;height:60px;object-fit:contain;border-radius:8px;background:#FDFAF6;flex:none}
+.rlist li img.list-art{width:80px;height:60px;object-fit:contain;border-radius:8px;background:var(--sunk);flex:none}
 .rlist li img.list-art.duo{width:62px;height:47px}
 .rlist li b{min-width:0;font-size:14px;line-height:1.4}
 .tring{position:relative;width:200px;height:200px;margin:4px auto 20px}
@@ -633,10 +637,10 @@ p{margin:0}
 .empty-mood img{width:56px;height:56px;object-fit:contain;flex:none}
 .rrest .mood{width:88px;height:88px;object-fit:contain;display:block;margin:0 auto 6px}
 .obs .ol li.has-art{grid-template-columns:76px minmax(0,1fr) auto}
-.obs .ol .art{position:relative;width:76px;height:57px;border-radius:10px;overflow:hidden;background:#FDFAF6;flex:none}
+.obs .ol .art{position:relative;width:76px;height:57px;border-radius:10px;overflow:hidden;background:var(--sunk);flex:none}
 .obs .ol .art img{width:100%;height:100%;object-fit:contain;display:block}
 .obs .ol .art .n{position:absolute;left:4px;bottom:4px;width:20px;height:20px;font-size:11px;background:rgba(24,28,36,.72);color:#fff}
-.desk .art{width:100%;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#FDFAF6;margin-bottom:6px}
+.desk .art{width:100%;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:var(--sunk);margin-bottom:6px}
 .desk .art img{width:100%;height:100%;object-fit:contain;display:block}
 @media(max-width:400px){
   .counter{flex-wrap:wrap}.counter .ctl{margin-left:auto}
@@ -651,7 +655,7 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="private-coach.css">
+<link rel="stylesheet" href="private-coach.css?v=19">
 </head>
 <body class="me-hus">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -679,6 +683,7 @@ p{margin:0}
   <symbol id="ic-chevron-down" viewBox="0 0 24 24"><path d="m5 9 7 7 7-7"/></symbol>
   <symbol id="ic-replay" viewBox="0 0 24 24"><path d="M4.5 10a8 8 0 1 1-.2 4M4.5 4.5V10H10"/></symbol>
   <symbol id="ic-close" viewBox="0 0 24 24"><path d="M6 6 18 18M18 6 6 18"/></symbol>
+  <symbol id="ic-send" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7" /><path d="M12 19V5" /></symbol>
   <symbol id="ic-back" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
   <symbol id="ic-stretch" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M12 8v7M7 20l5-5 5 5M4 8l4 3 4-3 4 3 4-3"/></symbol>
   <symbol id="ic-play" viewBox="0 0 24 24"><path d="m8 5.5 10 6.5-10 6.5v-13Z" fill="currentColor" stroke="none"/></symbol>
@@ -782,7 +787,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js"></script>
+<script src="private-coach.js?v=19"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();

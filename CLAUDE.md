@@ -96,7 +96,7 @@
 
 - App 图标：当前为 v3，保留蓝粉立体云朵角色，放大人物、减少留白，保留鲜明主体色，以淡奶油白背景和极淡蓝粉光晕突出角色。`assets/icons/` 由 `UIset/logo/duofit-app-icon-fullbleed.png` 直接缩放，不裁切；源图直角、背景铺满，手机系统自行切圆角。同步维护 `UIset/duofit-app-logo.png`、`UIset/logo/` 的 master / 各尺寸素材与根目录 `apple-touch-icon.png`；页面、manifest 和通知使用 `?v=logo3`，换图时同时更新 URL 和缓存版本。`manifest.webmanifest` 和 `apple-mobile-web-app-title` 设主屏幕名称 DuoFit。不加载网络字体（国内访问 Google Fonts 会拖慢首屏）
 
-- 离线缓存 `sw.js`：本站文件"先用缓存、后台更新"（秒开，**推送后要第二次打开才看到新版**）；Supabase 和 AI 请求不经过缓存。改了缓存逻辑或要强制刷新时，改 `sw.js` 里的 `CACHE` 版本号
+- 离线缓存 `sw.js`：页面、脚本和样式优先联网取新版，断网时回退缓存；图片先读缓存并后台更新。Supabase 和 AI 请求不经过缓存。改了缓存逻辑或要强制刷新时，改 `sw.js` 里的 `CACHE` 版本号
 
 ## 协作约定
 
@@ -112,3 +112,11 @@
 - 新表与 RPC 在 `supabase-private-coach.sql`；旧 `fl_pull/fl_put_*` 在迁移后撤权。`fl_private_pull` 只返回本人完整记录和伴侣的打卡布尔值、相对体重曲线。不能重新向伴侣返回原始健康记录。
 - `supabase/functions/coach` 是 AI 顾问；`weekly-push` 与 `supabase-weekly-push.sql` 是可选的后台周提醒。配置和上线步骤见 `docs/private-coach-setup.md`。
 - 运行 `node tests/scenarios.js` 验证旧场景和新私密视图。修改内联脚本后再提取并执行 `node --check`；Node 24 可用 `--experimental-strip-types --check` 检查 Edge Functions 的 TS 语法。
+
+
+## 深色模式与健康伙伴（2026-10-08）
+
+- 四步目标建档、首周计划、每周确认、每日调整、恢复码与清除登录弹窗统一使用主界面的 `--bg / --surface / --sunk / --ink / --muted` 主题变量，跟随系统深色模式；蓝色、粉色身份分别使用对应的深色强调色。伴侣趋势卡、通知提醒卡也跟随主题。
+- 输入框、未选/已选项、在线/离线提示、AI 理解卡、加载和错误提示均有深色样式；原生输入控件声明 `color-scheme`，浏览器顶栏颜色跟随系统明暗。动作插画容器使用主题底色，图片自身的浅色画布保留。
+- 发送入口采用 44×44 px 圆角按钮、22 px Lucide SVG 箭头、轻渐变和焦点轮廓；空白输入禁用，输入后启用，分析中显示旋转状态并禁用重复发送，失败保留原文用于重试。
+- 样式和脚本使用 `?v=19`，离线缓存更新为 `duofit-v19`。浅色/深色与蓝色/粉色分别检查 320、375、390、430 px 宽度；场景截图与检查记录在 `docs/qa/dark-mode/README.md`，本机复现入口在 `tests/theme-preview.html`。

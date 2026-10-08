@@ -218,3 +218,11 @@ The design system is defined by signature, exaggerated curvature:
 ### 7. DuoFit App Icon — Approved v3
 - Preserve the original cyan-blue and strawberry-pink 3D cloud running mascots, including their headbands, shorts, skirt and shoes. Enlarge the pair, reduce surrounding whitespace and keep character colors vivid against a pale creamy background with very subtle blue and pink edge tints.
 - The canonical artwork is `UIset/logo/duofit-app-icon-fullbleed.png`. Export each app-icon size directly without cropping or drawing rounded corners; keep `UIset/duofit-app-logo.png`, the UI source sizes, runtime icons and root iPhone icon synchronized. The full prompt is saved in `UIset/logo/duofit-logo-prompt.txt`.
+
+
+## 深色模式与健康伙伴（2026-10-08）
+
+- 四步目标建档、首周计划、每周确认、每日调整、恢复码与清除登录弹窗统一使用主界面的 `--bg / --surface / --sunk / --ink / --muted` 主题变量，跟随系统深色模式；蓝色、粉色身份分别使用对应的深色强调色。伴侣趋势卡、通知提醒卡也跟随主题。
+- 输入框、未选/已选项、在线/离线提示、AI 理解卡、加载和错误提示均有深色样式；原生输入控件声明 `color-scheme`，浏览器顶栏颜色跟随系统明暗。动作插画容器使用主题底色，图片自身的浅色画布保留。
+- 发送入口采用 44×44 px 圆角按钮、22 px Lucide SVG 箭头、轻渐变和焦点轮廓；空白输入禁用，输入后启用，分析中显示旋转状态并禁用重复发送，失败保留原文用于重试。
+- 样式和脚本使用 `?v=19`，离线缓存更新为 `duofit-v19`。浅色/深色与蓝色/粉色分别检查 320、375、390、430 px 宽度；场景截图与检查记录在 `docs/qa/dark-mode/README.md`，本机复现入口在 `tests/theme-preview.html`。
