@@ -113,3 +113,9 @@
   .coach-card{padding:14px}
   .coach-bubble img{width:52px;height:52px}
 }
+/* iOS 会在聚焦小于 16px 的输入文字时放大整个页面。只调整手机端文字，保留输入框尺寸。 */
+@media (hover:none) and (pointer:coarse){
+  .coach-card input,.coach-card textarea,.coach-compose-field textarea,.lm-family input{
+    font-size:16px;line-height:18px;
+  }
+}
