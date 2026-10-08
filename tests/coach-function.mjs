@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 
 const calls=[];
+let invalidOutput=false;
 globalThis.Deno={
   env:{get:name=>({SUPABASE_URL:'https://project.supabase.co',SUPABASE_SECRET_KEYS:JSON.stringify({default:'sb_secret_test'}),ANTHROPIC_API_KEY:'ai-test'})[name]},
   serve:handler=>{globalThis.coachHandler=handler}
@@ -10,7 +11,7 @@ globalThis.fetch=async(url,options={})=>{
   if(String(url).endsWith('/auth/v1/user'))return Response.json({id:'user-1'});
   if(String(url).includes('/rest/v1/fl_members'))return Response.json([]);
   if(String(url).endsWith('/rest/v1/rpc/fl_coach_quota'))return Response.json(true);
-  if(String(url).endsWith('/v1/messages'))return Response.json({content:[{type:'text',text:JSON.stringify({summary:'已理解你的目标',suggestions:{goals:['减脂']}})}]});
+  if(String(url).endsWith('/v1/messages'))return Response.json({content:[{type:'text',text:invalidOutput?'{"summary":':'{"summary":"已理解你的目标","suggestions":{"goals":["减脂"]}}'}]});
   throw new Error('unexpected fetch: '+url);
 };
 await import('../supabase/functions/coach/index.ts');
@@ -28,4 +29,8 @@ const privateRead=calls.find(c=>c.url.includes('/rest/v1/fl_members')).options.h
 assert.equal(privateRead.apikey,'sb_secret_test');
 assert.equal(privateRead.authorization,undefined,'new secret key stays out of bearer header');
 assert.equal(JSON.parse(calls.find(c=>c.url.endsWith('/rest/v1/rpc/fl_coach_quota')).options.body).p_user,'user-1');
+invalidOutput=true;
+const partial=await globalThis.coachHandler(request('POST',{mode:'interpret',text:'想练背部',person:'hus'}));
+assert.equal(partial.status,200,'malformed AI interpretation is a recoverable response');
+assert.equal((await partial.json()).partial,true);
 console.log('PASS coach preflight, authentication, quota and AI response');

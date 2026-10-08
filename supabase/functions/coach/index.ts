@@ -90,7 +90,7 @@ Deno.serve(async req => {
     let out: Record<string, unknown> | null = null;
     for (let attempt = 0; attempt < (quick ? 1 : 2); attempt++) {
       const started = performance.now();
-      const response = await fetch(base + "/v1/messages", {method: "POST", headers: aiHeaders, signal: AbortSignal.timeout(quick ? 25000 : attempt ? 20000 : 35000), body: JSON.stringify({model: Deno.env.get("COACH_AI_MODEL") || Deno.env.get("AI_MODEL") || "claude-haiku-4-5", max_tokens: quick ? (mode === "daily" ? 300 : 650) : (attempt ? 3500 : 2600), system: quick ? quickSystem : system, messages: [{role: "user", content: attempt ? prompt + "\n请只返回一个完整、紧凑的 JSON 对象，不要解释或代码块。" : prompt}]})});
+      const response = await fetch(base + "/v1/messages", {method: "POST", headers: aiHeaders, signal: AbortSignal.timeout(quick ? 25000 : attempt ? 20000 : 35000), body: JSON.stringify({model: Deno.env.get("COACH_AI_MODEL") || Deno.env.get("AI_MODEL") || "claude-haiku-4-5", max_tokens: quick ? (mode === "daily" ? 300 : 900) : (attempt ? 3500 : 2600), system: quick ? quickSystem : system, messages: [{role: "user", content: attempt ? prompt + "\n请只返回一个完整、紧凑的 JSON 对象，不要解释或代码块。" : prompt}]})});
       console.info("coach upstream timing", mode, attempt + 1, response.status, Math.round(performance.now() - started));
       if (!response.ok) { console.warn("coach upstream status", response.status); return reply(502, {error: "ai_unavailable"}); }
       const raw = await response.json();
@@ -99,9 +99,11 @@ Deno.serve(async req => {
       const candidatePlan = out?.plan && typeof out.plan === "object" ? out.plan as Record<string, unknown> : null;
       const candidateDays = candidatePlan?.days && typeof candidatePlan.days === "object" ? candidatePlan.days as Record<string, unknown> : null;
       if ((mode === "plan" || mode === "weekly") && (!candidateDays || !week.every(date => typeof candidateDays[date] === "string") || !candidatePlan?.mealSwaps)) out = null;
-      if (out) break;
+      if (out && (mode !== "interpret" || typeof out.summary === "string" && out.summary.trim())) break;
+      out = null;
       console.warn("coach invalid output", mode, raw.stop_reason || "unknown");
     }
+    if (!out && mode === "interpret") return reply(200, {partial: true, summary: "这次没能自动整理选项，请核对卡片或重试。", suggestions: {}});
     if (!out) return reply(502, {error: "ai_invalid_output"});
     const summary = trim(out.summary, 300);
     if (mode === "interpret") {
