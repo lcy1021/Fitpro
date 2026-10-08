@@ -100,6 +100,8 @@
 .coach-mini{display:grid;gap:8px;margin:12px 0;border-radius:20px;padding:15px;background:#fff;box-shadow:0 5px 20px #bca6ad22}
 .coach-mini-head{display:flex;align-items:center;gap:11px}
 .coach-mini-head img{width:43px;height:43px;object-fit:contain}
+.coach-mini-head>div{flex:1;min-width:0}
+.coach-mini-head b,.coach-mini-head small{display:block;line-height:1.5;overflow-wrap:anywhere}
 .coach-mini b{font-size:14px}
 .coach-mini small{color:#887a81;font-size:11px}
 .coach-mini p{margin:0;color:#80737b;font-size:12px}

@@ -18,8 +18,8 @@ const sandbox = {
   location: {hash:'',pathname:'/',search:'',protocol:'file:'}, history:{replaceState(){}}, navigator:{},
   setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame:f=>f(), matchMedia:()=>({matches:true}), console, Date, AbortController, URL,
 };
-const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','viewToday','viewDiet','viewTrain','viewRecord','renderRecordData','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','feedRows','openPicker','showRoleChoice'];
-const code = inline.replace('/* ---------- boot ---------- */', `globalThis.__app = {${exported.join(',')}, setStore:v=>{store=v},setMe:v=>{me=v;viewP=v},setViewP:v=>{viewP=v},setCoach:v=>{privateCoach=v},setTab:v=>{tab=v}};return;`);
+const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','viewToday','viewDiet','viewTrain','viewRecord','renderRecordData','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','drawRun','feedRows','openPicker','showRoleChoice','extraMoveRows','extraDone','toggleExtraMove','EXTRA_MOVES'];
+const code = inline.replace('/* ---------- boot ---------- */', `globalThis.__app = {${exported.join(',')}, setStore:v=>{store=v},setMe:v=>{me=v;viewP=v},setViewP:v=>{viewP=v},setCoach:v=>{privateCoach=v},setTab:v=>{tab=v},setRunState:v=>{runState=v}};return;`);
 vm.runInNewContext(code, sandbox, {filename:'index-inline.js'});
 const app = sandbox.__app;
 app.openPicker(false);assert(element('#pick').classList.contains('open'),'original animation picker opens');assert.equal(element('#lm').dataset.phase,'choose','reduced motion lands on role choice');
@@ -32,7 +32,7 @@ assert(app.planFor('hus').kcal >= 1500, 'historical kcal floor');
 assert(app.dayRange('hus')[0] > 0, 'historical menu calculates');
 assert(app.menuFor('hus').breakfast.items.length > 0, 'historical menu preserved');assert(app.dayDone('hus',new Date()),'historical full day checkin');assert.equal(app.buildSteps('A').at(-1).type,'end','historical workout flow');
 app.viewToday(); assert(element('#view').innerHTML.includes('今天两个人的进度'), 'historical partner progress');
-app.viewTrain(); assert(element('#view').innerHTML.includes('这周两个人的安排'), 'historical weekly view');
+app.viewTrain(); assert(element('#view').innerHTML.includes('这周我的安排'), 'weekly view stays available');assert(!element('#view').innerHTML.includes('A、B 每周交替'),'training no longer asks for A/B choice');
 app.viewDiet(); assert(element('#view').innerHTML.includes('看谁的计划'), 'historical diet switch');
 app.viewRecord();app.renderRecordData();assert(element('#recPair').innerHTML.includes('47.3'), 'historical record view');
 const coach = {active:true,person:'hus',profile:{goals:['减脂'],focus:['腰腹']},goalTitle(){return '减脂'},partnerChecked(){return true},partnerCard(){return '<div>relative only</div>'},dailyCard(){return '<div>daily coach</div>'},weeklyCard(){return '<div>weekly coach</div>'},pushCard(){return '<div>push coach</div>'},mealSwap(){return '鸡蛋和蔬菜'},schedule(_,base){return base}};
@@ -41,7 +41,15 @@ app.viewToday();assert(element('#view').innerHTML.includes('伴侣今天已打�
 coach.profile.diet='不吃奶制品';app.viewToday();assert(!element('#view').innerHTML.includes('脱脂牛奶'),'restricted diet hides default foods');app.setViewP('wife');app.viewDiet();assert(!element('#view').innerHTML.includes('看谁的计划'));assert(!element('#view').innerHTML.includes('47.3'));assert(element('#view').innerHTML.includes('鸡蛋和蔬菜'));assert(!element('#view').innerHTML.includes('晚餐轮换'),'restricted diet hides generic dinner rotation');
 app.setViewP('wife');app.viewTrain();assert(!element('#view').innerHTML.includes('这周两个人的安排'));assert(!element('#view').innerHTML.includes('老婆 · 居家臀腿'));
 app.viewRecord();app.renderRecordData();assert(!element('#recPair').innerHTML.includes('47.3'));assert(element('#recPair').innerHTML.includes('relative only'));assert(!element('#recData').innerHTML.includes('47.3'));
-coach.schedule=()=>({kind:'rest'});assert.equal(app.scheduleFor('hus',new Date()).kind,'rest','daily rest override');
+coach.schedule=()=>({kind:'train',w:'A'});app.viewTrain();assert(element('#view').innerHTML.includes('assets/moves/a-goblet-squat.gif'),'today workout shows animated exercise');assert(!element('#view').innerHTML.includes('assets/moves/b-floor-press.gif'),'tomorrow workout is not offered as a second choice');
+coach.schedule=()=>({kind:'rest'});assert.equal(app.scheduleFor('hus',new Date()).kind,'rest','daily rest override');app.viewTrain();assert(element('#view').innerHTML.includes('搜索动作')&&element('#view').innerHTML.includes('data-extra-move="d-seated-glute-squeeze"'),'rest day offers suggested activity and search');
+coach.profile.health=['身体疼痛'];app.viewTrain();assert(element('#view').innerHTML.includes('今天以休息为主')&&!element('#view').innerHTML.includes('data-extra-move="d-seated-glute-squeeze"'),'recovery rest does not recommend exercise');coach.profile.health=[];
+coach.profile.health=['身体疼痛'];coach.ownWeek=()=>({bodyStatus:['目前无特别不适'],bodyNote:''});app.viewTrain();assert(element('#view').innerHTML.includes('data-extra-move="d-seated-glute-squeeze"'),'current weekly status supersedes old pain');coach.profile.health=[];
+assert(app.extraMoveRows({extraMoves:[]},'臀桥').includes('臀桥'),'exercise search finds matching movements');
+const extraCheckin=app.toggleExtraMove({person:'hus',date,meals:{},workout:null},'warm-march');assert.deepEqual([...app.extraDone(extraCheckin)],['warm-march'],'optional move is logged separately');assert.equal(extraCheckin.workout,null,'optional move does not silently complete scheduled workout');assert.equal(app.extraDone(app.toggleExtraMove(extraCheckin,'warm-march')).length,0,'optional move can be undone');
+assert(app.EXTRA_MOVES.every(m=>fs.existsSync(path.join(root,'assets/moves',m.img+'.gif'))),'all movement animations exist');
+const bodyweightSteps=app.buildSteps('N');app.setRunState({key:'N',steps:bodyweightSteps,i:bodyweightSteps.length-1});app.drawRun();assert(element('#runBody').innerHTML.includes('data-run="finish"'),'bodyweight workout can be completed and saved');
+const walkSteps=app.buildSteps('C');app.setRunState({key:'C',steps:walkSteps,i:walkSteps.length-1});app.drawRun();assert(element('#runBody').innerHTML.includes('data-run="finish"'),'scheduled walk can be completed and saved');
 console.log('PASS historical plan, menu, partner views; PASS private today, diet, train, record, schedule');
 
 // Run the actual coaching class with mocked IO for the new state transitions.

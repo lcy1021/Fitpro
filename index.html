@@ -195,6 +195,8 @@ p{margin:0}
 .sec-h h3 .si.i-heart{background:var(--wife-soft);color:var(--wife-ink)}
 .sec-h h3 .si.i-diet{background:var(--good-soft);color:var(--good)}
 .sec-h span{font-size:12px;color:var(--muted);text-align:right}
+.sec-h h3,.sec-h span{min-width:0}
+.sec-h span{max-width:48%;line-height:1.45;overflow-wrap:anywhere}
 .chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
 .chip.good{background:var(--good-soft);color:var(--good)}
 .chip.me{background:var(--me-soft);color:var(--me-ink)}
@@ -233,6 +235,10 @@ p{margin:0}
 .obs .moves-chips{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 16px}
 .obs .moves-chips span{font-size:12px;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);white-space:nowrap}
 .obs .moves-chips span em{font-style:normal;color:rgba(241,245,249,.6);margin-left:4px}
+.today-move-preview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.today-move-preview .item{min-width:0;border-radius:14px;background:rgba(255,255,255,.07);padding:6px;text-align:center}
+.today-move-preview img{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:10px;background:#FDFAF6}
+.today-move-preview b{display:block;margin-top:5px;font-size:11px;line-height:1.3;overflow-wrap:anywhere}
 .cta{width:100%;border:0;border-radius:999px;padding:15px;font-size:16px;font-weight:800;color:#fff;background:var(--me-grad);box-shadow:var(--me-glow),inset 0 1px 1px rgba(255,255,255,.35)}
 .obs .cta.done{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15);color:rgba(241,245,249,.8)}
 .obs .ol{list-style:none;margin:14px 0 16px;padding:0;display:grid;gap:8px}
@@ -247,10 +253,12 @@ p{margin:0}
 .meal>*{min-width:0}
 .meal-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .meal-top h4{margin:0;font-size:16px;font-weight:800;display:flex;align-items:center;gap:10px}
+.meal-top h4,.meal-top h4>span:last-child{min-width:0}
 .meal-top .ic{width:38px;height:38px;border-radius:13px;background:var(--sunk);display:flex;align-items:center;justify-content:center;color:var(--me-ink);flex:none}
 .meal-top .ic .ui-icon{width:21px;height:21px}
 .meal-top time{font-size:12px;color:var(--muted);font-weight:500}
 .meal-top .kcal{font-size:12px;font-weight:800;color:var(--me-ink);background:var(--me-soft);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.meal-top .kcal{flex:none}
 .foods{margin:0;list-style:none;background:var(--sunk);border-radius:var(--radius-s);padding:4px 14px}
 .foods li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;font-size:14px;font-weight:600}
 .foods li+li{border-top:1px solid var(--line)}
@@ -355,6 +363,22 @@ p{margin:0}
 .wk2 .c.now{box-shadow:0 0 0 2px var(--p)}
 .wk2 .c.done{background:var(--p);color:#fff}
 .wk2 .c.t.now:not(.done){background:var(--p-grad);color:#fff;box-shadow:var(--p-glow)}
+.today-plan{margin-bottom:12px}
+.today-plan .ol li,.today-plan .ol li>div{min-width:0}
+.today-plan .ol h5,.today-plan .ol small{overflow-wrap:anywhere}
+.extra-card{display:grid;gap:12px}
+.extra-card h4{margin:0;font-size:17px}
+.extra-card p{font-size:13px;color:var(--muted)}
+.extra-search{width:100%;min-width:0;border:1px solid var(--line);border-radius:14px;background:var(--sunk);color:var(--ink);padding:11px 13px;font:inherit;font-size:16px}
+.extra-results{display:grid;gap:8px;max-height:440px;overflow:auto}
+.extra-move{display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:6px;text-align:left}
+.extra-move[aria-pressed="true"]{border-color:var(--me);background:var(--me-soft)}
+.extra-move img{display:block;width:72px;height:54px;object-fit:contain;border-radius:9px;background:#FDFAF6}
+.extra-move span{min-width:0}
+.extra-move b,.extra-move small{display:block;overflow-wrap:anywhere}
+.extra-move b{font-size:13px}.extra-move small{font-size:11px;color:var(--muted)}
+.extra-move em{font-style:normal;font-size:12px;font-weight:800;color:var(--me-ink);padding-right:5px}
+.extra-empty{font-size:13px;color:var(--muted);padding:12px;text-align:center}
 .plan .theirs{font-size:12px;color:rgba(241,245,249,.6)}
 .plan-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .plan-h h4{margin:10px 0 2px}
@@ -584,6 +608,16 @@ p{margin:0}
 .obs .ol .art .n{position:absolute;left:4px;bottom:4px;width:20px;height:20px;font-size:11px;background:rgba(24,28,36,.72);color:#fff}
 .desk .art{width:100%;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#FDFAF6;margin-bottom:6px}
 .desk .art img{width:100%;height:100%;object-fit:contain;display:block}
+@media(max-width:400px){
+  .counter{flex-wrap:wrap}.counter .ctl{margin-left:auto}
+  .track{grid-template-columns:40px minmax(0,1fr) 38px;gap:8px}.track .who{flex-wrap:wrap;gap:0 5px}.track .ava{width:40px;height:40px}.bead{width:26px;height:26px}.beads{gap:4px}
+  .obs .ol li.has-art{grid-template-columns:68px minmax(0,1fr)}.obs .ol .art{width:68px;height:51px}.obs .ol .r{grid-column:2;justify-self:start}
+  .meal-top{flex-wrap:wrap}.meal-top .kcal{margin-left:48px}
+}
+@media(max-width:350px){
+  .top{gap:6px}.top .tile{width:38px;height:38px}.top h1{font-size:21px;white-space:nowrap}.me-ava{width:38px;height:38px}
+  .role .sw,.me-hus .role .r.wife,.me-wife .role .r.hus{display:none}.role .r{padding:5px 9px}
+}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
@@ -1192,6 +1226,7 @@ const WORKOUTS = {
       {n:"双手向上伸展",img:"d-overhead-reach",r:"15 秒",c:"双手交叉向上，拉长身体",sec:15}
     ]}
 };
+const workoutTitle=key=>key==="A"||key==="B"?"全身力量训练":WORKOUTS[key]?.name||"今天的训练";
 const LIST_MOVE_MEDIA={
   "开合跳 30 秒":[["warm-jumping-jack","开合跳"]],
   "徒手深蹲 10 个":[["w-bodyweight-squat","徒手深蹲"]],
@@ -1206,6 +1241,31 @@ const LIST_MOVE_MEDIA={
   "婴儿式 30 秒":[["cool-child-pose","婴儿式"]],
   "髋部拉伸每侧 20 秒":[["cool-hip-stretch","髋部拉伸"]]
 };
+const EXTRA_MOVES=[...new Map(Object.values(WORKOUTS).flatMap(w=>w.moves).map(m=>[m.img,m])).values(),
+  ...Object.values(LIST_MOVE_MEDIA).flat().filter(([id])=>!Object.values(WORKOUTS).some(w=>w.moves.some(m=>m.img===id))).map(([img,n])=>({img,n,r:"轻松做 30 秒",c:"缓慢活动，以舒适为准"}))];
+const REST_SUGGESTIONS=["d-seated-glute-squeeze","d-overhead-reach","d-calf-raise"];
+let extraMoveQuery="";
+const extraDone=c=>Array.isArray(c.extraMoves)?c.extraMoves.filter(id=>EXTRA_MOVES.some(m=>m.img===id)):[];
+function toggleExtraMove(c,id){
+  if(!EXTRA_MOVES.some(m=>m.img===id))return c;
+  const done=extraDone(c);
+  return {...c,extraMoves:done.includes(id)?done.filter(x=>x!==id):[...done,id]};
+}
+function recoveryRest(c){
+  const state=c.dailyState||"";
+  const week=privateCoach?.active?privateCoach.ownWeek?.()||{}:{};
+  const health=privateCoach?.active?(Array.isArray(week.bodyStatus)?week.bodyStatus:privateCoach.profile?.health||[]):[];
+  const note=Array.isArray(week.bodyStatus)?week.bodyNote||"":privateCoach?.profile?.notes?.[1]||"";
+  return /疼痛|生病|经期不适|很疲惫/.test(state)||health.some(x=>x!=="目前无特别不适"&&x!=="暂时没有"&&/疼痛|生病|恢复|不适|疲惫|慢性病/.test(x))||/疼|痛|病|伤|不适/.test(note);
+}
+function extraMoveRows(c,query=extraMoveQuery){
+  const q=query.trim().toLowerCase(), done=extraDone(c);
+  if(!q&&recoveryRest(c)&&!done.length)return `<div class="extra-empty">今天先休息。若已经做了动作，可以在上方搜索并记录。</div>`;
+  const list=q?EXTRA_MOVES.filter(m=>m.n.toLowerCase().includes(q)||m.c.toLowerCase().includes(q)):
+    [...(recoveryRest(c)?[]:REST_SUGGESTIONS.map(id=>EXTRA_MOVES.find(m=>m.img===id)).filter(Boolean)),...done.map(id=>EXTRA_MOVES.find(m=>m.img===id)).filter(m=>m&&(recoveryRest(c)||!REST_SUGGESTIONS.includes(m.img)))];
+  return list.length?list.map(m=>`<button type="button" class="extra-move" data-extra-move="${m.img}" aria-pressed="${done.includes(m.img)}"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意" loading="lazy" width="72" height="54"><span><b>${esc(m.n)}</b><small>${esc(m.r)} · ${esc(m.c)}</small></span><em>${done.includes(m.img)?"已打卡":"打卡"}</em></button>`).join(""):
+    `<div class="extra-empty">没有找到这个动作，试试“深蹲”“拉伸”或“臀桥”</div>`;
+}
 const WEEK = ["日","一","二","三","四","五","六"];
 
 /* ---------- date helpers ---------- */
@@ -1438,16 +1498,17 @@ function viewToday(){
   const privateDuo=privateCoach?.active ? `<section class="coach-mini"><b>伴侣今天${privateCoach.partnerChecked(date)?"已打卡":"还没有打卡"}</b><small>只共享今天是否打卡；健康档案、目标和计划仅自己可见</small></section>` : duo;
   let trainCard;
   if(s.kind==="rest"){
-    const dk=WORKOUTS.D;
-    trainCard=`<div class="obs"><span class="tag2">${icon("leaf","sm")} 今天休息</span><h4>工位上多起身就好</h4><p>不用训练，久坐时做一组 3 分钟小动作</p>
-      <div class="moves-chips">${dk.moves.map(m=>`<span>${esc(m.n)}</span>`).join("")}</div>
-      <button class="cta" data-start="D">${icon("play","sm")} 工位 3 分钟</button></div>`;
+    const recovering=recoveryRest(c), count=extraDone(c).length;
+    const preview=recovering?[]:REST_SUGGESTIONS.map(id=>EXTRA_MOVES.find(m=>m.img===id)).filter(Boolean);
+    trainCard=`<div class="obs"><span class="tag2">${icon("leaf","sm")} 今天休息</span><h4>${recovering?"今天先照顾身体":"休息日也可以轻轻动一动"}</h4><p>${recovering?"今天不安排训练。已经做过的动作仍可以自行记录。":"可选小活动不影响休息日安排；做了哪项就记哪项。"}</p>
+      ${preview.length?`<div class="today-move-preview">${preview.map(m=>`<div class="item"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意"><b>${esc(m.n)}</b></div>`).join("")}</div>`:""}
+      <button class="cta" data-open-extra>${icon("train","sm")} ${count?`已记录 ${count} 项 · 查看动作`:"查看可选动作并打卡"}</button></div>`;
   }else{
     const w=WORKOUTS[s.w]; const done=c.workout==="done";
     const sub = s.w==="C" ? "可选：推着婴儿车散步也算" : s.kind==="flex" ? "可选：宝宝午睡时或者轮流带娃时练" : `${roundsFor(s.w,me)} 轮，大约 ${Math.round((me==="hus"?20:15)*roundsFor(s.w,me)/w.rounds)} 分钟 · ${w.equip}`;
     trainCard=`<div class="obs"><span class="tag2">${icon(s.kind==="flex"?"cloud":"train","sm")} ${s.kind==="flex"?"今天可选":"今天训练"} · ${PEOPLE[me].label}</span>
-      <h4>${w.name}</h4><p>${sub}</p>
-      <div class="moves-chips">${w.moves.map(m=>`<span>${esc(m.n)}<em>${esc(m.r)}</em></span>`).join("")}</div>
+      <h4>${workoutTitle(s.w)}</h4><p>${sub}</p>
+      <div class="today-move-preview">${w.moves.slice(0,3).map(m=>`<div class="item"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意"><b>${esc(m.n)}</b></div>`).join("")}</div>
       ${done?`<button class="cta done" data-undo-workout>${icon("check","sm")} 今天已完成</button>`:`<button class="cta" data-start="${s.w}">${icon("play","sm")} 开始训练</button>`}</div>`;
   }
 
@@ -1553,23 +1614,23 @@ function viewDiet(){
     </div></section>`;
 }
 
-function planCard(key,canStart){
+function planCard(key,canStart,done=false){
   const w=WORKOUTS[key];
   if(key==="D") return `<div class="card"><div class="plan-h"><div><h4 style="margin:0 0 2px;font-size:16px;font-weight:800">${icon("stretch")} ${w.name}</h4><p style="font-size:12px;color:var(--muted)">不计入训练打卡，久坐时随时做</p></div>
       ${canStart?`<button class="btn primary" data-start="D">开始</button>`:""}</div>
     <div class="desk" style="margin-top:12px">${w.moves.map(m=>`<div><span class="art" style="display:block"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意" loading="lazy"></span><h5>${esc(m.n)}</h5><p>${esc(m.r)}</p></div>`).join("")}</div></div>`;
-  return `<div class="obs plan ${viewP}"><div class="plan-h"><span class="tag2">${viewP===me?"我的训练":PEOPLE[viewP].label+"的训练"}</span><span class="theirs">${roundsFor(key,viewP)} 轮 · ${w.equip}</span></div>
-    <h4>${w.name}</h4><p>动作间休息 ${w.restMove} 秒，轮间 ${w.restRound} 秒</p>
+  return `<div class="obs plan today-plan ${me}"><div class="plan-h"><span class="tag2">今天要做的</span><span class="theirs">${roundsFor(key,me)} 轮 · ${w.equip}</span></div>
+    <h4>${workoutTitle(key)}</h4><p>动作间休息 ${w.restMove} 秒，轮间 ${w.restRound} 秒</p>
     <ol class="ol">${w.moves.map((m,i)=>`<li class="has-art"><span class="art"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意" loading="lazy" width="76" height="57"><span class="n">${i+1}</span></span><div><h5>${esc(m.n)}</h5><small>${esc(m.c)}</small></div><span class="r">${esc(m.r)}</span></li>`).join("")}</ol>
-    ${canStart?`<button class="cta" data-start="${key}">${icon("play","sm")} 开始跟练</button>`:""}</div>`;
+    ${canStart?(done?`<button class="cta done" data-undo-workout>${icon("check","sm")} 今天已完成</button>`:`<button class="cta" data-start="${key}">${icon("play","sm")} 开始跟练</button>`):""}</div>`;
 }
 function viewTrain(){
-  if(privateCoach?.active) viewP=me;
+  viewP=me;
   const today=new Date(); const mon=addDays(today,-((today.getDay()+6)%7));
-  const short=k=>k==="W"?"臀腿":k;
+  const short=k=>k==="W"?"臀腿":k==="A"||k==="B"?"力量":k==="N"?"徒手":k==="C"?"快走":k;
   const head=`<div class="wk2">`+[0,1,2,3,4,5,6].map(i=>{ const d=addDays(mon,i);
     return `<span class="h ${ymd(d)===ymd(today)?"now":""}">${ymd(d)===ymd(today)?"今天":"周"+WEEK[d.getDay()]}</span>`; }).join("")+`</div>`;
-  const rows=(privateCoach?.active?[me]:["hus","wife"]).map(p=>{
+  const rows=[me].map(p=>{
     let cells="";
     for(let i=0;i<7;i++){
       const d=addDays(mon,i); const s=scheduleFor(p,d); const now=ymd(d)===ymd(today)?" now":"";
@@ -1578,18 +1639,19 @@ function viewTrain(){
       else if(s.kind==="flex") cells+=`<span class="c f${done?" done":""}${now}">${done?icon("check","sm"):"可选"}</span>`;
       else cells+=`<span class="c t${done?" done":""}${now}">${done?icon("check","sm"):short(s.w)}</span>`;
     }
-    return `<div class="wkrow ${p}"><div class="who2">${PEOPLE[p].label}${p==="hus"?" · 哑铃力量":" · 居家臀腿"}</div><div class="wk2">${cells}</div></div>`;
+    return `<div class="wkrow ${p}"><div class="who2">我的安排</div><div class="wk2">${cells}</div></div>`;
   }).join("");
-  const scheduledKeys=[...new Set([0,1,2,3,4,5,6].map(i=>scheduleFor(me,addDays(mon,i)).w).filter(Boolean))];
-  const keys = privateCoach?.active ? (scheduledKeys.length?scheduledKeys:(me==="hus"?(!privateCoach.profile?.equipment?.includes("哑铃")?["N"]:["A","B"]):["W"])) : viewP==="hus" ? ["A","B"] : ["W"];
-  const mine = viewP===me;
+  const s=scheduleFor(me,today),c=getCheckin(me,ymd(today)),rest=s.kind==="rest";
+  const recovering=recoveryRest(c);
+  const extra=`<div class="card extra-card" id="extraCard"><div><h4>${recovering?"已做动作记录":"休息日可选小活动"}</h4><p>${recovering?"今天以休息为主；已完成的动作可以自行记录。":"想活动一下就选一项，做完点打卡；不做也没关系。"}</p></div>
+    <input class="extra-search" id="extraSearch" type="search" placeholder="搜索动作，如深蹲、拉伸、臀桥" aria-label="搜索想做的动作" value="${esc(extraMoveQuery)}">
+    <div class="extra-results" id="extraResults">${extraMoveRows(c)}</div><p>额外动作仅保存在你的个人打卡里，伴侣看不到具体内容。</p></div>`;
   $("#view").innerHTML=`
-  <section class="sec">${secH("today",privateCoach?.active?"这周我的安排":"这周两个人的安排",icon("check","sm")+" 是已完成的")}
+  <section class="sec">${secH("train",rest?"今天是休息日":"今天的训练",s.kind==="flex"?"可选":"")}
+    ${rest?`<div class="obs today-plan"><span class="tag2">${icon("leaf","sm")} 今天休息</span><h4>${recovering?"先休息，照顾好身体":"今天没有必须完成的训练"}</h4><p>${recovering?"若有疼痛或身体不适，不要勉强运动。":"下方有可选小活动，做了再打卡即可。"}</p></div>${extra}`:planCard(s.w,true,c.workout==="done")}</section>
+  <section class="sec">${secH("today","这周我的安排",icon("check","sm")+" 是已完成的")}
     <div class="card">${head}${rows}</div></section>
-  ${peekSwitch()}
-  <section class="sec">${secH("train",PEOPLE[viewP].label+"的训练内容",viewP==="hus"?"A、B 每周交替":"")}
-    <div class="stack">${keys.map(k=>planCard(k,mine)).join("")}${mine?planCard("D",true):""}</div></section>
-  <p class="note">膝盖或腰出现疼痛（不是肌肉酸）就先停下。${viewP==="hus"?"3 轮都轻松完成时，下次加 1–2kg 或每组多做 2 次。":"适应 3–4 周后从 2 轮加到 3 轮，或套上弹力带做。"}</p>`;
+  ${rest?"":`<p class="note">膝盖或腰出现疼痛（不是肌肉酸）就先停下。感觉不适时，可以回到今日页调整今天的安排。</p>`}`;
 }
 
 function lastCheckinAt(person){
@@ -1832,16 +1894,22 @@ function drawRun(){
       <p class="next">下一个 <b>${esc(s.next)}</b></p></div>
       <div class="actions"><button class="btn ghost" data-run="next">跳过休息</button></div>`;
   }else{
-    body=`<div class="rend"><img src="${mood(me,"happy")}" alt="${PEOPLE[me].label}开心地庆祝" width="140" height="140"><h2>练完了 ✨</h2><p class="cue">${w.name}，${roundsFor(st.key,me)} 轮全部完成。</p></div>
-      <div class="actions">${w.who==="both"?"":`<button class="cta" data-run="finish">记录完成并返回</button>`}
+    body=`<div class="rend"><img src="${mood(me,"happy")}" alt="${PEOPLE[me].label}开心地庆祝" width="140" height="140"><h2>练完了 ✨</h2><p class="cue">${workoutTitle(st.key)}，${roundsFor(st.key,me)} 轮全部完成。</p></div>
+      <div class="actions">${st.key==="D"?"":`<button class="cta" data-run="finish">记录完成并返回</button>`}
       <button class="btn ghost" data-run="close">返回</button></div>`;
   }
-  $("#runBody").innerHTML=`<div class="run-top"><button data-run="close">✕ 退出</button><span>${w.name}</span><span class="pc">${pct}%</span></div>
+  $("#runBody").innerHTML=`<div class="run-top"><button data-run="close">✕ 退出</button><span>${workoutTitle(st.key)}</span><span class="pc">${pct}%</span></div>
     <div class="bar"><i style="width:${pct}%"></i></div>${body}`;
   if(s.type==="rest") countdown(s.sec,nextStep);
 }
 
 /* ---------- events ---------- */
+document.addEventListener("input",e=>{
+  if(e.target.id!=="extraSearch")return;
+  extraMoveQuery=e.target.value;
+  const results=$("#extraResults");
+  if(results)results.innerHTML=extraMoveRows(getCheckin(me,ymd(new Date())));
+});
 document.addEventListener("click",async e=>{
   const t=e.target.closest("button"); if(!t) return;
   if(t.dataset.pick){
@@ -1882,8 +1950,19 @@ document.addEventListener("click",async e=>{
   if(t.hasAttribute("data-open-picker")){ if(privateCoach) return; openPicker(true); return; }
   if(t.dataset.view){ if(privateCoach?.active)return; viewP=t.dataset.view; lastTab=null; render(); return; }
   if(t.dataset.recField){ recField=t.dataset.recField; renderRecordData(); return; }
+  if(t.hasAttribute("data-open-extra")){
+    tab="train"; document.querySelectorAll(".tabs button").forEach(b=>{if(b.dataset.tab==="train")b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
+    lastTab=null;render();window.scrollTo(0,0);return;
+  }
   if(t.dataset.tab){ tab=t.dataset.tab; document.querySelectorAll(".tabs button").forEach(b=>{ if(b===t) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
     lastTab=null; render(); window.scrollTo(0,0); return; }
+  if(t.dataset.extraMove){
+    if(readOnly)return;
+    const move=EXTRA_MOVES.find(m=>m.img===t.dataset.extraMove);if(!move)return;
+    const date=ymd(new Date()),c=JSON.parse(JSON.stringify(getCheckin(me,date)));
+    const next=toggleExtraMove(c,move.img);
+    putCheckin(next);if(next.extraMoves.includes(move.img))react("workout",move.n+"已打卡","今天额外动了一下，也记下来了");return;
+  }
   if(t.dataset.meal){
     if(readOnly){ toast("你现在只有查看权限"); return; }
     const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date)));
