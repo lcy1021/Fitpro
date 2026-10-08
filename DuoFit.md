@@ -294,7 +294,7 @@ food?: { breakfast|lunch|snack|dinner: { text, items: [{ n, q, k }], kcal } }
 | `assets/avatar-hus.png`、`assets/avatar-wife.png` | 记录页的角色头像（由 `UIset/` 原图缩小到 256px） |
 | `UIset/` | 角色形象原图 |
 | `assets/mascots/`、`docs/mascot-design.md` | 角色状态图和设计规范（尚未接入页面） |
-| `assets/icons/`、`manifest.webmanifest`、`apple-touch-icon.png` | v2 主屏幕图标（iPhone 180、安卓 192/512）、浏览器和通知图标；保留蓝粉立体云朵角色，放大人物、减少留白并加强色彩。源图 `UIset/logo/duofit-app-icon-fullbleed.png`；UI 素材与各尺寸同步维护，引用使用 `?v=logo2` |
+| `assets/icons/`、`manifest.webmanifest`、`apple-touch-icon.png` | v3 主屏幕图标（iPhone 180、安卓 192/512）、浏览器和通知图标；保留蓝粉立体云朵角色，放大人物、减少留白，保留鲜明主体色，使用淡奶油白背景与极淡蓝粉光晕。源图 `UIset/logo/duofit-app-icon-fullbleed.png`；UI 素材与各尺寸同步维护，引用使用 `?v=logo3` |
 | `sw.js` | 离线缓存：打开时先用手机里存的页面和图片，后台更新（推送后第二次打开生效）；没网也能打开 |
 | `assets/login/` | 登录动效的跑步形象（WebP，每张约 25KB） |
 | `assets/mood/` | 7 种表情 × 2 人的 256px 图（原图在 `assets/mascots/`，设计规范见 `docs/mascot-design.md`） |

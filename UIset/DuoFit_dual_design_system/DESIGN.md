@@ -215,6 +215,6 @@ The design system is defined by signature, exaggerated curvature:
 ### 6. Companion Cheerful Characters / Reaction Tokens
 - Playful rounded micro-illustrations and floating heart or high-five nudges embedded inside sleep and activity summaries to celebrate balance without competitive judgment.
 
-### 7. DuoFit App Icon — Approved v2
-- Preserve the original cyan-blue and strawberry-pink 3D cloud running mascots, including their headbands, shorts, skirt and shoes. Enlarge the pair, reduce surrounding whitespace and strengthen character and background colors.
+### 7. DuoFit App Icon — Approved v3
+- Preserve the original cyan-blue and strawberry-pink 3D cloud running mascots, including their headbands, shorts, skirt and shoes. Enlarge the pair, reduce surrounding whitespace and keep character colors vivid against a pale creamy background with very subtle blue and pink edge tints.
 - The canonical artwork is `UIset/logo/duofit-app-icon-fullbleed.png`. Export each app-icon size directly without cropping or drawing rounded corners; keep `UIset/duofit-app-logo.png`, the UI source sizes, runtime icons and root iPhone icon synchronized. The full prompt is saved in `UIset/logo/duofit-logo-prompt.txt`.
