@@ -9,6 +9,8 @@
 3. 部署 `supabase/functions/coach/index.ts` 为 `coach`，部署更新的 `supabase/functions/meal-kcal/index.ts`。把 `ANTHROPIC_API_KEY` 放入 Edge Functions Secrets；使用兼容 Anthropic 的中转时配置 `ANTHROPIC_BASE_URL`、`ANTHROPIC_AUTH_TOKEN`、`COACH_AI_MODEL`。`SUPABASE_URL` 和 `SUPABASE_SERVICE_ROLE_KEY` 在 Supabase 函数环境中提供。`coach` 默认启用 JWT 验证，也会在函数中再次校验用户；建档前可用当前匿名身份和所选角色调用 AI，完成 4 步后才认领家庭角色。AI 不可用时前端保留保守的训练安排；如果填了饮食限制却没有生成具体餐食，页面会隐藏默认菜品并提示不要照搬。没有哑铃时使用徒手全身训练。
 
    如果 AI 分析明显缓慢，在 Edge Functions → `coach` → Logs 查看 `coach upstream timing`：它会记录模式、尝试次数、上游状态和耗时，不记录健康内容。`coach` 优先使用 Secret `COACH_AI_MODEL`，未设置时继承 `AI_MODEL`；请确认实际模型，并在所用服务商支持时为 `COACH_AI_MODEL` 选择响应更快的模型。短句识别只请求简短回复，云端等待 25 秒；完整计划首轮最多等 35 秒，格式不完整时才重试一次。修改函数代码后需要重新部署 `coach`，仅更新 GitHub Pages 不会改变函数行为。
+
+   如果所有 AI 步骤都卡住，先在 **Edge Functions → `coach` → Code** 用本仓库的 `supabase/functions/coach/index.ts` 全部替换旧代码，再点 **Deploy updates**。保持 `coach` 的 **Verify JWT** 开启。新版响应头 `X-Coach-Version` 应为 `2026-10-08-speed`；这可以区分网页已更新但云端函数仍是旧版的情况。新版不依赖 npm 包启动，Auth、数据库和上游模型的耗时也会分别写入函数 Logs，不记录用户健康内容。只更新 GitHub Pages 无法修复云端函数启动卡住。
 4. 更新静态文件 `index.html`、`private-coach.js`、`private-coach.css`、`sw.js`、`manifest.webmanifest`、`config.js` 及图片资源。首位用户完成 4 步并保存恢复码后，可复制家庭口令邀请伴侣；伴侣在角色页填写口令，再完成自己的 4 步并保存恢复码。
 
 恢复码为一次性凭据：在新设备上输入后，私人记录会转移到新匿名身份，原设备失去同步权限，并生成新的恢复码。家庭口令无法代替恢复码；清除浏览器数据前务必先保存它。

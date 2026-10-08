@@ -53,17 +53,19 @@ const walkSteps=app.buildSteps('C');app.setRunState({key:'C',steps:walkSteps,i:w
 console.log('PASS historical plan, menu, partner views; PASS private today, diet, train, record, schedule');
 
 // Run the actual coaching class with mocked IO for the new state transitions.
-const classSandbox = {window:{FATLOSS_CONFIG:{}},navigator:{clipboard:{writeText:async()=>{}}},localStorage:sandbox.localStorage,document:{},console:{warn(){}},Date,setTimeout,clearTimeout,crypto:require('node:crypto').webcrypto,TextEncoder};
+const classSandbox = {window:{FATLOSS_CONFIG:{}},navigator:{clipboard:{writeText:async()=>{}}},localStorage:sandbox.localStorage,document:{},console:{warn(){}},Date,setTimeout,clearTimeout,AbortController,crypto:require('node:crypto').webcrypto,TextEncoder};
 vm.runInNewContext(fs.readFileSync(path.join(root,'private-coach.js'),'utf8'),classSandbox,{filename:'private-coach.js'});
 const DuoCoach = classSandbox.window.DuoCoach;
 let latest = {person:'hus',date};
 const c = new DuoCoach({getCheckin:()=>latest,putCheckin:v=>{latest=v},render(){},saveLegacyGoal(){},setIdentity(){},setStore(){},family:()=>''});
 c.member={person:'hus',family:'abcdefgh'};c.root={hidden:false,innerHTML:'',dataset:{}};c.draft={...c.blank(),age:'32',height:'170',weight:'78',goals:['减脂'],focus:['腰腹'],health:['身体疼痛'],frequency:'每周 3 次',duration:'20 分钟',diet:'不吃奶制品'};
 assert(Object.values(c.proposedPlan().days).every(x=>x==='REST'),'painful week rests');assert.equal(new Date(Object.keys(c.proposedPlan().days)[0]+'T12:00:00Z').getUTCDay(),1,'week starts Monday');assert.equal(c.legacyDraft({['hus_'+date]:{person:'hus',date,weight:77}}).weight,77,'existing weight prefilled');c.draft.health=['暂时没有'];assert(Object.values(c.proposedPlan().days).includes('N'),'no dumbbells selects bodyweight workout');c.draft.notes[1]='最近膝盖疼';assert(Object.values(c.proposedPlan().days).every(x=>x==='REST'),'free text pain blocks exercise');c.draft.notes[1]='';c.draft.health=['身体疼痛'];
-c.profile={...c.draft,confirmedAt:new Date().toISOString()};c.dailyState='身体疼痛';c.dailyTime='按原计划';c.coachAI=async()=>({choice:'original'});
+c.profile={...c.draft,confirmedAt:new Date().toISOString()};c.dailyState='身体疼痛';c.dailyTime='按原计划';c.coachAI=async()=>{throw new Error('daily choices must not wait for AI')};
 (async()=>{
   await c.saveDaily();assert.equal(latest.dailyChoice,'rest','AI cannot override pain');assert.equal(c.schedule(date,{kind:'train',w:'A'}).kind,'rest');
-  c.dailyState='状态不错';c.dailyTime='只有 10 分钟';c.coachAI=async()=>null;await c.saveDaily();assert.equal(latest.dailyChoice,'short');
+  c.dailyState='状态不错';c.dailyTime='只有 10 分钟';await c.saveDaily();assert.equal(latest.dailyChoice,'short');
+  classSandbox.fetch=(_,options)=>new Promise((_,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('aborted'))));
+  const slowRequest=new DuoCoach({});await assert.rejects(slowRequest.request('/functions/v1/coach',{},true,5),/ai_timeout/,'AI request has a client-side deadline');
   c.draft.health=['暂时没有'];c.step=2;c.draft.frequency='每周 3 次';c.draft.duration='20 分钟';
   const basePlan=c.proposedPlan();const dates=Object.keys(basePlan.days);let aiCalls=0;
   c.coachAI=async mode=>{aiCalls++;return mode==='plan'?{summary:'建议',plan:{days:Object.fromEntries(dates.map((d,i)=>[d,i===0?'A':'REST'])),mealSwaps:{breakfast:'鸡蛋和水果'}}}:{plan:{days:Object.fromEntries(dates.map(d=>[d,'A']))}}};
