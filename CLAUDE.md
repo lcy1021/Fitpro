@@ -94,7 +94,7 @@
 
 - 图标：24 个线性 SVG 图标，源文件 `UIset/icons/`，页面里是内联 `<symbol id="ic-名称">`，用 `icon(名称, "sm"|"lg")` 插入；改图标要同时改源文件和 `index.html` 里同名 symbol。没有图标的地方先用 emoji
 
-- App 图标：`assets/icons/`（由 `UIset/logo/duofit-app-icon-fullbleed.png` 直接缩放，不裁切；源图要直角、背景铺满，手机系统会自己切圆角），`manifest.webmanifest` 和 `apple-mobile-web-app-title` 设主屏幕名称 DuoFit。不加载网络字体（国内访问 Google Fonts 会拖慢首屏）
+- App 图标：当前为 v2，保留蓝粉立体云朵角色，放大人物、减少留白并加强色彩。`assets/icons/` 由 `UIset/logo/duofit-app-icon-fullbleed.png` 直接缩放，不裁切；源图直角、背景铺满，手机系统自行切圆角。同步维护 `UIset/duofit-app-logo.png`、`UIset/logo/` 的 master / 各尺寸素材与根目录 `apple-touch-icon.png`；页面、manifest 和通知使用 `?v=logo2`，换图时同时更新 URL 和缓存版本。`manifest.webmanifest` 和 `apple-mobile-web-app-title` 设主屏幕名称 DuoFit。不加载网络字体（国内访问 Google Fonts 会拖慢首屏）
 
 - 离线缓存 `sw.js`：本站文件"先用缓存、后台更新"（秒开，**推送后要第二次打开才看到新版**）；Supabase 和 AI 请求不经过缓存。改了缓存逻辑或要强制刷新时，改 `sw.js` 里的 `CACHE` 版本号
 

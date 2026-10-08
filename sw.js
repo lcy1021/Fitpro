@@ -1,9 +1,11 @@
 // DuoFit 离线缓存：页面和脚本优先取新版，断网时才使用本机缓存；图片可先读缓存。
 // 只缓存本站的文件；Supabase 数据同步和 AI 请求（其他域名）一律不经过缓存。
-const CACHE = "duofit-v16";
+const CACHE = "duofit-v17";
 const CORE = [
   "./", "index.html", "config.js", "private-coach.js", "private-coach.css", "manifest.webmanifest",
-  "assets/icons/favicon-64.png", "apple-touch-icon.png",
+  "assets/icons/favicon-32.png?v=logo2", "assets/icons/favicon-64.png?v=logo2",
+  "assets/icons/app-icon-180.png?v=logo2", "assets/icons/app-icon-192.png?v=logo2", "assets/icons/app-icon-512.png?v=logo2",
+  "apple-touch-icon.png", "apple-touch-icon.png?v=logo2",
   "assets/login/hus-running.webp", "assets/login/wife-running.webp",
   "assets/brand/duofit-wordmark.svg",
   "assets/avatar-hus.png", "assets/avatar-wife.png",
@@ -46,7 +48,7 @@ self.addEventListener("push", e => {
   let data = {}; try { data = e.data?.json() || {}; } catch (_) {}
   e.waitUntil(self.registration.showNotification(data.title || "DuoFit 周计划提醒", {
     body: data.body || "打开 App 确认本周计划。",
-    icon: "assets/icons/app-icon-192.png", badge: "assets/icons/favicon-64.png",
+    icon: "assets/icons/app-icon-192.png?v=logo2", badge: "assets/icons/favicon-64.png?v=logo2",
     tag: "duofit-weekly-plan", data: {url: "./"}
   }));
 });
