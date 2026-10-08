@@ -26,18 +26,24 @@
   const parsed = new DOMParser().parseFromString(html, 'text/html');
   const style = parsed.querySelector('style');
   document.head.insertBefore(style, document.querySelector('link'));
+  const safeBottom = Math.min(60, Math.max(0, Number(params.get('safe') || 0)));
+  const fixtureStyle = document.createElement('style');
+  fixtureStyle.textContent = `:root{--safe-bottom:${safeBottom}px}.tabs{padding-bottom:var(--safe-bottom)}`;
+  if (params.get('large-nav') === '1') fixtureStyle.textContent += '.tabs button{font-size:18px}';
+  document.head.appendChild(fixtureStyle);
   for (const child of [...parsed.body.children]) {
     if (child.tagName !== 'SCRIPT') document.body.appendChild(child);
   }
   const script = document.createElement('script');
   const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('<\/script>'));
   script.textContent = inline.replace('/* ---------- boot ---------- */', `
-    window.themePreviewApp = {render, viewToday, viewDiet, viewTrain, viewRecord, openGoal, openFood, openCode, showRoleChoice, buildSteps, drawRun, ymd, getCheckin, onFoodText,
+    window.themePreviewApp = {render, viewToday, viewDiet, viewTrain, viewRecord, openGoal, openFood, openCode, showRoleChoice, buildSteps, drawRun, ymd, getCheckin, onFoodText, initTabBarSpace,
       setMe:v=>{me=v;viewP=v}, setTab:v=>{tab=v}, setStore:v=>{store=v}, setCoach:v=>{privateCoach=v}, setRunState:v=>{runState=v}};
     return;
   `);
   document.body.appendChild(script);
   const app = window.themePreviewApp;
+  app.initTabBarSpace();
   const date = app.ymd(new Date());
   const previous = app.ymd(new Date(Date.now() - 7*864e5));
   const coach = new window.DuoCoach({getCheckin:()=>({}), render:()=>{}, putCheckin:()=>{}, showRoleChoice:()=>app.showRoleChoice()});
@@ -85,7 +91,7 @@
   else if(view==='food'){app.openFood('lunch');document.querySelector('#foodText').addEventListener('input',app.onFoodText);}
   else if(view==='family')app.openCode();
   else if(view==='workout'){const key=person==='hus'?'A':'W';app.setRunState({key,steps:app.buildSteps(key),i:0});document.querySelector('#run').classList.add('open');app.drawRun();}
-  else if(['today','diet','train','record'].includes(view)){app.setTab(view);app.render();}
+  else if(['today','diet','train','record'].includes(view)){document.querySelector(`.tabs button[data-tab="${view}"]`).click();}
   document.body.dataset.previewReady='true';
 })();
 </script>

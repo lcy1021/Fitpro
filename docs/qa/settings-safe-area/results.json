@@ -1,0 +1,170 @@
+[
+  {
+    "width": 320,
+    "height": 667,
+    "q": "theme=dark&person=hus&view=record&safe=34",
+    "check": {
+      "buttons": [
+        {
+          "height": 42.796875,
+          "text": "生成新的个人恢复码",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "复制家庭配对口令",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "清除本机登录",
+          "uncovered": true
+        }
+      ],
+      "gap": 24.6484375,
+      "navHeight": 100.59375,
+      "overflow": false,
+      "padding": "125px"
+    }
+  },
+  {
+    "width": 375,
+    "height": 667,
+    "q": "theme=light&person=wife&view=record&safe=0",
+    "check": {
+      "buttons": [
+        {
+          "height": 42.796875,
+          "text": "生成新的个人恢复码",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "复制家庭配对口令",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "清除本机登录",
+          "uncovered": true
+        }
+      ],
+      "gap": 37.234375,
+      "navHeight": 66.59375,
+      "overflow": false,
+      "padding": "104px"
+    }
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "q": "theme=dark&person=hus&view=record&safe=34",
+    "check": {
+      "buttons": [
+        {
+          "height": 42.796875,
+          "text": "生成新的个人恢复码",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "复制家庭配对口令",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "清除本机登录",
+          "uncovered": true
+        }
+      ],
+      "gap": 24.59375,
+      "navHeight": 100.59375,
+      "overflow": false,
+      "padding": "125px"
+    }
+  },
+  {
+    "width": 430,
+    "height": 932,
+    "q": "theme=light&person=wife&view=record&safe=34",
+    "check": {
+      "buttons": [
+        {
+          "height": 42.796875,
+          "text": "生成新的个人恢复码",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "复制家庭配对口令",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "清除本机登录",
+          "uncovered": true
+        }
+      ],
+      "gap": 24.59375,
+      "navHeight": 100.59375,
+      "overflow": false,
+      "padding": "125px"
+    }
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "q": "theme=dark&person=wife&view=record&safe=34&large-nav=1",
+    "check": {
+      "buttons": [
+        {
+          "height": 42.796875,
+          "text": "生成新的个人恢复码",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "复制家庭配对口令",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "清除本机登录",
+          "uncovered": true
+        }
+      ],
+      "gap": 24.1015625,
+      "navHeight": 111.796875,
+      "overflow": false,
+      "padding": "136px"
+    }
+  },
+  {
+    "width": 844,
+    "height": 390,
+    "q": "theme=dark&person=hus&view=record&safe=21",
+    "check": {
+      "buttons": [
+        {
+          "height": 42.796875,
+          "text": "生成新的个人恢复码",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "复制家庭配对口令",
+          "uncovered": true
+        },
+        {
+          "height": 42.796875,
+          "text": "清除本机登录",
+          "uncovered": true
+        }
+      ],
+      "gap": 24.5234375,
+      "navHeight": 87.59375,
+      "overflow": false,
+      "padding": "112px"
+    }
+  }
+]
