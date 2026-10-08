@@ -68,6 +68,11 @@
 .coach-understood{display:grid;gap:5px;border-radius:16px;padding:12px 14px;background:#fff8ef}
 .coach-understood b{color:#a7642b;font-size:11px}
 .coach-understood p{color:#9b8780}
+.coach-understood.is-analyzing{display:flex;align-items:center;gap:11px;background:var(--coach-soft)}
+.coach-understood.is-analyzing b,.coach-understood.is-analyzing p{color:var(--coach-ink)}
+.coach-spinner{width:18px;height:18px;flex:none;border:2px solid var(--coach-border);border-top-color:var(--coach-accent);border-radius:50%;animation:coach-spin .75s linear infinite}
+@keyframes coach-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.coach-spinner{animation:none;border-color:var(--coach-accent)}}
 .coach-fine,.coach-private{display:block;text-align:center;color:#a59099;font-size:10px}
 .coach-private{padding-bottom:4px}
 .coach-summary{display:grid;gap:5px;min-width:0;border-radius:14px;padding:13px;background:var(--coach-tint)}

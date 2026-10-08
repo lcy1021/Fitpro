@@ -90,10 +90,10 @@ begin
   insert into public.fl_members(user_id,family,person) values(v_user,p_family,p_person);
   -- Import only the claimed person's legacy records. Their old goal remains private.
   insert into public.fl_private_checkins(user_id,date,body)
-    select v_user,c.date,c.body from public.checkins c where c.family=p_family and c.person=p_person
+    select v_user,c.date::date,c.body from public.checkins c where c.family=p_family and c.person=p_person
     on conflict (user_id,date) do nothing;
   insert into public.fl_private_measures(user_id,date,body)
-    select v_user,m.date,m.body from public.measures m where m.family=p_family and m.person=p_person
+    select v_user,m.date::date,m.body from public.measures m where m.family=p_family and m.person=p_person
     on conflict (user_id,date) do nothing;
   insert into public.fl_partner_activity(family,person,date,checked)
     select p_family,p_person,c.date,true from public.fl_private_checkins c where c.user_id=v_user
