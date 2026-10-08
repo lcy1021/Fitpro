@@ -1,8 +1,8 @@
 // DuoFit 离线缓存：打开时先用手机里存的页面和图片（秒开），同时在后台拿最新版，下次打开生效。
 // 只缓存本站的文件；Supabase 数据同步和 AI 请求（其他域名）一律不经过缓存。
-const CACHE = "duofit-v2";
+const CACHE = "duofit-v6";
 const CORE = [
-  "./", "index.html", "config.js", "manifest.webmanifest",
+  "./", "index.html", "config.js", "private-coach.js", "private-coach.css", "manifest.webmanifest",
   "assets/icons/favicon-64.png", "assets/icons/app-icon-180.png",
   "assets/login/hus-running.webp", "assets/login/wife-running.webp",
   "assets/brand/duofit-wordmark.svg",
@@ -37,4 +37,20 @@ self.addEventListener("fetch", (e) => {
       cached || fresh.catch(() => caches.match("./")) // 有缓存就秒开；没有就走网络，断网时退回首页缓存
     )
   );
+});
+
+self.addEventListener("push", e => {
+  let data = {}; try { data = e.data?.json() || {}; } catch (_) {}
+  e.waitUntil(self.registration.showNotification(data.title || "DuoFit 周计划提醒", {
+    body: data.body || "打开 App 确认本周计划。",
+    icon: "assets/icons/app-icon-192.png", badge: "assets/icons/favicon-64.png",
+    tag: "duofit-weekly-plan", data: {url: "./"}
+  }));
+});
+self.addEventListener("notificationclick", e => {
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({type: "window", includeUncontrolled: true}).then(clients => {
+    const existing = clients.find(c => new URL(c.url).origin === self.location.origin);
+    return existing ? existing.focus() : self.clients.openWindow(e.notification.data?.url || "./");
+  }));
 });

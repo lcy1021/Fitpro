@@ -121,6 +121,15 @@ revoke all on function public.fl_check(text, text, text, date, jsonb) from publi
 revoke all on function public.fl_put_checkin(text, text, text, date, jsonb) from public;
 revoke all on function public.fl_put_measure(text, text, text, date, jsonb) from public;
 revoke all on function public.fl_pull(text, date) from public;
-grant execute on function public.fl_put_checkin(text, text, text, date, jsonb) to anon, authenticated;
-grant execute on function public.fl_put_measure(text, text, text, date, jsonb) to anon, authenticated;
-grant execute on function public.fl_pull(text, date) to anon, authenticated;
+-- A later re-run must not reopen the family-code endpoints after private migration.
+do $$ begin
+  if to_regclass('public.fl_members') is null then
+    grant execute on function public.fl_put_checkin(text, text, text, date, jsonb) to anon, authenticated;
+    grant execute on function public.fl_put_measure(text, text, text, date, jsonb) to anon, authenticated;
+    grant execute on function public.fl_pull(text, date) to anon, authenticated;
+  else
+    revoke execute on function public.fl_put_checkin(text, text, text, date, jsonb),
+      public.fl_put_measure(text, text, text, date, jsonb), public.fl_pull(text, date)
+      from public, anon, authenticated;
+  end if;
+end $$;

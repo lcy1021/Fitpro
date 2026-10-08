@@ -119,16 +119,24 @@ Deno.serve(async (req) => {
   if (!/^[A-Za-z0-9]{8,40}$/.test(family)) return reply(400, { error: "bad_family" });
   if (!text || text.length > 200) return reply(400, { error: "bad_text" });
 
-  // 只给已经在用的家庭服务：口令下至少有一条打卡或身体记录
-  const [c, m] = await Promise.all([
-    db.from("checkins").select("id").eq("family", family).limit(1),
-    db.from("measures").select("id").eq("family", family).limit(1),
-  ]);
-  if (c.error || m.error) {
-    console.error("family lookup failed", c.error?.message, m.error?.message);
-    return reply(500, { error: "family_check_failed" });
+  const bearer = (req.headers.get("authorization") || "").replace(/^Bearer /i, "");
+  let privateMember = false;
+  if (bearer && bearer !== req.headers.get("apikey")) {
+    const auth = await db.auth.getUser(bearer);
+    if (auth.error || !auth.data.user) return reply(401, { error: "invalid_session" });
+    const member = await db.from("fl_members").select("family").eq("user_id", auth.data.user.id).maybeSingle();
+    if (member.error || member.data?.family !== family) return reply(403, { error: "wrong_family" });
+    privateMember = true;
   }
-  if (!(c.data?.length || m.data?.length)) return reply(403, { error: "unknown_family" });
+  if (!privateMember) {
+    // Legacy clients require an existing family record.
+    const [c, m] = await Promise.all([
+      db.from("checkins").select("id").eq("family", family).limit(1),
+      db.from("measures").select("id").eq("family", family).limit(1),
+    ]);
+    if (c.error || m.error) return reply(500, { error: "family_check_failed" });
+    if (!(c.data?.length || m.data?.length)) return reply(403, { error: "unknown_family" });
+  }
 
   const quota = await db.rpc("fl_ai_quota", { p_family: family, p_limit: DAILY_LIMIT });
   if (quota.error) return reply(500, { error: "quota_check_failed" });

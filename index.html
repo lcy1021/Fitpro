@@ -100,11 +100,12 @@ p{margin:0}
 .pick .cancel{border:0;background:transparent;color:var(--muted);font-size:14px;padding:10px}
 
 /* 登录动效（首次进入 / 切换身份） */
-.pick.lm-pick{padding:0;background:var(--bg);overflow:hidden;transition:opacity .45s ease}
+.pick.lm-pick{padding:0;background:var(--bg);overflow-x:hidden;overflow-y:auto;transition:opacity .45s ease}
+.pick.lm-pick.open{z-index:1100}
 .pick.lm-pick.leaving{opacity:0;pointer-events:none}
 .lm.splash .lm-choice{display:none}
 .lm.splash{cursor:pointer}
-.lm{position:relative;max-width:440px;height:100dvh;min-height:560px;margin:0 auto;overflow:hidden;isolation:isolate;color:var(--ink)}
+.lm{position:relative;width:min(100%,440px);height:100dvh;min-height:560px;margin:0 auto;overflow:hidden;isolation:isolate;color:var(--ink)}
 .lm::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 4% 44%,color-mix(in srgb,var(--hus-soft) 90%,transparent) 0,transparent 42%),radial-gradient(circle at 102% 43%,color-mix(in srgb,var(--wife-soft) 90%,transparent) 0,transparent 45%),var(--bg)}
 .lm::after{content:"";position:absolute;width:270px;height:270px;border-radius:50%;top:190px;left:50%;transform:translateX(-50%);z-index:-1;background:radial-gradient(circle,color-mix(in srgb,var(--surface) 90%,transparent) 0,transparent 70%);filter:blur(3px)}
 .lm-grain{position:absolute;inset:0;opacity:.22;background-image:radial-gradient(var(--hus) 1px,transparent 1px);background-size:26px 26px;-webkit-mask-image:linear-gradient(180deg,transparent 18%,#000 55%,transparent 81%);mask-image:linear-gradient(180deg,transparent 18%,#000 55%,transparent 81%);pointer-events:none}
@@ -147,7 +148,7 @@ p{margin:0}
 @keyframes lm-meet{0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-30deg)}45%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5) rotate(20deg)}}
 .lm-line{position:absolute;top:calc(590px + env(safe-area-inset-top,0px));left:18px;right:18px;text-align:center;color:var(--muted);font-size:12px;transition:opacity .35s}
 .lm[data-phase="choose"] .lm-line{opacity:0}
-.lm-choice{position:absolute;z-index:4;left:0;right:0;bottom:0;padding:25px 22px calc(18px + env(safe-area-inset-bottom,0px));border-radius:32px 32px 0 0;background:var(--surface);box-shadow:0 -12px 40px rgba(83,117,133,.12);transform:translateY(105%);opacity:0;visibility:hidden;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s,visibility .5s}
+.lm-choice{position:absolute;z-index:4;left:0;right:0;bottom:0;max-width:100%;max-height:calc(100dvh - 12px);overflow-x:hidden;overflow-y:auto;padding:25px 22px calc(18px + env(safe-area-inset-bottom,0px));border-radius:32px 32px 0 0;background:var(--surface);box-shadow:0 -12px 40px rgba(83,117,133,.12);transform:translateY(105%);opacity:0;visibility:hidden;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s,visibility .5s}
 .lm[data-phase="choose"] .lm-choice{transform:none;opacity:1;visibility:visible}
 .lm-choice::before{content:"";display:block;width:34px;height:4px;border-radius:99px;background:var(--line);margin:-11px auto 19px}
 .lm-eyebrow{font-size:10px;letter-spacing:.15em;font-weight:900;color:var(--muted)}
@@ -168,6 +169,8 @@ p{margin:0}
 .lm-confirm:disabled{background:var(--sunk);color:var(--faint);box-shadow:none;cursor:default}
 .lm-foot{display:flex;justify-content:center;gap:12px;margin-top:9px}
 .lm-replay{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:4px 8px}
+.lm-family{margin-top:10px;color:var(--muted);font-size:12px}.lm-family summary{cursor:pointer;text-align:center;list-style:none;font-weight:700}.lm-family summary::-webkit-details-marker{display:none}.lm-family input{width:100%;margin-top:9px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);color:var(--ink);font:inherit}.lm-family p{margin:6px 2px 0;font-size:11px;line-height:1.4}.lm-entry-error{margin:10px 0 0;color:var(--danger);font-size:12px;line-height:1.45;text-align:center}.lm-recover{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:5px 8px}
+@media(max-width:400px){.lm-choice{padding-left:16px;padding-right:16px}.lm-foot{flex-wrap:wrap}.lm-role{grid-template-columns:58px minmax(0,1fr) 16px;gap:8px}.lm-role img{width:58px;height:58px}.lm-role strong{font-size:15px}.lm-role small{font-size:10px}}
 @media(max-height:720px){.lm-copy{top:calc(87px + env(safe-area-inset-top,0px))}.lm-wordmark{top:calc(24px + env(safe-area-inset-top,0px));width:148px}.lm-brandline{top:calc(67px + env(safe-area-inset-top,0px))}.lm-track{top:calc(182px + env(safe-area-inset-top,0px));height:305px}.lm-runner{width:62%}.lm[data-phase="choose"] .lm-track{transform:translateY(-95px) scale(.65)}.lm-line{top:calc(515px + env(safe-area-inset-top,0px))}.lm-choice{padding-top:19px}.lm-lead{margin-bottom:9px}.lm-role{min-height:69px;grid-template-columns:57px minmax(0,1fr) 19px}.lm-role img{width:57px;height:57px}.lm-confirm{margin-top:11px}}
 @media (prefers-reduced-motion: reduce){.lm *,.lm *::before,.lm *::after{animation:none!important;transition-duration:.01ms!important}}
 
@@ -584,6 +587,7 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
+<link rel="stylesheet" href="private-coach.css">
 </head>
 <body class="me-hus">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -649,13 +653,15 @@ p{margin:0}
   <section class="lm-choice" id="lmChoice">
     <span class="lm-eyebrow">START TOGETHER</span>
     <h2 id="pickTitle">你是谁？</h2>
-    <p class="lm-lead">选好后，这台手机上的打卡、训练和记录都按你的身份来。</p>
+    <p class="lm-lead">选好角色，健康伙伴会带你用 4 步定好目标和计划。</p>
     <div class="lm-roles" role="group" aria-label="选择角色">
-      <button class="lm-role hus" data-lm-role="hus" aria-pressed="false" type="button"><img src="assets/login/hus-running.webp" alt=""><span><strong>我是老公</strong><small>哑铃力量训练 A、B 交替，每周 3 次</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
-      <button class="lm-role wife" data-lm-role="wife" aria-pressed="false" type="button"><img src="assets/login/wife-running.webp" alt=""><span><strong>我是老婆</strong><small>居家臀腿跟练，每周 2–3 次</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
+      <button class="lm-role hus" data-lm-role="hus" aria-pressed="false" type="button"><img src="assets/login/hus-running.webp" alt=""><span><strong>我是老公</strong><small>聊聊目标，定制适合你的饮食和训练</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
+      <button class="lm-role wife" data-lm-role="wife" aria-pressed="false" type="button"><img src="assets/login/wife-running.webp" alt=""><span><strong>我是老婆</strong><small>聊聊身体状态和想改善的地方</small></span><span class="lm-arrow" aria-hidden="true">›</span></button>
     </div>
+    <details class="lm-family"><summary>已有伴侣的家庭口令？点这里填写</summary><input id="entryFamily" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" placeholder="填写伴侣分享的家庭口令"><p>第一次使用无需填写，完成计划后可邀请伴侣。</p></details>
     <button class="lm-confirm" id="lmConfirm" type="button" disabled>先选择一个角色</button>
-    <div class="lm-foot"><button class="lm-replay" data-lm-replay type="button">↺ 再看一次入场动效</button><button class="lm-replay" data-pick-cancel type="button" hidden>取消</button></div>
+    <p class="lm-entry-error" id="entryIssue" hidden></p>
+    <div class="lm-foot"><button class="lm-replay" data-lm-replay type="button">↺ 再看一次入场动效</button><button class="lm-recover" data-coach="recover-open" type="button">换手机？找回档案</button><button class="lm-replay" data-pick-cancel type="button" hidden>取消</button></div>
   </section>
 </div></div>
 <div class="pick" id="foodDlg" role="dialog" aria-modal="true" aria-labelledby="foodTitle"><div class="inner">
@@ -706,6 +712,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
+<script src="private-coach.js"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1116,6 +1123,8 @@ function suggestionsFor(person){
 }
 function roundsFor(key,person){
   const w=WORKOUTS[key]; if(!w || key==="D" || key==="C") return w?w.rounds:1;
+  if(privateCoach?.active && person===me && getCheckin(me,ymd(new Date())).dailyChoice==="short") return 1;
+  if(privateCoach?.active && person===me){const duration=privateCoach.profile?.duration;if(duration==="10 分钟")return 1;if(duration==="30 分钟")return Math.min(4,w.rounds+1);}
   const g=goalOf(person); return w.rounds+((g&&g.level)||0);
 }
 /* 把目标写进今天的身体记录（和今天已有的体重、围度合并） */
@@ -1163,6 +1172,15 @@ const WORKOUTS = {
       {n:"后撤步弓步",img:"w-reverse-lunge",r:"每侧 8 次",c:"可以扶着墙或椅子保持平衡"},
       {n:"仰卧交替抬腿",img:"w-alt-leg-raise",r:"每侧 10 次",c:"下背部贴地，腹部收紧，慢慢放下"}
     ]},
+  N:{name:"徒手全身训练",who:"both",rounds:2,restMove:15,restRound:45,equip:"无需器械，地面动作可垫毛巾",
+    warm:["原地踏步 30 秒","手臂绕环 30 秒","徒手深蹲 8 个"],cool:["婴儿式 30 秒","髋部拉伸每侧 20 秒"],
+    moves:[
+      {n:"徒手深蹲",img:"w-bodyweight-squat",r:"12 次",c:"屁股往后坐，膝盖和脚尖同向"},
+      {n:"俯卧撑",img:"a-push-up",r:"8–12 次",c:"可以跪姿，保持身体稳定"},
+      {n:"臀桥",img:"w-glute-bridge",r:"15 次",c:"顶起时收紧臀部"},
+      {n:"死虫",img:"b-dead-bug",r:"每侧 10 次",c:"下背部贴地，慢慢伸展对侧手脚"},
+      {n:"平板支撑",img:"a-plank",r:"30 秒",c:"收紧腹部，不塌腰",sec:30}
+    ]},
   C:{name:"快走 30 分钟",who:"both",rounds:1,restMove:0,restRound:0,equip:"一双舒服的鞋",warm:[],cool:[],
     moves:[{n:"快走",img:"warm-march",r:"30 分钟",c:"微微出汗、能说话但唱不了歌的速度；推着婴儿车散步也算",sec:1800}]},
   D:{name:"工位 3 分钟",who:"both",rounds:1,restMove:5,restRound:0,equip:"不需要装备",warm:[],cool:[],
@@ -1202,6 +1220,13 @@ function isoWeek(d){
 }
 /* what does each person do on a given day */
 function scheduleFor(person,d){
+  if(privateCoach?.active && person===me){
+    const baseSchedule=legacyScheduleFor(person,d);
+    return privateCoach.schedule(ymd(d),baseSchedule);
+  }
+  return legacyScheduleFor(person,d);
+}
+function legacyScheduleFor(person,d){
   const w=d.getDay(); const even=isoWeek(d)%2===0;
   if(w===4){ const g=goalOf(person); if(g&&g.cardio) return {kind:"flex",w:"C"}; }
   if(person==="hus"){
@@ -1216,13 +1241,14 @@ function scheduleFor(person,d){
 }
 
 /* ---------- state ---------- */
-const LS_ME="fatloss.me", LS_DATA="fatloss.local";
+const LS_ME="fatloss.me"; let LS_DATA="fatloss.local";
 const storedMe = (()=>{ try{ return localStorage.getItem(LS_ME); }catch(e){ return null; } })();
 let me = storedMe==="wife" ? "wife" : "hus";
 let viewP = me; // whose plan is shown in 饮食 / 训练
 let tab = "today";
-const LS_FAMILY="fatloss.family", LS_DIRTY="fatloss.dirty";
+const LS_FAMILY="fatloss.family"; let LS_DIRTY="fatloss.dirty";
 const CLOUD = !!(SUPABASE_URL && SUPABASE_KEY);
+let privateCoach=null, coachReady=Promise.resolve();
 let family = (()=>{ try{ return localStorage.getItem(LS_FAMILY)||""; }catch(e){ return ""; } })();
 /* 旧邀请链接曾把口令放在 URL 中；清掉片段，不再自动保存口令。 */
 if(/^#k=/.test(location.hash)) history.replaceState(null,"",location.pathname+location.search);
@@ -1248,6 +1274,7 @@ async function rpc(fn,args){
 
 let syncing=false, syncAgain=false;
 async function sync(){
+  if(privateCoach){ if(privateCoach.active) return privateCoach.sync(store,dirty); return; }
   if(!CLOUD || !family) return;
   if(syncing){ syncAgain=true; return; }
   syncing=true; syncState="syncing"; renderSync();
@@ -1298,6 +1325,7 @@ const readOnly=false;
 
 /* ---------- completeness & streak ---------- */
 function dayDone(person,d){
+  if(privateCoach?.active && person!==me) return privateCoach.partnerChecked(ymd(d));
   const c=getCheckin(person,ymd(d));
   const meals=MEALS.every(m=>c.meals && c.meals[m]);
   const s=scheduleFor(person,d);
@@ -1319,6 +1347,7 @@ function renderHeader(){
   $("#pageTitle").textContent={today:"今日",diet:"饮食",train:"训练",record:"记录"}[tab];
   const tb=document.querySelector(`.tabs [data-tab="${tab}"] svg`); if(tb) $("#pageIcon").innerHTML=tb.outerHTML;
   $("#dateLabel").textContent=`${d.getMonth()+1}月${d.getDate()}日 周${WEEK[d.getDay()]}`;
+  $("#roleBtn").hidden=!!privateCoach;
   $("#roleBtn").setAttribute("aria-label","切换身份，当前是"+PEOPLE[me].label);
   $("#meAva").src="assets/avatar-"+me+".png"; $("#meAva").alt=PEOPLE[me].label+"的形象";
   document.body.className="me-"+me;
@@ -1330,7 +1359,7 @@ function renderSync(){
     case "local": t="数据只保存在这台手机上（没读到 config.js 里的 Supabase 配置）"; warn=true; break;
     case "nocode": t="还没设置家庭口令，暂时不会同步"; warn=true; break;
     case "syncing": t="正在同步…"; break;
-    case "ok": t="已同步，"+hm(lastSync)+" 更新"; break;
+    case "ok": t="已同步，"+hm(lastSync||new Date())+" 更新"; break;
     case "offline": t="网络不通，已存在本机，恢复后自动同步"; warn=true; break;
     case "error": t="同步失败：请检查 Supabase 配置和建表脚本"; warn=true; break;
     default: t="准备同步…";
@@ -1392,7 +1421,8 @@ const secH=(symbol,title,right)=>`<div class="sec-h"><h3><i class="si i-${symbol
 function viewToday(){
   const today=new Date(); const date=ymd(today);
   const c=getCheckin(me,date); const s=scheduleFor(me,today); const plan=MEAL_PLAN[me];
-  const bs=bothStreak(); const [got,need]=todayProgress();
+  const hasDietRule=!!(privateCoach?.active&&(privateCoach.profile?.diet?.trim()||/不吃|不能吃|过敏|忌口|乳糖|素食/.test(privateCoach.profile?.notes?.[2]||"")));
+  const bs=privateCoach?.active ? 0 : bothStreak(); const [got,need]=privateCoach?.active ? [0,0] : todayProgress();
   const together=`<div class="together"><span class="fire">${icon("flame")}</span>
     <span class="t">${bs?`并肩打卡<b class="num">${bs}</b>天`:"今天一起把打卡填满吧"}</span>
     <span class="chip ${got===need?"good":""}">今天 ${got}/${need}</span></div>`;
@@ -1405,6 +1435,7 @@ function viewToday(){
       <div class="streak"><b class="num">${streak(p)}</b>连续天</div></div>`).join("")}
   </section>`;
 
+  const privateDuo=privateCoach?.active ? `<section class="coach-mini"><b>伴侣今天${privateCoach.partnerChecked(date)?"已打卡":"还没有打卡"}</b><small>只共享今天是否打卡；健康档案、目标和计划仅自己可见</small></section>` : duo;
   let trainCard;
   if(s.kind==="rest"){
     const dk=WORKOUTS.D;
@@ -1429,7 +1460,7 @@ function viewToday(){
     const v=c.meals&&c.meals[m]; const p=plan[m];
     const b=(val,txt)=>`<button data-meal="${m}" data-v="${val}" aria-pressed="${v===val}">${txt}</button>`;
     return `<div class="card meal"><div class="meal-top"><h4><span class="ic m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><span>${p.t}<br><time>${p.time}</time></span></h4><span class="kcal">约 ${mealKcal(me,m)} kcal</span></div>
-      ${foodList(me,m)}${(fd=>fd?`<div class="logged"><span aria-hidden="true">${icon("note","sm")}</span><div class="t"><b>实际吃了约 ${fd.kcal} kcal</b><small>${esc(fd.items.map(i=>i.n+(i.q?" "+i.q:"")).join("、"))}</small></div><button class="btn ghost" data-food="${m}" style="padding:6px 12px">修改</button></div>`
+      ${hasDietRule?`<p class="note">${privateCoach.mealSwap(m)?`本周个性建议：${esc(privateCoach.mealSwap(m))}`:"已记录饮食限制，个性餐食暂未生成；请勿照搬默认菜品。"}</p>`:`${privateCoach?.active&&privateCoach.mealSwap(m)?`<p class="note">本周个性建议：${esc(privateCoach.mealSwap(m))}</p>`:""}${foodList(me,m)}`}${(fd=>fd?`<div class="logged"><span aria-hidden="true">${icon("note","sm")}</span><div class="t"><b>实际吃了约 ${fd.kcal} kcal</b><small>${esc(fd.items.map(i=>i.n+(i.q?" "+i.q:"")).join("、"))}</small></div><button class="btn ghost" data-food="${m}" style="padding:6px 12px">修改</button></div>`
         :`<button class="logbtn" data-food="${m}">${icon("note","sm")} 记一下实际吃了什么，算热量</button>`)(c.food&&c.food[m])}
       <div class="seg" role="group" aria-label="${p.t}打卡">${b("plan","按计划吃了")}${b("over","吃多了")}${b("skip","没吃")}</div></div>`;
   }).join("");
@@ -1441,8 +1472,8 @@ function viewToday(){
   const miss = todayAny ? 0 : yesterdayMissing(me);
   const missed = miss ? `<div class="missed"><img src="${mood(me,"day-missed")}" alt=""><div><b>昨天还差 ${miss} 项没打卡</b><small>没关系，今天重新开始就好。先把早餐打个卡吧</small></div></div>` : "";
   const gp=planFor(me);
-  const goalTop = gp ? suggCard() : `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>设定你的目标</b><small>按你的体重安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
-  $("#view").innerHTML = missed + goalTop + together + duo + `
+  const goalTop = privateCoach?.active ? privateCoach.weeklyCard() : gp ? suggCard() : `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>设定你的目标</b><small>按你的体重安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
+  $("#view").innerHTML = missed + goalTop + (privateCoach?.active ? privateCoach.dailyCard() : together) + privateDuo + `
     <section class="sec">${secH("train","今天的训练")}${trainCard}</section>
     <section class="sec">${secH("diet","今天吃什么",gp?`今日目标约 ${gp.kcal} kcal<br>蛋白质约 ${gp.protein}g`:`全天${dayKcal(me)}<br>蛋白质${plan.protein}`)}
       <div class="stack">${meals}</div>${overNote}</section>
@@ -1452,6 +1483,7 @@ function viewToday(){
 }
 
 function peekSwitch(){
+  if(privateCoach?.active) return "";
   const b=p=>`<button class="${p}" data-view="${p}" aria-pressed="${viewP===p}">${PEOPLE[p].label}的计划${p===me?"（我）":""}</button>`;
   return `<div class="peek" role="group" aria-label="看谁的计划">${b("hus")}${b("wife")}</div>`+
     (viewP!==me?`<p class="peek-note">正在看对方的计划，打卡和训练仍按你自己的身份记录。</p>`:"");
@@ -1486,14 +1518,16 @@ function ringCard(person){
     </div>
     <div class="ring-side"><img src="${e.n===4?mood(person,"day-done"):mood(person,"meal")}" alt="${PEOPLE[person].label}的形象" width="80" height="80"><p>${line}</p><span class="chip">全天计划 ${kcalText(day)}</span></div>
     <div class="ring-meals">${MEALS.map(m=>{ const [k,t]=st(m); return `<div class="${k}"><b>${names[m]}</b>${t}</div>`; }).join("")}</div>
-    <p class="ring-foot">记了实际吃什么的餐次按记录算，其余按计划估算，都不是精确计算</p>
+    <p class="ring-foot">${privateCoach?.active&&privateCoach.profile?.diet?"有饮食限制时，未记录实际食物的餐次仍按默认份量估算；请以实际记录为准。":"记了实际吃什么的餐次按记录算，其余按计划估算，都不是精确计算"}</p>
   </div>`;
 }
 function viewDiet(){
+  if(privateCoach?.active) viewP=me;
   const plan=MEAL_PLAN[viewP]; const w=new Date().getDay();
+  const hasDietRule=!!(privateCoach?.active&&(privateCoach.profile?.diet?.trim()||/不吃|不能吃|过敏|忌口|乳糖|素食/.test(privateCoach.profile?.notes?.[2]||"")));
   const rows=MEALS.map(m=>`<div class="card mplan ${viewP}"><span class="l m-${m}">${icon(MEAL_IC[m])}</span>
     <div class="h"><b>${plan[m].t}<time>${plan[m].time}</time></b><span class="chip">约 ${mealKcal(viewP,m)} kcal</span></div>
-    <p>${esc(plan[m].food)}</p></div>`).join("");
+    ${hasDietRule?`<p>${privateCoach.mealSwap(m)?esc(privateCoach.mealSwap(m)):`已记录饮食限制；具体替换暂未生成，请不要照搬默认菜品。`}</p>`:`<p>${esc(plan[m].food)}</p>${privateCoach?.active&&privateCoach.mealSwap(m)?`<p class="note">本周个性建议：${esc(privateCoach.mealSwap(m))}</p>`:""}`}</div>`).join("");
   const tn = (w>=1&&w<=5) ? `<div class="tonight"><span class="tag" style="margin:0 0 6px">今晚推荐</span><h4>${DINNERS[w].n}</h4><p>${DINNERS[w].h} · 约 ${DINNERS[w].kcal[viewP]} kcal</p></div>` : "";
   const dinners=[1,2,3,4,5].filter(d=>d!==w).map(d=>`<div class="dinner"><span class="d">周${WEEK[d]}</span>
     <div><h4>${DINNERS[d].n}</h4><p>${DINNERS[d].h}</p></div><span class="k">约 ${DINNERS[d].kcal[viewP]}</span></div>`).join("");
@@ -1501,9 +1535,9 @@ function viewDiet(){
   <section class="sec">${secH("flame","今天吃了多少",PEOPLE[viewP].label)}${ringCard(viewP)}</section>
   <section class="sec">${secH("today",PEOPLE[viewP].label+"的一天","蛋白质 "+plan.protein)}
     <div class="stack">${rows}</div></section>
-  <section class="sec">${secH("clock","晚餐轮换","15 分钟快手菜")}
+  ${hasDietRule?"":`<section class="sec">${secH("clock","晚餐轮换","15 分钟快手菜")}
     <div class="card">${tn}${dinners}</div>
-    <p class="note" style="margin-top:10px">周日花 1 小时备菜：肉切好腌好分装冷冻，蔬菜洗好沥干装盒，工作日下锅就行。</p></section>
+    <p class="note" style="margin-top:10px">周日花 1 小时备菜：肉切好腌好分装冷冻，蔬菜洗好沥干装盒，工作日下锅就行。</p></section>`}
   <section class="sec">${secH("delivery","点外卖怎么选")}
     <div class="two">
       <div class="card good"><h4>${icon("check","sm")} 优先选</h4><ul><li>一荤一素简餐</li><li>牛肉粉、鸡肉粉，粉吃一半</li><li>日式定食、去皮鸡腿饭</li><li>麻辣烫多选菜和肉，汤不喝</li></ul></div>
@@ -1530,11 +1564,12 @@ function planCard(key,canStart){
     ${canStart?`<button class="cta" data-start="${key}">${icon("play","sm")} 开始跟练</button>`:""}</div>`;
 }
 function viewTrain(){
+  if(privateCoach?.active) viewP=me;
   const today=new Date(); const mon=addDays(today,-((today.getDay()+6)%7));
   const short=k=>k==="W"?"臀腿":k;
   const head=`<div class="wk2">`+[0,1,2,3,4,5,6].map(i=>{ const d=addDays(mon,i);
     return `<span class="h ${ymd(d)===ymd(today)?"now":""}">${ymd(d)===ymd(today)?"今天":"周"+WEEK[d.getDay()]}</span>`; }).join("")+`</div>`;
-  const rows=["hus","wife"].map(p=>{
+  const rows=(privateCoach?.active?[me]:["hus","wife"]).map(p=>{
     let cells="";
     for(let i=0;i<7;i++){
       const d=addDays(mon,i); const s=scheduleFor(p,d); const now=ymd(d)===ymd(today)?" now":"";
@@ -1545,10 +1580,11 @@ function viewTrain(){
     }
     return `<div class="wkrow ${p}"><div class="who2">${PEOPLE[p].label}${p==="hus"?" · 哑铃力量":" · 居家臀腿"}</div><div class="wk2">${cells}</div></div>`;
   }).join("");
-  const keys = viewP==="hus" ? ["A","B"] : ["W"];
+  const scheduledKeys=[...new Set([0,1,2,3,4,5,6].map(i=>scheduleFor(me,addDays(mon,i)).w).filter(Boolean))];
+  const keys = privateCoach?.active ? (scheduledKeys.length?scheduledKeys:(me==="hus"?(!privateCoach.profile?.equipment?.includes("哑铃")?["N"]:["A","B"]):["W"])) : viewP==="hus" ? ["A","B"] : ["W"];
   const mine = viewP===me;
   $("#view").innerHTML=`
-  <section class="sec">${secH("today","这周两个人的安排",icon("check","sm")+" 是已完成的")}
+  <section class="sec">${secH("today",privateCoach?.active?"这周我的安排":"这周两个人的安排",icon("check","sm")+" 是已完成的")}
     <div class="card">${head}${rows}</div></section>
   ${peekSwitch()}
   <section class="sec">${secH("train",PEOPLE[viewP].label+"的训练内容",viewP==="hus"?"A、B 每周交替":"")}
@@ -1583,6 +1619,7 @@ function smoothPath(pts){
   return d;
 }
 function trendCard(){
+  if(privateCoach?.active) return privateTrendCard();
   const fields=["weight","waist"].concat(measureSeries("wife").some(m=>typeof m.hip==="number")?["hip"]:[]);
   if(!fields.includes(recField)) recField="weight";
   const [label,unit]=FIELDS[recField];
@@ -1610,6 +1647,16 @@ function trendCard(){
   return `<div class="card chart"><div class="chart-h"><b>两个人的趋势</b>${toggle}</div>${legend}
     <div class="plot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}趋势，最近 12 次">${defs}<line x1="${PX}" x2="${W-PX}" y1="${BAND}" y2="${BAND}" stroke="var(--line)" stroke-dasharray="3 5"/>${body}</svg></div>
     <p class="chart-foot">最近 12 次记录 · 两人各自按自己的范围显示走势</p></div>`;
+}
+function privateTrendCard(){
+  const fields=["weight","waist"].concat(measureSeries(me).some(m=>typeof m.hip==="number")?["hip"]:[]);
+  if(!fields.includes(recField)) recField="weight";
+  const [label,unit]=FIELDS[recField],pts=measureSeries(me).filter(m=>typeof m[recField]==="number").slice(-12);
+  const toggle=`<div class="seg2" role="group" aria-label="看哪项趋势">${fields.map(f=>`<button data-rec-field="${f}" aria-pressed="${f===recField}">${FIELDS[f][0]}</button>`).join("")}</div>`;
+  if(!pts.length)return `<div class="card chart"><div class="chart-h"><b>我的${label}趋势</b>${toggle}</div><p class="empty">还没有${label}数据</p></div>`;
+  const vals=pts.map(m=>m[recField]),lo=Math.min(...vals)-.5,hi=Math.max(...vals)+.5;
+  const xy=pts.map((m,i)=>[20+(pts.length===1?140:i*280/(pts.length-1)),100-(m[recField]-lo)/(hi-lo)*80]);
+  return `<div class="card chart"><div class="chart-h"><b>我的${label}趋势</b>${toggle}</div><div class="plot"><svg viewBox="0 0 320 120" role="img" aria-label="我的${label}趋势"><polyline fill="none" stroke="var(--me)" stroke-width="3" points="${xy.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' ')}"/></svg></div><p class="chart-foot">最近 ${pts.length} 次 · 最新 ${pts.at(-1)[recField]} ${unit}</p></div>`;
 }
 function whoCard(p){
   const ms=measureSeries(p);
@@ -1644,6 +1691,7 @@ function prevValue(person,field,date){
 }
 const fmtDelta=(d,unit)=>{ d=Math.round(d*10)/10; return d===0?"持平":(d>0?"+":"−")+Math.abs(d)+" "+unit; };
 function insightCard(){
+  if(privateCoach?.active)return `<div class="insight"><div class="ih"><div><h3>看趋势，别看单日</h3><p>体重和围度只在你的档案里显示。伴侣仅能看到相对体重变化曲线。</p></div></div></div>`;
   const tip = me==="wife" ? "体重不怎么动、围度在变小，就说明方向对了。看 3–4 周的趋势，别看单日。"
     : "看 3–4 周的趋势，别看单日。每周日早上空腹量一次，数据最稳。";
   const row=p=>{ const done=dayDone(p,new Date()); const n=streak(p);
@@ -1653,7 +1701,7 @@ function insightCard(){
     <img src="${mood(me,"weigh")}" alt="" width="72" height="72"></div>${row("hus")}${row("wife")}</div>`;
 }
 function feedRows(){
-  const hist=Object.values(store.measures).filter(m=>["weight","waist","hip","thigh"].some(k=>typeof m[k]==="number")).sort((a,b)=>a.date<b.date?1:-1).slice(0,6);
+  const hist=Object.values(store.measures).filter(m=>(!privateCoach?.active||m.person===me)&&["weight","waist","hip","thigh"].some(k=>typeof m[k]==="number")).sort((a,b)=>a.date<b.date?1:-1).slice(0,6);
   if(!hist.length) return `<p class="empty empty-mood"><img src="${mood(me,"sad")}" alt="">还没有记录。每周日早上空腹量一次。</p>`;
   return hist.map(m=>{
     const extra=[m.waist!=null?`腰围 ${m.waist}`:"",m.hip!=null?`臀围 ${m.hip}`:"",m.thigh!=null?`腿围 ${m.thigh}`:""].filter(Boolean).join(" · ");
@@ -1664,12 +1712,12 @@ function feedRows(){
   }).join("");
 }
 function renderRecordData(){
-  const pair=$("#recPair"); if(pair) pair.innerHTML=whoCard("hus")+whoCard("wife");
+  const pair=$("#recPair"); if(pair) pair.innerHTML=privateCoach?.active ? whoCard(me)+privateCoach.partnerCard() : whoCard("hus")+whoCard("wife");
   const gc=$("#recGoal"); if(gc) gc.innerHTML=goalCard();
   const ins=$("#recInsight"); if(ins) ins.innerHTML=insightCard();
   const box=$("#recData"); if(!box) return;
   box.innerHTML=`<section class="sec">${secH("record","趋势")}${trendCard()}</section>
-    <section class="sec">${secH("clock","最近更新","两个人的记录")}<div class="card">${feedRows()}</div></section>`;
+    <section class="sec">${secH("clock","最近更新",privateCoach?.active?"我的记录":"两个人的记录")}<div class="card">${feedRows()}</div></section>`;
 }
 function viewRecord(){
   const today=ymd(new Date());
@@ -1679,21 +1727,21 @@ function viewRecord(){
   const tile=([k,l,u,st,mn,mx])=>{ const pv=prevValue(me,k,today);
     return `<label class="mtile"><span class="ml">${l}</span><span class="mv"><input type="number" inputmode="decimal" step="${st}" min="${mn}" max="${mx}" name="${k}" value="${v(k)}" placeholder="${pv!=null?pv:"—"}" data-prev="${pv!=null?pv:""}" data-unit="${u}"><i>${u}</i></span>
       <span class="md" data-delta="${k}">${pv!=null?`上次 ${pv} ${u}`:"还没有记录"}</span></label>`; };
-  const tokenCard = CLOUD ? `<section class="sec">${secH("key","家庭同步口令")}
+  const tokenCard = CLOUD && !privateCoach?.active ? `<section class="sec">${secH("key","家庭同步口令")}
     <div class="card"><div class="token"><span class="k">${family?icon("key","sm")+" "+esc(family.slice(0,4))+"••••••":"还没设置口令"}</span>
       ${family?`<button class="btn primary" data-code-copy>复制邀请信息</button>`:`<button class="btn primary" data-open-code>去设置</button>`}</div>
       ${family?`<button class="linkbtn" data-open-code>查看或修改口令</button>`:`<p class="empty" style="padding-top:8px">两台手机填同一个口令，数据才会同步到一起。</p>`}</div></section>` : "";
   $("#view").innerHTML=`
   <section class="sec" id="recInsight"></section>
   <section class="sec">${secH("goal","我的目标")}<div id="recGoal">${goalCard()}</div></section>
-  <section class="sec">${secH("people","两个人的记录")}<div class="pair" id="recPair"></div></section>
+  <section class="sec">${secH("people",privateCoach?.active?"我与伴侣":"两个人的记录")}<div class="pair" id="recPair"></div></section>
   <section class="sec">${secH("note","记录"+PEOPLE[me].label+"的数据")}
     <form class="card form2" id="mForm">
       <div class="fh"><span>记在哪天</span><input type="date" name="date" value="${today}" max="${today}" aria-label="日期"></div>
       <div class="mtiles">${tiles.map(tile).join("")}</div>
       <button class="cta" type="submit">${icon("check","sm")} 保存记录</button>
     </form>
-  </section><div id="recData"></div>${tokenCard}`;
+  </section><div id="recData"></div>${privateCoach?.active?privateCoach.pushCard()+`<section class="coach-mini"><b>我的私人档案</b><small>当前角色：${PEOPLE[me].label}。换手机前请保存个人恢复码。</small><button data-coach="show-recovery">生成新的个人恢复码</button><button data-coach="copy-family">复制家庭配对口令</button><button data-coach="signout">清除本机登录</button></section>`:""}${tokenCard}`;
   renderRecordData();
   $("#mForm").addEventListener("input",e=>{
     const i=e.target; if(!i.dataset || i.name==="date") return;
@@ -1794,11 +1842,20 @@ function drawRun(){
 }
 
 /* ---------- events ---------- */
-document.addEventListener("click",e=>{
+document.addEventListener("click",async e=>{
   const t=e.target.closest("button"); if(!t) return;
-  if(t.dataset.pick){ me=t.dataset.pick; viewP=me; try{ localStorage.setItem(LS_ME,me);}catch(_){} closePicker(); lastTab=null; render(); if(CLOUD && !family) openCode(true); else if(!goalOf(me)) openGoal(); return; }
+  if(t.dataset.pick){
+    if(privateCoach){
+      const btn=t; btn.disabled=true; const label=btn.textContent; btn.textContent="正在打开你的档案…";
+      try{privateCoach.beginRole(t.dataset.pick,$("#entryFamily").value);closePicker();}
+      catch(err){const issue=$("#entryIssue");issue.textContent=/duplicate key|fl_members_family_person_key|account_already_paired/i.test(err.message)?"这个角色已有档案，请用下方的个人恢复码找回，或检查家庭口令。":err.message;issue.hidden=false;}
+      finally{btn.disabled=false;btn.textContent=label;}
+      return;
+    }
+    me=t.dataset.pick; viewP=me; try{ localStorage.setItem(LS_ME,me);}catch(_){} closePicker(); lastTab=null; render(); if(CLOUD && !family) openCode(true); else if(!goalOf(me)) openGoal(); return;
+  }
   if(t.hasAttribute("data-open-code")){ openCode(); return; }
-  if(t.hasAttribute("data-open-goal")){ openGoal(); return; }
+  if(t.hasAttribute("data-open-goal")){ if(privateCoach?.active){privateCoach.editProfile();return;} openGoal(); return; }
   if(t.dataset.food){ openFood(t.dataset.food); return; }
   if(t.hasAttribute("data-food-close")){ closeFood(); return; }
   if(t.hasAttribute("data-food-save")){ saveFood(); return; }
@@ -1822,8 +1879,8 @@ document.addEventListener("click",e=>{
   if(t.dataset.lmRole){ lmSelect(t.dataset.lmRole); return; }
   if(t.hasAttribute("data-lm-skip")){ if($("#lm").classList.contains("splash")){ $("#lm").onclick(); return; } lmClear(); lmPhase("choose"); return; }
   if(t.hasAttribute("data-lm-replay")){ lmPlay(); return; }
-  if(t.hasAttribute("data-open-picker")){ openPicker(true); return; }
-  if(t.dataset.view){ viewP=t.dataset.view; lastTab=null; render(); return; }
+  if(t.hasAttribute("data-open-picker")){ if(privateCoach) return; openPicker(true); return; }
+  if(t.dataset.view){ if(privateCoach?.active)return; viewP=t.dataset.view; lastTab=null; render(); return; }
   if(t.dataset.recField){ recField=t.dataset.recField; renderRecordData(); return; }
   if(t.dataset.tab){ tab=t.dataset.tab; document.querySelectorAll(".tabs button").forEach(b=>{ if(b===t) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
     lastTab=null; render(); window.scrollTo(0,0); return; }
@@ -1895,8 +1952,12 @@ function openSplash(after){
   const pk=$("#pick"), lm=$("#lm");
   lm.classList.add("splash"); pk.classList.remove("leaving"); pk.classList.add("open"); document.body.style.overflow="hidden";
   lmClear(); lmPhase("start");
-  const done=()=>{ if(!lm.classList.contains("splash")) return; lmClear(); lm.classList.remove("splash"); lm.onclick=null;
-    pk.classList.add("leaving"); setTimeout(()=>{ pk.classList.remove("open","leaving"); document.body.style.overflow=""; lmPhase("choose"); if(after) after(); },450); };
+  let finishing=false;
+  const done=async()=>{ if(!lm.classList.contains("splash")||finishing) return; finishing=true; lmClear(); lm.onclick=null;
+    const next=after?await after():null;
+    lm.classList.remove("splash");
+    if(next==="choose"){lmSelect(null);lmPhase("choose");return;}
+    pk.classList.add("leaving"); setTimeout(()=>{ pk.classList.remove("open","leaving"); document.body.style.overflow=""; lmPhase("choose"); },450); };
   lm.onclick=done;
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmTimers.push(setTimeout(done,600)); return; }
   lmReady().then(()=>{ if(!lm.classList.contains("splash")) return;
@@ -1905,7 +1966,14 @@ function openSplash(after){
 function openPicker(canCancel){
   $("#lm").classList.remove("splash"); $("#lm").onclick=null; $("#pick").classList.remove("leaving");
   $("#pick").classList.add("open"); $("[data-pick-cancel]").hidden=!canCancel; document.body.style.overflow="hidden";
+  $("#entryIssue").hidden=true;
   if(canCancel){ lmClear(); lmSelect(me); lmPhase("choose"); } else lmPlay();
+}
+function showRoleChoice(){
+  $("#lm").classList.remove("splash"); $("#lm").onclick=null; $("#pick").classList.remove("leaving");
+  $("#pick").classList.add("open"); $("[data-pick-cancel]").hidden=true; document.body.style.overflow="hidden";
+  $("#entryIssue").hidden=true;
+  lmClear(); lmSelect(null); lmPhase("choose");
 }
 function genCode(){
   const a="ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"; const r=new Uint32Array(14);
@@ -1965,7 +2033,7 @@ function openFood(m){
   setTimeout(()=>$("#foodText").focus(),50);
 }
 /* 估算过的原话记在本机，同一句话再算时直接用，不再调用 AI（最多记 60 条） */
-const LS_AI="fatloss.aicache";
+let LS_AI="fatloss.aicache";
 const aiCache={ get(t){ try{ return (JSON.parse(localStorage.getItem(LS_AI)||"{}"))[t]||null; }catch(e){ return null; } },
   set(t,v){ try{ const c=JSON.parse(localStorage.getItem(LS_AI)||"{}"); c[t]={...v,at:Date.now()};
     const keys=Object.keys(c).sort((a,b)=>c[b].at-c[a].at); keys.slice(60).forEach(k=>delete c[k]); localStorage.setItem(LS_AI,JSON.stringify(c)); }catch(e){} } };
@@ -1987,7 +2055,8 @@ async function aiFood(){
       if(syncState!=="ok"){ toast("打卡记录还没同步成功，请联网后再试 AI 估算",5000); return; }
     }
     const headers={"Content-Type":"application/json","apikey":SUPABASE_KEY};
-    if(!SUPABASE_KEY.startsWith("sb_")) headers["Authorization"]="Bearer "+SUPABASE_KEY;
+    if(privateCoach?.active){await privateCoach.refresh();headers["Authorization"]="Bearer "+privateCoach.session.access_token;}
+    else if(!SUPABASE_KEY.startsWith("sb_")) headers["Authorization"]="Bearer "+SUPABASE_KEY;
     const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/functions/v1/meal-kcal"+(AI_REGION?"?forceFunctionRegion="+encodeURIComponent(AI_REGION):""),{method:"POST",headers,body:JSON.stringify({family,text})});
     const d=await r.json().catch(()=>({}));
     if(!r.ok){
@@ -2065,6 +2134,7 @@ function suggCard(){
 }
 function goalCard(){
   const p=planFor(me);
+  if(privateCoach?.active)return `<div class="card goal-card"><div class="gh"><h4>我的目标 · ${esc(privateCoach.goalTitle())}</h4><button class="linkbtn" data-open-goal>修改</button></div><p>想改善：${esc(privateCoach.profile?.focus?.join("、")||"全身")}${privateCoach.profile?.target?` · 期待 ${esc(privateCoach.profile.target)} kg`:""}</p><p>身体状态与计划只有你可见。每周第一天确认后可以调整。</p></div>`;
   if(!p) return `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>还没设定目标</b><small>填身高、体重和目标，按你的情况安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
   const pct = p.g.start>p.g.target ? Math.max(0,Math.min(100,Math.round((p.g.start-p.w)/(p.g.start-p.g.target)*100))) : 100;
   const R=roundsFor(me==="hus"?"A":"W",me);
@@ -2077,7 +2147,7 @@ function goalCard(){
 function closePicker(){ lmClear(); $("#pick").classList.remove("open"); document.body.style.overflow=""; }
 
 /* ---------- boot ---------- */
-render();
+if(!CLOUD) render();
 $("#goalForm").addEventListener("input",goalPreview);
 $("#codeInput").addEventListener("input",()=>{ codeCreating=false; });
 $("#foodText").addEventListener("input",onFoodText);
@@ -2091,14 +2161,48 @@ $("#goalForm").addEventListener("submit",e=>{
   menuCache={}; closeGoal(); lastTab=null; render(); react("weigh","目标已保存","今天吃什么已经按你的目标调好了");
 });
 if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
-if(storedMe!=="hus" && storedMe!=="wife") openPicker(false);
-else openSplash(()=>{ if(CLOUD && !family) openCode(true); });
 if(CLOUD){
-  sync();
-  setInterval(()=>{ if(document.visibilityState==="visible") sync(); },30000);
-  document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") sync(); });
+  privateCoach=new window.DuoCoach({
+    family:()=>family,
+    initialMeasures:person=>Object.fromEntries(Object.entries(store.measures).filter(([,body])=>body.person===person)),
+    needsRole:()=>{if(!$("#pick").classList.contains("open"))openPicker(false);},
+    showRoleChoice:()=>showRoleChoice(),
+    hideEntry:()=>closePicker(),
+    entryError:msg=>{const issue=$("#entryIssue");issue.textContent=msg;issue.hidden=false;},
+    setIdentity:(person,pairedFamily,uid)=>{
+      me=person; viewP=person; family=pairedFamily;
+      const nextData="duofit.private."+uid, nextDirty="duofit.private.dirty."+uid;
+      if(LS_DATA===nextData) return;
+      const own={checkins:{},measures:{}};
+      Object.entries(store.checkins).forEach(([id,b])=>{if(b.person===me) own.checkins[id]=b;});
+      Object.entries(store.measures).forEach(([id,b])=>{if(b.person===me) own.measures[id]=b;});
+      let cached={}; try{cached=JSON.parse(localStorage.getItem(nextData)||"{}");}catch(_){}
+      Object.entries(cached.checkins||{}).forEach(([id,b])=>{if(b.person===me) own.checkins[id]=b;});
+      Object.entries(cached.measures||{}).forEach(([id,b])=>{if(b.person===me) own.measures[id]=b;});
+      let cachedDirty=[];try{cachedDirty=JSON.parse(localStorage.getItem(nextDirty)||"[]");}catch(_){}
+      dirty=[...new Set([...dirty,...cachedDirty])].filter(k=>{const id=k.slice(2);return k[0]==="c"?!!own.checkins[id]:!!own.measures[id];});
+      store=own; LS_DATA=nextData; LS_DIRTY=nextDirty; LS_AI="duofit.private.aicache."+uid;
+      try{localStorage.setItem(LS_ME,me);localStorage.setItem(LS_FAMILY,family);localStorage.removeItem("fatloss.local");localStorage.removeItem("fatloss.dirty");localStorage.removeItem("fatloss.aicache");}catch(_){}
+      saveLocal();
+    },
+    setStore:data=>{const next={checkins:data.checkins||{},measures:data.measures||{}};dirty.forEach(k=>{const id=k.slice(2),src=k[0]==="c"?store.checkins:store.measures,dst=k[0]==="c"?next.checkins:next.measures;if(src[id])dst[id]=src[id];});store=next;saveLocal();},
+    clearDirty:key=>{dirty=dirty.filter(k=>k!==key);saveLocal();},
+    setSync:v=>{syncState=v;if(v==="ok")lastSync=new Date();renderSync();},
+    getCheckin:date=>getCheckin(me,date),putCheckin:b=>putCheckin(b),render:()=>{lastTab=null;render();},
+    clearIdentity:()=>{store={checkins:{},measures:{}};dirty=[];LS_DATA="fatloss.local";LS_DIRTY="fatloss.dirty";LS_AI="fatloss.aicache";$("#view").innerHTML="";},
+    saveLegacyGoal:p=>{const date=ymd(new Date()),ex=store.measures[me+"_"+date]||{},old=goalOf(me)||{};
+      const start=Number(p.weight),floor=minHealthy(Number(p.height)),target=p.target?Number(p.target):(p.goals.includes("减脂")?Math.max(floor,Math.round(start*.95*10)/10):start);
+      putMeasure({...ex,person:me,date,weight:start,goal:{height:Number(p.height),age:Number(p.age),start,target,pace:"gentle",adj:0,level:old.level||0,cardio:false,mode:p.target?null:"maintain",at:date,goals:p.goals,focus:p.focus}});
+      menuCache={};}
+  });
+  let savedCoachSession=false;try{savedCoachSession=!!localStorage.getItem("duofit.auth.v1");}catch(_){}
+  if(savedCoachSession)openSplash(async()=>{await coachReady.catch(()=>{});return privateCoach.active?"home":"choose";});else openPicker(false);
+  coachReady=privateCoach.start();privateCoach.ready=coachReady;
+  setInterval(()=>{if(document.visibilityState==="visible")sync();},30000);
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")sync();});
   window.addEventListener("online",()=>sync());
-}
+}else if(storedMe!=="hus" && storedMe!=="wife") openPicker(false);
+else openSplash();
 })();
 </script>
 </body>

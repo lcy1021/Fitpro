@@ -105,3 +105,10 @@
 - 文案用中文，简洁口语化
 - 每次改完用手机尺寸预览检查；提交前说明改了什么
 - 用户说"修改"时，默认要同步改 `index.html`（界面和内容），不能只改文档。`DuoFit.md`、`.stitch/DESIGN.md`、`CLAUDE.md` 要和 `index.html` 保持一致：改了其中一处，其他相关的地方一起更新
+
+### 私人健康伙伴迁移（新）
+
+- `private-coach.js` / `private-coach.css` 提供匿名身份和个人恢复码、四步对话式档案、每周确认、每日替代和通知入口；`index.html` 的旧本地模式继续保留，云模式改用本人账号。
+- 新表与 RPC 在 `supabase-private-coach.sql`；旧 `fl_pull/fl_put_*` 在迁移后撤权。`fl_private_pull` 只返回本人完整记录和伴侣的打卡布尔值、相对体重曲线。不能重新向伴侣返回原始健康记录。
+- `supabase/functions/coach` 是 AI 顾问；`weekly-push` 与 `supabase-weekly-push.sql` 是可选的后台周提醒。配置和上线步骤见 `docs/private-coach-setup.md`。
+- 运行 `node tests/scenarios.js` 验证旧场景和新私密视图。修改内联脚本后再提取并执行 `node --check`；Node 24 可用 `--experimental-strip-types --check` 检查 Edge Functions 的 TS 语法。
