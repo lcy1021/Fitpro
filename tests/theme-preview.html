@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <base href="/">
   <title>DuoFit 主题场景检查</title>
-  <link rel="stylesheet" href="private-coach.css?v=19">
+  <link rel="stylesheet" href="private-coach.css?v=22">
 </head>
 <body>
-<script src="private-coach.js?v=19"></script>
+<script src="private-coach.js?v=22"></script>
 <script>
 (async () => {
   // Only synthetic local fixtures; never load config.js or call a production backend.
@@ -54,6 +54,15 @@
     weight:person==='hus'?76:52, target:'', health:['暂时没有'], frequency:'每周 3 次', duration:'20 分钟', equipment:['瑜伽垫'],
     notes:['希望少一点久坐，每周能坚持活动。','','下班后在家练一会儿。'], confirmedAt:new Date().toISOString()};
   coach.draft = state==='empty' ? coach.blank() : {...coach.profile, notes:[...coach.profile.notes]};
+  const planAge = Math.max(0, Math.min(90, Number(params.get('plan-age') || 0)));
+  const planStart = app.ymd(new Date(Date.now() - planAge*864e5));
+  coach.profile.planStartDate = planStart;
+  if(state==='rest'){coach.profile.health=['身体疼痛'];coach.draft.health=['身体疼痛'];}
+  const planMonday = new Date(planStart+'T12:00:00');
+  planMonday.setDate(planMonday.getDate()-((planMonday.getDay()+6)%7));
+  coach.weeks[app.ymd(planMonday)]={plan:coach.proposedPlan(planStart),bodyStatus:coach.profile.health,reviewedAt:new Date().toISOString()};
+  const dailyFixture = state==='short'?{dailyChoice:'short',dailyState:'状态不错',dailyTime:'只有 10 分钟'}:state==='daily-rest'?{dailyChoice:'rest',dailyState:'很疲惫',dailyTime:'按原计划'}:{};
+  coach.h.getCheckin=day=>day===date?dailyFixture:{};
   coach.aiReady = true;
   coach.coachAI = async (mode,text) => {
     await new Promise(resolve=>setTimeout(resolve,650));
@@ -63,7 +72,7 @@
   coach.rpc = async () => ({});
   coach.ensurePaired = async () => {};
   app.setMe(person);
-  app.setStore({checkins:{}, measures:{
+  app.setStore({checkins:Object.keys(dailyFixture).length?{[person+'_'+date]:{person,date,...dailyFixture}}:{}, measures:{
     ['hus_'+previous]:{person:'hus',date:previous,weight:76.5}, ['hus_'+date]:{person:'hus',date,weight:76},
     ['wife_'+previous]:{person:'wife',date:previous,weight:52.2}, ['wife_'+date]:{person:'wife',date,weight:52}}});
   coach.partnerTrend=[{date:previous,changeKg:0},{date,changeKg:-.3}];

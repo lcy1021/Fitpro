@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');assert(fs.readFileSync(path.join(root,'sw.js'),'utf8').includes('notificationclick'),'push click handler');
-assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=19"></script>'), 'config loads before coaching');
+assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=22"></script>'), 'config loads before coaching');
 const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('</script>'));
 const memory = new Map();
 const elements = new Map();
@@ -18,7 +18,7 @@ const sandbox = {
   location: {hash:'',pathname:'/',search:'',protocol:'file:'}, history:{replaceState(){}}, navigator:{},
   setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame:f=>f(), matchMedia:()=>({matches:true}), console, Date, AbortController, URL,
 };
-const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','viewToday','viewDiet','viewTrain','viewRecord','renderRecordData','privateTrendCard','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','drawRun','feedRows','openPicker','showRoleChoice','extraMoveRows','extraDone','toggleExtraMove','EXTRA_MOVES'];
+const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','viewToday','viewDiet','viewTrain','viewRecord','renderRecordData','privateTrendCard','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','drawRun','feedRows','openPicker','showRoleChoice','extraMoveRows','extraDone','toggleExtraMove','EXTRA_MOVES','refreshCalendarDay'];
 const code = inline.replace('/* ---------- boot ---------- */', `globalThis.__app = {${exported.join(',')}, setStore:v=>{store=v},setMe:v=>{me=v;viewP=v},setViewP:v=>{viewP=v},setCoach:v=>{privateCoach=v},setTab:v=>{tab=v},setRunState:v=>{runState=v}};return;`);
 vm.runInNewContext(code, sandbox, {filename:'index-inline.js'});
 const app = sandbox.__app;
@@ -60,7 +60,7 @@ const DuoCoach = classSandbox.window.DuoCoach;
 let latest = {person:'hus',date};
 const c = new DuoCoach({getCheckin:()=>latest,putCheckin:v=>{latest=v},render(){},saveLegacyGoal(){},setIdentity(){},setStore(){},family:()=>''});
 c.member={person:'hus',family:'abcdefgh'};c.root={hidden:false,innerHTML:'',dataset:{}};c.draft={...c.blank(),age:'32',height:'170',weight:'78',goals:['减脂'],focus:['腰腹'],health:['身体疼痛'],frequency:'每周 3 次',duration:'20 分钟',diet:'不吃奶制品'};
-assert(Object.values(c.proposedPlan().days).every(x=>x==='REST'),'painful week rests');assert.equal(new Date(Object.keys(c.proposedPlan().days)[0]+'T12:00:00Z').getUTCDay(),1,'week starts Monday');assert.equal(c.legacyDraft({['hus_'+date]:{person:'hus',date,weight:77}}).weight,77,'existing weight prefilled');c.draft.health=['暂时没有'];assert(Object.values(c.proposedPlan().days).includes('N'),'no dumbbells selects bodyweight workout');c.draft.notes[1]='最近膝盖疼';assert(Object.values(c.proposedPlan().days).every(x=>x==='REST'),'free text pain blocks exercise');c.draft.notes[1]='';c.draft.health=['身体疼痛'];
+assert(Object.values(c.proposedPlan().days).every(x=>x==='REST'),'painful week rests');assert.equal(Object.keys(c.proposedPlan().days)[0],date,'first plan starts on confirmation day');assert.equal(c.legacyDraft({['hus_'+date]:{person:'hus',date,weight:77}}).weight,77,'existing weight prefilled');c.draft.health=['暂时没有'];assert(Object.values(c.proposedPlan().days).includes('N'),'no dumbbells selects bodyweight workout');c.draft.notes[1]='最近膝盖疼';assert(Object.values(c.proposedPlan().days).every(x=>x==='REST'),'free text pain blocks exercise');c.draft.notes[1]='';c.draft.health=['身体疼痛'];
 c.profile={...c.draft,confirmedAt:new Date().toISOString()};c.dailyState='身体疼痛';c.dailyTime='按原计划';c.coachAI=async()=>{throw new Error('daily choices must not wait for AI')};
 (async()=>{
   await c.saveDaily();assert.equal(latest.dailyChoice,'rest','AI cannot override pain');assert.equal(c.schedule(date,{kind:'train',w:'A'}).kind,'rest');
@@ -123,3 +123,10 @@ c.profile={...c.draft,confirmedAt:new Date().toISOString()};c.dailyState='身体
   classSandbox.fetch=async()=>({ok:false,status:400,json:async()=>({msg:'Anonymous sign-ins are disabled'})});await assert.rejects(new DuoCoach({}).authRequest('/auth/v1/signup',{}),/尚未开启免邮箱进入/,'disabled anonymous auth is translated');
   console.log('PASS coach health guard, daily alternatives, AI preview, weekly confirmation, private sync, anonymous entry, recovery, signout');
 })().catch(e=>{console.error(e);process.exitCode=1});
+
+assert.equal(app.refreshCalendarDay(),false,'same calendar day does not refresh');
+const futureDate=new Date(Date.now()+864e5);
+sandbox.Date=class extends Date {constructor(...args){super(...(args.length?args:[futureDate]));}};
+assert.equal(app.refreshCalendarDay(),true,'calendar day updates independently of network sync');
+assert(element('#dateLabel').textContent.includes((futureDate.getMonth()+1)+'月'+futureDate.getDate()+'日'),'header advances with the calendar');
+sandbox.Date=Date;

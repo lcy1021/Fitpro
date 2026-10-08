@@ -1,0 +1,52 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+let now = '2026-10-08T12:00:00';
+class Clock extends Date {constructor(...args){super(...(args.length?args:[now]));}static now(){return new Date(now).getTime();}}
+const context={window:{},navigator:{},Date:Clock,localStorage:{getItem:()=>null,setItem(){}},console};
+vm.runInNewContext(fs.readFileSync(require('node:path').join(__dirname,'../private-coach.js'),'utf8'),context);
+const Coach=context.window.DuoCoach;
+const records={};let writes=0;
+const c=new Coach({getCheckin:date=>records[date]||{},putCheckin:v=>{writes++;records[v.date]=v;},render(){},saveLegacyGoal(){}});
+c.member={person:'hus'};c.root={hidden:true,innerHTML:'',dataset:{}};
+c.draft={...c.blank(),goals:['建立运动习惯'],health:['暂时没有'],frequency:'每周 3 次',duration:'20 分钟',equipment:['无器械']};
+c.profile={...c.draft,planStartDate:'2026-10-08',confirmedAt:now};
+c.weeks['2026-10-05']={plan:c.proposedPlan(),reviewedAt:now};
+assert.equal(c.schedule('2026-10-07',{kind:'train',w:'A'}).w,'A','new plan does not rewrite pre-start history');
+assert.equal(c.schedule('2026-10-08',{}).w,'N','Thursday starts at day one');
+assert(c.dailyCard().includes('计划第 1 天')&&c.dailyCard().includes('今天的默认依据')&&c.dailyCard().includes('调整今天'));
+assert(!c.dailyCard().includes('安排今天'),'daily questionnaire is optional');
+for(let i=0;i<35;i++){
+ const date=new Date('2026-10-08T12:00:00');date.setDate(date.getDate()+i);
+ const key=[date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');
+ assert.equal(c.schedule(key,{}).kind,[0,2,4].includes(i%7)?'train':'rest','seven-day cycle remains stable: '+key);
+}
+now='2026-10-12T12:00:00';
+assert(c.dailyCard().includes('计划第 5 天'),'new Monday does not restart day count');
+c.weekHealth=['目前无特别不适'];c.weekNote='';c.rpc=async()=>{};
+(async()=>{
+ await c.weeklyDecision(false);
+ assert.equal(c.schedule('2026-10-15',{}).w,'N','keeping a week preserves Thursday origin');
+ now='2026-10-15T12:00:00';c.dailyState='状态不错';c.dailyTime='今天没时间';await c.saveDaily();
+ assert.equal(c.schedule('2026-10-15',{}).kind,'rest','today override wins');
+ now='2026-10-17T12:00:00';assert.equal(c.schedule('2026-10-17',{}).w,'N','daily override expires');
+ assert.equal(c.schedule('2026-10-15',{}).kind,'rest','saved historical override is retained');
+ c.weekHealth=['身体疼痛'];c.weekNote='';c.weekProposed=null;c.coachAI=async()=>null;
+ await c.weeklyDecision(true);await c.weeklyDecision(true);
+ assert.equal(c.schedule('2026-11-05',{}).kind,'rest','carried health rest cannot resume old training');
+ now='2026-12-31T12:00:00';c.weeks={};c.profile={...c.draft,planStartDate:'2026-12-31',confirmedAt:now};
+ c.weeks['2026-12-28']={plan:c.proposedPlan()};
+ assert.equal(c.schedule('2027-01-04',{}).w,'N','year boundary preserves cycle');
+ const base=c.proposedPlan();c.previewPlan=base;c.step=3;c.current='onboard';
+ c.coachAI=async()=>({plan:{days:{'2026-12-28':'N','2026-12-29':'REST','2026-12-30':'N','2026-12-31':'REST','2027-01-01':'N','2027-01-02':'REST','2027-01-03':'REST'}}});
+ await c.generatePlan();assert.equal(c.previewPlan.days['2026-12-31'],'N','existing AI Monday plan is aligned to first day');
+ const saves=[];c.rpc=async(name,args)=>saves.push({name,args});c.ensurePaired=async()=>{};c.issueRecoveryCode=async()=>{};
+ await c.confirmStep();assert.equal(c.profile.planStartDate,'2026-12-31');assert.equal(writes,1,'default execution never creates a fake check-in');
+ assert(saves.some(x=>x.name==='fl_private_put_week'&&x.args.p_body.plan.days['2026-12-31']==='N'));
+ now='2027-01-01T12:00:00';c.step=3;c.current='onboard';c.coachAI=async()=>null;const saved=saves.length;
+ await c.confirmStep();assert.equal(saves.length,saved,'midnight change requires reviewing shifted dates');assert(c.root.innerHTML.includes('日期已变化'));
+ const legacy=new Coach({getCheckin:()=>({})});legacy.member={person:'hus'};legacy.profile={confirmedAt:'2026-12-20'};
+ legacy.weeks['2026-12-28']={plan:{days:{'2026-12-28':'A','2026-12-29':'REST','2026-12-30':'B','2026-12-31':'REST','2027-01-01':'A','2027-01-02':'REST','2027-01-03':'REST'}}};
+ assert.equal(legacy.schedule('2027-01-04',{}).w,'A','old Monday plans retain their schedule');
+ console.log('PASS first day, continuous cycles, weekly keep, health rest, daily expiry, year boundary, AI alignment, save and midnight review, legacy plans');
+})().catch(e=>{console.error(e);process.exitCode=1;});

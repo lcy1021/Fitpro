@@ -162,3 +162,9 @@
     font-size:16px;line-height:18px;
   }
 }
+
+.coach-home-basis{position:relative;padding:12px 14px;border-radius:13px;background:var(--surface);color:var(--muted);font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.coach-home-basis b{display:block;color:var(--ink);font-size:12px}
+.coach-home-basis p{margin:5px 0}
+.coach-home-basis small{display:block;margin-top:7px;font-size:11px}
+.coach-home-daily>button .ui-icon{width:18px;height:18px;transform:rotate(90deg)}
