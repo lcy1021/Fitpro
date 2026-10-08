@@ -11,7 +11,22 @@ const trim = (v: unknown, n = 500) => String(v ?? "").slice(0, n);
 const monday = (date: Date) => { const d = new Date(date); d.setUTCHours(12, 0, 0, 0); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); };
 const weekDates = () => { const chinaDate = new Intl.DateTimeFormat("en-CA", {timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date()); const start = new Date(monday(new Date(chinaDate + "T12:00:00Z")) + "T12:00:00Z"); return Array.from({length: 7}, (_, i) => { const d = new Date(start); d.setUTCDate(d.getUTCDate() + i); return d.toISOString().slice(0, 10); }); };
 function cors(origin: string | null) { return {"Access-Control-Allow-Origin": origin && origins.includes(origin) ? origin : origins[0], "Access-Control-Allow-Headers": "authorization, apikey, content-type", "Access-Control-Allow-Methods": "POST, OPTIONS", "Vary": "Origin"}; }
-function json(text: string): Record<string, unknown> | null { const a = text.indexOf("{"), b = text.lastIndexOf("}"); if (a < 0 || b <= a) return null; try { const x = JSON.parse(text.slice(a, b + 1)); return x && typeof x === "object" && !Array.isArray(x) ? x : null; } catch { return null; } }
+function json(text: string): Record<string, unknown> | null {
+  for (let start = text.indexOf("{"); start !== -1; start = text.indexOf("{", start + 1)) {
+    let depth = 0, quoted = false, escaped = false;
+    for (let end = start; end < text.length; end++) {
+      const char = text[end];
+      if (quoted) { if (escaped) escaped = false; else if (char === "\\") escaped = true; else if (char === '"') quoted = false; continue; }
+      if (char === '"') quoted = true;
+      else if (char === "{") depth++;
+      else if (char === "}" && --depth === 0) {
+        try { const value = JSON.parse(text.slice(start, end + 1)); if (value && typeof value === "object" && !Array.isArray(value)) return value; } catch { /* try the next object */ }
+        break;
+      }
+    }
+  }
+  return null;
+}
 const system = `你是减脂与健身产品里的健康伙伴。用简洁、温和的中文帮助成年人整理目标与制定低风险计划。你不能诊断疾病，不能替代医生、营养师或康复师。经期不适、近期生病、疼痛、慢性病变化时，本周训练应暂缓或降低强度；疼痛和生病时建议休息并视情况咨询专业人员。不能建议极端节食、补偿性运动或快速减重。只返回 JSON 对象，不要代码块。interpret 模式返回 {"summary":"复述理解","suggestions":{"goals":[],"focus":[],"health":[],"frequency":"","duration":"","equipment":[],"diet":""}}；plan/weekly 模式返回 {"summary":"一句解释","plan":{"days":{"YYYY-MM-DD":"REST|A|B|W|N"},"mealSwaps":{"breakfast":"具体食物和份量","lunch":"具体食物和份量","snack":"具体食物和份量","dinner":"具体食物和份量"},"reason":"一句解释"}}；daily 模式返回 {"summary":"一句解释","choice":"original|short|rest"}。日期只用用户给出的本周七天。A/B 为哑铃训练，W 为居家臀腿训练，N 为无需器械的全身训练，REST 为休息。四餐建议必须写明具体食物和大致份量，照顾用户的饮食禁忌，兼有蛋白质、蔬果和适量主食，总量大致接近输入的 targetKcal；不要声称精确热量。不提供具体医疗或药物建议。`;
 Deno.serve(async req => {
   const headers = {...cors(req.headers.get("origin")), "Content-Type": "application/json"};
@@ -51,10 +66,19 @@ Deno.serve(async req => {
   if (Deno.env.get("ANTHROPIC_AUTH_TOKEN")) aiHeaders.authorization = "Bearer " + Deno.env.get("ANTHROPIC_AUTH_TOKEN");
   else aiHeaders["x-api-key"] = secret;
   try {
-    const response = await fetch(base + "/v1/messages", {method: "POST", headers: aiHeaders, body: JSON.stringify({model: Deno.env.get("COACH_AI_MODEL") || Deno.env.get("AI_MODEL") || "claude-haiku-4-5", max_tokens: 1200, system, messages: [{role: "user", content: prompt}]})});
-    if (!response.ok) return reply(502, {error: "ai_unavailable"});
-    const raw = await response.json();
-    const out = json(raw.content?.find((x: {type: string}) => x.type === "text")?.text || "");
+    let out: Record<string, unknown> | null = null;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const response = await fetch(base + "/v1/messages", {method: "POST", headers: aiHeaders, body: JSON.stringify({model: Deno.env.get("COACH_AI_MODEL") || Deno.env.get("AI_MODEL") || "claude-haiku-4-5", max_tokens: mode === "plan" || mode === "weekly" ? (attempt ? 3500 : 2600) : (attempt ? 1800 : 1200), system, messages: [{role: "user", content: attempt ? prompt + "\n请只返回一个完整、紧凑的 JSON 对象，不要解释或代码块。" : prompt}]})});
+      if (!response.ok) { console.warn("coach upstream status", response.status); return reply(502, {error: "ai_unavailable"}); }
+      const raw = await response.json();
+      const text = Array.isArray(raw.content) ? raw.content.filter((x: {type: string}) => x.type === "text").map((x: {text: string}) => x.text || "").join("\n") : "";
+      out = json(text);
+      const candidatePlan = out?.plan && typeof out.plan === "object" ? out.plan as Record<string, unknown> : null;
+      const candidateDays = candidatePlan?.days && typeof candidatePlan.days === "object" ? candidatePlan.days as Record<string, unknown> : null;
+      if ((mode === "plan" || mode === "weekly") && (!candidateDays || !week.every(date => typeof candidateDays[date] === "string") || !candidatePlan?.mealSwaps)) out = null;
+      if (out) break;
+      console.warn("coach invalid output", mode, raw.stop_reason || "unknown");
+    }
     if (!out) return reply(502, {error: "ai_invalid_output"});
     const summary = trim(out.summary, 300);
     if (mode === "interpret") {
