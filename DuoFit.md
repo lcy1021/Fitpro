@@ -331,3 +331,9 @@ food?: { breakfast|lunch|snack|dinner: { text, items: [{ n, q, k }], kcal } }
 - 固定导航高度（包含 iPhone 底部安全区）由 `ResizeObserver` 测量，页面底部至少留出导航实际高度加 24 px；导航变高或屏幕旋转时重新测量，无 JS 时采用带安全区的 CSS 预留值。滚动聚焦也避开导航遮挡。
 - 记录页设置展开后，恢复码、家庭配对和清除本机登录三个按钮应能完整滚动到导航上方，卡片底部保持间距。身体记录输入网格使用 `minmax(0,1fr)` 和可收缩输入框，避免 320 px 窄屏将保存按钮撑出卡片。
 - 验收记录与截图：`docs/qa/settings-safe-area/README.md`；缓存版本更新为 `duofit-v20`。
+
+
+## 设置齿轮图标修正（2026-10-08）
+
+- 设置图标旧路径下沿到 y=25.2，超出 24×24 画板，描边进一步被切断；使用 Lucide `settings` 完整替换，保留 1.85 px 描边和 19 px 显示尺寸。
+- 代码 sprite 与 `UIset/icons/settings.svg`、图标总览同步，缓存升至 `duofit-v21`。局部截图对照见 `docs/qa/settings-icon/README.md`。此前 v20 的修改解决底部间距，本次修复齿轮本身的裁切。
