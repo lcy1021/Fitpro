@@ -1,0 +1,50 @@
+[
+  {
+    "mode": "default",
+    "view": "today",
+    "defaultLists": 4,
+    "fonts": [
+      "16px",
+      "12px",
+      "14px"
+    ],
+    "overflow": false,
+    "pending": 0
+  },
+  {
+    "mode": "default",
+    "view": "diet",
+    "defaultLists": 4,
+    "fonts": [
+      "16px",
+      "12px",
+      "14px"
+    ],
+    "overflow": false,
+    "pending": 0
+  },
+  {
+    "mode": "missing",
+    "view": "today",
+    "defaultLists": 0,
+    "fonts": [
+      "16px",
+      "12px",
+      "14px"
+    ],
+    "overflow": false,
+    "pending": 4
+  },
+  {
+    "mode": "missing",
+    "view": "diet",
+    "defaultLists": 0,
+    "fonts": [
+      "16px",
+      "12px",
+      "14px"
+    ],
+    "overflow": false,
+    "pending": 4
+  }
+]

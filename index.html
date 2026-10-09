@@ -304,32 +304,39 @@ p{margin:0}
 .foods li b{font-size:13px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}
 .foods li b::after{content:" kcal";font-size:11px;font-weight:500;color:var(--muted)}
 .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+/* v35: one type scale and role-tinted surfaces across all meal renderers. */
 .meal>*{min-width:0}
-.meal{display:grid;grid-template-columns:minmax(0,1fr);padding:18px;border:1px solid var(--line);border-radius:22px;box-shadow:0 3px 14px -8px rgba(30,47,61,.16);gap:16px}
-.meal-heading{display:flex;align-items:center;gap:10px;min-width:0}
-.meal-title{flex:1;min-width:0}.meal-title h4{font-size:16px;line-height:1.3;margin:0;font-weight:750}
-.meal-title time{font-size:11px;color:var(--muted)}
+.meal{display:grid;grid-template-columns:minmax(0,1fr);padding:16px;border:0;border-radius:22px;box-shadow:var(--shadow);gap:14px;background:var(--surface)}
+.meal-heading{display:flex;align-items:center;gap:9px;min-width:0}
+.meal-title{flex:1;min-width:0}.meal-title h4{font-size:16px;line-height:1.3;margin:0;font-weight:700;color:var(--ink)}
+.meal-title time{font-size:12px;color:var(--muted)}
+.meal-art{width:88px;height:64px;object-fit:contain;flex:none;pointer-events:none}
+.meal>.meal-heading{margin:-16px -16px 0;padding:10px 16px;border-radius:22px 22px 16px 16px;background:color-mix(in srgb,var(--p-soft) 65%,var(--surface));min-height:82px}
+.meal>.meal-heading .meal-art{width:106px;height:72px}
 .meal-energy{display:flex;align-items:baseline;justify-content:flex-end;gap:4px;flex-wrap:wrap;max-width:46%;text-align:right;font-variant-numeric:tabular-nums;line-height:1.4}
-.meal-energy b{color:var(--ink);font-size:16px;font-weight:750;white-space:nowrap;letter-spacing:-.03em}.meal-energy small{color:var(--muted);font-size:10px;font-weight:450}
-.meal-symbol{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--sunk);color:var(--muted);flex:none}.meal-symbol .ui-icon{width:20px;height:20px}
-.meal-heading .meal-symbol{background:var(--p-soft);color:var(--p-ink)}
-.mplan-suggestion{padding:0 0 0 12px;border-left:2px solid var(--p-soft);min-width:0;overflow-wrap:anywhere}
-.mplan-suggestion>span,.meal-caption{display:block;font-size:10px;font-weight:650;color:var(--muted);letter-spacing:.03em}
-.mplan-suggestion p{margin:5px 0 0;font-size:13px;line-height:1.8;color:var(--ink)}
-.meal .foods,.mplan .foods{background:transparent;padding:0;margin-top:5px}
-.meal .foods li,.mplan .foods li{font-size:13px;padding:6px 0;font-weight:550}.meal .foods li b,.mplan .foods li b{font-size:12px;font-weight:550;color:var(--muted)}
-.meal .foods-note,.mplan .foods-note{font-size:11px;margin:5px 0 0;color:var(--muted)}
-.meal-actual{padding-top:14px;border-top:1px solid var(--line)}
-.meal-actual-top{display:flex;align-items:center;gap:8px}.meal-actual-top>span:first-child{font-size:11px;color:var(--p-ink);font-weight:650}
-.meal-actual-top .meal-energy{max-width:none;flex:1;justify-content:flex-start}.meal-actual-top .meal-energy b{font-size:20px;color:var(--p-ink)}
-.meal-edit{display:flex;align-items:center;justify-content:center;gap:2px;min-height:40px;padding:4px 0 4px 10px;border:0;background:transparent;color:var(--p-ink);font-size:12px;font-weight:650;flex:none}
-.meal-food-text{font-size:13px;color:var(--ink);line-height:1.7;margin:2px 0 0;overflow-wrap:anywhere}
-.meal .logbtn{width:100%;justify-self:stretch;display:flex;align-items:center;gap:5px;margin:0;border:0;background:transparent;border-top:1px solid var(--line);border-radius:0;min-height:44px;padding:12px 0 0;color:var(--p-ink);font-size:12px;font-weight:650;text-align:left}
+.meal-energy b{color:var(--ink);font-size:16px;font-weight:700;white-space:nowrap;letter-spacing:-.02em}.meal-energy small{color:var(--muted);font-size:12px;font-weight:400}
+.meal-plan-range{display:flex;align-items:baseline;gap:10px;font-size:12px;color:var(--muted)}.meal-plan-range .meal-energy{max-width:none;justify-content:flex-start}
+.meal-symbol{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--p-soft);color:var(--p-ink);flex:none}.meal-symbol .ui-icon{width:20px;height:20px}
+.mplan-suggestion{min-width:0;overflow-wrap:anywhere}
+.mplan-suggestion>span,.meal-caption{display:block;font-size:12px;font-weight:600;color:var(--muted)}
+.mplan-suggestion p{margin:0;font-size:14px;line-height:1.7;color:var(--ink)}.mplan-suggestion>span+p{margin-top:5px}
+.meal .foods,.mplan .foods{background:transparent;padding:0;margin:0}
+.meal .foods li,.mplan .foods li{font-size:14px;padding:6px 0;font-weight:400}.meal .foods li small,.mplan .foods li small,.meal .foods li b,.mplan .foods li b{font-size:12px;font-weight:400;color:var(--muted)}
+.meal .foods li b::after,.mplan .foods li b::after{font-size:12px}
+.meal .foods-note,.mplan .foods-note{font-size:12px;margin:5px 0 0;color:var(--muted)}
+.meal-actual{padding-top:12px;border-top:1px solid var(--line)}
+.meal-actual-top{display:flex;align-items:center;gap:8px}.meal-actual-top>span:first-child{font-size:12px;color:var(--muted);font-weight:400}
+.meal-actual-top .meal-energy{max-width:none;flex:1;justify-content:flex-start}.meal-actual-top .meal-energy b{font-size:16px;color:var(--p-ink)}
+.meal-edit{display:flex;align-items:center;justify-content:center;gap:2px;min-height:40px;padding:4px 0 4px 6px;border:0;background:transparent;color:var(--p-ink);font-size:12px;font-weight:600;flex:none}
+.meal-food-text{font-size:14px;color:var(--ink);line-height:1.7;margin:2px 0 0;overflow-wrap:anywhere}
+.meal .logbtn{width:100%;justify-self:stretch;display:flex;align-items:center;gap:5px;margin:0;border:0;background:transparent;border-top:1px solid var(--line);border-radius:0;min-height:44px;padding:12px 0 0;color:var(--p-ink);font-size:12px;font-weight:600;text-align:left}
 .meal .logbtn .ui-icon:last-child{margin-left:auto}
-.meal .seg,.diary-actions{padding:4px;border-radius:13px;background:var(--sunk);gap:3px;margin:0}
+.meal .seg,.diary-actions{padding:4px;border-radius:13px;background:color-mix(in srgb,var(--p-soft) 38%,var(--surface));gap:3px;margin:0}
 .meal .seg button,.diary-actions button{min-height:40px;border-radius:10px;border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:600;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:3px;box-shadow:none;padding:7px 2px}
-.meal .seg button[aria-pressed="true"],.diary-actions button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.meal .seg button[aria-pressed="true"][data-v="plan"],.diary-actions button[aria-pressed="true"][data-v="plan"]{background:var(--surface);color:var(--p-ink);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.meal .seg button[aria-pressed="true"],.diary-actions button[aria-pressed="true"]{background:var(--p-soft);color:var(--p-ink);box-shadow:none}
+.meal-section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:80px;margin:0 4px 12px;color:var(--ink)}
+.meal-section-heading>div{min-width:0}.meal-section-heading h3{font-size:17px;line-height:1.3;font-weight:800;margin:0}.meal-section-heading time{display:block;font-size:12px;color:var(--muted);margin-top:6px}
+.meal-section-heading img{width:80px;height:80px;object-fit:contain;flex:none;pointer-events:none}.meal-section-heading .couple-art{width:144px;height:80px}
 .nutrition-summary{padding:20px;background:linear-gradient(140deg,var(--surface) 45%,var(--p-soft));border:1px solid var(--line)}
 .nutrition-top,.nutrition-value,.nutrition-meta{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .nutrition-top>span:first-child{font-size:13px;font-weight:750;color:var(--muted)}
@@ -352,10 +359,10 @@ p{margin:0}
 .diary-day-title{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 0 12px;border-top:1px solid var(--line);margin-top:8px}.diary-day-title>b{font-size:14px}.diary-day-title>span{font-size:11px;color:var(--muted)}.diary-day-title button{border:0;background:transparent;color:var(--p-ink);font-size:11px;padding:6px}
 .diary-meals{display:grid;gap:0}.diary-meal{min-width:0;padding:16px 0;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0}.diary-meal:first-child{padding-top:4px}.diary-meal:last-child{border-bottom:0;padding-bottom:0}
 .diary-meal-head{display:flex;align-items:center;gap:10px}.diary-meal-head>div{flex:1;min-width:0}.diary-meal-head h4{margin:0;font-size:14px;line-height:1.3;font-weight:750}
-.meal-status{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);margin-top:3px}.meal-status.plan{color:var(--p-ink)}.meal-status.over{color:var(--sun-ink)}.meal-status.plan::before{content:"";width:4px;height:4px;background:currentColor;border-radius:50%}
+.meal-status{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--muted);margin-top:3px}.meal-status.empty{font-size:12px;padding:0;text-align:left}.meal-status.plan{color:var(--p-ink)}.meal-status.over{color:var(--sun-ink)}.meal-status.plan::before{content:"";width:4px;height:4px;background:currentColor;border-radius:50%}
 .diary-edit{display:flex;align-items:center;gap:5px;min-height:44px;padding:8px 0;border:0;background:transparent;color:var(--p-ink);font-size:12px;font-weight:600;width:100%;text-align:left}.diary-edit .ui-icon:last-child{margin-left:auto}
-.diary-food{font-size:13px;color:var(--ink);line-height:1.75;margin:9px 0 0 46px;overflow-wrap:anywhere}.diary-food.empty{color:var(--muted)}
-.diary-meal .meal-energy b{font-size:17px}
+.diary-food{font-size:14px;color:var(--ink);line-height:1.75;margin:9px 0 0 46px;overflow-wrap:anywhere}.diary-food.empty{color:var(--muted)}
+.diary-meal .meal-energy b{font-size:16px;color:var(--p-ink)}
 .diary-foot{font-size:11px;line-height:1.6;color:var(--muted);margin-top:14px}
 .habit-card{padding:20px;background:linear-gradient(130deg,var(--hus-soft),var(--surface) 48%,var(--wife-soft));border:1px solid var(--line)}
 .habit-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}.habit-heading h3{margin:0;font-size:19px;letter-spacing:-.03em}.habit-heading p{font-size:12px;color:var(--muted);margin-top:4px}.habit-heart{color:var(--wife-ink);width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--surface)}
@@ -367,18 +374,26 @@ p{margin:0}
 .habit-day{border:1px solid transparent;border-radius:11px;background:var(--sunk);padding:8px 1px;min-height:47px;color:var(--ink)}.habit-day>b{font-size:12px;font-weight:650}.habit-day>span{display:flex;justify-content:center;gap:4px;margin-top:5px}.habit-day:disabled{opacity:.3}.habit-day.today{border-color:var(--me)}.habit-day[aria-pressed="true"]{background:var(--me-soft);border-color:var(--me)}
 .habit-day i,.habit-legend i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--faint);opacity:.25}.habit-day i.hus.checked,.habit-legend i.hus{background:var(--hus);opacity:1}.habit-day i.wife.checked,.habit-legend i.wife{background:var(--wife);opacity:1}.habit-day i.unknown,.habit-legend i.unknown{background:transparent;border:1px solid var(--muted);opacity:.65}
 .habit-legend{display:flex;align-items:center;gap:12px;font-size:10px;color:var(--muted);padding:12px 1px}.habit-legend>span{display:flex;align-items:center;gap:4px}.habit-legend>small{margin-left:auto;font-size:10px}
-.history-partner-status{display:flex;gap:7px;margin:0 0 12px;flex-wrap:wrap}.history-partner-status>button{min-height:42px;padding:9px 12px;border:1px solid transparent;border-radius:12px;font-size:12px;background:var(--sunk);color:var(--muted);font-weight:650}.history-partner-status>button[aria-pressed="true"]{background:var(--p-soft);color:var(--p-ink);border-color:var(--p)}.history-partner-status>button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}.history-view-label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted);margin:0 0 10px}.history-view-label button{font-size:11px;min-height:36px;padding:6px}
-.history-day .diary-meal{padding:16px 0}.history-day .diary-meal:first-child{padding-top:6px}.history-day .diary-meals{gap:0}.history-day .diary-food{font-size:13px;margin-top:8px}.history-day .diary-meal[data-meal-status="empty"] .meal-symbol{opacity:.65}
+.history-partner-status{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:4px;border-radius:15px;background:var(--sunk);margin:0 0 12px}
+.history-partner-status>button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px;border:0;border-radius:11px;font-size:14px;background:transparent;color:var(--muted);font-weight:500;box-shadow:none}
+.history-partner-status>button[aria-pressed="true"]{background:var(--surface);color:var(--p-ink);font-weight:700;box-shadow:0 2px 8px rgba(25,32,36,.13)}
+.history-partner-status>button:focus-visible,.meal .seg button:focus-visible,.diary-actions button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.history-view-label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);margin:0 0 12px}.history-view-label button{font-size:12px;min-height:40px;padding:6px}
+.history-day .diary-day-title{display:block}.history-day .diary-day-title>span{display:block;font-size:12px;margin-top:5px}
+.history-day .diary-meals{gap:8px;position:relative;border-left:1px solid var(--p-soft);padding-left:8px;margin-left:4px}
+.history-day .diary-meal{position:relative;padding:14px 12px;background:color-mix(in srgb,var(--p-soft) 45%,var(--surface));border:0;border-radius:16px}
+.history-day .diary-meal::before{content:"";position:absolute;left:-13px;top:28px;width:6px;height:6px;border:2px solid var(--p);border-radius:50%;background:var(--surface)}
+.history-day .diary-food{font-size:14px;margin-top:8px}.history-day .diary-meal[data-meal-status="empty"] .meal-symbol{opacity:.65}
 .history-activity{display:flex;justify-content:space-between;gap:8px;padding:12px 2px;font-size:12px;border-bottom:1px solid var(--line)}.history-activity span{display:flex;align-items:center;gap:6px;color:var(--muted)}.history-activity b{font-weight:650}.history-empty{font-size:12px;color:var(--muted);padding:18px 2px 10px}
-@media(max-width:350px){.diet-week,.checkin-history,.habit-card,.nutrition-summary{padding:14px}.nutrition-value b{font-size:27px}.nutrition-value img{width:48px;height:48px}.habit-person{padding:10px}.habit-person-head{gap:4px}.habit-person-head b{font-size:11px}.meal{padding:15px}.meal-energy b{font-size:14px}.diary-food{margin-left:0}.meal-actual-top{gap:5px}.meal-actual-top .meal-energy b{font-size:18px}.habit-legend{gap:8px}.habit-legend>small{font-size:9px}}
+@media(max-width:350px){.mplan .meal-art{width:52px;height:48px}.mplan .meal-heading{gap:6px}.mplan .meal-energy{max-width:42%}.meal-section-heading .couple-art{width:110px;height:64px}.diet-week,.checkin-history,.habit-card,.nutrition-summary{padding:14px}.nutrition-value b{font-size:27px}.nutrition-value img{width:48px;height:48px}.habit-person{padding:10px}.habit-person-head{gap:4px}.habit-person-head b{font-size:11px}.meal{padding:15px}.meal-energy b{font-size:14px}.diary-food{margin-left:0}.meal-actual-top{gap:5px}.meal-actual-top .meal-energy b{font-size:16px}.habit-legend{gap:8px}.habit-legend>small{font-size:9px}}
 
 /* diet tab */
 .list{margin:0;padding:0;list-style:none}
 .list li{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
 .list li:last-child{border-bottom:0}
 .list li small{display:block;color:var(--muted);font-size:12px}
-.meal-plan-list{padding:2px 18px;border:1px solid var(--line);border-radius:22px;box-shadow:0 3px 14px -8px rgba(30,47,61,.16)}
-.mplan{padding:18px 0;display:grid;gap:12px}.mplan+.mplan{border-top:1px solid var(--line)}
+.meal-plan-list{padding:2px 16px;border:0;border-radius:22px;box-shadow:var(--shadow)}
+.mplan{padding:16px 0;display:grid;gap:12px}.mplan+.mplan{border-top:1px solid var(--line)}
 .faq details{border-radius:var(--radius-s);background:var(--sunk)}
 .faq details+details{margin-top:8px}
 .faq summary{list-style:none;cursor:pointer;padding:12px 14px;font-size:14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -687,7 +702,7 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="private-coach.css?v=34">
+<link rel="stylesheet" href="private-coach.css?v=35">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -820,7 +835,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=34"></script>
+<script src="private-coach.js?v=35"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1614,7 +1629,7 @@ function viewToday(){
   const meals=MEALS.map(m=>{
     const v=c.meals?.[m],p=plan[m],fd=v==='skip'?null:c.food?.[m];
     return `<article class="card meal ${me}" data-meal-status="${v||''}">
-      ${mealHeading(m,p.t,p.time,mealKcal(me,m))}
+      ${mealHeading(m,p.t,p.time,mealKcal(me,m),"today")}
       ${mealPlanContent(me,m,hasDietRule)}
       ${fd?`<div class="meal-actual"><div class="meal-actual-top"><span>实际记录</span>${mealEnergy(fd.kcal)}<button type="button" class="meal-edit" data-food="${m}" aria-label="修改${p.t}食物">修改${icon('chevron-right','sm')}</button></div><p class="meal-food-text">${esc(mealRecordText(c,m))}</p></div>`
         :`<button class="logbtn" data-food="${m}">${icon('note','sm')} ${v==='skip'?'这餐没吃 · 重新记食物':'记食物，估算热量'}${icon('chevron-right','sm')}</button>`}
@@ -1631,7 +1646,7 @@ function viewToday(){
   const goalTop = privateCoach?.active ? privateCoach.weeklyCard() : gp ? suggCard() : `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>设定你的目标</b><small>按你的体重安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
   $("#view").innerHTML = missed + goalTop + (privateCoach?.active ? privateCoach.dailyCard() : together) + privateDuo + `
     <section class="sec">${secH("train","今天的训练")}${trainCard}</section>
-    <section class="sec">${secH("diet","今天吃什么",gp?`今日目标约 ${gp.kcal} kcal<br>蛋白质约 ${gp.protein}g`:`全天${dayKcal(me)}<br>蛋白质${plan.protein}`)}
+    <section class="sec">${mealSectionHeading("今天吃什么",date,"today",me)}
       <div class="stack">${meals}</div>${overNote}</section>
     <section class="sec">${secH("desk","工位起身")}
       <div class="card counter"><span class="ic" aria-hidden="true">${icon("stretch","lg")}</span><div class="txt"><h4>起来动一动</h4><p>每坐 1 小时起身 2–3 分钟，今天目标 6 次</p></div>
@@ -1669,14 +1684,23 @@ function mealEnergy(value,label='约'){
   const number=typeof value==='number'?(Number.isFinite(value)?Math.round(value):null):value;
   return number==null?'':`<span class="meal-energy"><small>${label}</small><b>${esc(number)}</b><small>kcal</small></span>`;
 }
-function mealHeading(m,title,time,range){
-  return `<div class="meal-heading"><span class="meal-symbol m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><div class="meal-title"><h4>${esc(title)}</h4><time>${esc(time)}</time></div>${mealEnergy(range)}</div>`;
+function mealArt(m){
+  return `<img class="meal-art" src="assets/meal-art/${m}-v1.webp?v=meal1" width="106" height="72" alt="" loading="lazy" decoding="async">`;
+}
+function mealHeading(m,title,time,range,layout='plan'){
+  return `<div class="meal-heading"><span class="meal-symbol m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><div class="meal-title"><h4>${esc(title)}</h4><time>${esc(time)}</time></div>${mealArt(m)}${layout==='today'?'':mealEnergy(range)}</div>${layout==='today'?`<div class="meal-plan-range"><span>计划</span>${mealEnergy(range)}</div>`:''}`;
+}
+function mealSectionHeading(title,date,kind,person=me){
+  const d=new Date(date+'T12:00:00');
+  const label=`${d.getMonth()+1}月${d.getDate()}日 周${WEEK[d.getDay()]}`;
+  const src=kind==='record'?'assets/meal-art/record-couple-v1.webp?v=meal1':kind==='diet'?mood(person,'meal'):`assets/avatar-${person}.webp?v=media1`;
+  return `<div class="meal-section-heading ${person}"><div><h3>${esc(title)}</h3><time datetime="${esc(date)}">${label}</time></div><img class="${kind==='record'?'couple-art':''}" src="${src}" alt="" width="${kind==='record'?128:80}" height="${kind==='record'?72:80}" loading="lazy" decoding="async"></div>`;
 }
 function mealPlanContent(person,m,hasDietRule){
   const swap=privateCoach?.active?privateCoach.mealSwap(m):'';
-  if(swap||hasDietRule)return `<div class="mplan-suggestion"><span>${swap?'本周个性建议':'餐食待确认'}</span><p>${esc(swap||'已记录饮食限制，个性餐食暂未生成；请勿照搬默认菜品。')}</p></div>`;
+  if(swap||hasDietRule)return `<div class="mplan-suggestion">${swap?'':'<span>餐食待确认</span>'}<p>${esc(swap||'已记录饮食限制，个性餐食暂未生成；请勿照搬默认菜品。')}</p></div>`;
   const f=menuFor(person)[m];
-  return `<div class="meal-default"><span class="meal-caption">计划食物</span><ul class="foods">${f.items.map(i=>`<li><span>${esc(i.n)}<small>${esc(i.q)}${i.or?` · 或${esc(i.or.n)} ${kcalText(i.or.k)}`:''}</small></span><b>${kcalText(i.k)}</b></li>`).join('')}</ul>${f.pick1?'<p class="foods-note">三样里选一样</p>':''}${f.alt?`<p class="foods-note">${esc(f.alt.n)}（约 ${kcalText(f.alt.k)} kcal），就不再吃别的</p>`:''}</div>`;
+  return `<div class="meal-default"><ul class="foods">${f.items.map(i=>`<li><span>${esc(i.n)}<small>${esc(i.q)}${i.or?` · 或${esc(i.or.n)} ${kcalText(i.or.k)}`:''}</small></span><b>${kcalText(i.k)}</b></li>`).join('')}</ul>${f.pick1?'<p class="foods-note">三样里选一样</p>':''}${f.alt?`<p class="foods-note">${esc(f.alt.n)}（约 ${kcalText(f.alt.k)} kcal），就不再吃别的</p>`:''}</div>`;
 }
 function mealActions(m,v,title){
   return `<div class="seg diary-actions" role="group" aria-label="${title}打卡">${Object.entries(MEAL_STATES).map(([key,[,label]])=>`<button type="button" data-meal="${m}" data-v="${key}" aria-label="${title}：${key==='plan'?'按计划吃了':label}" aria-pressed="${v===key}">${v===key?icon('check','sm'):''}${label}</button>`).join('')}</div>`;
@@ -1727,7 +1751,7 @@ function viewDiet(){
   $("#view").innerHTML=peekSwitch()+`
   <section class="sec">${secH("diet","饮食日志",PEOPLE[viewP].label)}${ringCard(viewP)}</section>
   <section class="sec">${secH("record","饮食打卡记录",dietWeekOffset===0?"这周":"按周查看")}${dietWeekCard(viewP)}</section>
-  <section class="sec">${secH("today",PEOPLE[viewP].label+"的一天","蛋白质 "+plan.protein)}
+  <section class="sec">${mealSectionHeading(viewP===me?"我的一天":PEOPLE[viewP].label+"的一天",ymd(new Date()),"diet",viewP)}
     <div class="card meal-plan-list ${viewP}">${rows}</div></section>
   ${hasDietRule?"":`<section class="sec">${secH("clock","晚餐轮换","15 分钟快手菜")}
     <div class="card">${tn}${dinners}</div>
@@ -1935,7 +1959,7 @@ function checkinHistoryCard(){
   return `<div class="card checkin-history"><div class="diary-nav"><div><b>两个人的打卡足迹</b><small>${first.replaceAll("-","/")}—${last.slice(5).replace("-","/")}</small></div><div class="calendar-arrows"><button type="button" data-history-window="-1" aria-label="更早四周"${earliest&&earliest<first?"":" disabled"}>${icon("back","sm")}</button><button type="button" data-history-window="1" aria-label="更新四周"${historyWindowOffset<0?"":" disabled"}>${icon("chevron-right","sm")}</button></div></div>
     <div class="habit-weekdays">${["一","二","三","四","五","六","日"].map(d=>`<span>${d}</span>`).join("")}</div><div class="habit-calendar" role="group" aria-label="选择历史打卡日期">${cells}</div>
     <div class="habit-legend"><span><i class="hus"></i>老公</span><span><i class="wife"></i>老婆</span><span><i class="unknown"></i>未同步</span><small>点日期看当天</small></div>
-    <div class="history-day"><div class="diary-day-title"><b>${shortDay(historySelectedDate)}的记录</b><span>${Number(historySelectedDate.slice(5,7))}月${Number(historySelectedDate.slice(8))}日</span></div><div class="history-partner-status" role="group" aria-label="查看谁的打卡记录">${["hus","wife"].map(p=>`<button type="button" class="${p}" data-history-person="${p}" aria-pressed="${historyPerson===p}" aria-label="查看${PEOPLE[p].label}的打卡记录">${stateLabel(p,historySelectedDate)}${p===me?" · 我":""}</button>`).join("")}</div><div class="history-view-label"><span>正在查看${PEOPLE[historyPerson].label}的记录${peer?" · 只读":""}</span>${isPrivatePeer?`<button type="button" class="linkbtn" data-coach="sharing-refresh"${privateCoach.partnerReadBusy?" disabled":""}>${privateCoach.partnerReadBusy?"刷新中…":"刷新记录"}</button>`:""}</div>${details}</div><p class="diary-foot">打卡详情由本人决定是否向伴侣共享；目标、体重、围度和健康档案仅自己可见。</p></div>`;
+    <div class="history-day ${historyPerson}"><div class="diary-day-title"><b>${shortDay(historySelectedDate)}的记录</b><span>${Number(historySelectedDate.slice(5,7))}月${Number(historySelectedDate.slice(8))}日</span></div><div class="history-partner-status" role="group" aria-label="查看谁的打卡记录">${["hus","wife"].map(p=>`<button type="button" class="${p}" data-history-person="${p}" aria-pressed="${historyPerson===p}" aria-label="查看${PEOPLE[p].label}的打卡记录">${icon("people","sm")}${PEOPLE[p].label}</button>`).join("")}</div><div class="history-view-label"><span>正在查看${PEOPLE[historyPerson].label}的记录${peer?" · 只读":""}</span>${isPrivatePeer?`<button type="button" class="linkbtn" data-coach="sharing-refresh"${privateCoach.partnerReadBusy?" disabled":""}>${privateCoach.partnerReadBusy?"刷新中…":"刷新记录"}</button>`:""}</div>${details}</div><p class="diary-foot">打卡详情由本人决定是否向伴侣共享；目标、体重、围度和健康档案仅自己可见。</p></div>`;
 }
 
 function insightCard(){return coupleStreakCard();}
@@ -1955,6 +1979,7 @@ function renderRecordData(){
   const gc=$("#recGoal"); if(gc) gc.innerHTML=goalCard();
   const ins=$("#recInsight"); if(ins) ins.innerHTML=insightCard();
   const history=$("#recHistory");if(history){history.innerHTML=checkinHistoryCard();if(privateCoach?.active&&historyPerson!==me)privateCoach.ensurePartnerCheckin?.(historySelectedDate);}
+  const title=$("#recTitle");if(title)title.innerHTML=mealSectionHeading("我们的记录",historySelectedDate||ymd(new Date()),"record",me);
   const box=$("#recData"); if(!box) return;
   box.innerHTML=`<section class="sec">${secH("record","趋势")}${trendCard()}</section>
     <section class="sec">${secH("clock","最近更新",privateCoach?.active?"我的记录":"两个人的记录")}<div class="card">${feedRows()}</div></section>`;
@@ -1972,6 +1997,7 @@ function viewRecord(){
       ${family?`<button class="btn primary" data-code-copy>复制邀请信息</button>`:`<button class="btn primary" data-open-code>去设置</button>`}</div>
       ${family?`<button class="linkbtn" data-open-code>查看或修改口令</button>`:`<p class="empty" style="padding-top:8px">两台手机填同一个口令，数据才会同步到一起。</p>`}</div></section>` : "";
   $("#view").innerHTML=`
+  <div id="recTitle">${mealSectionHeading("我们的记录",today,"record",me)}</div>
   <section class="sec" id="recInsight"></section>
   <section class="sec">${secH("today","打卡历史")}<div id="recHistory"></div></section>
   <section class="sec">${secH("goal","我的目标")}<div id="recGoal">${goalCard()}</div></section>
