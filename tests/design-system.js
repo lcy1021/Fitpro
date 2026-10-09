@@ -8,7 +8,7 @@ const references=[...`${tokens}\n${components}`.matchAll(/var\((--[\w-]+)/g)].ma
 assert.deepEqual([...new Set(references.filter(t=>!definitions.has(t)))],[],'shared CSS must resolve every token');
 const html=read('index.html'),preview=read('tests/theme-preview.html'),sw=read('sw.js');
 for(const file of ['tokens.css','components.css']){
- const url=`design-system/${file}?v=36`;
+ const url=`design-system/${file}?v=37`;
  assert(html.includes(url)&&preview.includes(url)&&sw.includes(url),`${file} must load in the app, preview and offline core`);
 }
 assert(html.indexOf('tokens.css')<html.indexOf('<style>'),'tokens load before app layouts');

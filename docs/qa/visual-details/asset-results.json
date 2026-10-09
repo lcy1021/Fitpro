@@ -1,0 +1,101 @@
+{
+  "assets": [
+    {
+      "path": "assets/meal-art/breakfast-detail-v1.webp",
+      "bytes": 29494,
+      "dimensions": [
+        480,
+        280
+      ],
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets/meal-art/cloud-detail-v1.webp",
+      "bytes": 42086,
+      "dimensions": [
+        720,
+        320
+      ],
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets/meal-art/diet-hus-detail-v1.webp",
+      "bytes": 19628,
+      "dimensions": [
+        320,
+        320
+      ],
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets/meal-art/diet-wife-detail-v1.webp",
+      "bytes": 32762,
+      "dimensions": [
+        480,
+        480
+      ],
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets/meal-art/lunch-detail-v1.webp",
+      "bytes": 27432,
+      "dimensions": [
+        480,
+        280
+      ],
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets/meal-art/record-couple-detail-v1.webp",
+      "bytes": 22556,
+      "dimensions": [
+        391,
+        220
+      ],
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets/meal-art/today-hus-detail-v1.webp",
+      "bytes": 42026,
+      "dimensions": [
+        480,
+        360
+      ],
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets/meal-art/today-wife-detail-v1.webp",
+      "bytes": 68760,
+      "dimensions": [
+        720,
+        540
+      ],
+      "alpha": [
+        0,
+        255
+      ]
+    }
+  ],
+  "totalBytes": 284744
+}

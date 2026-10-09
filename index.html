@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=36">
+<link rel="stylesheet" href="design-system/tokens.css?v=37">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -545,8 +545,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=36">
-<link rel="stylesheet" href="private-coach.css?v=36">
+<link rel="stylesheet" href="design-system/components.css?v=37">
+<link rel="stylesheet" href="private-coach.css?v=37">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -680,7 +680,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=36"></script>
+<script src="private-coach.js?v=37"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1475,10 +1475,10 @@ function viewToday(){
     const v=c.meals?.[m],p=plan[m],fd=v==='skip'?null:c.food?.[m];
     return `<article class="card meal ${me}" data-meal-status="${v||''}">
       ${mealHeading(m,p.t,p.time,mealKcal(me,m),"today")}
-      ${mealPlanContent(me,m,hasDietRule)}
+      <div class="meal-body"><div class="meal-plan-range"><span>计划</span>${mealEnergy(mealKcal(me,m))}</div>${mealPlanContent(me,m,hasDietRule)}
       ${fd?`<div class="meal-actual"><div class="meal-actual-top"><span>实际记录</span>${mealEnergy(fd.kcal)}<button type="button" class="meal-edit" data-food="${m}" aria-label="修改${p.t}食物">修改${icon('chevron-right','sm')}</button></div><p class="meal-food-text">${esc(mealRecordText(c,m))}</p></div>`
         :`<button class="logbtn" data-food="${m}">${icon('note','sm')} ${v==='skip'?'这餐没吃 · 重新记食物':'记食物，估算热量'}${icon('chevron-right','sm')}</button>`}
-      ${mealActions(m,v,p.t)}</article>`;
+      ${mealActions(m,v,p.t)}</div></article>`;
   }).join('');
 
   const overCount=MEALS.filter(m=>c.meals&&c.meals[m]==="over").length;
@@ -1491,7 +1491,7 @@ function viewToday(){
   const goalTop = privateCoach?.active ? privateCoach.weeklyCard() : gp ? suggCard() : `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>设定你的目标</b><small>按你的体重安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
   $("#view").innerHTML = missed + goalTop + (privateCoach?.active ? privateCoach.dailyCard() : together) + privateDuo + `
     <section class="sec">${secH("train","今天的训练")}${trainCard}</section>
-    <section class="sec">${mealSectionHeading("今天吃什么",date,"today",me)}
+    <section class="sec ds-scene ${me}">${mealSectionHeading("今天吃什么",date,"today",me)}
       <div class="stack">${meals}</div>${overNote}</section>
     <section class="sec">${secH("desk","工位起身")}
       <div class="card counter"><span class="ic" aria-hidden="true">${icon("stretch","lg")}</span><div class="txt"><h4>起来动一动</h4><p>每坐 1 小时起身 2–3 分钟，今天目标 6 次</p></div>
@@ -1530,16 +1530,16 @@ function mealEnergy(value,label='约'){
   return number==null?'':`<span class="meal-energy"><small>${label}</small><b>${esc(number)}</b><small>kcal</small></span>`;
 }
 function mealArt(m){
-  return `<img class="meal-art" src="assets/meal-art/${m}-v1.webp?v=meal1" width="106" height="72" alt="" loading="lazy" decoding="async">`;
+  return `<img class="meal-art" src="assets/meal-art/${m}${['breakfast','lunch'].includes(m)?'-detail-v1.webp?v=detail1':'-v1.webp?v=meal1'}" width="106" height="72" alt="" loading="lazy" decoding="async">`;
 }
 function mealHeading(m,title,time,range,layout='plan'){
-  return `<div class="meal-heading"><span class="meal-symbol m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><div class="meal-title"><h4>${esc(title)}</h4><time>${esc(time)}</time></div>${mealArt(m)}${layout==='today'?'':mealEnergy(range)}</div>${layout==='today'?`<div class="meal-plan-range"><span>计划</span>${mealEnergy(range)}</div>`:''}`;
+  return `<div class="meal-heading"><span class="meal-symbol m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><div class="meal-title"><h4>${esc(title)}</h4><time>${esc(time)}</time></div>${mealArt(m)}${layout==='today'?'':mealEnergy(range)}</div>`;
 }
 function mealSectionHeading(title,date,kind,person=me){
   const d=new Date(date+'T12:00:00');
   const label=`${d.getMonth()+1}月${d.getDate()}日 周${WEEK[d.getDay()]}`;
-  const src=kind==='record'?'assets/meal-art/record-couple-v1.webp?v=meal1':kind==='diet'?mood(person,'meal'):`assets/avatar-${person}.webp?v=media1`;
-  return `<div class="meal-section-heading ds-section-heading ${person}"><div><h3>${esc(title)}</h3><time datetime="${esc(date)}">${label}</time></div><img class="${kind==='record'?'couple-art':''}" src="${src}" alt="" width="${kind==='record'?128:80}" height="${kind==='record'?72:80}" loading="lazy" decoding="async"></div>`;
+  const src=kind==='record'?'assets/meal-art/record-couple-detail-v1.webp?v=detail1':`assets/meal-art/${kind}-${person}-detail-v1.webp?v=detail1`;
+  return `<div class="meal-section-heading ds-section-heading ${person}"><div><h3>${esc(title)}</h3><time datetime="${esc(date)}">${label}</time></div><img class="${kind==='record'?'couple-art':kind==='today'?'today-art':'diet-art'}" src="${src}" alt="${kind==='today'?'好好吃饭，就是爱自己':''}" width="${kind==='record'?160:kind==='today'?180:96}" height="${kind==='today'?112:96}" loading="lazy" decoding="async"></div>`;
 }
 function mealPlanContent(person,m,hasDietRule){
   const swap=privateCoach?.active?privateCoach.mealSwap(m):'';
@@ -1596,7 +1596,7 @@ function viewDiet(){
   $("#view").innerHTML=peekSwitch()+`
   <section class="sec">${secH("diet","饮食日志",PEOPLE[viewP].label)}${ringCard(viewP)}</section>
   <section class="sec">${secH("record","饮食打卡记录",dietWeekOffset===0?"这周":"按周查看")}${dietWeekCard(viewP)}</section>
-  <section class="sec">${mealSectionHeading(viewP===me?"我的一天":PEOPLE[viewP].label+"的一天",ymd(new Date()),"diet",viewP)}
+  <section class="sec ds-scene ${viewP}">${mealSectionHeading(viewP===me?"我的一天":PEOPLE[viewP].label+"的一天",ymd(new Date()),"diet",viewP)}
     <div class="card meal-plan-list ${viewP}">${rows}</div></section>
   ${hasDietRule?"":`<section class="sec">${secH("clock","晚餐轮换","15 分钟快手菜")}
     <div class="card">${tn}${dinners}</div>
@@ -1841,8 +1841,8 @@ function viewRecord(){
       ${family?`<button class="btn primary" data-code-copy>复制邀请信息</button>`:`<button class="btn primary" data-open-code>去设置</button>`}</div>
       ${family?`<button class="linkbtn" data-open-code>查看或修改口令</button>`:`<p class="empty" style="padding-top:8px">两台手机填同一个口令，数据才会同步到一起。</p>`}</div></section>` : "";
   $("#view").innerHTML=`
-  <div id="recTitle">${mealSectionHeading("我们的记录",today,"record",me)}</div>
-  <section class="sec"><div id="recHistory"></div></section>
+  <section class="sec ds-scene ${me}"><div id="recTitle">${mealSectionHeading("我们的记录",today,"record",me)}</div>
+  <div id="recHistory"></div></section>
   <section class="sec" id="recInsight"></section>
   <section class="sec">${secH("goal","我的目标")}<div id="recGoal">${goalCard()}</div></section>
   <section class="sec">${secH("people",privateCoach?.active?"我与伴侣":"两个人的记录")}<div class="pair" id="recPair"></div></section>

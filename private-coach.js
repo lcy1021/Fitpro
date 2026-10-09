@@ -37,7 +37,7 @@ class DuoCoach {
     try{let log=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');if(!Array.isArray(log))log=[];localStorage.setItem(CONNECTION_LOG,JSON.stringify([...log.slice(-39),entry]));}catch{}
     if(error)this.lastConnectionError=entry;
   }
-  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v36\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
+  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v37\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
   async fetchJSON(path,body,{auth=true,timeoutMs=15000,retries=0}={}){
     const serialized=JSON.stringify(body),owner=auth?this.userId():null;
     for(let attempt=0;;attempt++){

@@ -1,0 +1,22 @@
+{
+  "peerDetailCheck": {
+    "editActions": 0,
+    "identity": "me-hus",
+    "owner": "history-day wife",
+    "selected": "true",
+    "underline": "none",
+    "unsavedWeight": "77.2"
+  },
+  "dateDetailCheck": {
+    "date": "2026-09-14",
+    "titleDate": "2026-09-14",
+    "unsavedWeight": "77.2"
+  },
+  "skipDetailCheck": {
+    "actual": 0,
+    "selected": "true"
+  },
+  "openDetailCheck": "pick open",
+  "appLogs": [],
+  "galleryLogs": []
+}

@@ -1,4 +1,4 @@
-/* DuoFit Design System 1.0. Canonical theme/role tokens; see docs/design-system.md. */
+/* DuoFit Design System 1.1. Canonical theme/role tokens; see docs/design-system.md. */
 :root{
   color-scheme:light;
   --safe-bottom:env(safe-area-inset-bottom,0px);
@@ -56,7 +56,13 @@
  --ds-leading-body:1.7;--ds-leading-title:1.3;
  --ds-space-1:4px;--ds-space-2:8px;--ds-space-3:12px;--ds-space-4:16px;--ds-space-5:20px;--ds-space-6:24px;--ds-gap-tight:6px;
  --ds-page-max:520px;--ds-page-gutter:16px;--ds-radius-meal:22px;--ds-radius-inset:16px;--ds-radius-tabs:15px;--ds-radius-tab:11px;
- --ds-radius-track:13px;--ds-radius-segment:10px;--ds-radius-full:999px;--ds-tint-header:65%;--ds-tint-track:38%;--ds-tint-history:45%;
+ --ds-radius-track:13px;--ds-radius-segment:10px;--ds-radius-full:999px;--ds-tint-header:65%;--ds-tint-track:38%;--ds-tint-history:70%;
  --ds-touch:44px;--ds-touch-compact:40px;--ds-motion-fast:100ms;--ds-motion-normal:200ms;
+ --ds-scene-tint:50%;--ds-cloud-opacity:.55;--ds-cloud-filter:brightness(1.3);
+ --ds-scene-border-tint:18%;--ds-meal-border-tint:22%;
  --ds-tab-shadow:0 2px 8px rgba(25,32,36,.13);
 }
+
+/* Decorative details stay theme-aware; cloud imagery is shared and cacheable. */
+:root[data-theme="dark"]{--ds-cloud-opacity:.12;--ds-cloud-filter:brightness(.7)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ds-cloud-opacity:.12;--ds-cloud-filter:brightness(.7)}}
