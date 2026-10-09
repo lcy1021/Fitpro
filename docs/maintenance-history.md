@@ -73,10 +73,12 @@
 
 ### 2026-10-09：三处餐次设计统一（v34，本次）
 
+应用提交：[`d16d0b6`](https://github.com/lcy1021/Fitpro/commit/d16d0b6efd62c12a803ded60bacee76416ffc644)。Pages已成功，线上四个核心文件与本地完全一致，核对见 [发布记录](qa/meal-surfaces/release-results.json)。后续文档提交只补充发布证据。
+
 - 用户指出今日、饮食计划、伴侣历史区域难看。代码确认三条渲染路径独立，通用黄色 `.note`、蓝色 `.logged` 与灰色历史嵌套卡片造成层级冲突；`.logged small` 单行省略截掉实际食物。之前v32只改了部分容器，未把这些子区域统一；旧分段选中样式的选择器优先级还会让今日与饮食的同一状态颜色不同，本次一并移除旧覆盖。
 - 共用标题、热量、计划内容与打卡按钮；移除目标区域的大色块和重复卡片边框，今日计划/实际以细分隔线分层，饮食四餐合成一个列表，历史改成餐次行与分隔线。数字与单位分层、长文字自然换行，两角色/主题沿用全局变量。
 - 发现无饮食限制但有个性餐食时旧UI仍并列默认菜单，统一优先显示已确认个性餐食；有禁忌但缺计划时保留明确提示。今日“没吃”不再显示之前保留的食物热量，和历史/摄入计算语义一致，存储记录不被删除。
-- 参考公开的 [Lifesum 餐次记录说明](https://help.lifesum.com/en/article/traditional-food-tracking-4nzcd7/) 与 [Cronometer 日记分区说明](https://support.cronometer.com/hc/en-us/articles/360018593112-Mobile-Diary-Overview)的分组方式；这是公开说明参考，没有登录测试其原生应用，官方附图未成功加载，未宣称逐图复刻。具体视觉依据来自本应用截图及实际手机宽度审查。
+- 参考公开的 [Lifesum 餐次记录说明](https://help.lifesum.com/en/article/traditional-food-tracking-4nzcd7/) 与 [Cronometer 日记分区说明](https://support.cronometer.com/hc/en-us/articles/360018593112-Mobile-Diary-Overview)的分组方式；这是公开说明参考，没有登录测试其原生应用，官方附图未能完成视觉读取，未宣称逐图复刻。具体视觉依据来自本应用截图及实际手机宽度审查。
 - 证据、视口与操作验证：[餐次 QA](qa/meal-surfaces/README.md)。核心版本v34；无需SQL/云函数修改。
 
 ## 4. 后续修复流程

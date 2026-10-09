@@ -10,7 +10,7 @@
 | 饮食计划 | 每餐单独阴影卡片并套蓝色建议块，重复留白和大色块 | 四餐一个清晰列表，细线分餐，标题/热量与今日共用组件 |
 | 历史 | 外卡内再叠四张灰卡，状态、食物和热量的对齐/字号与其他页不一致 | 扁平餐次行，标题/状态与热量分层，食物完整换行；空餐保留说明；本人/伴侣只读 |
 
-参考：[Lifesum 餐次记录说明](https://help.lifesum.com/en/article/traditional-food-tracking-4nzcd7/) 的分餐入口、[Cronometer 官方日记说明](https://support.cronometer.com/hc/en-us/articles/360018593112-Mobile-Diary-Overview) 的摘要和日记分组。仅参考公开说明；官方图片未加载成功，未声称体验其原生应用或复刻截图。保留 DuoFit 现有蓝粉角色、主题与导航。
+参考：[Lifesum 餐次记录说明](https://help.lifesum.com/en/article/traditional-food-tracking-4nzcd7/) 的分餐入口、[Cronometer 官方日记说明](https://support.cronometer.com/hc/en-us/articles/360018593112-Mobile-Diary-Overview) 的摘要和日记分组。仅参考公开说明；官方图片未能完成视觉读取，未声称体验其原生应用或复刻截图。保留 DuoFit 现有蓝粉角色、主题与导航。
 
 ## 实现与行为边界
 
@@ -56,3 +56,7 @@
 [320px深色今日](today-wife-dark-320.jpg) · [320px深色计划](plan-wife-dark-320.jpg) · [320px深色历史](history-wife-dark-320.jpg) · [之前默认餐卡](today-before.jpg)
 
 应用核心版本为v34；图片缓存仍为 `duofit-images-v1`。发布使用现有GitHub Pages main流程；维护记录在 [maintenance-history.md](../../maintenance-history.md)。
+
+## 发布核对
+
+应用提交 [`d16d0b6`](https://github.com/lcy1021/Fitpro/commit/d16d0b6efd62c12a803ded60bacee76416ffc644) 的 [Pages构建](https://github.com/lcy1021/Fitpro/actions/runs/37913975617) 已成功；公开站点的 index.html、sw.js、private-coach.js、private-coach.css 与本地逐字节相同，SHA-256 见 [release-results.json](release-results.json)。本节记录应用发布核对，随后补充文档的提交不修改应用文件。

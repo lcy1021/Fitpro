@@ -1,0 +1,28 @@
+{
+  "applicationVersion": "v34",
+  "applicationCommit": "d16d0b6efd62c12a803ded60bacee76416ffc644",
+  "pagesRun": "https://github.com/lcy1021/Fitpro/actions/runs/37913975617",
+  "pagesConclusion": "success",
+  "publicFiles": [
+    {
+      "file": "index.html",
+      "matches": true,
+      "sha256": "44b994b2fce9a10bab27929cdccd5c402afe90fe6a03e3d121cfd1a7b0f518e4"
+    },
+    {
+      "file": "sw.js",
+      "matches": true,
+      "sha256": "55e09ba2c7967367d1cb096185de7f652fd30bcd848cb29e7374d5e0f0f4e32f"
+    },
+    {
+      "file": "private-coach.js",
+      "matches": true,
+      "sha256": "7c65b48767a4b4c9b63e9fe1ce25a855527ff2ae1b871fc1cb3586e43d373318"
+    },
+    {
+      "file": "private-coach.css",
+      "matches": true,
+      "sha256": "7fd61b101b0d25202a81702fd578f4f62e588d7baef2e3f556f387133efca9da"
+    }
+  ]
+}
