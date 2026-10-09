@@ -1,6 +1,6 @@
 // DuoFit 离线缓存：页面和脚本优先取新版，断网时才使用本机缓存；图片可先读缓存。
 // 只缓存本站的文件；Supabase 数据同步和 AI 请求（其他域名）一律不经过缓存。
-const CACHE = "duofit-v24";
+const CACHE = "duofit-v25";
 const CORE = [
   "./", "index.html", "config.js", "private-coach.js?v=24", "private-coach.css?v=24", "manifest.webmanifest",
   "assets/icons/favicon-32.png?v=logo3", "assets/icons/favicon-64.png?v=logo3",

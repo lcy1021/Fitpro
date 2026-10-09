@@ -332,6 +332,17 @@ p{margin:0}
 .ring-meals div.plan{background:var(--p-soft)} .ring-meals div.plan b{color:var(--p-ink)}
 .ring-meals div.over{background:var(--sun-soft)} .ring-meals div.over b{color:var(--sun-ink)}
 .ring-foot{grid-column:1/-1;font-size:11px;color:var(--faint);text-align:center}
+.diet-week-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.diet-week-nav b{font-size:13px;font-weight:800;color:var(--ink);text-align:center}
+.diet-week-nav button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;min-width:38px;height:38px;font-size:20px;line-height:1}
+.diet-week-nav button:disabled{opacity:.35}
+.diet-week .wkrow{background:var(--sunk)}
+.diet-week .wk2 .c{font-size:12px}
+.diet-week .wk2 .c.plan{background:var(--p-soft);color:var(--p-ink)}
+.diet-week .wk2 .c.over{background:var(--sun-soft);color:var(--sun-ink)}
+.diet-week .wk2 .c.skip{background:var(--surface);color:var(--muted)}
+.diet-week .wk2 .c.now{box-shadow:0 0 0 2px var(--me)}
+.diet-week-legend{margin:12px 2px 0;color:var(--muted);font-size:11px;line-height:1.5}
 
 /* diet tab */
 .list{margin:0;padding:0;list-style:none}
@@ -1626,6 +1637,22 @@ function ringCard(person){
     <p class="ring-foot">${privateCoach?.active&&privateCoach.profile?.diet?"有饮食限制时，未记录实际食物的餐次仍按默认份量估算；请以实际记录为准。":"记了实际吃什么的餐次按记录算，其余按计划估算，都不是精确计算"}</p>
   </div>`;
 }
+let dietWeekOffset=0;
+function dietWeekCard(person,offset=dietWeekOffset){
+  const today=new Date(),mon=addDays(today,-((today.getDay()+6)%7)+offset*7),end=addDays(mon,6);
+  const days=Array.from({length:7},(_,i)=>addDays(mon,i));
+  const earliest=Object.values(store.checkins).filter(c=>c.person===person&&/^\d{4}-\d{2}-\d{2}$/.test(c.date)).map(c=>c.date).sort()[0];
+  const canPrev=!!earliest&&earliest<ymd(mon);
+  const stamp=d=>`${d.getMonth()+1}/${d.getDate()}`;
+  const head=`<div class="wk2">${days.map(d=>`<span class="h${ymd(d)===ymd(today)?" now":""}" title="${ymd(d)}">${ymd(d)===ymd(today)?"今天":"周"+WEEK[d.getDay()]}</span>`).join("")}</div>`;
+  const names={breakfast:"早餐",lunch:"午餐",snack:"加餐",dinner:"晚餐"};
+  const status={plan:["plan","✓","按计划"],over:["over","多","吃多了"],skip:["skip","没","没吃"]};
+  const rows=MEALS.map(m=>`<div class="wkrow"><div class="who2">${names[m]}</div><div class="wk2">${days.map(d=>{
+    const date=ymd(d),value=getCheckin(person,date).meals?.[m],st=status[value]||["","—","未打卡"];
+    return `<span class="c ${st[0]}${date===ymd(today)?" now":""}" role="img" aria-label="${date} ${names[m]}：${st[2]}" title="${date} ${names[m]}：${st[2]}">${st[1]}</span>`;
+  }).join("")}</div></div>`).join("");
+  return `<div class="card diet-week"><div class="diet-week-nav"><button type="button" data-diet-week="-1" aria-label="上一周"${canPrev?"":" disabled"}>‹</button><b>${mon.getFullYear()} 年 ${stamp(mon)}—${stamp(end)}</b><button type="button" data-diet-week="1" aria-label="下一周"${offset<0?"":" disabled"}>›</button></div>${head}${rows}<p class="diet-week-legend">✓ 按计划 · 多 吃多了 · 没 没吃 · — 未打卡</p></div>`;
+}
 function viewDiet(){
   if(privateCoach?.active) viewP=me;
   const plan=MEAL_PLAN[viewP]; const w=new Date().getDay();
@@ -1639,6 +1666,7 @@ function viewDiet(){
     <div><h4>${DINNERS[d].n}</h4><p>${DINNERS[d].h}</p></div><span class="k">约 ${DINNERS[d].kcal[viewP]}</span></div>`).join("");
   $("#view").innerHTML=peekSwitch()+`
   <section class="sec">${secH("flame","今天吃了多少",PEOPLE[viewP].label)}${ringCard(viewP)}</section>
+  <section class="sec">${secH("record","饮食打卡记录",dietWeekOffset===0?"这周":"按周查看")}${dietWeekCard(viewP)}</section>
   <section class="sec">${secH("today",PEOPLE[viewP].label+"的一天","蛋白质 "+plan.protein)}
     <div class="stack">${rows}</div></section>
   ${hasDietRule?"":`<section class="sec">${secH("clock","晚餐轮换","15 分钟快手菜")}
@@ -1994,6 +2022,7 @@ document.addEventListener("click",async e=>{
   if(t.hasAttribute("data-lm-skip")){ if($("#lm").classList.contains("splash")){ $("#lm").onclick(); return; } lmClear(); lmPhase("choose"); return; }
   if(t.hasAttribute("data-lm-replay")){ lmPlay(); return; }
   if(t.hasAttribute("data-open-picker")){ if(privateCoach) return; openPicker(true); return; }
+  if(t.dataset.dietWeek){dietWeekOffset=Math.min(0,dietWeekOffset+Number(t.dataset.dietWeek));viewDiet();return;}
   if(t.dataset.view){ if(privateCoach?.active)return; viewP=t.dataset.view; lastTab=null; render(); return; }
   if(t.dataset.recField){ recField=t.dataset.recField; renderRecordData(); return; }
   if(t.hasAttribute("data-open-extra")){
