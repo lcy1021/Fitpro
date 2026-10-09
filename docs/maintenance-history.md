@@ -99,7 +99,7 @@
 - 真正共享的 `design-system/tokens.css / components.css` 被App、预览、可操作组件页共同加载。新增正式[设计系统规范](design-system.md)和AGENTS规则，早期参考及主文档统一指向蓝粉规范；以后先看图稿、再截图、再改共用组件，不追加冲突补丁。
 - 字号、身份/内容色、共享只读、保存数据和计划数学仍遵循用户要求。无SQL/云函数/config.js变化，没有新增运行图片。两份CSS加入离线CORE；核心v36、图片缓存仍 `duofit-images-v1`。
 - 验证：design-system/scenarios/meal-ui/sw-cache通过；CUA24组布局和字号、390餐名单行、实际角色/主题/日期/跳过编辑/未保存输入/只读通过；组件页320/390/1200通过。图稿匹配合成记录用于对照，计划区间仍真实计算；无真实iPhone/字体放大认证。
-- 发布：待完成Pages部署与线上文件核对，随后补充结果。
+- 发布：应用提交 [`8e6b290`](https://github.com/lcy1021/Fitpro/commit/8e6b29053bf3cd4b1e0abe5c232a25e570f021ee)，[Pages构建37934418143](https://github.com/lcy1021/Fitpro/actions/runs/37934418143)成功。线上9个核心/设计系统文件逐字节与本地一致，规范与视觉稿链接200；[SHA-256核对](qa/design-system/release-results.json)。后续文档提交只记录发布证据。
 
 ## 4. 后续修复流程
 

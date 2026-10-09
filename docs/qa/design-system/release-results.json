@@ -1,0 +1,83 @@
+{
+  "version": "v36",
+  "commit": "8e6b29053bf3cd4b1e0abe5c232a25e570f021ee",
+  "buildId": 37934418143,
+  "buildConclusion": "success",
+  "checkedAt": "2026-10-09T13:10:00.647043+00:00",
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "localSha256": "23811992ff7db8e4d0fa0cefb89036eaf768b4e4117b4c0d32a9c70ca6fefa06",
+      "remoteSha256": "23811992ff7db8e4d0fa0cefb89036eaf768b4e4117b4c0d32a9c70ca6fefa06",
+      "matches": true
+    },
+    {
+      "file": "sw.js",
+      "status": 200,
+      "localSha256": "26e98a2980ac905fd49a2f4fa6e6c322ddeb54614baa1752ac8496fc775c6157",
+      "remoteSha256": "26e98a2980ac905fd49a2f4fa6e6c322ddeb54614baa1752ac8496fc775c6157",
+      "matches": true
+    },
+    {
+      "file": "private-coach.js",
+      "status": 200,
+      "localSha256": "8a60594d06703bf311c739a4294eb4b0b3b036826e02d10539cb10c48909d89b",
+      "remoteSha256": "8a60594d06703bf311c739a4294eb4b0b3b036826e02d10539cb10c48909d89b",
+      "matches": true
+    },
+    {
+      "file": "private-coach.css",
+      "status": 200,
+      "localSha256": "7fd61b101b0d25202a81702fd578f4f62e588d7baef2e3f556f387133efca9da",
+      "remoteSha256": "7fd61b101b0d25202a81702fd578f4f62e588d7baef2e3f556f387133efca9da",
+      "matches": true
+    },
+    {
+      "file": "design-system/tokens.css",
+      "status": 200,
+      "localSha256": "db8194c90591e372f843ba9e336429812cece338fd4c7956717513f193f895e5",
+      "remoteSha256": "db8194c90591e372f843ba9e336429812cece338fd4c7956717513f193f895e5",
+      "matches": true
+    },
+    {
+      "file": "design-system/components.css",
+      "status": 200,
+      "localSha256": "94d12593773d9cbcb32c9c37491cc15de6030cb882c7a5c3c5b7ec88f681f4f7",
+      "remoteSha256": "94d12593773d9cbcb32c9c37491cc15de6030cb882c7a5c3c5b7ec88f681f4f7",
+      "matches": true
+    },
+    {
+      "file": "design-system/index.html",
+      "status": 200,
+      "localSha256": "9c6c830dc47684e64e8515129c12fa86041dbf477beb1f6bdfa1fa029b6fb994",
+      "remoteSha256": "9c6c830dc47684e64e8515129c12fa86041dbf477beb1f6bdfa1fa029b6fb994",
+      "matches": true
+    },
+    {
+      "file": "design-system/gallery.js",
+      "status": 200,
+      "localSha256": "3615595f31bea28ec3abbd11aa17fa730cd0c2fe4842ff0d0465fb7562971435",
+      "remoteSha256": "3615595f31bea28ec3abbd11aa17fa730cd0c2fe4842ff0d0465fb7562971435",
+      "matches": true
+    },
+    {
+      "file": "design-system/gallery.css",
+      "status": 200,
+      "localSha256": "486e06a9799ec97516725573f4c7e9c0eb70a1845dbc7fc2f8bab51d28a73d03",
+      "remoteSha256": "486e06a9799ec97516725573f4c7e9c0eb70a1845dbc7fc2f8bab51d28a73d03",
+      "matches": true
+    }
+  ],
+  "referenceLinks": [
+    {
+      "file": "docs/design-system.md",
+      "status": 200
+    },
+    {
+      "file": "docs/qa/soft-meal-design/selected-design.png",
+      "status": 200
+    }
+  ],
+  "allMatch": true
+}

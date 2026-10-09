@@ -33,4 +33,4 @@
 - 本轮浏览器交互和截图使用CUA。之前保存v35样式基准的CLI进程已终止，没有产出验收结果，不以它宣称逐属性一致。
 - 未做真实iPhone、文字放大或完整WCAG认证。登录海报、训练跟练、旧统计/日历局部规格仍保留，不宣称全应用完全迁移。
 
-核心v36，两份CSS加入SW CORE，图片缓存仍 `duofit-images-v1`；config.js与SQL/云函数无改动。发布结果补入维护历史与release-results.json。
+核心v36，两份CSS加入SW CORE，图片缓存仍 `duofit-images-v1`；config.js与SQL/云函数无改动。应用提交 `8e6b290`，Pages构建37934418143成功，9个线上文件逐字节与本地一致，规范/视觉稿链接200；[发布核对](release-results.json)。文档后续提交仅补发布证据。
