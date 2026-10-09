@@ -1,15 +1,41 @@
 // DuoFit 离线缓存：页面和脚本优先取新版，断网时才使用本机缓存；图片可先读缓存。
 // 只缓存本站的文件；Supabase 数据同步和 AI 请求（其他域名）一律不经过缓存。
-const CACHE = "duofit-v29";
+const CACHE = "duofit-v30";
+// Media URLs carry their own revision. Keep downloaded images through app-only releases.
+const IMAGE_CACHE = "duofit-images-v1";
+const imageRequests = new Map();
 const CORE = [
-  "./", "index.html", "config.js", "private-coach.js?v=29", "private-coach.css?v=29", "manifest.webmanifest",
-  "assets/icons/favicon-32.png?v=logo3", "assets/icons/favicon-64.png?v=logo3",
-  "assets/icons/app-icon-180.png?v=logo3", "assets/icons/app-icon-192.png?v=logo3", "assets/icons/app-icon-512.png?v=logo3",
-  "apple-touch-icon.png", "apple-touch-icon.png?v=logo3",
-  "assets/login/hus-running.webp", "assets/login/wife-running.webp",
-  "assets/brand/duofit-wordmark.svg",
-  "assets/avatar-hus.png", "assets/avatar-wife.png",
+  "./", "index.html", "config.js", "private-coach.js?v=30", "private-coach.css?v=30", "manifest.webmanifest",
 ];
+const isImage = url => /\.(?:avif|webp|png|gif|jpe?g|svg)$/i.test(url.pathname);
+
+async function retainImages(){
+  const images = await caches.open(IMAGE_CACHE);
+  for(const key of await caches.keys()){
+    if(!/^duofit-v\d+$/.test(key) || key===CACHE)continue;
+    const old = await caches.open(key);
+    for(const request of await old.keys()){
+      const url = new URL(request.url);
+      if(url.origin!==self.location.origin || !isImage(url) || await images.match(request))continue;
+      const response = await old.match(request);
+      if(response?.ok){try{await images.put(request,response);}catch{/* A full image cache must not block an app update. */}}
+    }
+    await caches.delete(key);
+  }
+}
+async function imageResponse(request){
+  const cache = await caches.open(IMAGE_CACHE);
+  const hit = await cache.match(request);
+  if(hit)return hit; // No background re-download for an unchanged media revision.
+  if(!imageRequests.has(request.url)){
+    const pending = fetch(request).then(async response=>{
+      if(response.ok){try{await cache.put(request,response.clone());}catch{/* Still display the network image if storage is full. */}}
+      return response;
+    }).finally(()=>imageRequests.delete(request.url));
+    imageRequests.set(request.url,pending);
+  }
+  return (await imageRequests.get(request.url)).clone();
+}
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE.map(path => new Request(path, {cache: "no-store"})))).then(() => self.skipWaiting()));
@@ -17,9 +43,7 @@ self.addEventListener("install", (e) => {
 
 self.addEventListener("activate", (e) => {
   e.waitUntil(
-    caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
-      .then(() => self.clients.claim())
+    retainImages().then(() => self.clients.claim())
   );
 });
 
@@ -28,6 +52,7 @@ self.addEventListener("fetch", (e) => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return; // Supabase、AI 等其他域名不管
+  if(isImage(url)){e.respondWith(imageResponse(req));return;}
   const isPage = req.mode === "navigate";
   const key = isPage ? "./" : req;
   const critical = isPage || /\.(?:html|js|css|webmanifest)$/.test(url.pathname);

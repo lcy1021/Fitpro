@@ -1,0 +1,349 @@
+{
+  "moves": [
+    {
+      "id": "a-db-rdl",
+      "gifBytes": 100889,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 35854,
+      "smallBytes": 10946
+    },
+    {
+      "id": "a-db-row",
+      "gifBytes": 144612,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 45164,
+      "smallBytes": 14022
+    },
+    {
+      "id": "a-goblet-squat",
+      "gifBytes": 114857,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 41790,
+      "smallBytes": 12594
+    },
+    {
+      "id": "a-plank",
+      "gifBytes": 377859,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 75048,
+      "smallBytes": 23464
+    },
+    {
+      "id": "a-push-up",
+      "gifBytes": 165439,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 40192,
+      "smallBytes": 12748
+    },
+    {
+      "id": "b-db-glute-bridge",
+      "gifBytes": 172487,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 43828,
+      "smallBytes": 13044
+    },
+    {
+      "id": "b-dead-bug",
+      "gifBytes": 213363,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 39460,
+      "smallBytes": 13066
+    },
+    {
+      "id": "b-floor-press",
+      "gifBytes": 190553,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 49920,
+      "smallBytes": 15372
+    },
+    {
+      "id": "b-overhead-press",
+      "gifBytes": 137074,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 44520,
+      "smallBytes": 13368
+    },
+    {
+      "id": "b-reverse-lunge",
+      "gifBytes": 105787,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 36980,
+      "smallBytes": 11622
+    },
+    {
+      "id": "cool-cat-cow",
+      "gifBytes": 185964,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 39770,
+      "smallBytes": 12666
+    },
+    {
+      "id": "cool-chest-stretch",
+      "gifBytes": 270743,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 59806,
+      "smallBytes": 19124
+    },
+    {
+      "id": "cool-child-pose",
+      "gifBytes": 475920,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 80446,
+      "smallBytes": 23398
+    },
+    {
+      "id": "cool-hamstring-stretch",
+      "gifBytes": 233703,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 64600,
+      "smallBytes": 20614
+    },
+    {
+      "id": "cool-hip-stretch",
+      "gifBytes": 540644,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 100986,
+      "smallBytes": 29980
+    },
+    {
+      "id": "cool-quad-stretch",
+      "gifBytes": 226341,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 54680,
+      "smallBytes": 17908
+    },
+    {
+      "id": "d-calf-raise",
+      "gifBytes": 94886,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 32632,
+      "smallBytes": 9594
+    },
+    {
+      "id": "d-neck-stretch",
+      "gifBytes": 284604,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 63658,
+      "smallBytes": 20036
+    },
+    {
+      "id": "d-overhead-reach",
+      "gifBytes": 293260,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 55726,
+      "smallBytes": 18292
+    },
+    {
+      "id": "d-seated-brace",
+      "gifBytes": 121473,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 37650,
+      "smallBytes": 11782
+    },
+    {
+      "id": "d-seated-glute-squeeze",
+      "gifBytes": 275433,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 63312,
+      "smallBytes": 19766
+    },
+    {
+      "id": "w-alt-leg-raise",
+      "gifBytes": 177849,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 39824,
+      "smallBytes": 12468
+    },
+    {
+      "id": "w-bodyweight-squat",
+      "gifBytes": 139693,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 37262,
+      "smallBytes": 11092
+    },
+    {
+      "id": "w-clamshell",
+      "gifBytes": 260906,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 46712,
+      "smallBytes": 14574
+    },
+    {
+      "id": "w-glute-bridge",
+      "gifBytes": 184179,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 36978,
+      "smallBytes": 11116
+    },
+    {
+      "id": "w-reverse-lunge",
+      "gifBytes": 145550,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 38272,
+      "smallBytes": 11820
+    },
+    {
+      "id": "w-side-leg-raise",
+      "gifBytes": 235406,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 46402,
+      "smallBytes": 14364
+    },
+    {
+      "id": "warm-arm-circle",
+      "gifBytes": 259090,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 70548,
+      "smallBytes": 22390
+    },
+    {
+      "id": "warm-high-knees",
+      "gifBytes": 126412,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 39176,
+      "smallBytes": 10666
+    },
+    {
+      "id": "warm-hip-circle",
+      "gifBytes": 274226,
+      "frames": 4,
+      "durationMs": 1600,
+      "fullBytes": 64124,
+      "smallBytes": 19636
+    },
+    {
+      "id": "warm-jumping-jack",
+      "gifBytes": 147669,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 39268,
+      "smallBytes": 12036
+    },
+    {
+      "id": "warm-march",
+      "gifBytes": 157590,
+      "frames": 2,
+      "durationMs": 1400,
+      "fullBytes": 37094,
+      "smallBytes": 11414
+    }
+  ],
+  "characters": [
+    {
+      "id": "assets/avatar-hus.png",
+      "pngBytes": 57293,
+      "webpBytes": 33920
+    },
+    {
+      "id": "assets/avatar-wife.png",
+      "pngBytes": 63325,
+      "webpBytes": 37018
+    },
+    {
+      "id": "assets/mood/hus-day-done.png",
+      "pngBytes": 56333,
+      "webpBytes": 34054
+    },
+    {
+      "id": "assets/mood/hus-day-missed.png",
+      "pngBytes": 62333,
+      "webpBytes": 37776
+    },
+    {
+      "id": "assets/mood/hus-happy.png",
+      "pngBytes": 65472,
+      "webpBytes": 39466
+    },
+    {
+      "id": "assets/mood/hus-meal.png",
+      "pngBytes": 67429,
+      "webpBytes": 41130
+    },
+    {
+      "id": "assets/mood/hus-sad.png",
+      "pngBytes": 57988,
+      "webpBytes": 34548
+    },
+    {
+      "id": "assets/mood/hus-weigh.png",
+      "pngBytes": 58175,
+      "webpBytes": 34864
+    },
+    {
+      "id": "assets/mood/hus-workout.png",
+      "pngBytes": 66925,
+      "webpBytes": 40456
+    },
+    {
+      "id": "assets/mood/wife-day-done.png",
+      "pngBytes": 71491,
+      "webpBytes": 43344
+    },
+    {
+      "id": "assets/mood/wife-day-missed.png",
+      "pngBytes": 66619,
+      "webpBytes": 39588
+    },
+    {
+      "id": "assets/mood/wife-happy.png",
+      "pngBytes": 66333,
+      "webpBytes": 39460
+    },
+    {
+      "id": "assets/mood/wife-meal.png",
+      "pngBytes": 71530,
+      "webpBytes": 43566
+    },
+    {
+      "id": "assets/mood/wife-sad.png",
+      "pngBytes": 66082,
+      "webpBytes": 39624
+    },
+    {
+      "id": "assets/mood/wife-weigh.png",
+      "pngBytes": 59856,
+      "webpBytes": 35228
+    },
+    {
+      "id": "assets/mood/wife-workout.png",
+      "pngBytes": 69127,
+      "webpBytes": 41684
+    }
+  ],
+  "totals": {
+    "gifBytes": 6834461,
+    "fullBytes": 1601682,
+    "smallBytes": 494982,
+    "pngBytes": 1026311,
+    "webpBytes": 615726
+  }
+}

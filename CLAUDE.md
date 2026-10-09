@@ -65,8 +65,8 @@
 - **饮食**：可切换查看老公或老婆的计划；热量环（按今天打卡估算已吃多少：按计划计区间、吃多了计上限、没吃计 0）；按周查看四餐打卡状态和更早的周记录；每日饮食结构、周一到周五晚餐轮换、外卖挑选、常见场景提示。私人档案模式只显示本人饮食记录
 - **训练**：这周两个人的安排并排显示；可切换查看对方训练内容，但只有自己的训练能点"开始"；跟练模式逐个动作显示次数、要点、计时和组间休息，练完打卡
 - **记录**：洞察卡（两人连续打卡）；两人并排形象卡（`assets/avatar-hus.png` / `avatar-wife.png`，源图在 `UIset/`；最新体重、围度、近 4 周体重变化、最新日期）；大数字输入块（体重、腰围，老婆额外臀围、大腿围，显示较上次变化）；一张趋势图切换体重/腰围/臀围（两人各占半区、各自缩放）；最近更新 6 条；家庭同步口令卡（只显示前 4 位）
-- 角色形象：基础头像 `assets/avatar-*.png`（源图在 `UIset/`）；7 种表情 `assets/mood/{hus,wife}-{workout,meal,weigh,happy,sad,day-done,day-missed}.png`（256px 副本，原图在 `assets/mascots/`），用 `mood(person,state)` 取路径、`react(state,标题,说明,big)` 弹出反馈；每种表情用在哪里见 `docs/mascot-design.md` 4.1。`sad` 只用于空数据，不用于"吃多了/没吃"
-- 动作示意：`assets/moves/<img>.gif`（`WORKOUTS` 里每个动作的 `img` 字段，热身放松见 `LIST_MOVE_MEDIA`），跟练页大图、训练页动作列表和工位动作格都显示
+- 角色形象：基础头像 `assets/avatar-*.webp?v=media1`（PNG 源图保留）；7 种表情 `assets/mood/{hus,wife}-{workout,meal,weigh,happy,sad,day-done,day-missed}.webp?v=media1`（256px 无损副本，原图在 `assets/mascots/`），用 `mood(person,state)` 取路径、`react(state,标题,说明,big)` 弹出反馈；每种表情用在哪里见 `docs/mascot-design.md` 4.1。`sad` 只用于空数据，不用于"吃多了/没吃"
+- 动作示意：`moveArt()` 输出 picture，列表与今日页使用 `assets/moves/<img>-small.webp?v=media1`（320×240 动图），跟练页使用 `<img>.webp?v=media1`（800×600 动图、高优先级）。保留原 GIF 作兼容回退与 PNG/GIF 源文件；`WORKOUTS` 的 `img`、热身放松 `LIST_MOVE_MEDIA` 不变。`scripts/optimize-images.py` 转码并验证帧数/时长/循环。下一动作只预加载一个，省流量/2G 跳过；不要全量预加载。
 
 ## 计划内容
 
@@ -157,3 +157,5 @@
 - 私人健康伙伴脚本、样式更新至 `?v=22`，缓存 `duofit-v22`。验收与本机场景见 `docs/qa/default-plan/README.md`；日期回归测试 `tests/default-plan.js`。
 
 - 2026-10-09 AI 热量估算：全量文字块 + 平衡 JSON 提取/校验；中转输出 4096/6144 tokens，截断或格式异常修复一次；未识别 kcal 为 null 且不缓存。私人估算使用共享登录刷新和连接诊断，不依赖 dirty 上传；客户端 90 秒，无消费请求自动网络重试。部分热量不判断整餐计划；旧请求不覆盖修改原文/另一餐/另一身份。版本头 `2026-10-09-meal-format`，回归 `tests/meal-function.mjs`、`tests/meal-ui.js`。
+
+- 2026-10-09 图片性能：应用缓存 v30，独立 `duofit-images-v1` 跨应用版本保存图片，命中不联网，冷请求去重；激活迁移旧 DuoFit 缓存中的图片后只删除旧应用缓存。素材改动需同步递增 URL 的 `media1`/`logo3`；只改应用时不要改图片缓存名。CORE 仅含应用文件，图片按需保存。验证与尺寸统计见 `docs/qa/image-loading/README.md`、`tests/sw-cache.js`、`tests/image-browser.js`。

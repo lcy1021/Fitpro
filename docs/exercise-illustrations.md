@@ -1,6 +1,6 @@
 # 训练动作示意图说明
 
-用于跟练页的动作示意图。32 项动作已按下述文件名生成 4:3 静态分解 PNG 和循环 GIF，统一保存在 `UIset/exercises/`，并同步到 `assets/moves/` 供页面使用。跟练页显示 GIF；热身和放松清单也显示对应动效缩略图。
+用于跟练页的动作示意图。32 项动作已按下述文件名生成 4:3 静态分解 PNG 和循环 GIF，统一保存在 `UIset/exercises/`，并同步到 `assets/moves/` 作为源文件。页面优先显示由 GIF 转出的动画 WebP：跟练大图 `<id>.webp` 为 800×600，列表和热身放松小图 `<id>-small.webp` 为 320×240；不支持 WebP 时通过 picture 回退 GIF。生成脚本为 `scripts/optimize-images.py`，帧数、时长、循环保持一致。加载与缓存验证见 `docs/qa/image-loading/README.md`。
 
 动作名称、次数、App 里的要点都和 `index.html` 里的 `WORKOUTS` 一致；"动作分解"和"画面重点"是为了画图补充的说明。
 

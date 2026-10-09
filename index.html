@@ -531,12 +531,14 @@ p{margin:0}
 .media{aspect-ratio:4/3;border-radius:var(--radius-m);border:2px dashed color-mix(in srgb,var(--me) 25%,var(--line));display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;color:var(--muted);font-size:12px;margin-bottom:14px;background:color-mix(in srgb,var(--me-soft) 45%,var(--surface))}
 .media img{width:72px;height:72px;object-fit:contain;opacity:.85}
 .media.exercise-media{display:block;border:0;background:var(--sunk);overflow:hidden}
+.media.exercise-media picture{display:block;width:100%;height:100%}
 .media.exercise-media img{display:block;width:100%;height:100%;object-fit:contain;opacity:1}
 .rcard{background:var(--surface);border-radius:var(--radius-l);padding:16px;box-shadow:var(--shadow);margin-bottom:16px}
 .tag2.light{display:inline-flex;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--me-soft);color:var(--me-ink);margin-bottom:8px}
 .run-top .pc{font-size:12px;font-weight:800;color:var(--me-ink);background:var(--me-soft);border-radius:999px;padding:3px 10px}
 .rlist{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
 .rlist li{display:flex;align-items:center;gap:10px;background:var(--sunk);border-radius:var(--radius-s);padding:10px 12px;font-size:14px;font-weight:600}
+.rlist li picture{flex:none;display:block}
 .rlist li span{width:24px;height:24px;border-radius:50%;background:var(--surface);color:var(--me-ink);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
 .rlist li img.list-art{width:80px;height:60px;object-fit:contain;border-radius:8px;background:var(--sunk);flex:none}
 .rlist li img.list-art.duo{width:62px;height:47px}
@@ -669,7 +671,7 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="private-coach.css?v=29">
+<link rel="stylesheet" href="private-coach.css?v=30">
 </head>
 <body class="me-hus">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -710,7 +712,7 @@ p{margin:0}
   <header class="top">
     <span class="tile" id="pageIcon" aria-hidden="true"></span><div class="title"><h1 id="pageTitle">今日</h1><div class="date" id="dateLabel"></div></div>
     <button class="role" data-open-picker aria-label="切换身份，当前是老公" id="roleBtn"><span class="r hus">老公</span><span class="sw">⇄</span><span class="r wife">老婆</span></button>
-    <img class="me-ava" id="meAva" src="assets/avatar-hus.png" alt="" width="44" height="44">
+    <img class="me-ava" id="meAva" src="assets/avatar-hus.webp?v=media1" alt="" width="44" height="44">
   </header>
   <p class="sync" id="sync">数据保存在这台手机上</p>
   <main id="view"></main>
@@ -802,7 +804,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=29"></script>
+<script src="private-coach.js?v=30"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1300,6 +1302,11 @@ const LIST_MOVE_MEDIA={
 const EXTRA_MOVES=[...new Map(Object.values(WORKOUTS).flatMap(w=>w.moves).map(m=>[m.img,m])).values(),
   ...Object.values(LIST_MOVE_MEDIA).flat().filter(([id])=>!Object.values(WORKOUTS).some(w=>w.moves.some(m=>m.img===id))).map(([img,n])=>({img,n,r:"轻松做 30 秒",c:"缓慢活动，以舒适为准"}))];
 const REST_SUGGESTIONS=["d-seated-glute-squeeze","d-overhead-reach","d-calf-raise"];
+const MOVE_MEDIA_VERSION="media1";
+const moveURL=(id,full=false)=>`assets/moves/${id}${full?"":"-small"}.webp?v=${MOVE_MEDIA_VERSION}`;
+function moveArt(id,alt,{full=false,loading="lazy",className="",width=320,height=240}={}){
+  return `<picture class="move-art"><source type="image/webp" srcset="${moveURL(id,full)}"><img src="assets/moves/${id}.gif" alt="${esc(alt)}动作示意" decoding="async" loading="${loading}" fetchpriority="${full?"high":"auto"}" width="${width}" height="${height}"${className?` class="${className}"`:""}></picture>`;
+}
 let extraMoveQuery="";
 const extraDone=c=>Array.isArray(c.extraMoves)?c.extraMoves.filter(id=>EXTRA_MOVES.some(m=>m.img===id)):[];
 function toggleExtraMove(c,id){
@@ -1319,7 +1326,7 @@ function extraMoveRows(c,query=extraMoveQuery){
   if(!q&&recoveryRest(c)&&!done.length)return `<div class="extra-empty">今天先休息。若已经做了动作，可以在上方搜索并记录。</div>`;
   const list=q?EXTRA_MOVES.filter(m=>m.n.toLowerCase().includes(q)||m.c.toLowerCase().includes(q)):
     [...(recoveryRest(c)?[]:REST_SUGGESTIONS.map(id=>EXTRA_MOVES.find(m=>m.img===id)).filter(Boolean)),...done.map(id=>EXTRA_MOVES.find(m=>m.img===id)).filter(m=>m&&(recoveryRest(c)||!REST_SUGGESTIONS.includes(m.img)))];
-  return list.length?list.map(m=>`<button type="button" class="extra-move" data-extra-move="${m.img}" aria-pressed="${done.includes(m.img)}"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意" loading="lazy" width="72" height="54"><span><b>${esc(m.n)}</b><small>${esc(m.r)} · ${esc(m.c)}</small></span><em>${done.includes(m.img)?"已打卡":"打卡"}</em></button>`).join(""):
+  return list.length?list.map(m=>`<button type="button" class="extra-move" data-extra-move="${m.img}" aria-pressed="${done.includes(m.img)}">${moveArt(m.img,m.n,{width:72,height:54})}<span><b>${esc(m.n)}</b><small>${esc(m.r)} · ${esc(m.c)}</small></span><em>${done.includes(m.img)?"已打卡":"打卡"}</em></button>`).join(""):
     `<div class="extra-empty">没有找到这个动作，试试“深蹲”“拉伸”或“臀桥”</div>`;
 }
 const WEEK = ["日","一","二","三","四","五","六"];
@@ -1470,7 +1477,7 @@ function renderHeader(){
   $("#dateLabel").textContent=`${d.getMonth()+1}月${d.getDate()}日 周${WEEK[d.getDay()]}`;
   $("#roleBtn").hidden=!!privateCoach;
   $("#roleBtn").setAttribute("aria-label","切换身份，当前是"+PEOPLE[me].label);
-  $("#meAva").src="assets/avatar-"+me+".png"; $("#meAva").alt=PEOPLE[me].label+"的形象";
+  $("#meAva").src="assets/avatar-"+me+".webp?v=media1"; $("#meAva").alt=PEOPLE[me].label+"的形象";
   document.body.className="me-"+me;
 }
 function renderSync(){
@@ -1523,7 +1530,7 @@ function bothStreak(){
 }
 const MEAL_IC={breakfast:"breakfast",lunch:"lunch",snack:"snack",dinner:"dinner"};
 /* 表情：workout 运动中 · meal 按计划吃 · weigh 记录身体数据 · happy 开心 · sad 没有数据 · day-done 今天全部完成 · day-missed 回顾昨天没完成 */
-const mood=(person,state)=>`assets/mood/${person}-${state}.png`;
+const mood=(person,state)=>`assets/mood/${person}-${state}.webp?v=media1`;
 let reactT=null;
 function react(state,title,sub,big){
   const el=$("#react"); el.className="react"+(big?" big":"");
@@ -1551,7 +1558,7 @@ function viewToday(){
     <span class="chip ${got===need?"good":""}">今天 ${got}/${need}</span></div>`;
   const duo=`<section class="duo" aria-label="两个人今天的进度">
     <div class="duo-h"><h2><i>${icon("heart")}</i>今天两个人的进度</h2></div>
-    ${["hus","wife"].map(p=>`<div class="track ${p}"><img class="ava" src="${dayDone(p,today)?mood(p,"day-done"):"assets/avatar-"+p+".png"}" alt="${PEOPLE[p].label}${dayDone(p,today)?"今天全部完成":"的形象"}" width="44" height="44">
+    ${["hus","wife"].map(p=>`<div class="track ${p}"><img class="ava" src="${dayDone(p,today)?mood(p,"day-done"):"assets/avatar-"+p+".webp?v=media1"}" alt="${PEOPLE[p].label}${dayDone(p,today)?"今天全部完成":"的形象"}" width="44" height="44">
       <div><div class="who"><span class="name">${PEOPLE[p].label}${p===me?"（我）":""}</span>
         <span class="last">${(t=>t?"最近打卡 "+whenText(t):"还没有打卡")(lastCheckinAt(p))}</span></div>
         <div class="beads">${beadsFor(p)}</div></div>
@@ -1564,14 +1571,14 @@ function viewToday(){
     const recovering=recoveryRest(c), count=extraDone(c).length;
     const preview=recovering?[]:REST_SUGGESTIONS.map(id=>EXTRA_MOVES.find(m=>m.img===id)).filter(Boolean);
     trainCard=`<div class="obs"><span class="tag2">${icon("leaf","sm")} 今天休息</span><h4>${recovering?"今天先照顾身体":"休息日也可以轻轻动一动"}</h4><p>${recovering?"今天不安排训练。已经做过的动作仍可以自行记录。":"可选小活动不影响休息日安排；做了哪项就记哪项。"}</p>
-      ${preview.length?`<div class="today-move-preview">${preview.map(m=>`<div class="item"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意"><b>${esc(m.n)}</b></div>`).join("")}</div>`:""}
+      ${preview.length?`<div class="today-move-preview">${preview.map(m=>`<div class="item">${moveArt(m.img,m.n)}<b>${esc(m.n)}</b></div>`).join("")}</div>`:""}
       <button class="cta" data-open-extra>${icon("train","sm")} ${count?`已记录 ${count} 项 · 查看动作`:"查看可选动作并打卡"}</button></div>`;
   }else{
     const w=WORKOUTS[s.w]; const done=c.workout==="done";
     const sub = s.w==="C" ? "可选：推着婴儿车散步也算" : s.kind==="flex" ? "可选：宝宝午睡时或者轮流带娃时练" : `${roundsFor(s.w,me)} 轮，大约 ${Math.round((me==="hus"?20:15)*roundsFor(s.w,me)/w.rounds)} 分钟 · ${w.equip}`;
     trainCard=`<div class="obs"><span class="tag2">${icon(s.kind==="flex"?"cloud":"train","sm")} ${s.kind==="flex"?"今天可选":"今天训练"} · ${PEOPLE[me].label}</span>
       <h4>${workoutTitle(s.w)}</h4><p>${sub}</p>
-      <div class="today-move-preview">${w.moves.slice(0,3).map(m=>`<div class="item"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意"><b>${esc(m.n)}</b></div>`).join("")}</div>
+      <div class="today-move-preview">${w.moves.slice(0,3).map(m=>`<div class="item">${moveArt(m.img,m.n)}<b>${esc(m.n)}</b></div>`).join("")}</div>
       ${done?`<button class="cta done" data-undo-workout>${icon("check","sm")} 今天已完成</button>`:`<button class="cta" data-start="${s.w}">${icon("play","sm")} 开始训练</button>`}</div>`;
   }
 
@@ -1699,10 +1706,10 @@ function planCard(key,canStart,done=false){
   const w=WORKOUTS[key];
   if(key==="D") return `<div class="card"><div class="plan-h"><div><h4 style="margin:0 0 2px;font-size:16px;font-weight:800">${icon("stretch")} ${w.name}</h4><p style="font-size:12px;color:var(--muted)">不计入训练打卡，久坐时随时做</p></div>
       ${canStart?`<button class="btn primary" data-start="D">开始</button>`:""}</div>
-    <div class="desk" style="margin-top:12px">${w.moves.map(m=>`<div><span class="art" style="display:block"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意" loading="lazy"></span><h5>${esc(m.n)}</h5><p>${esc(m.r)}</p></div>`).join("")}</div></div>`;
+    <div class="desk" style="margin-top:12px">${w.moves.map(m=>`<div><span class="art" style="display:block">${moveArt(m.img,m.n)}</span><h5>${esc(m.n)}</h5><p>${esc(m.r)}</p></div>`).join("")}</div></div>`;
   return `<div class="obs plan today-plan ${me}"><div class="plan-h"><span class="tag2">今天要做的</span><span class="theirs">${roundsFor(key,me)} 轮 · ${w.equip}</span></div>
     <h4>${workoutTitle(key)}</h4><p>动作间休息 ${w.restMove} 秒，轮间 ${w.restRound} 秒</p>
-    <ol class="ol">${w.moves.map((m,i)=>`<li class="has-art"><span class="art"><img src="assets/moves/${m.img}.gif" alt="${esc(m.n)}动作示意" loading="lazy" width="76" height="57"><span class="n">${i+1}</span></span><div><h5>${esc(m.n)}</h5><small>${esc(m.c)}</small></div><span class="r">${esc(m.r)}</span></li>`).join("")}</ol>
+    <ol class="ol">${w.moves.map((m,i)=>`<li class="has-art"><span class="art">${moveArt(m.img,m.n,{width:76,height:57})}<span class="n">${i+1}</span></span><div><h5>${esc(m.n)}</h5><small>${esc(m.c)}</small></div><span class="r">${esc(m.r)}</span></li>`).join("")}</ol>
     ${canStart?(done?`<button class="cta done" data-undo-workout>${icon("check","sm")} 今天已完成</button>`:`<button class="cta" data-start="${key}">${icon("play","sm")} 开始跟练</button>`):""}</div>`;
 }
 function viewTrain(){
@@ -1817,7 +1824,7 @@ function whoCard(p){
   const latest=withData.length?withData[withData.length-1].date:"";
   const gp=planFor(p);
   return `<div class="who-card ${p}">
-    <div class="ava"><img src="assets/avatar-${p}.png" alt="${PEOPLE[p].label}的形象" width="70" height="70"></div>
+    <div class="ava"><img src="assets/avatar-${p}.webp?v=media1" alt="${PEOPLE[p].label}的形象" width="70" height="70"></div>
     <h4>${PEOPLE[p].label}</h4>
     ${withData.length?`<div class="w">${w?`${w.weight}<small>kg</small>`:"—"}</div>
     ${extra?`<p>${esc(extra)}</p>`:""}${trend?`<p>${trend}</p>`:""}${gp?`<span class="chip me2">${icon("goal","sm")}${gp.maintain?"维持中":`还差 ${gp.toGo} kg`}</span>`:""}${latest?`<p>最新 ${+latest.slice(5,7)}/${+latest.slice(8)}</p>`:""}`
@@ -1850,7 +1857,7 @@ function feedRows(){
   return hist.map(m=>{
     const extra=[m.waist!=null?`腰围 ${m.waist}`:"",m.hip!=null?`臀围 ${m.hip}`:"",m.thigh!=null?`腿围 ${m.thigh}`:""].filter(Boolean).join(" · ");
     const pw=m.weight!=null?prevValue(m.person,"weight",m.date):null;
-    return `<div class="feed ${m.person}"><img src="assets/avatar-${m.person}.png" alt="" width="40" height="40">
+    return `<div class="feed ${m.person}"><img src="assets/avatar-${m.person}.webp?v=media1" alt="" width="40" height="40">
       <div class="t"><div><b>${PEOPLE[m.person].label}</b><span class="chip">${shortDay(m.date)}</span></div><small>${esc(extra)||"只记了体重"}</small></div>
       <div class="v">${m.weight!=null?`<b>${m.weight} kg</b><small>${pw!=null?fmtDelta(m.weight-pw,"kg"):"第一次记录"}</small>`:""}</div></div>`;
   }).join("");
@@ -1914,7 +1921,21 @@ function render(){
 let lastTab=null,lastMe=null;
 
 /* ---------- workout runner ---------- */
-let runState=null, timer=null;
+let runState=null, timer=null, moveWarmTimer=null;
+const warmedMoves=new Set();
+function warmNextMove(){
+  clearTimeout(moveWarmTimer);
+  if(!runState||navigator.connection?.saveData||/2g/.test(navigator.connection?.effectiveType||""))return;
+  const next=runState.steps.slice(runState.i+1).find(step=>step.type==="move");
+  if(!next||typeof Image==="undefined")return;
+  const url=moveURL(next.m.img,true);if(warmedMoves.has(url))return;
+  // Warm only the next movement, after the current screen has had time to request its images.
+  moveWarmTimer=setTimeout(()=>{
+    if(!runState)return;
+    warmedMoves.add(url);const image=new Image();image.decoding="async";image.fetchPriority="low";
+    image.onerror=()=>warmedMoves.delete(url);image.src=url;
+  },350);
+}
 function buildSteps(key){
   const w=WORKOUTS[key]; const steps=[];
   if(w.warm.length) steps.push({type:"list",title:"先热身",items:w.warm,btn:"热身完成"});
@@ -1936,7 +1957,7 @@ function startRun(key){
   $("#run").classList.add("open"); document.body.style.overflow="hidden"; drawRun();
 }
 function stopTimer(){ clearInterval(timer); timer=null; }
-function closeRun(){ stopTimer(); runState=null; $("#run").classList.remove("open"); document.body.style.overflow=""; render(); }
+function closeRun(){ stopTimer();clearTimeout(moveWarmTimer);runState=null; $("#run").classList.remove("open"); document.body.style.overflow=""; render(); }
 function nextStep(){ stopTimer(); runState.i++; runState.running=false; drawRun(); }
 const RUN_C=2*Math.PI*88;
 function timerRing(sec,total){
@@ -1957,12 +1978,12 @@ function drawRun(){
   if(s.type==="list"){
     st.total=0;
     body=`<div class="rcard"><span class="tag2 light">${icon(s.title==="先热身"?"flame":"leaf","sm")} ${s.title==="先热身"?"热身":"放松"}</span><h2>${s.title}</h2>
-      <ol class="rlist">${s.items.map((x,i)=>{const media=LIST_MOVE_MEDIA[x]||[];return `<li><span>${i+1}</span>${media.map(([id,alt])=>`<img class="list-art${media.length>1?" duo":""}" src="assets/moves/${id}.gif" alt="${alt}动作示意" loading="lazy">`).join("")}<b>${esc(x)}</b></li>`}).join("")}</ol></div>
+      <ol class="rlist">${s.items.map((x,i)=>{const media=LIST_MOVE_MEDIA[x]||[];return `<li><span>${i+1}</span>${media.map(([id,alt])=>moveArt(id,alt,{className:"list-art"+(media.length>1?" duo":""),width:80,height:60})).join("")}<b>${esc(x)}</b></li>`}).join("")}</ol></div>
       <div class="actions"><button class="cta" data-run="next">${s.btn}</button></div>`;
   }else if(s.type==="move"){
     const timed=!!s.m.sec;
     st.total = timed ? s.m.sec : 0;
-    body=`<div class="rcard"><div class="media exercise-media"><img src="assets/moves/${s.m.img}.gif" alt="${esc(s.m.n)}动作示意" width="800" height="600"></div>
+    body=`<div class="rcard"><div class="media exercise-media">${moveArt(s.m.img,s.m.n,{full:true,loading:"eager",width:800,height:600})}</div>
       <span class="tag2 light">第 ${s.round} 轮 · 动作 ${s.idx}/${w.moves.length}</span>
       <h2>${esc(s.m.n)}</h2><p class="reps">${esc(s.m.r)}</p><p class="cue">${icon("bulb","sm")} ${esc(s.m.c)}</p></div>
       ${timed?timerRing(st.running?st.sec:s.m.sec,s.m.sec):""}
@@ -1983,6 +2004,7 @@ function drawRun(){
   $("#runBody").innerHTML=`<div class="run-top"><button data-run="close">✕ 退出</button><span>${workoutTitle(st.key)}</span><span class="pc">${pct}%</span></div>
     <div class="bar"><i style="width:${pct}%"></i></div>${body}`;
   if(s.type==="rest") countdown(s.sec,nextStep);
+  warmNextMove();
 }
 
 /* ---------- events ---------- */

@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');assert(fs.readFileSync(path.join(root,'sw.js'),'utf8').includes('notificationclick'),'push click handler');
-assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=29"></script>'), 'config loads before coaching');
+assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=30"></script>'), 'config loads before coaching');
 const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('</script>'));
 const memory = new Map();
 const elements = new Map();

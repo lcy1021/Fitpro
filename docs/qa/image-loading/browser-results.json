@@ -1,0 +1,22 @@
+{
+  "checks": [
+    {
+      "view": "today",
+      "smallImages": 3
+    },
+    {
+      "view": "train",
+      "smallImages": 5
+    },
+    {
+      "view": "workout",
+      "smallImages": 7
+    }
+  ],
+  "noGifDownloads": true,
+  "nextMovementWarmedOnce": true,
+  "smallPhoneFits": true,
+  "offlineImageBytes": 15372,
+  "stableImageCache": true,
+  "pageErrors": []
+}
