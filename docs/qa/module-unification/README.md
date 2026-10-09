@@ -35,4 +35,4 @@
 
 ## 发布
 
-本地验收完成；GitHub Pages部署和远端字节核对待补充。
+应用v39已发布。提交 `dd942de296fd667ea53e848c4929b4fc23d0ba9a`，GitHub Pages运行 [37947933554](https://github.com/lcy1021/Fitpro/actions/runs/37947933554) 成功。线上13个文件（App、SW、共用CSS/JS、展示页、预览、设计规范与QA）与本地逐字节相同，见 `release-verification.json`。随后仅追加本发布记录，不再修改应用文件。

@@ -1,0 +1,85 @@
+{
+  "release": "v39",
+  "commit": "dd942de296fd667ea53e848c4929b4fc23d0ba9a",
+  "pagesRun": 37947933554,
+  "files": [
+    {
+      "file": "index.html",
+      "matches": true,
+      "bytes": 194874,
+      "sha256": "2eb6bbb20cbe03870075997cea70e5f41a85b7b244610264061d7b77177932f8"
+    },
+    {
+      "file": "sw.js",
+      "matches": true,
+      "bytes": 4013,
+      "sha256": "88faa5fdfe7fd7fdb033e430f0f856c79b56f2938f3fd4356761d1d52df0beb8"
+    },
+    {
+      "file": "design-system/tokens.css",
+      "matches": true,
+      "bytes": 6449,
+      "sha256": "aa99af77620e78c1d379d1ebf4717ba57c847e797178d01c972074c335053c49"
+    },
+    {
+      "file": "design-system/components.css",
+      "matches": true,
+      "bytes": 29332,
+      "sha256": "8da4f2c58882e3c9f109a5588c916533a40ca777e36739389331d9340b5166e1"
+    },
+    {
+      "file": "design-system/mascots.js",
+      "matches": true,
+      "bytes": 1383,
+      "sha256": "3e9aaac6a3812d3f8fe7478c78f74a4f0947314df5b846bf7694237045300165"
+    },
+    {
+      "file": "private-coach.js",
+      "matches": true,
+      "bytes": 69245,
+      "sha256": "dbb3d18d99a017c63cce052b3ba76025564c3696c56a3d9fbaadb60611e233e5"
+    },
+    {
+      "file": "private-coach.css",
+      "matches": true,
+      "bytes": 12801,
+      "sha256": "7fd61b101b0d25202a81702fd578f4f62e588d7baef2e3f556f387133efca9da"
+    },
+    {
+      "file": "design-system/index.html",
+      "matches": true,
+      "bytes": 12182,
+      "sha256": "802e8c2fd72736b4e84460b909455ec516c178b2c57167732f2f33704fece933"
+    },
+    {
+      "file": "design-system/gallery.js",
+      "matches": true,
+      "bytes": 9784,
+      "sha256": "435db540a43097418add28b0b588d9881b116bf2851d6e3fd77f080540f610bc"
+    },
+    {
+      "file": "design-system/gallery.css",
+      "matches": true,
+      "bytes": 3635,
+      "sha256": "1a9d0ea4318a44d82405f9c5c9d73cc3ffc1a887ff3214140f0c16c0abfac4ef"
+    },
+    {
+      "file": "tests/theme-preview.html",
+      "matches": true,
+      "bytes": 12668,
+      "sha256": "e5e5a968aef9201b592d0944e521dbeaeb7704c5fa364d69bec9c298b9f75335"
+    },
+    {
+      "file": "docs/design-system.md",
+      "matches": true,
+      "bytes": 14988,
+      "sha256": "3920c6667d53514b21222be43f702a56ef7ec873e5cbb57a3174adef7cf74ac6"
+    },
+    {
+      "file": "design-qa.md",
+      "matches": true,
+      "bytes": 3232,
+      "sha256": "428946b65f647875d99df511e556b6ccafbf10c8fc4c03b7b49c9af2335c767a"
+    }
+  ]
+}
