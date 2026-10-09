@@ -90,7 +90,7 @@
 - 新增四餐通用插画和双人插画，真正透明、压缩为小WebP，保持媒体独立缓存。插画不根据用户健康/食物内容生成，不能用于判断这餐热量；实际食物/热量仍取保存记录，计划数学不复制效果图里的合成数字。
 - 按日伴侣共享、只读、未保存身体输入、恢复和同步边界不变。没有SQL或云函数变更，`config.js`未动。
 - 验证与截图：[v35 QA](qa/soft-meal-design/README.md)，[设计比较](../design-qa.md)。测试：场景、热量弹窗、SW缓存、历史/伴侣现有浏览器回归通过；CUA实际24场景检查、角色切换和控制台检查。
-- 发布：核心版本v35；发布结果另见本次QA的release-results.json（完成后补充），未核对前不声称线上完成。
+- 发布：应用提交[`62490e4`](https://github.com/lcy1021/Fitpro/commit/62490e44c2497a8fdc97e103c19bd1465a1c1093)，[Pages构建37929086674](https://github.com/lcy1021/Fitpro/actions/runs/37929086674)成功。线上四个核心文件和五个新增WebP逐字节与本地一致；[SHA-256核对](qa/soft-meal-design/release-results.json)。核心v35；后续文档提交只补发布证据。
 
 ## 4. 后续修复流程
 

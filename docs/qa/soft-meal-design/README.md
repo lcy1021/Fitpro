@@ -36,4 +36,6 @@
 
 本地场景：`tests/theme-preview.html?view=today|diet|record&person=hus|wife&theme=light|dark&journal=1&sharing=on&meal-design=1`；`focus=meals|plans|history`仅用于定位截图，不改变生产页面。主题参考页使用v35脚本。
 
-设计QA结论见根目录[design-qa.md](../../../design-qa.md)。发布后补充release-results.json；核心v35，媒体meal1，旧角色和动作仍media1，图片缓存duofit-images-v1。
+设计QA结论见根目录[design-qa.md](../../../design-qa.md)。[发布核对](release-results.json)已通过：应用提交62490e4，Pages37929086674成功，线上核心与5张新图共9文件逐字节一致；核心v35，媒体meal1，旧角色和动作仍media1，图片缓存duofit-images-v1。
+
+文档证据随后单独提交，不修改应用文件。

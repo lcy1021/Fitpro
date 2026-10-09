@@ -1,0 +1,64 @@
+{
+  "appVersion": 35,
+  "appCommit": "62490e44c2497a8fdc97e103c19bd1465a1c1093",
+  "pagesRun": 37929086674,
+  "pagesConclusion": "success",
+  "checkedAt": "2026-10-09T20:20:10.460022+08:00",
+  "url": "https://lcy1021.github.io/Fitpro/",
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 216860,
+      "sha256": "27e2b71af20db7870749188143956e09a6bfe7fe550e988b66f3899407ffdd5d",
+      "matchesLocal": true
+    },
+    {
+      "path": "sw.js",
+      "bytes": 3910,
+      "sha256": "2e0f090a5c6beecf510ff56f0211eee3d611af476ef1d3f9aa41ac5e83e51f44",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.js",
+      "bytes": 69245,
+      "sha256": "359b2c0043c1ea4366c8fb88922ab16858221fbc3d6dc3c8c7ec0ad7a7380afe",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.css",
+      "bytes": 12801,
+      "sha256": "7fd61b101b0d25202a81702fd578f4f62e588d7baef2e3f556f387133efca9da",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/meal-art/breakfast-v1.webp",
+      "bytes": 10212,
+      "sha256": "b37475babad5ee2daaeeb0ebc5011fddd5b664eda7ff407d3f9e305de82e3364",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/meal-art/dinner-v1.webp",
+      "bytes": 12988,
+      "sha256": "9f3d2561ea7b9658d3d5b8aec78ddaadb6ddbdd8519bf367e34806ce110d28d8",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/meal-art/lunch-v1.webp",
+      "bytes": 11014,
+      "sha256": "f0885badbbf85971cf738410a4f22fe0eaeed88a51c0597338f1b6236f6af425",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/meal-art/record-couple-v1.webp",
+      "bytes": 19062,
+      "sha256": "cc8db7e364327c60ea3e18f8f5c88ab42111c7cbe88168677486cffbe37e0f00",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/meal-art/snack-v1.webp",
+      "bytes": 8322,
+      "sha256": "6798f423e58d68fb4f1172119f28b2c9892d97bf27115aa91dc0249df9937315",
+      "matchesLocal": true
+    }
+  ]
+}
