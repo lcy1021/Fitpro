@@ -657,7 +657,7 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="private-coach.css?v=22">
+<link rel="stylesheet" href="private-coach.css?v=23">
 </head>
 <body class="me-hus">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -790,7 +790,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=22"></script>
+<script src="private-coach.js?v=23"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -2339,8 +2339,8 @@ if(CLOUD){
       putMeasure({...ex,person:me,date,weight:start,goal:{height:Number(p.height),age:Number(p.age),start,target,pace:"gentle",adj:0,level:old.level||0,cardio:false,mode:p.target?null:"maintain",at:date,goals:p.goals,focus:p.focus}});
       menuCache={};}
   });
-  let savedCoachSession=false;try{savedCoachSession=!!localStorage.getItem("duofit.auth.v1");}catch(_){}
-  if(savedCoachSession)openSplash(async()=>{await coachReady.catch(()=>{});return privateCoach.active?"home":"choose";});else openPicker(false);
+  let savedCoachSession=false;try{savedCoachSession=!!(localStorage.getItem("duofit.auth.v1")||localStorage.getItem("duofit.paired.v1"));}catch(_){}
+  if(savedCoachSession)openSplash(async()=>{const status=await coachReady.catch(()=>"error");return status==="error"?"error":privateCoach.active?"home":"choose";});else openPicker(false);
   coachReady=privateCoach.start();privateCoach.ready=coachReady;
   setInterval(()=>{if(document.visibilityState==="visible"){refreshCalendarDay();sync();}},30000);
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){refreshCalendarDay();sync();}});
