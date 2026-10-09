@@ -1,0 +1,110 @@
+{
+  "version": 37,
+  "commit": "63708a2aa9577b641813ba40fbc4d7a516f2eaa0",
+  "pagesRun": 37939281995,
+  "pagesConclusion": "success",
+  "files": [
+    {
+      "file": "index.html",
+      "matches": true,
+      "bytes": 196232,
+      "sha256": "726b2212d7002a6496776a5dfdf95ddd8f34c90854b60ee51d1c9e2e08c8af38"
+    },
+    {
+      "file": "sw.js",
+      "matches": true,
+      "bytes": 3980,
+      "sha256": "a87384c5712a3807fdbb113c09359a38365a82fd8de74e37b8645d11bde5d245"
+    },
+    {
+      "file": "private-coach.js",
+      "matches": true,
+      "bytes": 69245,
+      "sha256": "c2095533ef7aaadf1ce381a037f86e0448c5c47ea78dc4b6bc669c2a13c663c3"
+    },
+    {
+      "file": "private-coach.css",
+      "matches": true,
+      "bytes": 12801,
+      "sha256": "7fd61b101b0d25202a81702fd578f4f62e588d7baef2e3f556f387133efca9da"
+    },
+    {
+      "file": "design-system/tokens.css",
+      "matches": true,
+      "bytes": 6055,
+      "sha256": "09dd611b6a78b3cd967b3d49f1d2735e9543ee25f0f1a315857ad2418f9e80c9"
+    },
+    {
+      "file": "design-system/components.css",
+      "matches": true,
+      "bytes": 24773,
+      "sha256": "be5a763aa9cbbf7dc4b0e9901f1aaebfa09b6a4353207ef5ad5cf8b51588d543"
+    },
+    {
+      "file": "design-system/index.html",
+      "matches": true,
+      "bytes": 11852,
+      "sha256": "0d0f155be21efc28270eadd75a4d13b9ab91f548147f7e675bfa96e13c001961"
+    },
+    {
+      "file": "design-system/gallery.js",
+      "matches": true,
+      "bytes": 7163,
+      "sha256": "81bc0e0abbf82d2a6656d5345ab95081bb1663b0f880db1bc6949239f10cc3d7"
+    },
+    {
+      "file": "design-system/gallery.css",
+      "matches": true,
+      "bytes": 3418,
+      "sha256": "874e60cbed65571e054f6431aaba0857f1f3f9aaf4c16bf35072d7e8bcae3624"
+    },
+    {
+      "file": "assets/meal-art/breakfast-detail-v1.webp",
+      "matches": true,
+      "bytes": 29494,
+      "sha256": "5618b08f14bfa9d8ee100a673d32fcfa4b2c5f8e33e8e9b470404077f8c9b837"
+    },
+    {
+      "file": "assets/meal-art/cloud-detail-v1.webp",
+      "matches": true,
+      "bytes": 42086,
+      "sha256": "46185e781764dcc012fe2a4feee348cee6fff45ebab64eaa38a2340e8651991f"
+    },
+    {
+      "file": "assets/meal-art/diet-hus-detail-v1.webp",
+      "matches": true,
+      "bytes": 19628,
+      "sha256": "18d5834b26ac96db62c008f8f6c9d1a36486fb21a357e3d8a333b87a7229d17d"
+    },
+    {
+      "file": "assets/meal-art/diet-wife-detail-v1.webp",
+      "matches": true,
+      "bytes": 32762,
+      "sha256": "324065bb2762e4cce491e571b29c2248b0deb79ed8107f357e4646ee738683f3"
+    },
+    {
+      "file": "assets/meal-art/lunch-detail-v1.webp",
+      "matches": true,
+      "bytes": 27432,
+      "sha256": "f2962d2ffc4f0602921e2126b2de3c2851d1ac9fe7367d6cbeb7d59c583f3b70"
+    },
+    {
+      "file": "assets/meal-art/record-couple-detail-v1.webp",
+      "matches": true,
+      "bytes": 22556,
+      "sha256": "815de78afcd78fa544e74699f79f9c191ed046d0f25fb873cd11dd86fc123c0f"
+    },
+    {
+      "file": "assets/meal-art/today-hus-detail-v1.webp",
+      "matches": true,
+      "bytes": 42026,
+      "sha256": "a2d70bd34b2a33fefe2414ef886bdf4c437d752edaa5ea0e0f3a6573443ad879"
+    },
+    {
+      "file": "assets/meal-art/today-wife-detail-v1.webp",
+      "matches": true,
+      "bytes": 68760,
+      "sha256": "c237f564d776ce14457e7998133314d95663df970998a35fbb5781a8bdb3d9f9"
+    }
+  ]
+}

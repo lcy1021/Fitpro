@@ -43,4 +43,4 @@ v36 虽统一了字号/组件并调整记录顺序，却把明确出现在确认
 
 ## 发布
 
-发布后补充同目录 `release-results.json`，记录Pages构建、commit和线上字节一致性；回退应用v36为8e6b290。
+应用提交[`63708a2`](https://github.com/lcy1021/Fitpro/commit/63708a2aa9577b641813ba40fbc4d7a516f2eaa0)，[Pages构建37939281995](https://github.com/lcy1021/Fitpro/actions/runs/37939281995)成功。17个线上文件逐字节与本地一致，见[release-results.json](release-results.json)。后续文档提交只补证据与老婆素材提示词；回退应用v36为8e6b290。
