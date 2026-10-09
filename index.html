@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=38">
+<link rel="stylesheet" href="design-system/tokens.css?v=39">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -218,17 +218,6 @@ p{margin:0}
 .train-today{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .train-today h4{margin:0 0 2px;font-size:16px;font-weight:800}
 .train-today p{font-size:13px;color:var(--muted)}
-
-.counter{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.counter .ic{width:40px;height:40px;border-radius:14px;background:var(--me-soft);color:var(--me-ink);display:flex;align-items:center;justify-content:center;flex:none}
-.counter .txt{flex:1;min-width:0}
-.counter h4{margin:0;font-size:15px;font-weight:800}
-.counter p{font-size:12px;color:var(--muted);line-height:1.5}
-.counter .ctl{display:flex;align-items:center;gap:8px;background:var(--sunk);border-radius:999px;padding:4px}
-.counter .ctl button{width:34px;height:34px;border-radius:50%;border:0;background:var(--surface);font-size:18px;line-height:1;box-shadow:var(--shadow)}
-.counter .ctl button[data-stand="1"]{background:var(--me-grad);color:#fff;box-shadow:var(--me-glow)}
-.counter .ctl b{font-size:18px;font-weight:800;min-width:30px;text-align:center;font-variant-numeric:tabular-nums}
-.counter .ctl b small{display:block;font-size:10px;color:var(--muted);font-weight:500;line-height:1}
 
 /* Meal components live in design-system/components.css. */
 
@@ -533,7 +522,6 @@ p{margin:0}
 .desk .art{width:100%;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:var(--sunk);margin-bottom:6px}
 .desk .art img{width:100%;height:100%;object-fit:contain;display:block}
 @media(max-width:400px){
-  .counter{flex-wrap:wrap}.counter .ctl{margin-left:auto}
   .track{grid-template-columns:40px minmax(0,1fr) 38px;gap:8px}.track .who{flex-wrap:wrap;gap:0 5px}.track .ava{width:40px;height:40px}.bead{width:26px;height:26px}.beads{gap:4px}
   .obs .ol li.has-art{grid-template-columns:68px minmax(0,1fr)}.obs .ol .art{width:68px;height:51px}.obs .ol .r{grid-column:2;justify-self:start}
   .meal-top{flex-wrap:wrap}.meal-top .kcal{margin-left:48px}
@@ -545,8 +533,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=38">
-<link rel="stylesheet" href="private-coach.css?v=38">
+<link rel="stylesheet" href="design-system/components.css?v=39">
+<link rel="stylesheet" href="private-coach.css?v=39">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -680,8 +668,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=38"></script>
-<script src="design-system/mascots.js?v=38"></script>
+<script src="private-coach.js?v=39"></script>
+<script src="design-system/mascots.js?v=39"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1491,12 +1479,15 @@ function viewToday(){
   const gp=planFor(me);
   const goalTop = privateCoach?.active ? privateCoach.weeklyCard() : gp ? suggCard() : `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>设定你的目标</b><small>按你的体重安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
   $("#view").innerHTML = missed + goalTop + (privateCoach?.active ? privateCoach.dailyCard() : together) + privateDuo + `
-    <section class="sec">${secH("train","今天的训练")}${trainCard}</section>
+    <section class="sec">${trainCard}</section>
     <section class="sec ds-scene ${me}">${mealSectionHeading("今天吃什么",date,"today",me)}
       <div class="stack">${meals}</div>${overNote}</section>
-    <section class="sec">${secH("desk","工位起身")}
-      <div class="card counter"><span class="ic" aria-hidden="true">${icon("stretch","lg")}</span><div class="txt"><h4>起来动一动</h4><p>每坐 1 小时起身 2–3 分钟，今天目标 6 次</p></div>
-      <div class="ctl"><button data-stand="-1" aria-label="减一次">−</button><b>${c.stand||0}<small>/6 次</small></b><button data-stand="1" aria-label="加一次">+</button></div></div></section>`;
+    ${moduleCard("工位起身",`<div class="counter"><div class="txt"><h4>起来动一动</h4><p>每坐 1 小时起身 2–3 分钟</p></div><div class="ctl"><button data-stand="-1" aria-label="减一次">−</button><b>${c.stand||0}<small>/6 次</small></b><button data-stand="1" aria-label="加一次">+</button></div></div>`,{id:'standModule',meta:'给久坐的身体一个小休息',art:'workout'})}`;
+}
+
+// Shared compact module shell. Body renderers own data; this helper owns presentation.
+function moduleCard(title,body,{id='',person=me,meta='',art='',symbol=''}={}){
+  return `<section class="sec ds-scene ds-module ${person}"${id?` id="${id}"`:''}><header class="ds-module-heading"><div><h3>${esc(title)}</h3>${meta?`<p>${esc(meta)}</p>`:''}</div>${art?`<img class="ds-module-art" src="${mood(person,art)}" width="88" height="88" alt="" loading="lazy" decoding="async">`:symbol?`<span class="ds-module-mark" aria-hidden="true">${icon(symbol,'lg')}</span>`:''}</header><div class="ds-module-body">${body}</div></section>`;
 }
 
 function peekSwitch(){
@@ -1534,7 +1525,7 @@ function mealArt(m){
   return `<span class="meal-art-stage"><img class="meal-art" src="assets/meal-art/${m}${['breakfast','lunch'].includes(m)?'-detail-v1.webp?v=detail1':'-v1.webp?v=meal1'}" width="106" height="72" alt="" loading="lazy" decoding="async"></span>`;
 }
 function mealHeading(m,title,time,range,layout='plan'){
-  return `<div class="meal-heading"><span class="meal-symbol m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><div class="meal-title"><h4>${esc(title)}</h4><time>${esc(time)}</time></div>${mealArt(m)}${layout==='today'?'':mealEnergy(range)}</div>`;
+  return `<div class="meal-heading">${layout==='today'?`<span class="meal-symbol m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span>`:mealArt(m)}<div class="meal-title"><h4>${esc(title)}</h4><time>${esc(time)}</time></div>${layout==='today'?mealArt(m):mealEnergy(range)}</div>`;
 }
 function mealSectionHeading(title,date,kind,person=me){
   const d=new Date(date+'T12:00:00');
@@ -1562,7 +1553,7 @@ function dietDayRows(person,date,interactive=false,record=null){
 
 function ringCard(person){
   const e=eatenToday(person),day=dayRange(person),mid=Math.round((e.lo+e.hi)/2),pct=Math.min(1,mid/((day[0]+day[1])/2));
-  return `<div class="card nutrition-summary ${person}"><div class="nutrition-top"><span>今日热量估算</span><span class="nutrition-count">${e.n} / 4 餐已记录</span></div>
+  return `<div class="nutrition-summary ${person}"><div class="nutrition-top"><span>今日热量估算</span><span class="nutrition-count">${e.n} / 4 餐已记录</span></div>
     <div class="nutrition-value"><div><b>${e.n?kcalText([e.lo,e.hi]):"—"}</b><small>kcal</small></div><img src="${mood(person,e.n===4?"day-done":"meal")}" width="60" height="60" alt=""></div>
     <div class="nutrition-track" role="img" aria-label="已记录 ${e.n} 餐，估算 ${e.n?kcalText([e.lo,e.hi]):"暂无"} kcal，全天计划 ${kcalText(day)} kcal"><span style="width:${(pct*100).toFixed(1)}%"></span></div>
     <div class="nutrition-meta"><span>全天计划 <b>${kcalText(day)}</b> kcal</span><span>${e.n===4?"四餐都记下了":"按自己的节奏来"}</span></div>
@@ -1580,7 +1571,7 @@ function dietWeekCard(person,offset=dietWeekOffset){
     return `<button type="button" class="diary-date${date===todayDate?" today":""}" data-diet-date="${date}" aria-pressed="${date===dietSelectedDate}" aria-label="${date} ${future?"尚未开始":`已记录 ${count}/4 餐`}"${future?" disabled":""}><small>${date===todayDate?"今天":"周"+WEEK[d.getDay()]}</small><b>${d.getDate()}</b><span class="meal-dots" aria-hidden="true">${MEALS.map(m=>`<i class="${MEAL_STATES[c.meals?.[m]]?.[0]||""}"></i>`).join("")}</span></button>`;
   }).join("");
   const selected=getCheckin(person,dietSelectedDate),total=days.reduce((n,d)=>n+mealCount(getCheckin(person,ymd(d))),0);
-  return `<div class="card diet-week ${person}"><div class="diary-nav"><div><b>${offset===0?"这周的饮食":"饮食记录"}</b><small>${mon.getFullYear()} 年 ${stamp(mon)}—${stamp(end)} · 已记录 ${total} 餐</small></div><div class="calendar-arrows"><button type="button" data-diet-week="-1" aria-label="上一周"${canPrev?"":" disabled"}>${icon("back","sm")}</button><button type="button" data-diet-week="1" aria-label="下一周"${offset<0?"":" disabled"}>${icon("chevron-right","sm")}</button></div></div>
+  return `<div class="diet-week ${person}"><div class="diary-nav"><div><b>${offset===0?"这周的饮食":"饮食记录"}</b><small>${mon.getFullYear()} 年 ${stamp(mon)}—${stamp(end)} · 已记录 ${total} 餐</small></div><div class="calendar-arrows"><button type="button" data-diet-week="-1" aria-label="上一周"${canPrev?"":" disabled"}>${icon("back","sm")}</button><button type="button" data-diet-week="1" aria-label="下一周"${offset<0?"":" disabled"}>${icon("chevron-right","sm")}</button></div></div>
     <div class="diary-dates" role="group" aria-label="选择饮食记录日期">${buttons}</div>
     <div class="diary-day-title"><b>${shortDay(dietSelectedDate)}的饮食</b><span>${mealCount(selected)} / 4 餐${offset<0?` · <button type="button" data-diet-today>回到今天</button>`:""}</span></div>
     ${dietDayRows(person,dietSelectedDate,true)}<p class="diary-foot">${dietSelectedDate===todayDate&&person===me?"点一下记录这餐；也可以记食物，让 AI 帮你估算。":"已保存的饮食记录 · 按日期查看"}</p></div>`;
@@ -1594,18 +1585,13 @@ function viewDiet(){
   const dinners=[1,2,3,4,5].filter(d=>d!==w).map(d=>`<div class="dinner"><span class="d">周${WEEK[d]}</span>
     <div><h4>${DINNERS[d].n}</h4><p>${DINNERS[d].h}</p></div><span class="k">约 ${DINNERS[d].kcal[viewP]}</span></div>`).join("");
   $("#view").innerHTML=peekSwitch()+`
-  <section class="sec">${secH("diet","饮食日志",PEOPLE[viewP].label)}${ringCard(viewP)}</section>
-  <section class="sec">${secH("record","饮食打卡记录",dietWeekOffset===0?"这周":"按周查看")}${dietWeekCard(viewP)}</section>
+  ${moduleCard("饮食日志",ringCard(viewP),{id:"nutritionModule",person:viewP,meta:"把每一餐，慢慢记下来",symbol:"diet"})}
+  ${moduleCard("饮食打卡记录",dietWeekCard(viewP),{id:"dietLogModule",person:viewP,meta:"按日期回看，每一餐都有迹可循",symbol:"record"})}
   <section class="sec ds-scene ${viewP}">${mealSectionHeading(viewP===me?"我的一天":PEOPLE[viewP].label+"的一天",ymd(new Date()),"diet",viewP)}
     <div class="card meal-plan-list ${viewP}">${rows}</div></section>
   ${hasDietRule?"":`<section class="sec">${secH("clock","晚餐轮换","15 分钟快手菜")}
     <div class="card">${tn}${dinners}</div>
     <p class="note" style="margin-top:10px">周日花 1 小时备菜：肉切好腌好分装冷冻，蔬菜洗好沥干装盒，工作日下锅就行。</p></section>`}
-  <section class="sec">${secH("delivery","点外卖怎么选")}
-    <div class="two">
-      <div class="card good"><h4>${icon("check","sm")} 优先选</h4><ul><li>一荤一素简餐</li><li>牛肉粉、鸡肉粉，粉吃一半</li><li>日式定食、去皮鸡腿饭</li><li>麻辣烫多选菜和肉，汤不喝</li></ul></div>
-      <div class="card bad"><h4>尽量少选</h4><ul><li>盖浇饭、黄焖鸡</li><li>炒饭炒面</li><li>汉堡炸鸡、披萨</li><li>重酱料的轻食沙拉</li></ul></div>
-    </div></section>
   <section class="sec">${secH("chat","常见场景")}
     <div class="card faq">
       <details><summary>沙拉酱怎么选？</summary><p>选油醋汁，只倒一半；沙拉里要有肉蛋和一点主食。</p></details>
@@ -1649,10 +1635,9 @@ function viewTrain(){
     <input class="extra-search" id="extraSearch" type="search" placeholder="搜索动作，如深蹲、拉伸、臀桥" aria-label="搜索想做的动作" value="${esc(extraMoveQuery)}">
     <div class="extra-results" id="extraResults">${extraMoveRows(c)}</div><p>额外动作仅保存在你的个人打卡里，伴侣看不到具体内容。</p></div>`;
   $("#view").innerHTML=`
-  <section class="sec">${secH("train",rest?"今天是休息日":"今天的训练",s.kind==="flex"?"可选":"")}
+  <section class="sec">
     ${rest?`<div class="obs today-plan"><span class="tag2">${icon("leaf","sm")} 今天休息</span><h4>${recovering?"先休息，照顾好身体":"今天没有必须完成的训练"}</h4><p>${recovering?"若有疼痛或身体不适，不要勉强运动。":"下方有可选小活动，做了再打卡即可。"}</p></div>${extra}`:planCard(s.w,true,c.workout==="done")}</section>
-  <section class="sec">${secH("today","这周我的安排",icon("check","sm")+" 是已完成的")}
-    <div class="card">${head}${rows}</div></section>
+  ${moduleCard("这周我的安排",`${head}${rows}<p class="ds-module-note">${icon("check","sm")} 表示已完成的训练</p>`,{id:"weekModule",meta:"按自己的节奏，一天一点进步",art:"workout"})}
   ${rest?"":`<p class="note">膝盖或腰出现疼痛（不是肌肉酸）就先停下。感觉不适时，可以回到今日页调整今天的安排。</p>`}`;
 }
 
@@ -1691,7 +1676,7 @@ function trendCard(){
   const series=["hus","wife"].map((p,bi)=>({p,bi,pts:measureSeries(p).filter(m=>typeof m[recField]==="number").slice(-12)}));
   const toggle=`<div class="seg2" role="group" aria-label="看哪项趋势">${fields.map(f=>`<button data-rec-field="${f}" aria-pressed="${f===recField}">${FIELDS[f][0]}</button>`).join("")}</div>`;
   const legend=`<div class="legend">${series.map(s=>{ const l=s.pts[s.pts.length-1]; return `<span class="${s.p}"><i></i>${PEOPLE[s.p].label}${l?` <b>${l[recField]} ${unit}</b>`:" 还没有数据"}</span>`; }).join("")}</div>`;
-  if(!series.some(s=>s.pts.length)) return `<div class="card chart"><div class="chart-h"><b>两个人的趋势</b>${toggle}</div><p class="empty empty-mood"><img src="${mood(me,"sad")}" alt="">还没有${label}数据，记录两次以上就能看到趋势</p></div>`;
+  if(!series.some(s=>s.pts.length)) return `<div class="chart"><div class="chart-h"><b>两个人的趋势</b>${toggle}</div><p class="empty empty-mood"><img src="${mood(me,"sad")}" alt="">还没有${label}数据，记录两次以上就能看到趋势</p></div>`;
   const body=series.map(s=>{
     if(!s.pts.length) return `<text x="${W/2}" y="${s.bi*BAND+BAND/2+4}" text-anchor="middle" font-size="11" fill="var(--faint)">${PEOPLE[s.p].label}还没有${label}数据</text>`;
     const vals=s.pts.map(m=>m[recField]); let lo=Math.min(...vals), hi=Math.max(...vals); if(hi-lo<1){ lo-=.5; hi+=.5; }
@@ -1708,7 +1693,7 @@ function trendCard(){
       `<text x="${Math.min(last[0],W-24).toFixed(1)}" y="${(last[1]-10).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="800" fill="${col}">${s.pts[n-1][recField]}</text>`;
   }).join("");
   const defs=`<defs>${["hus","wife"].map(p=>`<linearGradient id="fill-${p}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--${p})" stop-opacity=".22"/><stop offset="1" stop-color="var(--${p})" stop-opacity="0"/></linearGradient>`).join("")}</defs>`;
-  return `<div class="card chart"><div class="chart-h"><b>两个人的趋势</b>${toggle}</div>${legend}
+  return `<div class="chart"><div class="chart-h"><b>两个人的趋势</b>${toggle}</div>${legend}
     <div class="plot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}趋势，最近 12 次">${defs}<line x1="${PX}" x2="${W-PX}" y1="${BAND}" y2="${BAND}" stroke="var(--line)" stroke-dasharray="3 5"/>${body}</svg></div>
     <p class="chart-foot">最近 12 次记录 · 两人各自按自己的范围显示走势</p></div>`;
 }
@@ -1717,11 +1702,11 @@ function privateTrendCard(){
   if(!fields.includes(recField)) recField="weight";
   const [label,unit]=FIELDS[recField],pts=measureSeries(me).filter(m=>typeof m[recField]==="number").slice(-12);
   const toggle=`<div class="seg2" role="group" aria-label="看哪项趋势">${fields.map(f=>`<button data-rec-field="${f}" aria-pressed="${f===recField}">${FIELDS[f][0]}</button>`).join("")}</div>`;
-  if(!pts.length)return `<div class="card chart"><div class="chart-h"><b>我的${label}趋势</b>${toggle}</div><p class="empty">还没有${label}数据</p></div>`;
+  if(!pts.length)return `<div class="chart"><div class="chart-h"><b>我的${label}趋势</b>${toggle}</div><p class="empty">还没有${label}数据</p></div>`;
   const vals=pts.map(m=>m[recField]),lo=Math.min(...vals)-.5,hi=Math.max(...vals)+.5;
   const xy=pts.map((m,i)=>[20+(pts.length===1?140:i*280/(pts.length-1)),100-(m[recField]-lo)/(hi-lo)*80]);
   const last=xy.at(-1),line=pts.length>1?`<polyline fill="none" stroke="var(--me)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${xy.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' ')}"/>`:'';
-  return `<div class="card chart"><div class="chart-h"><b>我的${label}趋势</b>${toggle}</div><div class="plot"><svg viewBox="0 0 320 120" role="img" aria-label="我的${label}趋势，最新 ${pts.at(-1)[recField]} ${unit}"><line x1="20" x2="300" y1="100" y2="100" stroke="var(--line)" stroke-dasharray="3 5"/>${line}<circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="5" fill="var(--surface)" stroke="var(--me)" stroke-width="3"/><text x="${last[0].toFixed(1)}" y="${(last[1]-12).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--me-ink)">${pts.at(-1)[recField]}</text></svg></div><p class="chart-foot">最近 ${pts.length} 次 · 最新 ${pts.at(-1)[recField]} ${unit}${pts.length===1?' · 再记录一次即可形成趋势':''}</p></div>`;
+  return `<div class="chart"><div class="chart-h"><b>我的${label}趋势</b>${toggle}</div><div class="plot"><svg viewBox="0 0 320 120" role="img" aria-label="我的${label}趋势，最新 ${pts.at(-1)[recField]} ${unit}"><line x1="20" x2="300" y1="100" y2="100" stroke="var(--line)" stroke-dasharray="3 5"/>${line}<circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="5" fill="var(--surface)" stroke="var(--me)" stroke-width="3"/><text x="${last[0].toFixed(1)}" y="${(last[1]-12).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--me-ink)">${pts.at(-1)[recField]}</text></svg></div><p class="chart-foot">最近 ${pts.length} 次 · 最新 ${pts.at(-1)[recField]} ${unit}${pts.length===1?' · 再记录一次即可形成趋势':''}</p></div>`;
 }
 function whoCard(p){
   const ms=measureSeries(p);
@@ -1777,9 +1762,9 @@ function coupleStreakCard(){
   const joint=activityStreak(date=>info.hus.checked(date)===true&&info.wife.checked(date)===true,info.hus.since>info.wife.since?info.hus.since:info.wife.since);
   const week=addDays(new Date(),-((new Date().getDay()+6)%7));
   const rows=["hus","wife"].map(person=>{const a=info[person],s=activityStreak(a.checked,a.since),count=Array.from({length:7},(_,i)=>ymd(addDays(week,i))).filter(d=>a.checked(d)===true).length;
-    return `<div class="habit-person ${person}"><div class="habit-person-head"><img src="assets/avatar-${person}.webp?v=media1" alt="" width="36" height="36"><b>${PEOPLE[person].label}${person===me?" · 我":""}</b></div><span class="habit-label">连续记录</span><div class="habit-number"><b>${a.ready?s.count+(s.capped?"+":""):"—"}</b><span>天</span></div><small>${a.ready?`本周记录 ${count} 天`:"历史状态待同步"}</small></div>`;
+    return `<div class="habit-person ${person}"><div class="habit-person-head"><img src="assets/avatar-${person}.webp?v=media1" alt="" width="36" height="36"><b>${PEOPLE[person].label}</b></div><span class="habit-label">连续记录</span><div class="habit-number"><b>${a.ready?s.count+(s.capped?"+":""):"—"}</b><span>天</span></div><small>${a.ready?`本周记录 ${count} 天`:"历史状态待同步"}</small></div>`;
   }).join("");
-  return `<div class="card habit-card"><div class="habit-heading"><div><h3>一起坚持的日子</h3><p>每一次记录，都是在照顾自己。</p></div><span class="habit-heart" aria-hidden="true">${icon("heart")}</span></div><div class="habit-people">${rows}</div><div class="habit-together">${icon("people","sm")}<span>两人同日连续记录 <b>${bothReady?joint.count+(joint.capped?"+":"")+" 天":"待同步"}</b></span></div><p class="habit-note">当天保存过打卡就算记录，今天尚未记录时沿用昨天的连续天数。连续天数按近 120 天的打卡状态统计。</p></div>`;
+  return `<div class="habit-card"><div class="habit-heading"><div><h4>一起坚持的日子</h4><p>每一次记录，都是在照顾自己。</p></div><span class="habit-heart" aria-hidden="true">${icon("heart")}</span></div><div class="habit-people">${rows}</div><div class="habit-together">${icon("people","sm")}<span>两人同日连续记录 <b>${bothReady?joint.count+(joint.capped?"+":"")+" 天":"待同步"}</b></span></div><p class="habit-note">当天保存过打卡就算记录，今天尚未记录时沿用昨天的连续天数。连续天数按近 120 天的打卡状态统计。</p></div>`;
 }
 function checkinHistoryCard(){
   const today=new Date(),todayDate=ymd(today),mon=addDays(today,-((today.getDay()+6)%7)),start=addDays(mon,-21+historyWindowOffset*28),end=addDays(start,27);
@@ -1801,9 +1786,9 @@ function checkinHistoryCard(){
   const outsideRange=isPrivatePeer&&historySelectedDate<(privateCoach.partnerActivitySince||activityInfo(historyPerson).since);
   const pending=isPrivatePeer&&peerState==="on"&&!hasRecord&&!privateCoach.partnerLoadedDates?.has(historySelectedDate);
   const details=outsideRange?`<p class="history-empty">伴侣详情可查看近 120 天的记录。</p>`:pending?`<p class="history-empty" role="status">正在读取伴侣这一天的记录…</p>`:unavailable?`<p class="history-empty" role="status">${unavailableText}</p>`:hasRecord?dietDayRows(historyPerson,historySelectedDate,false,selected)+`<div class="ds-activity-list"><div class="history-activity"><span>${icon("train","sm")} 训练</span><b>${selected.workout==="done"?"已完成":"未记录完成"}</b></div>${selected.stand?`<div class="history-activity"><span>${icon("desk","sm")} 起身活动</span><b>${Number(selected.stand)||0} 次</b></div>`:""}${extraDone(selected).length?`<div class="history-activity"><span>${icon("stretch","sm")} 可选活动</span><b>${extraDone(selected).length} 项</b></div>`:""}</div>`:`<p class="history-empty">这天还没有${peer?"伴侣":"你"}的打卡记录。</p>`;
-  return `<div class="checkin-history">    <div class="history-day ${historyPerson}"><div class="diary-day-title"><b>${shortDay(historySelectedDate)}的记录</b><span>${Number(historySelectedDate.slice(5,7))}月${Number(historySelectedDate.slice(8))}日</span></div><div class="history-partner-status ds-role-tabs" role="group" aria-label="查看谁的打卡记录">${["hus","wife"].map(p=>`<button type="button" class="${p}" data-history-person="${p}" aria-pressed="${historyPerson===p}" aria-label="查看${PEOPLE[p].label}的打卡记录">${icon("person","sm")}${PEOPLE[p].label}</button>`).join("")}</div><div class="history-view-label"><span>正在查看${PEOPLE[historyPerson].label}的记录${peer?" · 只读":""}</span>${isPrivatePeer?`<button type="button" class="linkbtn" data-coach="sharing-refresh"${privateCoach.partnerReadBusy?" disabled":""}>${privateCoach.partnerReadBusy?"刷新中…":"刷新记录"}</button>`:""}</div>${details}</div><p class="diary-foot">打卡详情由本人决定是否向伴侣共享；目标、体重、围度和健康档案仅自己可见。</p><section class="history-calendar" aria-label="历史打卡日历"><div class="diary-nav"><div><b>两个人的打卡足迹</b><small>${first.replaceAll("-","/")}—${last.slice(5).replace("-","/")}</small></div><div class="calendar-arrows"><button type="button" data-history-window="-1" aria-label="更早四周"${earliest&&earliest<first?"":" disabled"}>${icon("back","sm")}</button><button type="button" data-history-window="1" aria-label="更新四周"${historyWindowOffset<0?"":" disabled"}>${icon("chevron-right","sm")}</button></div></div>
+  return `<div class="checkin-history"><section class="history-calendar" aria-label="历史打卡日历"><div class="diary-nav"><div><b>两个人的打卡足迹</b><small>${first.replaceAll("-","/")}—${last.slice(5).replace("-","/")}</small></div><div class="calendar-arrows"><button type="button" data-history-window="-1" aria-label="更早四周"${earliest&&earliest<first?"":" disabled"}>${icon("back","sm")}</button><button type="button" data-history-window="1" aria-label="更新四周"${historyWindowOffset<0?"":" disabled"}>${icon("chevron-right","sm")}</button></div></div>
     <div class="habit-weekdays">${["一","二","三","四","五","六","日"].map(d=>`<span>${d}</span>`).join("")}</div><div class="habit-calendar" role="group" aria-label="选择历史打卡日期">${cells}</div>
-    <div class="habit-legend"><span><i class="hus"></i>老公</span><span><i class="wife"></i>老婆</span><span><i class="unknown"></i>未同步</span><small>点日期看当天</small></div></section></div>`;
+    <div class="habit-legend"><span><i class="hus"></i>老公</span><span><i class="wife"></i>老婆</span><span><i class="unknown"></i>未同步</span><small>点日期看当天</small></div></section>    <div class="history-day ${historyPerson}"><div class="diary-day-title"><b>${shortDay(historySelectedDate)}的记录</b><span>${Number(historySelectedDate.slice(5,7))}月${Number(historySelectedDate.slice(8))}日</span></div><div class="history-partner-status ds-role-tabs" role="group" aria-label="查看谁的打卡记录">${["hus","wife"].map(p=>`<button type="button" class="${p}" data-history-person="${p}" aria-pressed="${historyPerson===p}" aria-label="查看${PEOPLE[p].label}的打卡记录">${icon("person","sm")}${PEOPLE[p].label}</button>`).join("")}</div><div class="history-view-label"><span>正在查看${PEOPLE[historyPerson].label}的记录${peer?" · 只读":""}</span>${isPrivatePeer?`<button type="button" class="linkbtn" data-coach="sharing-refresh"${privateCoach.partnerReadBusy?" disabled":""}>${privateCoach.partnerReadBusy?"刷新中…":"刷新记录"}</button>`:""}</div>${details}</div><p class="diary-foot">打卡详情由本人决定是否向伴侣共享；目标、体重、围度和健康档案仅自己可见。</p></div>`;
 }
 
 function insightCard(){return coupleStreakCard();}
@@ -1825,8 +1810,7 @@ function renderRecordData(){
   const history=$("#recHistory");if(history){history.innerHTML=checkinHistoryCard();if(privateCoach?.active&&historyPerson!==me)privateCoach.ensurePartnerCheckin?.(historySelectedDate);}
   const title=$("#recTitle");if(title)title.innerHTML=mealSectionHeading("我们的记录",historySelectedDate||ymd(new Date()),"record",me);
   const box=$("#recData"); if(!box) return;
-  box.innerHTML=`<section class="sec">${secH("record","趋势")}${trendCard()}</section>
-    <section class="sec">${secH("clock","最近更新",privateCoach?.active?"我的记录":"两个人的记录")}<div class="card">${feedRows()}</div></section>`;
+  box.innerHTML=`<section class="ds-module-section" aria-label="趋势">${trendCard()}</section><section class="ds-module-section"><h4>最近更新</h4>${feedRows()}</section>`;
 }
 function viewRecord(){
   const today=ymd(new Date());
@@ -1842,17 +1826,14 @@ function viewRecord(){
       ${family?`<button class="linkbtn" data-open-code>查看或修改口令</button>`:`<p class="empty" style="padding-top:8px">两台手机填同一个口令，数据才会同步到一起。</p>`}</div></section>` : "";
   $("#view").innerHTML=`
   <section class="sec ds-scene ${me}"><div id="recTitle">${mealSectionHeading("我们的记录",today,"record",me)}</div>
-  <div id="recHistory"></div></section>
-  <section class="sec" id="recInsight"></section>
-  <section class="sec">${secH("goal","我的目标")}<div id="recGoal">${goalCard()}</div></section>
-  <section class="sec">${secH("people",privateCoach?.active?"我与伴侣":"两个人的记录")}<div class="pair" id="recPair"></div></section>
-  <section class="sec">${secH("note","记录"+PEOPLE[me].label+"的数据")}
-    <form class="card form2" id="mForm">
+  <div id="recInsight"></div><div id="recHistory"></div></section>
+  ${moduleCard("我的目标",`<div id="recGoal">${goalCard()}</div>`,{id:"goalModule",meta:"让目标更贴近现在的自己",symbol:"goal"})}
+  ${moduleCard("我与伴侣",`<div class="pair" id="recPair"></div>`,{id:"pairModule",meta:"各自努力，也彼此陪伴",symbol:"people"})}
+  ${moduleCard("记录"+PEOPLE[me].label+"的数据",`<form class="form2" id="mForm">
       <div class="fh"><span>记在哪天</span><input type="date" name="date" value="${today}" max="${today}" aria-label="日期"></div>
       <div class="mtiles">${tiles.map(tile).join("")}</div>
       <button class="cta" type="submit">${icon("check","sm")} 保存记录</button>
-    </form>
-  </section><div id="recData"></div>${privateCoach?.active?privateCoach.pushCard()+`<details class="private-settings"><summary>${icon("settings")}<span>设置</span>${icon("chevron-down","settings-chevron")}</summary><div class="private-settings-body"><p>私人档案仅自己可见。换手机前请保存个人恢复码。</p><button type="button" data-coach="sharing-open">共享我的打卡详情</button><button type="button" data-coach="show-recovery">生成新的个人恢复码</button><button type="button" data-coach="copy-family">复制家庭配对口令</button><button type="button" data-coach="connection-copy">复制连接诊断</button><button type="button" data-coach="signout">清除本机登录</button></div></details>`:""}${tokenCard}`;
+    </form><div id="recData"></div>`,{id:"bodyModule",meta:"记录、趋势与更新，都在这里",art:"weigh"})}${privateCoach?.active?privateCoach.pushCard()+`<details class="private-settings"><summary>${icon("settings")}<span>设置</span>${icon("chevron-down","settings-chevron")}</summary><div class="private-settings-body"><p>私人档案仅自己可见。换手机前请保存个人恢复码。</p><button type="button" data-coach="sharing-open">共享我的打卡详情</button><button type="button" data-coach="show-recovery">生成新的个人恢复码</button><button type="button" data-coach="copy-family">复制家庭配对口令</button><button type="button" data-coach="connection-copy">复制连接诊断</button><button type="button" data-coach="signout">清除本机登录</button></div></details>`:""}${tokenCard}`;
   renderRecordData();
   $("#mForm").addEventListener("input",e=>{
     const i=e.target; if(!i.dataset || i.name==="date") return;
@@ -2299,11 +2280,11 @@ function suggCard(){
 }
 function goalCard(){
   const p=planFor(me);
-  if(privateCoach?.active)return `<div class="card goal-card"><div class="gh"><h4>我的目标 · ${esc(privateCoach.goalTitle())}</h4><button class="linkbtn" data-open-goal>修改</button></div><p>想改善：${esc(privateCoach.profile?.focus?.join("、")||"全身")}${privateCoach.profile?.target?` · 期待 ${esc(privateCoach.profile.target)} kg`:""}</p><p>身体状态与计划只有你可见。每周第一天确认后可以调整。</p></div>`;
+  if(privateCoach?.active)return `<div class="goal-card"><div class="gh"><h4>我的目标 · ${esc(privateCoach.goalTitle())}</h4><button class="linkbtn" data-open-goal>修改</button></div><p>想改善：${esc(privateCoach.profile?.focus?.join("、")||"全身")}${privateCoach.profile?.target?` · 期待 ${esc(privateCoach.profile.target)} kg`:""}</p><p>身体状态与计划只有你可见。每周第一天确认后可以调整。</p></div>`;
   if(!p) return `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>还没设定目标</b><small>填身高、体重和目标，按你的情况安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
   const pct = p.g.start>p.g.target ? Math.max(0,Math.min(100,Math.round((p.g.start-p.w)/(p.g.start-p.g.target)*100))) : 100;
   const R=roundsFor(me==="hus"?"A":"W",me);
-  return `<div class="card goal-card"><div class="gh"><h4>${icon("goal")} 我的目标 ${p.g.target} kg</h4><button class="linkbtn" style="padding:0" data-open-goal>修改</button></div>
+  return `<div class="goal-card"><div class="gh"><h4>${icon("goal")} 我的目标 ${p.g.target} kg</h4><button class="linkbtn" style="padding:0" data-open-goal>修改</button></div>
     <p>${p.maintain?"已经到目标附近，按维持来安排，保持住就好":`还差 ${p.toGo} kg · 按计划约 ${p.weeks} 周`} · ${PACE[p.g.pace||"gentle"].label}速度</p>
     <div class="goal-bar"><i style="width:${pct}%"></i></div>
     <div class="gl"><div><b>${p.kcal}</b>每天 kcal</div><div><b>${p.protein}g</b>蛋白质</div><div><b>${R} 轮</b>每次训练${p.g.cardio?" + 快走":""}</div></div>

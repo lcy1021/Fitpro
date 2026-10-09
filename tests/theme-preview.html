@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <base href="/">
   <title>DuoFit 主题场景检查</title>
-  <link rel="stylesheet" href="design-system/tokens.css?v=38">
-  <link rel="stylesheet" href="design-system/components.css?v=38">
-  <link rel="stylesheet" href="private-coach.css?v=38">
+  <link rel="stylesheet" href="design-system/tokens.css?v=39">
+  <link rel="stylesheet" href="design-system/components.css?v=39">
+  <link rel="stylesheet" href="private-coach.css?v=39">
 </head>
 <body>
-<script src="private-coach.js?v=38"></script>
-<script src="design-system/mascots.js?v=38"></script>
+<script src="private-coach.js?v=39"></script>
+<script src="design-system/mascots.js?v=39"></script>
 <script>
 (async () => {
   // Only synthetic local fixtures; never load config.js or call a production backend.
@@ -141,7 +141,7 @@
   else if(['today','diet','train','record'].includes(view)){document.querySelector(`.tabs button[data-tab="${view}"]`).click();}
   document.body.dataset.previewReady='true';
   const focus=params.get('focus');
-  const target=focus==='meals'?document.querySelector('.meal-section-heading'):focus==='plans'?document.querySelector('.meal-plan-list')?.previousElementSibling:focus==='history'?document.querySelector('.history-day'):focus==='record-top'?document.querySelector('#recTitle'):null;
+  const target=focus==='meals'?document.querySelector('.meal-section-heading'):focus==='plans'?document.querySelector('.meal-plan-list')?.previousElementSibling:focus==='history'?document.querySelector('.history-day'):focus==='record-top'?document.querySelector('#recTitle'):document.getElementById(({stand:'standModule',nutrition:'nutritionModule','diet-log':'dietLogModule',week:'weekModule',body:'bodyModule',goals:'goalModule',pair:'pairModule'})[focus]);
   if(target)requestAnimationFrame(()=>target.scrollIntoView({block:'start'}));
 })();
 </script>

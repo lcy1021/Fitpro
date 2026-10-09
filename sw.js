@@ -1,11 +1,11 @@
 // DuoFit 离线缓存：页面和脚本优先取新版，断网时才使用本机缓存；图片可先读缓存。
 // 只缓存本站的文件；Supabase 数据同步和 AI 请求（其他域名）一律不经过缓存。
-const CACHE = "duofit-v38";
+const CACHE = "duofit-v39";
 // Media URLs carry their own revision. Keep downloaded images through app-only releases.
 const IMAGE_CACHE = "duofit-images-v1";
 const imageRequests = new Map();
 const CORE = [
-  "./", "index.html", "config.js", "design-system/tokens.css?v=38", "design-system/components.css?v=38", "design-system/mascots.js?v=38", "private-coach.js?v=38", "private-coach.css?v=38", "manifest.webmanifest",
+  "./", "index.html", "config.js", "design-system/tokens.css?v=39", "design-system/components.css?v=39", "design-system/mascots.js?v=39", "private-coach.js?v=39", "private-coach.css?v=39", "manifest.webmanifest",
 ];
 const isImage = url => /\.(?:avif|webp|png|gif|jpe?g|svg)$/i.test(url.pathname);
 

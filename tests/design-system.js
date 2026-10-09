@@ -8,7 +8,7 @@ const references=[...`${tokens}\n${components}`.matchAll(/var\((--[\w-]+)/g)].ma
 assert.deepEqual([...new Set(references.filter(t=>!definitions.has(t)))],[],'shared CSS must resolve every token');
 const html=read('index.html'),preview=read('tests/theme-preview.html'),sw=read('sw.js');
 for(const file of ['tokens.css','components.css','mascots.js']){
- const url=`design-system/${file}?v=38`;
+ const url=`design-system/${file}?v=39`;
  assert(html.includes(url)&&preview.includes(url)&&sw.includes(url),`${file} must load in the app, preview and offline core`);
 }
 assert(html.indexOf('tokens.css')<html.indexOf('<style>'),'tokens load before app layouts');
@@ -17,7 +17,7 @@ assert(!html.includes('--hus:#')&&!html.includes('--wife:#'),'app must not defin
 assert(!html.includes('.history-partner-status{'),'role tabs have one owning style');
 assert(/\.(?:ds-role-tabs|ds-checkin|ds-section-heading)/.test(components));
 assert(sw.includes('duofit-images-v1'),'app releases preserve independently versioned images');
-assert(html.indexOf('id="recHistory"')<html.indexOf('id="recInsight"'),'the reference diary precedes supplementary streaks');
+assert(html.indexOf('id="recInsight"')<html.indexOf('id="recHistory"'),'couple check-ins precede individual details');
 const gallery=read('design-system/index.html').replace(/<pre>[\s\S]*?<\/pre>/g,'');
 for(const m of gallery.matchAll(/(?:href|src)="([^"#]+)"/g)){
  const url=m[1].split('?')[0];if(!/^(?:https?:|\/)/.test(url))assert(fs.existsSync(path.resolve(root,'design-system',url)),`gallery resource exists: ${url}`);

@@ -1,4 +1,4 @@
-# DuoFit Design System · 1.2
+# DuoFit Design System · 1.3
 
 状态：正式沿用。以用户确认的 v35「方案一」页面为视觉依据；实现入口是 `design-system/tokens.css`、`design-system/components.css`，可操作样例是 `design-system/index.html`。
 
@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=38">
-<link rel="stylesheet" href="design-system/components.css?v=38">
+<link rel="stylesheet" href="design-system/tokens.css?v=39">
+<link rel="stylesheet" href="design-system/components.css?v=39">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -48,11 +48,11 @@
 | `--ds-text-meta` | 12px / 400、600 | 日期、单位、时间、操作、状态 |
 | `--ds-text-body` | 14px / 400 | 菜名、说明、记录正文 |
 | `--ds-text-title` | 16px / 700 | 卡片餐名、热量数值；表单输入为 16px |
-| `--ds-text-section` | 19px / 800 | 今天吃什么、我的一天、今天的训练、我们的记录 |
+| `--ds-text-section` | 19px / 800 | 今天吃什么、我的一天、我们的记录及通用模块标题 |
 | `--ds-text-page` | 24px / 800 | 页面一级标题 |
 | `--ds-text-metric` | 32px / 800 | 独立统计卡的主要数字 |
 
-正文行高 `--ds-leading-body:1.7`；标题 `--ds-leading-title:1.3`。卡内只用 12 / 14 / 16 三档；独立统计与入场海报可使用大数字，不将其用于每个小模块。日期左对齐放在标题下，右侧只放装饰形象。记录页先展示角色切换和餐次详情，日历、连续打卡随后显示；标题日期随选择更新。省略重复的「本周个性建议」；缺少受限餐食时保留明确的「餐食待确认」。
+正文行高 `--ds-leading-body:1.7`；标题 `--ds-leading-title:1.3`。卡内只用 12 / 14 / 16 三档；独立统计与入场海报可使用大数字，不将其用于每个小模块。日期左对齐放在标题下，右侧只放装饰形象。记录页先展示双人连续打卡、双人日历，再展示角色切换和当天餐次详情；标题日期随选择更新。省略重复的「本周个性建议」；缺少受限餐食时保留明确的「餐食待确认」。
 
 ## 4. 间距、圆角、阴影
 
@@ -78,8 +78,10 @@
 | 角色切换 | `.ds-role-tabs`，App `.history-partner-status` | 两列；选中角色色填充、对比文字、轻阴影；未选中灰字；只写老公 / 老婆；无下划线 |
 | 餐次打卡 | `.ds-checkin`，App `.diary-actions` | 三列；浅色轨道 + 角色色填充选中块；无选中线框；保留勾和文字 |
 | 氛围面板 | `.ds-scene` | 蓝粉轻染、透明云朵薄层、浅色边缘；用于今日餐次 / 我的一天 / 记录详情 |
+| 紧凑模块 | `.ds-module`，`moduleCard(title, body, options)` | 复用 `.ds-scene` 渐变外壳；标题/小字/原版角色或现有图标；单一 `.ds-module-body` 内容区 |
+| 模块子区 | `.ds-module-section` | 16px 子标题、20px 分区留白和细线；身体表单、趋势、最近更新合用一张卡 |
 | 今日餐卡 | `.meal`，`mealHeading / mealPlanContent / mealActions` | 浅染色云朵插画头、内层 `.meal-body` 圆角正文、计划区间、虚线实际分隔、打卡选择 |
-| 饮食计划 | `.meal-plan-list / .mplan` | 四餐列表、细分隔、角色图标；复用餐名与热量语言 |
+| 饮食计划 | `.meal-plan-list / .mplan` | 四餐列表、细分隔、餐食插画替代图标；餐名/时间位于插画右侧，热量靠最右；320px热量落到餐名下方 |
 | 历史日志 | `.diary-meals / .diary-meal`，`dietDayRows` | 历史染色时间线；过去 / 伴侣只读；仅今天本人显示编辑 |
 | 按钮 | `.btn.primary / .btn.ghost`；新模块 `.ds-button` | primary / secondary / disabled / busy；操作区新组件至少44px |
 | 提示 | `.ds-notice` + `data-tone` | info / success / warning / error；文本 + 图标，空态不能伪装成功 |
@@ -102,6 +104,14 @@
 
 选择状态由控制器同步 `aria-pressed` 与业务值，不用装饰下划线表示选中。当前是互斥按钮组，不能只加 `role=tab` 却没有 tabpanel 和相应键盘逻辑。原生 Tab / Enter / Space 可操作，焦点轮廓只在键盘 focus-visible 出现，不是默认选中线框。
 
+### 通用模块组合（v39）
+
+`moduleCard(title, body, {id, person, meta, art, symbol})`：`person` 为内容所有者；`meta` 是标题下辅助文字；`art` 使用现有 `mood` 原版姿态，或 `symbol` 使用已有 sprite，二者选一。标题 19px/800，说明 12px；外壳沿用白→角色浅色渐变和云层，正文 94% surface 的浅染色内层、16px 圆角。窄屏仅压缩内距与图槽，不另建颜色表。
+
+已接入工位起身、饮食日志、饮食打卡记录、本周安排、目标、伴侣和身体记录。内容 helper 不再自带 `.card`，避免双层阴影。记录数据、趋势与最近更新在 `#bodyModule` 同一壳内，后台刷新仅更新 `#recData`，不能重建 `#mForm` 丢失未保存输入。起身计数器全宽轨道，增减按钮44px。
+
+“我的一天”四餐各保留一张餐食插画，替代线条图标；今日与历史仍保留原有语义图标。餐图为装饰，文字与保存数据是实际餐食依据。记录先概览→日历→详情，日期仍在大标题下随所选日期更新。
+
 ## 6. 状态与动效
 
 - 正常、选中、未选中、焦点、禁用、加载、空态、错误、只读都要定义。组件页可实际切换角色、主题、餐次状态，展示这些状态。
@@ -123,11 +133,13 @@
 | 饮食 | `assets/mood/{hus,wife}-meal.webp` | 原有吃饭角色，保留西兰花和饭碗，128px |
 | 记录 | `assets/meal-art/record-couple-v1.webp?v=meal1` | 用户曾认可的方案一双人形象，184×112px；不再重绘 |
 
-标题图轻微向下探出8–18px，允许与首卡边缘重合；不可遮挡标题、日期、数据和点击区域，装饰 `pointer-events:none`。320px压缩图槽，标题保持19px。爱心复用现有图标库，背景/小字/装饰不与角色像素绑定。v37重新生成的5张角色图留作历史证据，退出当前页面引用。此处按用户要求恢复原版身份；v37“必须通过重绘补碗勺星星”的规则作废。
+标题图轻微向下探出8–18px，允许与首卡边缘重合；不可遮挡标题、日期、数据和点击区域，装饰 `pointer-events:none`。320px压缩图槽，标题保持19px。爱心复用现有图标库，记录的三颗爱心以不同尺寸、角度、高度错落排列，4秒轻微上下浮动；减弱动态时静止。背景/小字/装饰不与角色像素绑定。v37重新生成的5张角色图留作历史证据，退出当前页面引用。此处按用户要求恢复原版身份；v37“必须通过重绘补碗勺星星”的规则作废。
 
 四餐图仍为通用装饰，`alt=""`，不能暗示用户真实吃了图上的东西。`object-fit:contain`、显式尺寸、WebP、lazy / async；原有角色URL保持原样命中缓存，素材未改不递增图片版本。不得用新插图覆盖原版文件。
 
 ## 8. 当前接入与后续维护
+
+v39将方案一外壳推广到七类模块，餐食替代计划图标，双人打卡优先，身体记录三段合卡；删除外卖推荐区及今日/训练页的“今天的训练”外部标题。角色和图像文件未重绘，见[本次QA](qa/module-unification/README.md)。
 
 v38修正角色身份并按用户手机反馈调整表面：原版角色、白至角色色渐变、餐品底托/投影、填充tab、19px主文字色模块标题及更大的右侧角色。所有三处页面与组件展示同步，见[本次QA](qa/mascot-consistency/README.md)。
 
@@ -135,7 +147,7 @@ v37 历史细节补齐：气氛面板、透明云层、带手写字标题图、�
 
 v36 已接入：全局颜色与角色 / 深浅主题 tokens、基础卡片 / 按钮 / 模块标题、今日 / 饮食 / 历史共用组件、角色 tabs、打卡分段、核心页面字体参数。健康伙伴继续使用这些全局颜色和原有输入布局。
 
-尚未整体重做：登录动效排版、训练跟练、身体统计、旧日历的局部尺寸。它们保留既有业务布局；新模块用本系统，后续改到旧组件时逐个迁移并验收，不能宣称全应用已经完全统一。
+尚未整体重做：登录动效排版、训练跟练、旧日历的局部尺寸。它们保留既有业务布局；新模块用本系统，后续改到旧组件时逐个迁移并验收，不能宣称全应用已经完全统一。
 
 维护流程：
 
@@ -145,4 +157,4 @@ v36 已接入：全局颜色与角色 / 深浅主题 tokens、基础卡片 / 按
 4. 运行 `node tests/design-system.js`；涉及布局执行浏览器验收（320 / 390，蓝 / 粉，浅 / 深、长文本、空 / 错误）。不能仅凭规范文档宣布已落地。
 5. 更新组件页、本文与 `docs/maintenance-history.md`，记录症状、确认原因、范围、证据和发布版本。有意改变视觉时更新基准并注明原因。
 
-当前验收：[v38角色与卡片QA](qa/mascot-consistency/README.md)。历史与方案一视觉稿的对照记录：[v37 细节QA](qa/visual-details/README.md)（v36档案保留用于定位之前漏项）。
+当前验收：[v39通用卡片与记录顺序QA](qa/module-unification/README.md)。前一版：[v38角色与卡片QA](qa/mascot-consistency/README.md)。历史与方案一视觉稿的对照记录：[v37 细节QA](qa/visual-details/README.md)（v36档案保留用于定位之前漏项）。

@@ -1,0 +1,12 @@
+{
+  "environment": "localhost synthetic fixtures, no production writes",
+  "recordOrder": ["recInsight", "history-calendar", "history-day wife"],
+  "partnerReadonlyEditControls": 0,
+  "pastReadonlyEditControls": 0,
+  "draftAfterRoleAndDateChanges": "77.2",
+  "selectedDateHeading": "10月8日 周四",
+  "savedTrendAndLatestWeight": 77.2,
+  "standCounter": [4, 5, 4],
+  "gallery": {"role": "wife", "theme": "dark", "standAfterIncrement": 5, "duplicateMealIcons": 0, "horizontalOverflow": false},
+  "consoleErrorsAndWarnings": []
+}
