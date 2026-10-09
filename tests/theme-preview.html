@@ -84,17 +84,22 @@
     for(let n=0;n<22;n++){
       if(n===5||n===12||n===18)continue;
       const d=app.ymd(new Date(Date.now()-n*864e5));
-      fixtureChecks[person+'_'+d]={person,date:d,meals:n===0?{breakfast:'plan',lunch:'plan'}:{breakfast:'plan',lunch:'plan',snack:n%3?'plan':'skip',dinner:n%4?'plan':'over'},food:n===0?{breakfast:{items:[{n:'鸡蛋',q:'2 个',k:140},{n:'脱脂牛奶',q:'200ml',k:70}],kcal:210,text:'鸡蛋和脱脂牛奶'}}:{},workout:n%2?'done':null,stand:3,updatedAt:Date.now()-n*864e5};
+      fixtureChecks[person+'_'+d]={person,date:d,meals:n===0?{breakfast:'plan',lunch:'plan'}:{breakfast:'plan',lunch:'plan',snack:n%3?'plan':'skip',dinner:n%4?'plan':'over'},food:n===0?{breakfast:{items:[{n:'鸡蛋',q:'2 个',k:140},{n:'脱脂牛奶',q:'200ml',k:70}],kcal:210,text:'鸡蛋和脱脂牛奶'},...(params.get('meal-design')==='1'?{lunch:{items:[{n:'蔬菜沙拉（生菜、番茄、紫甘蓝）',q:'280g',k:100},{n:'牛肉片',q:'100g',k:150},{n:'油醋汁（随餐一小盒）',q:'30g',k:75}],kcal:325}}:{})}:{},workout:n%2?'done':null,stand:3,updatedAt:Date.now()-n*864e5};
       coach.partnerActivity[d]=n!==0&&n!==4&&n!==9&&n!==13;
     }
     coach.partnerActivitySince=app.ymd(new Date(Date.now()-119*864e5));coach.partnerActivityUntil=date;
     app.setStore({checkins:fixtureChecks,measures:{[person+'_'+previous]:{person,date:previous,weight:person==='hus'?76.5:52.2},[person+'_'+date]:{person,date,weight:person==='hus'?76:52}}});
   }
   if(params.get('journal')==='1'){
-    coach.readPartnerRecords({recordSharing:true,partnerRecordSharing:params.get('sharing')==='on'?'on':'off',partnerCheckins:[date,app.ymd(new Date(Date.now()-864e5))].map(d=>({date:d,body:{meals:{breakfast:'plan',lunch:'plan',snack:'skip'},food:{breakfast:{items:[{n:'原味酸奶',q:'1 杯',k:120},{n:'全麦面包',q:'2 片',k:160}],kcal:280}},workout:'done',stand:4,extraMoves:['warm-march']}}))});
+    coach.readPartnerRecords({recordSharing:true,partnerRecordSharing:params.get('sharing')==='on'?'on':'off',partnerCheckins:[date,app.ymd(new Date(Date.now()-864e5))].map(d=>({date:d,body:{meals:{breakfast:'plan',lunch:'plan',snack:'skip'},food:{breakfast:{items:[{n:'原味酸奶',q:'1 杯',k:120},{n:'全麦面包',q:'2 片',k:160}],kcal:280},...(params.get('meal-design')==='1'?{lunch:{items:[{n:'清汤面（熟面）',q:'250g',k:250},{n:'红烧茄子',q:'少量约 80g',k:90},{n:'蔬菜沙拉',q:'100g',k:35}],kcal:375}}:{})},workout:'done',stand:4,extraMoves:['warm-march']}}))});
     if(params.get('sharing')==='on')for(const d of Object.keys(coach.partnerCheckins))coach.partnerActivity[d]=true;
     const sharedFixtureRecords={...coach.partnerCheckins};
     coach.rpc=async(name,args)=>{if(name==='fl_partner_checkin_get')return {date:args.p_date,partnerRecordSharing:coach.partnerRecordSharing,body:sharedFixtureRecords[args.p_date]||null};if(name==='fl_checkin_sharing_set')return args.p_enabled;if(name==='fl_private_pull')return {member:coach.member,checkins:[],measures:[],weeks:[],recordSharing:coach.recordSharing,partnerRecordSharing:coach.partnerRecordSharing,partnerCheckins:[],partnerActivity:Object.entries(coach.partnerActivity).map(([date,checked])=>({date,checked})),partnerActivitySince:coach.partnerActivitySince,partnerActivityUntil:coach.partnerActivityUntil};throw new Error('No backend in preview');};
+  }
+  if(params.get('meal-design')==='1'){
+    coach.profile.diet='合成场景：按确认的餐食安排';
+    const swaps={breakfast:'燕麦 60g + 无糖豆浆 300ml + 水煮蛋 2 个 + 蓝莓 80g；饮品不额外加糖。',lunch:'杂粮饭 150g（熟重）+ 清蒸鸡胸 120g + 西兰花 200g + 番茄 100g；酱汁另放，按自己的饥饿感调整。',snack:'原味酸奶 150g + 苹果 1 个；白水或无糖茶。',dinner:'清蒸鱼 150g + 绿叶蔬菜 250g + 米饭半碗；保留已确认的饮食限制。'};
+    coach.mealSwap=m=>params.get('missing-plan')==='1'?'':swaps[m];
   }
   coach.partnerTrend=[{date:previous,changeKg:0},{date,changeKg:-.3}];
   app.setCoach(coach);

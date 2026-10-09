@@ -1,0 +1,56 @@
+[
+  {
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "view": "today",
+    "clippedFood": 0,
+    "overflow": false,
+    "wrappedActions": 0
+  },
+  {
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "view": "plan",
+    "clippedFood": 0,
+    "overflow": false,
+    "wrappedActions": 0
+  },
+  {
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "view": "history",
+    "clippedFood": 0,
+    "overflow": false,
+    "wrappedActions": 0
+  },
+  {
+    "person": "wife",
+    "theme": "dark",
+    "width": 320,
+    "view": "today",
+    "clippedFood": 0,
+    "overflow": false,
+    "wrappedActions": 0
+  },
+  {
+    "person": "wife",
+    "theme": "dark",
+    "width": 320,
+    "view": "plan",
+    "clippedFood": 0,
+    "overflow": false,
+    "wrappedActions": 0
+  },
+  {
+    "person": "wife",
+    "theme": "dark",
+    "width": 320,
+    "view": "history",
+    "clippedFood": 0,
+    "overflow": false,
+    "wrappedActions": 0
+  }
+]

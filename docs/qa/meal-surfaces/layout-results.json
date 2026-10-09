@@ -1,0 +1,242 @@
+[
+  {
+    "person": "hus",
+    "theme": "light",
+    "width": 320,
+    "view": "今日",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "light",
+    "width": 320,
+    "view": "饮食",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "light",
+    "width": 320,
+    "view": "记录",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "view": "今日",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "view": "饮食",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "view": "记录",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "dark",
+    "width": 320,
+    "view": "今日",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "dark",
+    "width": 320,
+    "view": "饮食",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "dark",
+    "width": 320,
+    "view": "记录",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "dark",
+    "width": 390,
+    "view": "今日",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "dark",
+    "width": 390,
+    "view": "饮食",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "hus",
+    "theme": "dark",
+    "width": 390,
+    "view": "记录",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "light",
+    "width": 320,
+    "view": "今日",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "light",
+    "width": 320,
+    "view": "饮食",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "light",
+    "width": 320,
+    "view": "记录",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "light",
+    "width": 390,
+    "view": "今日",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "light",
+    "width": 390,
+    "view": "饮食",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "light",
+    "width": 390,
+    "view": "记录",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "dark",
+    "width": 320,
+    "view": "今日",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "dark",
+    "width": 320,
+    "view": "饮食",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "dark",
+    "width": 320,
+    "view": "记录",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "dark",
+    "width": 390,
+    "view": "今日",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "dark",
+    "width": 390,
+    "view": "饮食",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  },
+  {
+    "person": "wife",
+    "theme": "dark",
+    "width": 390,
+    "view": "记录",
+    "clippedFood": 0,
+    "invalidTargets": 0,
+    "overflow": false,
+    "peerEdits": 0
+  }
+]

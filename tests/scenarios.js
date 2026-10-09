@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');assert(fs.readFileSync(path.join(root,'sw.js'),'utf8').includes('notificationclick'),'push click handler');
-assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=33"></script>'), 'config loads before coaching');
+assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=34"></script>'), 'config loads before coaching');
 const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('</script>'));
 const memory = new Map();
 const elements = new Map();
@@ -49,7 +49,7 @@ const coach = {active:true,person:'hus',profile:{goals:['减脂'],focus:['腰腹
 app.setCoach(coach);
 app.viewToday();assert(element('#view').innerHTML.includes('伴侣今天已打卡'));assert(!element('#view').innerHTML.includes('今天两个人的进度'));assert(!element('#view').innerHTML.includes('47.3'));
 coach.profile.diet='不吃奶制品';app.viewToday();assert(!element('#view').innerHTML.includes('脱脂牛奶'),'restricted diet hides default foods');app.setViewP('wife');app.setDietWeekOffset(-1);app.viewDiet();assert(!element('#view').innerHTML.includes('看谁的计划'));assert(!element('#view').innerHTML.includes('47.3'));assert(element('#view').innerHTML.includes('鸡蛋和蔬菜'));assert(!element('#view').innerHTML.includes('晚餐轮换'),'restricted diet hides generic dinner rotation');assert(element('#view').innerHTML.includes(`${oldDate} 早餐：吃多了`)&&!element('#view').innerHTML.includes(`${oldDate} 早餐：按计划`),'private diet history only shows the signed-in person');app.setDietWeekOffset(0);
-assert(element('#view').innerHTML.includes('class="mplan-suggestion"'),'personal meal suggestion has a full-width block');
+assert(element('#view').innerHTML.includes('class="mplan-suggestion"'),'personal meal suggestion is present');
 app.setViewP('wife');app.viewTrain();assert(!element('#view').innerHTML.includes('这周两个人的安排'));assert(!element('#view').innerHTML.includes('老婆 · 居家臀腿'));
 app.setViewP('hus');app.viewRecord();app.renderRecordData();assert(!element('#recPair').innerHTML.includes('47.3'));assert(element('#recPair').innerHTML.includes('relative only'));assert(!element('#recData').innerHTML.includes('47.3'));assert(app.privateTrendCard().includes('<circle')&&app.privateTrendCard().includes('再记录一次即可形成趋势'),'one measurement is visible on private trend');assert(element('#view').innerHTML.includes('<details class="private-settings">'),'private actions are collapsed under settings');
 coach.schedule=()=>({kind:'train',w:'A'});app.viewTrain();assert(element('#view').innerHTML.includes('assets/moves/a-goblet-squat.gif'),'today workout shows animated exercise');assert(!element('#view').innerHTML.includes('assets/moves/b-floor-press.gif'),'tomorrow workout is not offered as a second choice');
@@ -210,3 +210,17 @@ sandbox.Date=class extends Date {constructor(...args){super(...(args.length?args
 assert.equal(app.refreshCalendarDay(),true,'calendar day updates independently of network sync');
 assert(element('#dateLabel').textContent.includes((futureDate.getMonth()+1)+'月'+futureDate.getDate()+'日'),'header advances with the calendar');
 sandbox.Date=Date;
+
+// Same source priority and skipped-food semantics across meal surfaces.
+app.setMe('hus');app.setCoach(coach);coach.profile.diet='';
+coach.mealSwap=()=>'<em>个性餐食</em> + 蔬菜，保留全部份量和限制说明';
+app.setStore({checkins:{['hus_'+date]:{person:'hus',date,meals:{breakfast:'plan'},food:{breakfast:{items:[{n:'保存的餐食',q:'1 份',k:777}],kcal:777}}}},measures:{}});
+app.viewToday();let mealMarkup=element('#view').innerHTML;
+assert(mealMarkup.includes('&lt;em&gt;个性餐食&lt;/em&gt;'),'custom plan is escaped');
+assert(!mealMarkup.includes('class="foods"'),'a custom plan does not also display the default menu');
+assert(mealMarkup.includes('777')&&mealMarkup.includes('保存的餐食'),'saved food and calories remain visible');
+app.viewDiet();assert(!element('#view').innerHTML.includes('class="foods"'),'diet uses the same plan priority');
+coach.profile.diet='不吃奶制品';coach.mealSwap=()=>'';app.viewToday();assert(element('#view').innerHTML.includes('餐食待确认')&&!element('#view').innerHTML.includes('class="foods"'),'restricted missing plan cannot fall back to default foods');
+app.setStore({checkins:{['hus_'+date]:{person:'hus',date,meals:{breakfast:'skip'},food:{breakfast:{items:[{n:'保留的旧食物',q:'1 份'}],kcal:777}}}},measures:{}});
+app.viewToday();assert(!element('#view').innerHTML.includes('777')&&!element('#view').innerHTML.includes('保留的旧食物'),'skipped Today meal hides stale food calories like history');
+console.log('PASS shared meal plan priority, escaping, saved calories and skipped-food semantics');
