@@ -128,6 +128,9 @@ spacing:
   space-xl: 2.5rem
 ---
 
+> 历史参考：早期橙色与网络字体方案不作为当前默认。新增模块使用[蓝粉方案一正式规范](../../docs/design-system.md)与共用 CSS。
+
+
 ## Brand & Style
 
 This design system delivers an empathetic, non-punitive health and lifestyle experience crafted specifically for couples. Departing from clinical, hyper-metric, or guilt-inducing fitness dashboards, the visual language embraces an emotionally restorative atmosphere centered around well-being, shared rhythm, and gentle momentum.

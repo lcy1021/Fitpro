@@ -1,3 +1,5 @@
+> 历史参考：当前默认是[蓝粉方案一正式规范](../../docs/design-system.md)，不要照搬本文早期橙色和字体参数。
+
 # DuoFit UI 重构与设计系统工程规范 (AI-Ready Design Spec)
 
 > 本文档专为代码生成与辅助 AI（如 Claude 3.5 Sonnet, Cursor, Copilot 等）编写。它详细定义了 DuoFit 最新版本的色彩令牌、组件布局结构、双端（老公/老婆）差异逻辑以及代码重构指南，AI 可以依据此文档直接进行 HTML/CSS/JS 开发与优化。

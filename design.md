@@ -1,5 +1,7 @@
 # DuoFit 界面设计与验收约定
 
+> 当前视觉规范：[DuoFit Design System 1.0](docs/design-system.md)。以用户确认的方案一视觉稿为准，先对照实际截图再调整；颜色与共用组件由 `design-system/tokens.css`、`design-system/components.css` 统一维护。组件页：`design-system/index.html`。早期章节仅作为历史参考。
+
 这份文件记录已确定的交互与视觉要求。改动页面时先核对相关场景，再在真实手机宽度下检查普通、选中、展开、加载、失败和空数据状态。现有设计参考在 `UIset/`，四步建档应保持该设计的卡片语言和交互逻辑。
 
 ## 整体体验

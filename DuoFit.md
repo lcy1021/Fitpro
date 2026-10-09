@@ -1,5 +1,7 @@
 # DuoFit · 两个人的减脂打卡
 
+> 当前视觉规范：[DuoFit Design System 1.0](docs/design-system.md)。以用户确认的方案一视觉稿为准，先对照实际截图再调整；颜色与共用组件由 `design-system/tokens.css`、`design-system/components.css` 统一维护。组件页：`design-system/index.html`。早期章节仅作为历史参考。
+
 夫妻两人共用的手机端减脂打卡工具。
 
 - 在线使用：https://lcy1021.github.io/Fitpro/

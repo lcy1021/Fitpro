@@ -1,9 +1,11 @@
 # 两个人的减脂打卡 App
 
+> 当前视觉规范：[DuoFit Design System 1.0](docs/design-system.md)。以用户确认的方案一视觉稿为准，先对照实际截图再调整；颜色与共用组件由 `design-system/tokens.css`、`design-system/components.css` 统一维护。组件页：`design-system/index.html`。早期章节仅作为历史参考。
+
 ## 维护入口（必读）
 
 - 修改前先查 `docs/maintenance-history.md`，对照症状、已确认原因与当前规则；每次修复/功能/样式修改都更新该文档和相关 QA，记录验证与发布结果，未知原因不能写成事实。
-- 今日、饮食计划与历史餐次共用 `mealHeading / mealPlanContent / mealEnergy / mealActions / dietDayRows` 与 Shared meal surfaces 样式块，修改时一起核对，不单独追加页面覆盖。
+- 今日、饮食计划与历史餐次共用 `mealHeading / mealPlanContent / mealEnergy / mealActions / dietDayRows` 与 `design-system/components.css` 的 Shared meal surfaces 组件，修改时一起核对，不单独追加页面覆盖。
 - 本文件较早的家庭模型/隐私说明属于历史设计；当前私人权限、默认餐食活动共享和本人关闭规则以维护入口及最新 SQL 为准。
 
 
@@ -32,7 +34,7 @@
 
 ## 技术形态
 
-- 纯静态页面：`index.html` 单文件（HTML + CSS + 原生 JS，无构建步骤），部署在 GitHub Pages
+- 纯静态页面：`index.html`（HTML + 页面布局 + 原生 JS）与 `design-system/*.css` 共用样式，无构建步骤，部署在 GitHub Pages
 - `config.js`：Supabase 的 Project URL 和公开密钥，**独立文件，更新 App 时不要覆盖它**，也不要把密钥写进 `index.html`
 - 同步：Supabase 免费版，通过 REST 调用 RPC 函数（不用 supabase-js），见 `supabase-setup.sql`
 - 本地缓存：`localStorage`，离线时先存本地，恢复网络后自动补传（`dirty` 队列）

@@ -1,0 +1,37 @@
+{
+  "galleryChecks": [
+    {
+      "clipped": 0,
+      "overflow": false,
+      "width": 320
+    },
+    {
+      "clipped": 0,
+      "overflow": false,
+      "width": 390
+    },
+    {
+      "clipped": 0,
+      "overflow": false,
+      "width": 1200
+    }
+  ],
+  "gallery": {
+    "roleAndTheme": true,
+    "exclusiveCheckin": true,
+    "partnerReadOnlyCaption": true,
+    "busyThenSuccess": true,
+    "consoleErrors": []
+  },
+  "app": {
+    "partnerOwnerColor": true,
+    "identityPreserved": true,
+    "noSelectedUnderline": true,
+    "partnerEditingAbsent": true,
+    "dateUpdatesHeading": true,
+    "unsavedWeightPreserved": "77.2",
+    "skipHidesActualCalories": true,
+    "foodDialogOpens": true,
+    "consoleErrors": []
+  }
+}

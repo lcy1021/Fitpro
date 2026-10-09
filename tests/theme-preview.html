@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <base href="/">
   <title>DuoFit 主题场景检查</title>
-  <link rel="stylesheet" href="private-coach.css?v=35">
+  <link rel="stylesheet" href="design-system/tokens.css?v=36">
+  <link rel="stylesheet" href="design-system/components.css?v=36">
+  <link rel="stylesheet" href="private-coach.css?v=36">
 </head>
 <body>
-<script src="private-coach.js?v=35"></script>
+<script src="private-coach.js?v=36"></script>
 <script>
 (async () => {
   // Only synthetic local fixtures; never load config.js or call a production backend.
@@ -25,7 +27,7 @@
   const html = await (await fetch('index.html', {cache:'no-store'})).text();
   const parsed = new DOMParser().parseFromString(html, 'text/html');
   const style = parsed.querySelector('style');
-  document.head.insertBefore(style, document.querySelector('link'));
+  document.head.insertBefore(style, document.querySelector('link[href^="design-system/components"]'));
   const safeBottom = Math.min(60, Math.max(0, Number(params.get('safe') || 0)));
   const fixtureStyle = document.createElement('style');
   fixtureStyle.textContent = `:root{--safe-bottom:${safeBottom}px}.tabs{padding-bottom:var(--safe-bottom)}`;
@@ -49,6 +51,13 @@
   app.initTabBarSpace();
   const date = app.ymd(new Date());
   const previous = app.ymd(new Date(Date.now() - 7*864e5));
+
+  // Optional source-comparison fixtures. Example values only; production math is unchanged.
+  const referenceChecks={
+    hus:{meals:{breakfast:'plan',lunch:'plan',snack:'skip'},food:{breakfast:{items:[{n:'豆皮包',q:'1 个',k:210},{n:'脱脂牛奶',q:'200ml',k:70}],kcal:280},lunch:{items:[{n:'清汤面（熟面）',q:'250g',k:275},{n:'蔬菜沙拉',q:'100g',k:100}],kcal:375}},workout:'done',stand:4},
+    wife:{meals:{breakfast:'plan',lunch:'plan',snack:'plan'},food:{breakfast:{items:[{n:'水波蛋',q:'1 个',k:75},{n:'宝宝小馒头',q:'1 个',k:30}],kcal:105},lunch:{items:[{n:'挂面',q:'1 碗',k:360},{n:'番茄',q:'少量',k:30},{n:'拌牛肉',q:'少量',k:100},{n:'蔬菜沙拉',q:'100g',k:80}],kcal:570},snack:{items:[{n:'猕猴桃',q:'半个',k:30},{n:'云腿月饼',q:'1 个',k:100}],kcal:130}},workout:'done',stand:4}
+  };
+
   const coach = new window.DuoCoach({getCheckin:()=>({}), render:()=>{}, renderHistory:()=>app.renderRecordData(), putCheckin:()=>{}, showRoleChoice:()=>app.showRoleChoice()});
   coach.mount();
   coach.member = {person, family:'local-theme-fixture'};
@@ -85,6 +94,7 @@
       if(n===5||n===12||n===18)continue;
       const d=app.ymd(new Date(Date.now()-n*864e5));
       fixtureChecks[person+'_'+d]={person,date:d,meals:n===0?{breakfast:'plan',lunch:'plan'}:{breakfast:'plan',lunch:'plan',snack:n%3?'plan':'skip',dinner:n%4?'plan':'over'},food:n===0?{breakfast:{items:[{n:'鸡蛋',q:'2 个',k:140},{n:'脱脂牛奶',q:'200ml',k:70}],kcal:210,text:'鸡蛋和脱脂牛奶'},...(params.get('meal-design')==='1'?{lunch:{items:[{n:'蔬菜沙拉（生菜、番茄、紫甘蓝）',q:'280g',k:100},{n:'牛肉片',q:'100g',k:150},{n:'油醋汁（随餐一小盒）',q:'30g',k:75}],kcal:325}}:{})}:{},workout:n%2?'done':null,stand:3,updatedAt:Date.now()-n*864e5};
+      if(n===0&&params.get('reference')==='1')fixtureChecks[person+'_'+d]={person,date:d,...referenceChecks[person],updatedAt:Date.now()};
       coach.partnerActivity[d]=n!==0&&n!==4&&n!==9&&n!==13;
     }
     coach.partnerActivitySince=app.ymd(new Date(Date.now()-119*864e5));coach.partnerActivityUntil=date;
@@ -99,6 +109,7 @@
   if(params.get('meal-design')==='1'){
     coach.profile.diet='合成场景：按确认的餐食安排';
     const swaps={breakfast:'燕麦 60g + 无糖豆浆 300ml + 水煮蛋 2 个 + 蓝莓 80g；饮品不额外加糖。',lunch:'杂粮饭 150g（熟重）+ 清蒸鸡胸 120g + 西兰花 200g + 番茄 100g；酱汁另放，按自己的饥饿感调整。',snack:'原味酸奶 150g + 苹果 1 个；白水或无糖茶。',dinner:'清蒸鱼 150g + 绿叶蔬菜 250g + 米饭半碗；保留已确认的饮食限制。'};
+    if(params.get('reference')==='1')Object.assign(swaps,{breakfast:'燕麦 60g、无糖豆浆 300ml、水煮蛋 2 个',lunch:'杂粮饭 150g（熟重）、清蒸鸡胸 120g、西兰花 200g、番茄 100g',snack:'原味酸奶 150g、苹果 1 个；白水或无糖茶',dinner:'清蒸鱼 150g、绿叶蔬菜 250g、米饭半碗'});
     coach.mealSwap=m=>params.get('missing-plan')==='1'?'':swaps[m];
   }
   coach.partnerTrend=[{date:previous,changeKg:0},{date,changeKg:-.3}];
@@ -129,7 +140,7 @@
   else if(['today','diet','train','record'].includes(view)){document.querySelector(`.tabs button[data-tab="${view}"]`).click();}
   document.body.dataset.previewReady='true';
   const focus=params.get('focus');
-  const target=focus==='meals'?document.querySelector('.meal-section-heading'):focus==='plans'?document.querySelector('.meal-plan-list')?.previousElementSibling:focus==='history'?document.querySelector('.history-day'):null;
+  const target=focus==='meals'?document.querySelector('.meal-section-heading'):focus==='plans'?document.querySelector('.meal-plan-list')?.previousElementSibling:focus==='history'?document.querySelector('.history-day'):focus==='record-top'?document.querySelector('#recTitle'):null;
   if(target)requestAnimationFrame(()=>target.scrollIntoView({block:'start'}));
 })();
 </script>
