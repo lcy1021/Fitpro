@@ -37,7 +37,7 @@ class DuoCoach {
     try{let log=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');if(!Array.isArray(log))log=[];localStorage.setItem(CONNECTION_LOG,JSON.stringify([...log.slice(-39),entry]));}catch{}
     if(error)this.lastConnectionError=entry;
   }
-  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v27\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
+  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v28\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
   async fetchJSON(path,body,{auth=true,timeoutMs=15000,retries=0}={}){
     const serialized=JSON.stringify(body),owner=auth?this.userId():null;
     for(let attempt=0;;attempt++){
@@ -157,7 +157,15 @@ class DuoCoach {
   saveProfileCache(){const key=this.cacheKey();if(!key||!this.member||!this.profile?.confirmedAt)return;try{localStorage.setItem(key,JSON.stringify({member:this.member,profile:this.profile,weeks:this.weeks}));}catch(e){console.warn('private profile cache',e);}}
   loadProfileCache(){const key=this.cacheKey();if(!key)return false;let saved;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch{return false;}if(!['hus','wife'].includes(saved?.member?.person)||!saved?.member?.family||!saved?.profile?.confirmedAt)return false;try{this.member=saved.member;this.profile=saved.profile;this.draft={...this.blank(),...saved.profile};this.weeks=saved.weeks&&typeof saved.weeks==='object'?saved.weeks:{};this.partnerActivity={};this.partnerTrend=[];this.provisional=false;this.h.setIdentity(this.person,this.member.family,this.session.user?.id||this.session.user_id);this.root.hidden=true;this.current=null;this.h.setSync?.('offline');this.h.render();return true;}catch(e){console.warn('private cached startup',e);return false;}}
   mount(){this.root=document.createElement('div');this.root.id='duoCoach';this.root.hidden=true;document.body.appendChild(this.root);this.root.addEventListener('click',e=>this.click(e));this.root.addEventListener('input',e=>this.input(e));this.root.addEventListener('keydown',e=>{if(e.target.matches('[data-profile-note]')&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();this.root.querySelector('[data-coach="interpret"]')?.click();}});document.addEventListener('click',e=>{if(!this.root.contains(e.target)&&e.target.closest('[data-coach]'))this.click(e);});}
-  async start(){this.mount();try{this.session=JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch{this.session=null;}this.persistedSession=!!this.session;const uid=this.session?.user?.id||this.session?.user_id;this.hadSavedSession=!!(this.session||localStorage.getItem(PAIRED_KEY));if(uid&&localStorage.getItem('duofit.private.'+uid))localStorage.setItem(PAIRED_KEY,'1');return this.restoreSession();}
+  async start(){
+    this.mount();try{this.session=JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch{this.session=null;}
+    this.persistedSession=!!this.session;const uid=this.userId();this.hadSavedSession=!!(this.session||localStorage.getItem(PAIRED_KEY));
+    if(uid&&localStorage.getItem('duofit.private.'+uid))localStorage.setItem(PAIRED_KEY,'1');
+    if(this.session&&this.h.requestSync&&this.loadProfileCache()){
+      this.pendingWeekCheck=true;this.h.setSync?.('syncing');this.h.requestSync('online');return 'home';
+    }
+    return this.restoreSession();
+  }
   restoreSession(){
     if(this.startupPromise)return this.startupPromise;
     const work=this.restoreSavedSession();this.startupPromise=work;
@@ -238,6 +246,7 @@ class DuoCoach {
       const checkins={},measures={};(r.checkins||[]).forEach(x=>checkins[this.person+'_'+x.date]=x.body);(r.measures||[]).forEach(x=>measures[this.person+'_'+x.date]=x.body);
       this.h.setStore({checkins,measures});this.saveProfileCache();this.connectionOkay();
       const pending=this.h.getSyncData?.().dirty.length||0;this.h.setSync(pending?'pending':'ok');this.h.render();
+      if(this.pendingWeekCheck&&this.current===null){this.pendingWeekCheck=false;this.checkWeekly();}
     }catch(e){
       if(this.recovering||this.current==='recover-entry')return;
       this.recordClientFailure('/client/sync',e);

@@ -159,5 +159,12 @@ function environment(extra = {}) {
     assert.equal(await c.start(),'error');assert(c.connectionDiagnostics().includes('"kind": "client"'),'client rendering failures are distinguished from cloud failures');
     assert(!c.connectionDiagnostics().includes('private text'));
   }
+  {
+    const requests=[];let state='',weekChecks=0;const {create,memory}=environment();const c=create({requestSync:reason=>requests.push(reason),setSync:value=>{state=value}});c.saveSession(session());
+    memory.set('duofit.profile.v1.account-a',JSON.stringify({member:pull.member,profile:pull.profile,weeks:{}}));
+    c.rpc=()=>{throw new Error('warm startup must not wait for the cloud')};
+    assert.equal(await c.start(),'home');assert(c.active&&c.root.hidden);assert.deepEqual(requests,['online']);assert.equal(state,'syncing','warm startup opens its own cached profile and connects in the background');
+    c.rpc=async()=>pull;c.checkWeekly=()=>{weekChecks++};await c.sync({checkins:{},measures:{}},[],'online');assert.equal(state,'ok');assert.equal(weekChecks,1,'weekly review follows successful background connection');
+  }
   console.log('PASS shared refresh, browser locks, Auth conflicts, transient retries, safe recovery, shared pulls, 401 races, signout, write deadlines, versioned acknowledgements, polling, automatic reconnect and private diagnostics');
 })().catch(error => {console.error(error);process.exitCode = 1});
