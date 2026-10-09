@@ -1,0 +1,111 @@
+{
+  "app_commit": "c46ce6fcbb61972def7636fdf06f7db9767925fc",
+  "pages_run": 37943501809,
+  "files": [
+    {
+      "path": "index.html",
+      "url": "https://lcy1021.github.io/Fitpro/index.html",
+      "bytes": 195943,
+      "sha256": "e25a24ba825a04396fc52391335638b0700a39ecbd26180f121709d9fc75e9f5",
+      "matches_local": true
+    },
+    {
+      "path": "sw.js",
+      "url": "https://lcy1021.github.io/Fitpro/sw.js?v=38",
+      "bytes": 4013,
+      "sha256": "89f1f142626dd2ac32d40e806d05c269623e0769ba462f6c17a1be3f3b05ad21",
+      "matches_local": true
+    },
+    {
+      "path": "private-coach.js",
+      "url": "https://lcy1021.github.io/Fitpro/private-coach.js?v=38",
+      "bytes": 69245,
+      "sha256": "6c6454e88b29523eb75b97281a037e7ec4eacc97cd86361dea1e0ac7e112a79a",
+      "matches_local": true
+    },
+    {
+      "path": "private-coach.css",
+      "url": "https://lcy1021.github.io/Fitpro/private-coach.css?v=38",
+      "bytes": 12801,
+      "sha256": "7fd61b101b0d25202a81702fd578f4f62e588d7baef2e3f556f387133efca9da",
+      "matches_local": true
+    },
+    {
+      "path": "design-system/tokens.css",
+      "url": "https://lcy1021.github.io/Fitpro/design-system/tokens.css?v=38",
+      "bytes": 6449,
+      "sha256": "aa99af77620e78c1d379d1ebf4717ba57c847e797178d01c972074c335053c49",
+      "matches_local": true
+    },
+    {
+      "path": "design-system/components.css",
+      "url": "https://lcy1021.github.io/Fitpro/design-system/components.css?v=38",
+      "bytes": 26049,
+      "sha256": "d8d1f6022ec9764a30c8e79ac53e09ebf7eb883775943fd78984c00d99c8f679",
+      "matches_local": true
+    },
+    {
+      "path": "design-system/mascots.js",
+      "url": "https://lcy1021.github.io/Fitpro/design-system/mascots.js?v=38",
+      "bytes": 1383,
+      "sha256": "3e9aaac6a3812d3f8fe7478c78f74a4f0947314df5b846bf7694237045300165",
+      "matches_local": true
+    },
+    {
+      "path": "design-system/index.html",
+      "url": "https://lcy1021.github.io/Fitpro/design-system/index.html",
+      "bytes": 11882,
+      "sha256": "d3bab4b19ef0e6684c772f409375cad76bf387b376001add5e59659febbf845d",
+      "matches_local": true
+    },
+    {
+      "path": "design-system/gallery.js",
+      "url": "https://lcy1021.github.io/Fitpro/design-system/gallery.js?v=38",
+      "bytes": 6879,
+      "sha256": "542eb296aad01d538c88062dfefe0f1656932622d319dc9543833fdb5033288a",
+      "matches_local": true
+    },
+    {
+      "path": "design-system/gallery.css",
+      "url": "https://lcy1021.github.io/Fitpro/design-system/gallery.css?v=38",
+      "bytes": 3418,
+      "sha256": "874e60cbed65571e054f6431aaba0857f1f3f9aaf4c16bf35072d7e8bcae3624",
+      "matches_local": true
+    },
+    {
+      "path": "assets/login/hus-running.webp",
+      "url": "https://lcy1021.github.io/Fitpro/assets/login/hus-running.webp",
+      "bytes": 22214,
+      "sha256": "74be884a5ed7bffa661f36ed9ede519fe833ba6a9f13150af05d84c418548ca1",
+      "matches_local": true
+    },
+    {
+      "path": "assets/login/wife-running.webp",
+      "url": "https://lcy1021.github.io/Fitpro/assets/login/wife-running.webp",
+      "bytes": 25730,
+      "sha256": "daf47ef28f36c6b039781b7351d31436b1eff3775c062c9769a90f6845c3e488",
+      "matches_local": true
+    },
+    {
+      "path": "assets/mood/hus-meal.webp",
+      "url": "https://lcy1021.github.io/Fitpro/assets/mood/hus-meal.webp",
+      "bytes": 41130,
+      "sha256": "a519babb4b21e455693a24e3abf7e46fdf177275282986dc8628a9fd90c75a8b",
+      "matches_local": true
+    },
+    {
+      "path": "assets/mood/wife-meal.webp",
+      "url": "https://lcy1021.github.io/Fitpro/assets/mood/wife-meal.webp",
+      "bytes": 43566,
+      "sha256": "fd60d3eb4ccca25aa09c9e4b895ab630b747073db82b880b1eb8a1fd43658ce9",
+      "matches_local": true
+    },
+    {
+      "path": "assets/meal-art/record-couple-v1.webp",
+      "url": "https://lcy1021.github.io/Fitpro/assets/meal-art/record-couple-v1.webp",
+      "bytes": 19062,
+      "sha256": "cc8db7e364327c60ea3e18f8f5c88ab42111c7cbe88168677486cffbe37e0f00",
+      "matches_local": true
+    }
+  ]
+}

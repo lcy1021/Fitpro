@@ -1,0 +1,32 @@
+[
+  {
+    "path": "assets/login/hus-running.webp",
+    "sha256": "74be884a5ed7bffa661f36ed9ede519fe833ba6a9f13150af05d84c418548ca1",
+    "bytes": 22214,
+    "unchanged_from_v37": true
+  },
+  {
+    "path": "assets/login/wife-running.webp",
+    "sha256": "daf47ef28f36c6b039781b7351d31436b1eff3775c062c9769a90f6845c3e488",
+    "bytes": 25730,
+    "unchanged_from_v37": true
+  },
+  {
+    "path": "assets/mood/hus-meal.webp",
+    "sha256": "a519babb4b21e455693a24e3abf7e46fdf177275282986dc8628a9fd90c75a8b",
+    "bytes": 41130,
+    "unchanged_from_v37": true
+  },
+  {
+    "path": "assets/mood/wife-meal.webp",
+    "sha256": "fd60d3eb4ccca25aa09c9e4b895ab630b747073db82b880b1eb8a1fd43658ce9",
+    "bytes": 43566,
+    "unchanged_from_v37": true
+  },
+  {
+    "path": "assets/meal-art/record-couple-v1.webp",
+    "sha256": "cc8db7e364327c60ea3e18f8f5c88ab42111c7cbe88168677486cffbe37e0f00",
+    "bytes": 19062,
+    "unchanged_from_v37": true
+  }
+]
