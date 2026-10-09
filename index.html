@@ -657,7 +657,7 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="private-coach.css?v=23">
+<link rel="stylesheet" href="private-coach.css?v=24">
 </head>
 <body class="me-hus">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -790,7 +790,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=23"></script>
+<script src="private-coach.js?v=24"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -2180,7 +2180,7 @@ async function aiFood(){
       if(syncState!=="ok"){ toast("打卡记录还没同步成功，请联网后再试 AI 估算",5000); return; }
     }
     const headers={"Content-Type":"application/json","apikey":SUPABASE_KEY};
-    if(privateCoach?.active){await privateCoach.refresh();headers["Authorization"]="Bearer "+privateCoach.session.access_token;}
+    if(privateCoach?.active){if(!await privateCoach.refresh()){toast("本机身份已过期，请用个人恢复码找回档案后再试 AI",7000);return;}headers["Authorization"]="Bearer "+privateCoach.session.access_token;}
     else if(!SUPABASE_KEY.startsWith("sb_")) headers["Authorization"]="Bearer "+SUPABASE_KEY;
     const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/functions/v1/meal-kcal"+(AI_REGION?"?forceFunctionRegion="+encodeURIComponent(AI_REGION):""),{method:"POST",headers,body:JSON.stringify({family,text})});
     const d=await r.json().catch(()=>({}));
