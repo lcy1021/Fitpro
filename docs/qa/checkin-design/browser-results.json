@@ -1,0 +1,42 @@
+[
+  {
+    "person": "hus",
+    "theme": "light",
+    "futureDaysDisabled": 2,
+    "pastReadOnly": true,
+    "todayMealWorks": true,
+    "historyInputPreserved": true,
+    "smallScreenFits": true,
+    "errors": []
+  },
+  {
+    "person": "hus",
+    "theme": "dark",
+    "futureDaysDisabled": 2,
+    "pastReadOnly": true,
+    "todayMealWorks": true,
+    "historyInputPreserved": true,
+    "smallScreenFits": true,
+    "errors": []
+  },
+  {
+    "person": "wife",
+    "theme": "light",
+    "futureDaysDisabled": 2,
+    "pastReadOnly": true,
+    "todayMealWorks": true,
+    "historyInputPreserved": true,
+    "smallScreenFits": true,
+    "errors": []
+  },
+  {
+    "person": "wife",
+    "theme": "dark",
+    "futureDaysDisabled": 2,
+    "pastReadOnly": true,
+    "todayMealWorks": true,
+    "historyInputPreserved": true,
+    "smallScreenFits": true,
+    "errors": []
+  }
+]

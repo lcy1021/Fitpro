@@ -122,6 +122,8 @@ end; $$;
 create or replace function public.fl_private_pull(p_since date default null)
 returns jsonb language plpgsql security definer stable set search_path = '' as $$
 declare v_user uuid := auth.uid(); v_family text; v_person text;
+  v_today date := (now() at time zone 'Asia/Shanghai')::date;
+  v_activity_since date := greatest(coalesce(p_since,v_today-119),v_today-119);
 begin
   select family,person into v_family,v_person from public.fl_members where user_id=v_user;
   if v_family is null then raise exception 'pairing_required'; end if;
@@ -136,7 +138,9 @@ begin
       from public.fl_coach_weeks where user_id=v_user and week_start>=current_date-120),'[]'::jsonb),
     'partnerActivity', coalesce((select jsonb_agg(jsonb_build_object('date',date,'checked',checked))
       from public.fl_partner_activity where family=v_family and person<>v_person
-        and date=(now() at time zone 'Asia/Shanghai')::date),'[]'::jsonb),
+        and date between v_activity_since and v_today),'[]'::jsonb),
+    'partnerActivitySince', v_activity_since,
+    'partnerActivityUntil', v_today,
     'partnerTrend', coalesce((select jsonb_agg(jsonb_build_object('date',date,'changeKg',change_kg))
       from public.fl_partner_weight_trend where family=v_family and person<>v_person),'[]'::jsonb)
   );

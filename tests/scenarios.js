@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');assert(fs.readFileSync(path.join(root,'sw.js'),'utf8').includes('notificationclick'),'push click handler');
-assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=31"></script>'), 'config loads before coaching');
+assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=32"></script>'), 'config loads before coaching');
 const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('</script>'));
 const memory = new Map();
 const elements = new Map();
@@ -18,8 +18,8 @@ const sandbox = {
   location: {hash:'',pathname:'/',search:'',protocol:'file:'}, history:{replaceState(){}}, navigator:{},
   setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame:f=>f(), matchMedia:()=>({matches:true}), console, Date, AbortController, URL,
 };
-const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','viewToday','viewDiet','dietWeekCard','viewTrain','viewRecord','renderRecordData','privateTrendCard','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','drawRun','feedRows','openPicker','showRoleChoice','extraMoveRows','extraDone','toggleExtraMove','EXTRA_MOVES','refreshCalendarDay','ackDirty','markDirty'];
-const code = inline.replace('/* ---------- boot ---------- */', `globalThis.__app = {${exported.join(',')},getDirty:()=>dirty, setStore:v=>{store=v},setMe:v=>{me=v;viewP=v},setViewP:v=>{viewP=v},setDietWeekOffset:v=>{dietWeekOffset=v},setCoach:v=>{privateCoach=v},setTab:v=>{tab=v},setRunState:v=>{runState=v}};return;`);
+const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','viewToday','viewDiet','dietWeekCard','viewTrain','viewRecord','renderRecordData','privateTrendCard','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','drawRun','feedRows','openPicker','showRoleChoice','extraMoveRows','extraDone','toggleExtraMove','EXTRA_MOVES','refreshCalendarDay','ackDirty','markDirty','activityInfo','activityStreak','coupleStreakCard','checkinHistoryCard','dietDayRows'];
+const code = inline.replace('/* ---------- boot ---------- */', `globalThis.__app = {${exported.join(',')},getDirty:()=>dirty,setDietSelectedDate:v=>{dietSelectedDate=v},setHistorySelectedDate:v=>{historySelectedDate=v}, setStore:v=>{store=v},setMe:v=>{me=v;viewP=v},setViewP:v=>{viewP=v},setDietWeekOffset:v=>{dietWeekOffset=v},setCoach:v=>{privateCoach=v},setTab:v=>{tab=v},setRunState:v=>{runState=v}};return;`);
 vm.runInNewContext(code, sandbox, {filename:'index-inline.js'});
 const app = sandbox.__app;
 app.openPicker(false);assert(element('#pick').classList.contains('open'),'original animation picker opens');assert.equal(element('#lm').dataset.phase,'choose','reduced motion lands on role choice');
@@ -61,6 +61,23 @@ const extraCheckin=app.toggleExtraMove({person:'hus',date,meals:{},workout:null}
 assert(app.EXTRA_MOVES.every(m=>fs.existsSync(path.join(root,'assets/moves',m.img+'.gif'))),'all movement animations exist');
 const bodyweightSteps=app.buildSteps('N');app.setRunState({key:'N',steps:bodyweightSteps,i:bodyweightSteps.length-1});app.drawRun();assert(element('#runBody').innerHTML.includes('data-run="finish"'),'bodyweight workout can be completed and saved');
 const walkSteps=app.buildSteps('C');app.setRunState({key:'C',steps:walkSteps,i:walkSteps.length-1});app.drawRun();assert(element('#runBody').innerHTML.includes('data-run="finish"'),'scheduled walk can be completed and saved');
+// Count saved check-in days, rather than requiring every meal or exercise to be complete.
+const dayAgo=n=>app.ymd(new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()-n));
+app.setCoach(null);app.setMe('hus');app.setStore({checkins:{['hus_'+dayAgo(1)]:{person:'hus',date:dayAgo(1),meals:{breakfast:'plan'}},['hus_'+dayAgo(2)]:{person:'hus',date:dayAgo(2),meals:{lunch:'over'}},['hus_'+dayAgo(4)]:{person:'hus',date:dayAgo(4),meals:{breakfast:'skip'}}},measures:{}});
+assert.equal(app.activityStreak(app.activityInfo('hus').checked).count,2,'today has a grace period; partial and over meals both count');
+app.setStore({checkins:{['hus_'+dayAgo(2)]:{person:'hus',date:dayAgo(2),meals:{breakfast:'plan'}}},measures:{}});
+assert.equal(app.activityStreak(app.activityInfo('hus').checked).count,0,'a missing yesterday really breaks the current chain');
+assert.equal(app.activityStreak(d=>d<=dayAgo(0)).count,120,'streak calculations are bounded');
+const historyCoach={...coach,partnerActivitySince:dayAgo(119),partnerActivityUntil:dayAgo(0),partnerChecked:d=>[dayAgo(1),dayAgo(2)].includes(d)};
+app.setCoach(historyCoach);assert.equal(app.activityStreak(app.activityInfo('wife').checked).count,2,'partner historical booleans support streaks');
+assert(app.coupleStreakCard().includes('连续记录'),'private record page includes both partner streaks');
+historyCoach.partnerActivityUntil=dayAgo(3);assert.equal(app.activityInfo('wife').ready,false,'stale partner data is unknown rather than zero');
+delete historyCoach.partnerActivitySince;assert(app.coupleStreakCard().includes('历史状态待同步'),'older servers do not pretend missing history means no check-ins');
+app.setStore({checkins:{['hus_'+dayAgo(1)]:{person:'hus',date:dayAgo(1),meals:{breakfast:'skip'},food:{breakfast:{items:[{n:'旧食物',q:'',k:999}],kcal:999}}},['wife_'+dayAgo(1)]:{person:'wife',date:dayAgo(1),food:{breakfast:{items:[{n:'PRIVATE_PEER_FOOD'}],kcal:444}}}},measures:{}});
+app.setHistorySelectedDate(dayAgo(1));const historyHtml=app.checkinHistoryCard();assert(!historyHtml.includes('PRIVATE_PEER_FOOD'),'partner meal details never enter shared history');
+assert(!app.dietDayRows('hus',dayAgo(1)).includes('999'),'a skipped meal does not display stale food calories');
+assert(!app.dietDayRows('hus',dayAgo(1),true).includes('data-meal='),'past days are read-only and cannot accidentally change today');
+console.log('PASS saved-day streaks, today grace, real gaps, history bounds, unknown peer data and private food isolation');
 console.log('PASS historical plan, menu, partner views; PASS private today, diet, train, record, schedule');
 
 // Run the actual coaching class with mocked IO for the new state transitions.

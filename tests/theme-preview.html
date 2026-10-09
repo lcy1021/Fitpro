@@ -73,11 +73,23 @@
     return {summary:'希望每周坚持运动，我会按你的时间安排。', suggestions:{goals:['建立运动习惯']}};
   };
   coach.rpc = async () => ({});
+  coach.sync = async () => {};
   coach.ensurePaired = async () => {};
   app.setMe(person);
   app.setStore({checkins:Object.keys(dailyFixture).length?{[person+'_'+date]:{person,date,...dailyFixture}}:{}, measures:{
     ['hus_'+previous]:{person:'hus',date:previous,weight:76.5}, ['hus_'+date]:{person:'hus',date,weight:76},
     ['wife_'+previous]:{person:'wife',date:previous,weight:52.2}, ['wife_'+date]:{person:'wife',date,weight:52}}});
+  if(params.get('journal')==='1'){
+    const fixtureChecks={};
+    for(let n=0;n<22;n++){
+      if(n===5||n===12||n===18)continue;
+      const d=app.ymd(new Date(Date.now()-n*864e5));
+      fixtureChecks[person+'_'+d]={person,date:d,meals:n===0?{breakfast:'plan',lunch:'plan'}:{breakfast:'plan',lunch:'plan',snack:n%3?'plan':'skip',dinner:n%4?'plan':'over'},food:n===0?{breakfast:{items:[{n:'鸡蛋',q:'2 个',k:140},{n:'脱脂牛奶',q:'200ml',k:70}],kcal:210,text:'鸡蛋和脱脂牛奶'}}:{},workout:n%2?'done':null,stand:3,updatedAt:Date.now()-n*864e5};
+      coach.partnerActivity[d]=n!==0&&n!==4&&n!==9&&n!==13;
+    }
+    coach.partnerActivitySince=app.ymd(new Date(Date.now()-119*864e5));coach.partnerActivityUntil=date;
+    app.setStore({checkins:fixtureChecks,measures:{[person+'_'+previous]:{person,date:previous,weight:person==='hus'?76.5:52.2},[person+'_'+date]:{person,date,weight:person==='hus'?76:52}}});
+  }
   coach.partnerTrend=[{date:previous,changeKg:0},{date,changeKg:-.3}];
   app.setCoach(coach);
   app.render();

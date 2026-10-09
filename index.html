@@ -320,33 +320,56 @@ p{margin:0}
 .counter .ctl b{font-size:18px;font-weight:800;min-width:30px;text-align:center;font-variant-numeric:tabular-nums}
 .counter .ctl b small{display:block;font-size:10px;color:var(--muted);font-weight:500;line-height:1}
 
-/* diet: kcal ring */
-.ring-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
-.ring{position:relative;width:128px;height:128px}
-.ring svg{width:128px;height:128px;transform:rotate(-90deg)}
-.ring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.ring .c b{font-size:26px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.ring .c small{font-size:11px;color:var(--muted)}
-.ring-side{display:grid;justify-items:center;text-align:center;gap:6px}
-.ring-side img{width:80px;height:80px;object-fit:contain}
-.ring-side p{font-size:13px;color:var(--muted);line-height:1.5}
-.ring-meals{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.ring-meals div{background:var(--sunk);border-radius:var(--radius-s);padding:8px 4px;text-align:center;font-size:12px;color:var(--muted)}
-.ring-meals div b{display:block;font-size:13px;color:var(--ink);font-weight:800}
-.ring-meals div.plan{background:var(--p-soft)} .ring-meals div.plan b{color:var(--p-ink)}
-.ring-meals div.over{background:var(--sun-soft)} .ring-meals div.over b{color:var(--sun-ink)}
-.ring-foot{grid-column:1/-1;font-size:11px;color:var(--faint);text-align:center}
-.diet-week-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
-.diet-week-nav b{font-size:13px;font-weight:800;color:var(--ink);text-align:center}
-.diet-week-nav button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;min-width:38px;height:38px;font-size:20px;line-height:1}
-.diet-week-nav button:disabled{opacity:.35}
-.diet-week .wkrow{background:var(--sunk)}
-.diet-week .wk2 .c{font-size:12px}
-.diet-week .wk2 .c.plan{background:var(--p-soft);color:var(--p-ink)}
-.diet-week .wk2 .c.over{background:var(--sun-soft);color:var(--sun-ink)}
-.diet-week .wk2 .c.skip{background:var(--surface);color:var(--muted)}
-.diet-week .wk2 .c.now{box-shadow:0 0 0 2px var(--me)}
-.diet-week-legend{margin:12px 2px 0;color:var(--muted);font-size:11px;line-height:1.5}
+/* Meal journal: calm cards, clear dates, explicit status labels. */
+.meal{padding:18px;border:1px solid var(--line);box-shadow:var(--shadow);gap:10px}
+.meal[data-meal-status="plan"]{border-color:color-mix(in srgb,var(--me) 24%,var(--line))}
+.meal .foods{background:transparent;padding:0 2px}
+.meal .foods li{padding:7px 0;font-size:13px}
+.meal .logbtn{margin:0;background:var(--me-soft);border:0;color:var(--me-ink);font-weight:650}
+.meal .seg button,.diary-actions button{min-height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:12px;display:flex;align-items:center;justify-content:center;gap:4px}
+.meal .seg button[aria-pressed="true"][data-v="plan"],.diary-actions button[aria-pressed="true"][data-v="plan"]{background:var(--me-soft);color:var(--me-ink);border-color:color-mix(in srgb,var(--me) 30%,transparent);box-shadow:none}
+.nutrition-summary{padding:20px;background:linear-gradient(140deg,var(--surface) 45%,var(--p-soft));border:1px solid var(--line)}
+.nutrition-top,.nutrition-value,.nutrition-meta{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.nutrition-top>span:first-child{font-size:13px;font-weight:750;color:var(--muted)}
+.nutrition-count{font-size:11px;color:var(--p-ink);background:var(--p-soft);padding:4px 9px;border-radius:99px;white-space:nowrap}
+.nutrition-value{margin:9px 0 14px}.nutrition-value>div{min-width:0;display:flex;align-items:baseline;gap:6px}
+.nutrition-value b{font-size:32px;line-height:1.2;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.nutrition-value small{font-size:12px;color:var(--muted)}.nutrition-value img{width:60px;height:60px;object-fit:contain;flex:none}
+.nutrition-track{height:7px;background:var(--sunk);border-radius:99px;overflow:hidden}.nutrition-track span{display:block;height:100%;border-radius:inherit;background:var(--p-grad)}
+.nutrition-meta{margin-top:10px;flex-wrap:wrap;font-size:11px;color:var(--muted)}.nutrition-meta b{color:var(--ink);font-weight:650}
+.nutrition-note{margin-top:12px;font-size:11px;color:var(--muted);line-height:1.5}
+.diet-week,.checkin-history{padding:18px;border:1px solid var(--line)}
+.diary-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}.diary-nav>div:first-child{min-width:0}
+.diary-nav b{display:block;font-size:15px;font-weight:800}.diary-nav small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+.calendar-arrows{display:flex;gap:6px;flex:none}.calendar-arrows button{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--line);background:var(--surface);border-radius:12px;color:var(--ink)}.calendar-arrows button:disabled{opacity:.3;cursor:default}
+.diary-dates{display:grid;grid-template-columns:repeat(7,minmax(40px,1fr));gap:4px;overflow-x:auto;padding:2px 0 9px;scrollbar-width:thin}
+.diary-date{display:flex;flex-direction:column;align-items:center;gap:5px;border:1px solid transparent;border-radius:13px;padding:9px 2px;background:var(--sunk);min-height:76px;color:var(--ink)}
+.diary-date small{font-size:10px;color:var(--muted)}.diary-date>b{font-size:19px;line-height:1.2;font-weight:750}
+.diary-date.today small{color:var(--p-ink);font-weight:750}.diary-date[aria-pressed="true"]{background:var(--p-grad);color:#fff;box-shadow:0 4px 12px color-mix(in srgb,var(--p) 18%,transparent)}.diary-date[aria-pressed="true"] small{color:#fff}.diary-date:disabled{opacity:.35}
+.meal-dots{display:flex;gap:2px}.meal-dots i{width:4px;height:4px;border-radius:50%;background:var(--faint);opacity:.35}.meal-dots i.plan{background:var(--p);opacity:1}.meal-dots i.over{background:var(--sun);opacity:1}.meal-dots i.skip{background:var(--muted);opacity:1}.diary-date[aria-pressed="true"] .meal-dots i{background:#fff}.diary-date[aria-pressed="true"] .meal-dots i:not([class=""]){opacity:1}
+.diary-day-title{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 0 12px;border-top:1px solid var(--line);margin-top:8px}.diary-day-title>b{font-size:14px}.diary-day-title>span{font-size:11px;color:var(--muted)}.diary-day-title button{border:0;background:transparent;color:var(--p-ink);font-size:11px;padding:6px}
+.diary-meals{display:grid;gap:10px}.diary-meal{min-width:0;border:1px solid var(--line);border-radius:17px;padding:13px;background:var(--surface)}
+.diary-meal-head{display:flex;align-items:center;gap:9px}.diary-meal-head>div{flex:1;min-width:0}.diary-meal-head h4{margin:0;font-size:14px;line-height:1.3}
+.meal-symbol{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:var(--sunk);color:var(--p-ink);flex:none}.meal-symbol .ui-icon{width:19px;height:19px}
+.meal-status{display:inline-block;font-size:10px;color:var(--muted);margin-top:3px}.meal-status.plan{color:var(--p-ink)}.meal-status.over{color:var(--sun-ink)}
+.diary-edit{border:0;background:var(--p-soft);color:var(--p-ink);border-radius:11px;padding:8px 10px;min-height:40px;font-size:11px;font-weight:750;display:flex;align-items:center;gap:4px;flex:none}
+.diary-food{font-size:12px;color:var(--ink);line-height:1.6;margin:10px 0 0;overflow-wrap:anywhere}.diary-food.empty{color:var(--muted)}
+.diary-kcal{font-size:11px;white-space:nowrap;color:var(--muted)}.diary-kcal b{color:var(--ink)}.diary-meal>.diary-kcal{display:block;margin-top:5px}
+.diary-actions{margin-top:12px;gap:5px}.diary-actions button{font-size:11px;min-height:38px;padding:7px 3px}
+.diary-foot{font-size:11px;line-height:1.6;color:var(--muted);margin-top:14px}
+.habit-card{padding:20px;background:linear-gradient(130deg,var(--hus-soft),var(--surface) 48%,var(--wife-soft));border:1px solid var(--line)}
+.habit-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}.habit-heading h3{margin:0;font-size:19px;letter-spacing:-.03em}.habit-heading p{font-size:12px;color:var(--muted);margin-top:4px}.habit-heart{color:var(--wife-ink);width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--surface)}
+.habit-people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.habit-person{background:var(--surface);border:1px solid var(--line);padding:13px;border-radius:18px;min-width:0}
+.habit-person-head{display:flex;align-items:center;gap:6px;margin-bottom:10px}.habit-person-head img{width:32px;height:32px;object-fit:contain}.habit-person-head b{font-size:12px;color:var(--p-ink)}
+.habit-label{font-size:11px;color:var(--muted)}.habit-number{display:flex;align-items:baseline;gap:5px;margin:2px 0 4px}.habit-number b{font-size:37px;line-height:1.1;font-weight:850;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.habit-number span{font-size:12px;color:var(--muted)}.habit-person>small{font-size:11px;color:var(--muted)}
+.habit-together{display:flex;align-items:center;justify-content:center;gap:7px;padding:12px 8px;margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:13px;font-size:12px;color:var(--muted)}.habit-together b{color:var(--ink)}.habit-together .ui-icon{color:var(--me-ink)}.habit-note{margin-top:12px;font-size:10px;line-height:1.65;color:var(--muted)}
+.habit-weekdays,.habit-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.habit-weekdays{font-size:10px;color:var(--muted);text-align:center;margin-bottom:7px}
+.habit-day{border:1px solid transparent;border-radius:11px;background:var(--sunk);padding:8px 1px;min-height:47px;color:var(--ink)}.habit-day>b{font-size:12px;font-weight:650}.habit-day>span{display:flex;justify-content:center;gap:4px;margin-top:5px}.habit-day:disabled{opacity:.3}.habit-day.today{border-color:var(--me)}.habit-day[aria-pressed="true"]{background:var(--me-soft);border-color:var(--me)}
+.habit-day i,.habit-legend i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--faint);opacity:.25}.habit-day i.hus.checked,.habit-legend i.hus{background:var(--hus);opacity:1}.habit-day i.wife.checked,.habit-legend i.wife{background:var(--wife);opacity:1}.habit-day i.unknown,.habit-legend i.unknown{background:transparent;border:1px solid var(--muted);opacity:.65}
+.habit-legend{display:flex;align-items:center;gap:12px;font-size:10px;color:var(--muted);padding:12px 1px}.habit-legend>span{display:flex;align-items:center;gap:4px}.habit-legend>small{margin-left:auto;font-size:10px}
+.history-partner-status{display:flex;gap:7px;margin:0 0 12px;flex-wrap:wrap}.history-partner-status>span{padding:4px 9px;border-radius:99px;font-size:10px;background:var(--p-soft);color:var(--p-ink)}
+.history-day .diary-meal{border:0;background:var(--sunk);padding:10px 12px;border-radius:12px}.history-day .diary-meals{gap:7px}.history-day .meal-symbol{background:var(--surface)}.history-day .diary-food{font-size:11px;margin-top:5px}.history-activity{display:flex;justify-content:space-between;gap:8px;padding:12px 2px;font-size:12px;border-bottom:1px solid var(--line)}.history-activity span{display:flex;align-items:center;gap:6px;color:var(--muted)}.history-activity b{font-weight:650}.history-empty{font-size:12px;color:var(--muted);padding:18px 2px 10px}
+@media(max-width:350px){.diet-week,.checkin-history,.habit-card,.nutrition-summary{padding:14px}.nutrition-value b{font-size:27px}.nutrition-value img{width:48px;height:48px}.habit-person{padding:10px}.habit-person-head{gap:4px}.habit-person-head b{font-size:11px}.diary-meal{padding:11px}.diary-edit{padding:7px;font-size:10px}.habit-legend{gap:8px}.habit-legend>small{font-size:9px}}
 
 /* diet tab */
 .list{margin:0;padding:0;list-style:none}
@@ -676,7 +699,7 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="private-coach.css?v=31">
+<link rel="stylesheet" href="private-coach.css?v=32">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -809,7 +832,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=31"></script>
+<script src="private-coach.js?v=32"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1608,7 +1631,7 @@ function viewToday(){
   const meals=MEALS.map(m=>{
     const v=c.meals&&c.meals[m]; const p=plan[m];
     const b=(val,txt)=>`<button data-meal="${m}" data-v="${val}" aria-pressed="${v===val}">${txt}</button>`;
-    return `<div class="card meal"><div class="meal-top"><h4><span class="ic m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><span>${p.t}<br><time>${p.time}</time></span></h4><span class="kcal">约 ${mealKcal(me,m)} kcal</span></div>
+    return `<div class="card meal" data-meal-status="${v||""}"><div class="meal-top"><h4><span class="ic m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><span>${p.t}<br><time>${p.time}</time></span></h4><span class="kcal">约 ${mealKcal(me,m)} kcal</span></div>
       ${hasDietRule?`<p class="note">${privateCoach.mealSwap(m)?`本周个性建议：${esc(privateCoach.mealSwap(m))}`:"已记录饮食限制，个性餐食暂未生成；请勿照搬默认菜品。"}</p>`:`${privateCoach?.active&&privateCoach.mealSwap(m)?`<p class="note">本周个性建议：${esc(privateCoach.mealSwap(m))}</p>`:""}${foodList(me,m)}`}${(fd=>fd?`<div class="logged"><span aria-hidden="true">${icon("note","sm")}</span><div class="t"><b>实际吃了约 ${fd.kcal} kcal</b><small>${esc(fd.items.map(i=>i.n+(i.q?" "+i.q:"")).join("、"))}</small></div><button class="btn ghost" data-food="${m}" style="padding:6px 12px">修改</button></div>`
         :`<button class="logbtn" data-food="${m}">${icon("note","sm")} 记一下实际吃了什么，算热量</button>`)(c.food&&c.food[m])}
       <div class="seg" role="group" aria-label="${p.t}打卡">${b("plan","按计划吃了")}${b("over","吃多了")}${b("skip","没吃")}</div></div>`;
@@ -1647,44 +1670,48 @@ function eatenToday(person){
     if(v==="plan"){ lo+=r[0]; hi+=r[1]; } else if(v==="over"){ lo+=r[1]; hi+=r[1]; } });
   return {lo,hi,n,c};
 }
-function ringCard(person){
-  const e=eatenToday(person); const day=dayRange(person);
-  const mid=Math.round((e.lo+e.hi)/2), dayMid=(day[0]+day[1])/2;
-  const pct=Math.min(1,mid/dayMid); const R=54, C=2*Math.PI*R;
-  const gid="rg-"+person;
-  const stops=person==="hus"?["#38BDF8","#0284C7"]:["#FF758C","#FF4B72"];
-  const line = e.n===0 ? "今天还没打卡，按计划吃就好"
-    : e.n<4 ? `已打卡 ${e.n}/4 餐，剩下的按计划来`
-    : "今天四餐都打卡了 ✨";
-  const names={breakfast:"早餐",lunch:"午餐",snack:"加餐",dinner:"晚餐"};
-  const st=m=>{ const v=e.c.meals&&e.c.meals[m]; return v==="plan"?["plan","按计划"]:v==="over"?["over","吃多了"]:v==="skip"?["","没吃"]:["","未打卡"]; };
-  return `<div class="card ring-card ${person}">
-    <div class="ring" role="img" aria-label="今天估算吃了约 ${mid} kcal，全天计划约 ${kcalText(day)} kcal">
-      <svg viewBox="0 0 128 128"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${stops[0]}"/><stop offset="1" stop-color="${stops[1]}"/></linearGradient></defs>
-        <circle cx="64" cy="64" r="${R}" fill="none" stroke="var(--sunk)" stroke-width="12"/>
-        <circle cx="64" cy="64" r="${R}" fill="none" stroke="url(#${gid})" stroke-width="12" stroke-linecap="round" stroke-dasharray="${(C*pct).toFixed(1)} ${C.toFixed(1)}"/></svg>
-      <div class="c"><small>已吃约</small><b>${mid}</b><small>kcal</small></div>
-    </div>
-    <div class="ring-side"><img src="${e.n===4?mood(person,"day-done"):mood(person,"meal")}" alt="${PEOPLE[person].label}的形象" width="80" height="80"><p>${line}</p><span class="chip">全天计划 ${kcalText(day)}</span></div>
-    <div class="ring-meals">${MEALS.map(m=>{ const [k,t]=st(m); return `<div class="${k}"><b>${names[m]}</b>${t}</div>`; }).join("")}</div>
-    <p class="ring-foot">${privateCoach?.active&&privateCoach.profile?.diet?"有饮食限制时，未记录实际食物的餐次仍按默认份量估算；请以实际记录为准。":"记了实际吃什么的餐次按记录算，其余按计划估算，都不是精确计算"}</p>
-  </div>`;
+const MEAL_NAMES={breakfast:"早餐",lunch:"午餐",snack:"加餐",dinner:"晚餐"};
+const MEAL_STATES={plan:["plan","按计划"],over:["over","吃多了"],skip:["skip","没吃"]};
+const mealCount=c=>MEALS.filter(m=>MEAL_STATES[c.meals?.[m]]).length;
+function mealRecordText(c,m){
+  const v=c.meals?.[m],fd=c.food?.[m];
+  if(v==="skip")return "这餐没有进食";
+  if(fd&&Array.isArray(fd.items)&&fd.items.length)return fd.items.map(i=>i.n+(i.q?" "+i.q:"")).join("、");
+  return v==="plan"?"按计划记录了这餐":v==="over"?"已记录，下一顿照常吃就好":"还没有留下这餐的记录";
 }
-let dietWeekOffset=0;
+function dietDayRows(person,date,interactive=false){
+  const c=getCheckin(person,date),canEdit=interactive&&date===ymd(new Date())&&person===me;
+  return `<div class="diary-meals">${MEALS.map(m=>{const v=c.meals?.[m],st=MEAL_STATES[v]||["empty","未打卡"],fd=c.food?.[m];
+    const kcal=v!=="skip"&&Number.isFinite(fd?.kcal)?`<span class="diary-kcal">约 <b>${Math.round(fd.kcal)}</b> kcal</span>`:"";
+    return `<article class="diary-meal"><div class="diary-meal-head"><span class="meal-symbol m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><div><h4>${MEAL_NAMES[m]}</h4><span class="meal-status ${st[0]}" aria-label="${date} ${MEAL_NAMES[m]}：${st[1]}">${st[1]}</span></div>${canEdit?`<button type="button" class="diary-edit" data-food="${m}" aria-label="${fd?"修改":"记录"}${MEAL_NAMES[m]}食物">${icon("note","sm")}${fd?"修改食物":"记食物"}</button>`:kcal}</div>
+      <p class="diary-food ${v?"":"empty"}">${esc(mealRecordText(c,m))}</p>${canEdit?kcal:""}
+      ${canEdit?`<div class="seg diary-actions" role="group" aria-label="${MEAL_NAMES[m]}打卡">${Object.entries(MEAL_STATES).map(([key,[,label]])=>`<button type="button" data-meal="${m}" data-v="${key}" aria-pressed="${v===key}">${key==="plan"?icon("check","sm"):""}${label}</button>`).join("")}</div>`:""}</article>`;
+  }).join("")}</div>`;
+}
+function ringCard(person){
+  const e=eatenToday(person),day=dayRange(person),mid=Math.round((e.lo+e.hi)/2),pct=Math.min(1,mid/((day[0]+day[1])/2));
+  return `<div class="card nutrition-summary ${person}"><div class="nutrition-top"><span>今日热量估算</span><span class="nutrition-count">${e.n} / 4 餐已记录</span></div>
+    <div class="nutrition-value"><div><b>${e.n?kcalText([e.lo,e.hi]):"—"}</b><small>kcal</small></div><img src="${mood(person,e.n===4?"day-done":"meal")}" width="60" height="60" alt=""></div>
+    <div class="nutrition-track" role="img" aria-label="已记录 ${e.n} 餐，估算 ${e.n?kcalText([e.lo,e.hi]):"暂无"} kcal，全天计划 ${kcalText(day)} kcal"><span style="width:${(pct*100).toFixed(1)}%"></span></div>
+    <div class="nutrition-meta"><span>全天计划 <b>${kcalText(day)}</b> kcal</span><span>${e.n===4?"四餐都记下了":"按自己的节奏来"}</span></div>
+    <p class="nutrition-note">${privateCoach?.active&&privateCoach.profile?.diet?"有饮食限制时，请优先记录实际食物。":"实际食物按记录计算，其余餐次按计划估算。"}</p></div>`;
+}
+let dietWeekOffset=0,dietSelectedDate=null;
 function dietWeekCard(person,offset=dietWeekOffset){
-  const today=new Date(),mon=addDays(today,-((today.getDay()+6)%7)+offset*7),end=addDays(mon,6);
-  const days=Array.from({length:7},(_,i)=>addDays(mon,i));
-  const earliest=Object.values(store.checkins).filter(c=>c.person===person&&/^\d{4}-\d{2}-\d{2}$/.test(c.date)).map(c=>c.date).sort()[0];
-  const canPrev=!!earliest&&earliest<ymd(mon);
+  const today=new Date(),todayDate=ymd(today),mon=addDays(today,-((today.getDay()+6)%7)+offset*7),end=addDays(mon,6);
+  const start=ymd(mon),last=ymd(end),days=Array.from({length:7},(_,i)=>addDays(mon,i));
+  const dates=Object.values(store.checkins).filter(c=>c.person===person&&/^\d{4}-\d{2}-\d{2}$/.test(c.date)&&c.date<=todayDate&&mealCount(c)).map(c=>c.date).sort();
+  const canPrev=!!dates[0]&&dates[0]<start;
+  if(!dietSelectedDate||dietSelectedDate<start||dietSelectedDate>last||dietSelectedDate>todayDate)dietSelectedDate=offset===0?todayDate:dates.filter(d=>d>=start&&d<=last).at(-1)||start;
   const stamp=d=>`${d.getMonth()+1}/${d.getDate()}`;
-  const head=`<div class="wk2">${days.map(d=>`<span class="h${ymd(d)===ymd(today)?" now":""}" title="${ymd(d)}">${ymd(d)===ymd(today)?"今天":"周"+WEEK[d.getDay()]}</span>`).join("")}</div>`;
-  const names={breakfast:"早餐",lunch:"午餐",snack:"加餐",dinner:"晚餐"};
-  const status={plan:["plan","✓","按计划"],over:["over","多","吃多了"],skip:["skip","没","没吃"]};
-  const rows=MEALS.map(m=>`<div class="wkrow"><div class="who2">${names[m]}</div><div class="wk2">${days.map(d=>{
-    const date=ymd(d),value=getCheckin(person,date).meals?.[m],st=status[value]||["","—","未打卡"];
-    return `<span class="c ${st[0]}${date===ymd(today)?" now":""}" role="img" aria-label="${date} ${names[m]}：${st[2]}" title="${date} ${names[m]}：${st[2]}">${st[1]}</span>`;
-  }).join("")}</div></div>`).join("");
-  return `<div class="card diet-week"><div class="diet-week-nav"><button type="button" data-diet-week="-1" aria-label="上一周"${canPrev?"":" disabled"}>‹</button><b>${mon.getFullYear()} 年 ${stamp(mon)}—${stamp(end)}</b><button type="button" data-diet-week="1" aria-label="下一周"${offset<0?"":" disabled"}>›</button></div>${head}${rows}<p class="diet-week-legend">✓ 按计划 · 多 吃多了 · 没 没吃 · — 未打卡</p></div>`;
+  const buttons=days.map(d=>{const date=ymd(d),c=getCheckin(person,date),count=mealCount(c),future=date>todayDate;
+    return `<button type="button" class="diary-date${date===todayDate?" today":""}" data-diet-date="${date}" aria-pressed="${date===dietSelectedDate}" aria-label="${date} ${future?"尚未开始":`已记录 ${count}/4 餐`}"${future?" disabled":""}><small>${date===todayDate?"今天":"周"+WEEK[d.getDay()]}</small><b>${d.getDate()}</b><span class="meal-dots" aria-hidden="true">${MEALS.map(m=>`<i class="${MEAL_STATES[c.meals?.[m]]?.[0]||""}"></i>`).join("")}</span></button>`;
+  }).join("");
+  const selected=getCheckin(person,dietSelectedDate),total=days.reduce((n,d)=>n+mealCount(getCheckin(person,ymd(d))),0);
+  return `<div class="card diet-week ${person}"><div class="diary-nav"><div><b>${offset===0?"这周的饮食":"饮食记录"}</b><small>${mon.getFullYear()} 年 ${stamp(mon)}—${stamp(end)} · 已记录 ${total} 餐</small></div><div class="calendar-arrows"><button type="button" data-diet-week="-1" aria-label="上一周"${canPrev?"":" disabled"}>${icon("back","sm")}</button><button type="button" data-diet-week="1" aria-label="下一周"${offset<0?"":" disabled"}>${icon("chevron-right","sm")}</button></div></div>
+    <div class="diary-dates" role="group" aria-label="选择饮食记录日期">${buttons}</div>
+    <div class="diary-day-title"><b>${shortDay(dietSelectedDate)}的饮食</b><span>${mealCount(selected)} / 4 餐${offset<0?` · <button type="button" data-diet-today>回到今天</button>`:""}</span></div>
+    ${dietDayRows(person,dietSelectedDate,true)}<p class="diary-foot">${dietSelectedDate===todayDate&&person===me?"点一下记录这餐；也可以记食物，让 AI 帮你估算。":"已保存的饮食记录 · 按日期查看"}</p></div>`;
 }
 function viewDiet(){
   if(privateCoach?.active) viewP=me;
@@ -1698,7 +1725,7 @@ function viewDiet(){
   const dinners=[1,2,3,4,5].filter(d=>d!==w).map(d=>`<div class="dinner"><span class="d">周${WEEK[d]}</span>
     <div><h4>${DINNERS[d].n}</h4><p>${DINNERS[d].h}</p></div><span class="k">约 ${DINNERS[d].kcal[viewP]}</span></div>`).join("");
   $("#view").innerHTML=peekSwitch()+`
-  <section class="sec">${secH("flame","今天吃了多少",PEOPLE[viewP].label)}${ringCard(viewP)}</section>
+  <section class="sec">${secH("diet","饮食日志",PEOPLE[viewP].label)}${ringCard(viewP)}</section>
   <section class="sec">${secH("record","饮食打卡记录",dietWeekOffset===0?"这周":"按周查看")}${dietWeekCard(viewP)}</section>
   <section class="sec">${secH("today",PEOPLE[viewP].label+"的一天","蛋白质 "+plan.protein)}
     <div class="stack">${rows}</div></section>
@@ -1859,16 +1886,51 @@ function prevValue(person,field,date){
   return ms.length?ms[ms.length-1][field]:null;
 }
 const fmtDelta=(d,unit)=>{ d=Math.round(d*10)/10; return d===0?"持平":(d>0?"+":"−")+Math.abs(d)+" "+unit; };
-function insightCard(){
-  if(privateCoach?.active)return `<div class="insight"><div class="ih"><div><h3>看趋势，别看单日</h3><p>体重和围度只在你的档案里显示。伴侣仅能看到相对体重变化曲线。</p></div></div></div>`;
-  const tip = me==="wife" ? "体重不怎么动、围度在变小，就说明方向对了。看 3–4 周的趋势，别看单日。"
-    : "看 3–4 周的趋势，别看单日。每周日早上空腹量一次，数据最稳。";
-  const row=p=>{ const done=dayDone(p,new Date()); const n=streak(p);
-    return `<div class="irow ${p}"><span class="ic">${icon("flame")}</span><span class="t">${PEOPLE[p].label}连续打卡 <b>${n}</b> 天</span>
-      <span class="chip ${done?"good":"me2"}">${done?"今天已完成":"今天进行中"}</span></div>`; };
-  return `<div class="insight"><div class="ih"><div><h3>看趋势，别看单日</h3><p>${tip}</p></div>
-    <img src="${mood(me,"weigh")}" alt="" width="72" height="72"></div>${row("hus")}${row("wife")}</div>`;
+/* A day counts when a check-in was saved, independently of meal completion. */
+let historyWindowOffset=0,historySelectedDate=null;
+function activityInfo(person){
+  const today=ymd(new Date()),floor=ymd(addDays(new Date(),-119));
+  if(privateCoach?.active&&person!==me){
+    const since=privateCoach.partnerActivitySince,until=privateCoach.partnerActivityUntil;
+    const known=/^\d{4}-\d{2}-\d{2}$/.test(since||"")&&/^\d{4}-\d{2}-\d{2}$/.test(until||"")&&since<=until&&until<=today;
+    return {since:known?since:floor,until:known?until:null,ready:known&&until>=ymd(addDays(new Date(),-1)),checked:date=>known&&date>=since&&date<=until?privateCoach.partnerChecked(date):null};
+  }
+  return {since:floor,until:today,ready:true,checked:date=>date>today?null:!!store.checkins[person+"_"+date]||(date<floor?null:false)};
 }
+function activityStreak(checked,since=ymd(addDays(new Date(),-119))){
+  let date=new Date(),n=0;
+  if(checked(ymd(date))!==true)date=addDays(date,-1);
+  for(let i=0;i<120&&ymd(date)>=since;i++){if(checked(ymd(date))!==true)break;n++;date=addDays(date,-1);}
+  return {count:n,capped:n>0&&ymd(date)<since};
+}
+function coupleStreakCard(){
+  const info={hus:activityInfo("hus"),wife:activityInfo("wife")},bothReady=info.hus.ready&&info.wife.ready;
+  const joint=activityStreak(date=>info.hus.checked(date)===true&&info.wife.checked(date)===true,info.hus.since>info.wife.since?info.hus.since:info.wife.since);
+  const week=addDays(new Date(),-((new Date().getDay()+6)%7));
+  const rows=["hus","wife"].map(person=>{const a=info[person],s=activityStreak(a.checked,a.since),count=Array.from({length:7},(_,i)=>ymd(addDays(week,i))).filter(d=>a.checked(d)===true).length;
+    return `<div class="habit-person ${person}"><div class="habit-person-head"><img src="assets/avatar-${person}.webp?v=media1" alt="" width="36" height="36"><b>${PEOPLE[person].label}${person===me?" · 我":""}</b></div><span class="habit-label">连续记录</span><div class="habit-number"><b>${a.ready?s.count+(s.capped?"+":""):"—"}</b><span>天</span></div><small>${a.ready?`本周记录 ${count} 天`:"历史状态待同步"}</small></div>`;
+  }).join("");
+  return `<div class="card habit-card"><div class="habit-heading"><div><h3>一起坚持的日子</h3><p>每一次记录，都是在照顾自己。</p></div><span class="habit-heart" aria-hidden="true">${icon("heart")}</span></div><div class="habit-people">${rows}</div><div class="habit-together">${icon("people","sm")}<span>两人同日连续记录 <b>${bothReady?joint.count+(joint.capped?"+":"")+" 天":"待同步"}</b></span></div><p class="habit-note">当天保存过打卡就算记录，今天尚未记录时沿用昨天的连续天数。按近 120 天统计${privateCoach?.active?"；只共享是否打卡。":"。"}</p></div>`;
+}
+function checkinHistoryCard(){
+  const today=new Date(),todayDate=ymd(today),mon=addDays(today,-((today.getDay()+6)%7)),start=addDays(mon,-21+historyWindowOffset*28),end=addDays(start,27);
+  const first=ymd(start),last=ymd(end),info={hus:activityInfo("hus"),wife:activityInfo("wife")};
+  const ownDates=Object.values(store.checkins).filter(c=>c.person===me&&/^\d{4}-\d{2}-\d{2}$/.test(c.date)&&c.date<=todayDate).map(c=>c.date).sort();
+  const earliest=[ownDates[0],...Object.values(info).filter(a=>a.ready).map(a=>a.since)].filter(Boolean).sort()[0];
+  if(!historySelectedDate||historySelectedDate<first||historySelectedDate>last||historySelectedDate>todayDate)historySelectedDate=historyWindowOffset===0?todayDate:ownDates.filter(d=>d>=first&&d<=last).at(-1)||last;
+  const stateLabel=(person,date)=>{const checked=info[person].checked(date);return PEOPLE[person].label+(checked===true?"已记录":checked===false?"未记录":"未同步");};
+  const cells=Array.from({length:28},(_,i)=>{const date=ymd(addDays(start,i)),future=date>todayDate;
+    return `<button type="button" class="habit-day${date===todayDate?" today":""}" data-history-date="${date}" aria-pressed="${date===historySelectedDate}" aria-label="${date} ${future?"尚未开始":["hus","wife"].map(p=>stateLabel(p,date)).join("，")}"${future?" disabled":""}><b>${Number(date.slice(8))}</b><span aria-hidden="true">${["hus","wife"].map(p=>`<i class="${p} ${info[p].checked(date)===true?"checked":info[p].checked(date)===null?"unknown":""}"></i>`).join("")}</span></button>`;
+  }).join("");
+  const selected=getCheckin(me,historySelectedDate),own=!!store.checkins[me+"_"+historySelectedDate];
+  const details=own?dietDayRows(me,historySelectedDate)+`<div class="history-activity"><span>${icon("train","sm")} 训练</span><b>${selected.workout==="done"?"已完成":"未记录完成"}</b></div>${selected.stand?`<div class="history-activity"><span>${icon("desk","sm")} 起身活动</span><b>${Number(selected.stand)||0} 次</b></div>`:""}${extraDone(selected).length?`<div class="history-activity"><span>${icon("stretch","sm")} 可选活动</span><b>${extraDone(selected).length} 项</b></div>`:""}`:`<p class="history-empty">这天还没有你的打卡记录。</p>`;
+  return `<div class="card checkin-history"><div class="diary-nav"><div><b>两个人的打卡足迹</b><small>${first.replaceAll("-","/")}—${last.slice(5).replace("-","/")}</small></div><div class="calendar-arrows"><button type="button" data-history-window="-1" aria-label="更早四周"${earliest&&earliest<first?"":" disabled"}>${icon("back","sm")}</button><button type="button" data-history-window="1" aria-label="更新四周"${historyWindowOffset<0?"":" disabled"}>${icon("chevron-right","sm")}</button></div></div>
+    <div class="habit-weekdays">${["一","二","三","四","五","六","日"].map(d=>`<span>${d}</span>`).join("")}</div><div class="habit-calendar" role="group" aria-label="选择历史打卡日期">${cells}</div>
+    <div class="habit-legend"><span><i class="hus"></i>老公</span><span><i class="wife"></i>老婆</span><span><i class="unknown"></i>未同步</span><small>点日期看当天</small></div>
+    <div class="history-day"><div class="diary-day-title"><b>${shortDay(historySelectedDate)}的记录</b><span>${Number(historySelectedDate.slice(5,7))}月${Number(historySelectedDate.slice(8))}日</span></div><div class="history-partner-status">${["hus","wife"].map(p=>`<span class="${p}">${stateLabel(p,historySelectedDate)}</span>`).join("")}</div>${details}</div><p class="diary-foot">伴侣只显示是否打卡，餐食、目标和身体数据仅自己可见。</p></div>`;
+}
+
+function insightCard(){return coupleStreakCard();}
 function feedRows(){
   const hist=Object.values(store.measures).filter(m=>(!privateCoach?.active||m.person===me)&&["weight","waist","hip","thigh"].some(k=>typeof m[k]==="number")).sort((a,b)=>a.date<b.date?1:-1).slice(0,6);
   if(!hist.length) return `<p class="empty empty-mood"><img src="${mood(me,"sad")}" alt="">还没有记录。每周日早上空腹量一次。</p>`;
@@ -1884,6 +1946,7 @@ function renderRecordData(){
   const pair=$("#recPair"); if(pair) pair.innerHTML=privateCoach?.active ? whoCard(me)+privateCoach.partnerCard() : whoCard("hus")+whoCard("wife");
   const gc=$("#recGoal"); if(gc) gc.innerHTML=goalCard();
   const ins=$("#recInsight"); if(ins) ins.innerHTML=insightCard();
+  const history=$("#recHistory");if(history)history.innerHTML=checkinHistoryCard();
   const box=$("#recData"); if(!box) return;
   box.innerHTML=`<section class="sec">${secH("record","趋势")}${trendCard()}</section>
     <section class="sec">${secH("clock","最近更新",privateCoach?.active?"我的记录":"两个人的记录")}<div class="card">${feedRows()}</div></section>`;
@@ -1902,6 +1965,7 @@ function viewRecord(){
       ${family?`<button class="linkbtn" data-open-code>查看或修改口令</button>`:`<p class="empty" style="padding-top:8px">两台手机填同一个口令，数据才会同步到一起。</p>`}</div></section>` : "";
   $("#view").innerHTML=`
   <section class="sec" id="recInsight"></section>
+  <section class="sec">${secH("today","打卡历史")}<div id="recHistory"></div></section>
   <section class="sec">${secH("goal","我的目标")}<div id="recGoal">${goalCard()}</div></section>
   <section class="sec">${secH("people",privateCoach?.active?"我与伴侣":"两个人的记录")}<div class="pair" id="recPair"></div></section>
   <section class="sec">${secH("note","记录"+PEOPLE[me].label+"的数据")}
@@ -2071,7 +2135,11 @@ document.addEventListener("click",async e=>{
   if(t.hasAttribute("data-lm-skip")){ if($("#lm").classList.contains("splash")){ $("#lm").onclick?.(); return; } lmClear(); lmPhase("choose"); finishStartup(); return; }
   if(t.hasAttribute("data-lm-replay")){ lmPlay(); return; }
   if(t.hasAttribute("data-open-picker")){ if(privateCoach) return; openPicker(true); return; }
-  if(t.dataset.dietWeek){dietWeekOffset=Math.min(0,dietWeekOffset+Number(t.dataset.dietWeek));viewDiet();return;}
+  if(t.dataset.dietWeek){dietWeekOffset=Math.min(0,dietWeekOffset+Number(t.dataset.dietWeek));dietSelectedDate=null;viewDiet();return;}
+  if(t.dataset.dietDate){dietSelectedDate=t.dataset.dietDate;viewDiet();return;}
+  if(t.hasAttribute("data-diet-today")){dietWeekOffset=0;dietSelectedDate=null;viewDiet();return;}
+  if(t.dataset.historyDate){historySelectedDate=t.dataset.historyDate;renderRecordData();return;}
+  if(t.dataset.historyWindow){historyWindowOffset=Math.min(0,historyWindowOffset+Number(t.dataset.historyWindow));historySelectedDate=null;renderRecordData();return;}
   if(t.dataset.view){ if(privateCoach?.active)return; viewP=t.dataset.view; lastTab=null; render(); return; }
   if(t.dataset.recField){ recField=t.dataset.recField; renderRecordData(); return; }
   if(t.hasAttribute("data-open-extra")){

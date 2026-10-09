@@ -17,7 +17,7 @@ const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+
 const recoveryHash=async code=>{const clean=String(code||'').replace(/[^a-fA-F0-9]/g,'').toLowerCase();if(!/^[a-f0-9]{32}$/.test(clean))throw new Error('恢复码格式不正确，请输入完整的 32 位字符。');const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(clean));return Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');};
 const pick=(arr,v,exclusive=[])=>exclusive.includes(v)?(arr.includes(v)?[]:[v]):(arr.includes(v)?arr.filter(x=>x!==v):[...arr.filter(x=>!exclusive.includes(x)),v]);
 class DuoCoach {
-  constructor(hooks){this.h=hooks;this.session=null;this.member=null;this.profile=null;this.weeks={};this.partnerActivity={};this.partnerTrend=[];this.current=null;this.step=0;this.draft=this.blank();this.note='';this.aiText='';this.chat=[[],[],[]];this.chatInput='';this.weekHealth=[];this.weekNote='';this.weekShown=false;this.busy=false;this.root=null;this.aiErrorContext=null;this.pushSupported=('serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window);}
+  constructor(hooks){this.h=hooks;this.session=null;this.member=null;this.profile=null;this.weeks={};this.partnerActivity={};this.partnerActivitySince=null;this.partnerActivityUntil=null;this.partnerTrend=[];this.current=null;this.step=0;this.draft=this.blank();this.note='';this.aiText='';this.chat=[[],[],[]];this.chatInput='';this.weekHealth=[];this.weekNote='';this.weekShown=false;this.busy=false;this.root=null;this.aiErrorContext=null;this.pushSupported=('serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window);}
   blank(){return {version:1,goals:[],focus:[],age:'',height:'',weight:'',target:'',health:[],healthDetail:'',frequency:'',duration:'',equipment:[],diet:'',notes:['','',''],confirmedAt:null};}
   get active(){return !!this.member&&!this.provisional;}
   get person(){return this.member?.person||null;}
@@ -37,7 +37,7 @@ class DuoCoach {
     try{let log=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');if(!Array.isArray(log))log=[];localStorage.setItem(CONNECTION_LOG,JSON.stringify([...log.slice(-39),entry]));}catch{}
     if(error)this.lastConnectionError=entry;
   }
-  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v31\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
+  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v32\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
   async fetchJSON(path,body,{auth=true,timeoutMs=15000,retries=0}={}){
     const serialized=JSON.stringify(body),owner=auth?this.userId():null;
     for(let attempt=0;;attempt++){
@@ -170,8 +170,8 @@ class DuoCoach {
     if(this.transient(error))return '云端暂时连接不上，稍后会自动重试；已保存的档案不会被清除。';
     return '暂时无法读取已保存的档案。请重试；如果持续失败，可复制连接诊断。';
   }
-  saveProfileCache(){const key=this.cacheKey();if(!key||!this.member||!this.profile?.confirmedAt)return;try{localStorage.setItem(key,JSON.stringify({member:this.member,profile:this.profile,weeks:this.weeks}));}catch(e){console.warn('private profile cache',e);}}
-  loadProfileCache(){const key=this.cacheKey();if(!key)return false;let saved;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch{return false;}if(!['hus','wife'].includes(saved?.member?.person)||!saved?.member?.family||!saved?.profile?.confirmedAt)return false;try{this.member=saved.member;this.profile=saved.profile;this.draft={...this.blank(),...saved.profile};this.weeks=saved.weeks&&typeof saved.weeks==='object'?saved.weeks:{};this.partnerActivity={};this.partnerTrend=[];this.provisional=false;this.h.setIdentity(this.person,this.member.family,this.session.user?.id||this.session.user_id);this.root.hidden=true;this.current=null;this.h.setSync?.('offline');this.h.render();return true;}catch(e){console.warn('private cached startup',e);return false;}}
+  saveProfileCache(){const key=this.cacheKey();if(!key||!this.member||!this.profile?.confirmedAt)return;try{localStorage.setItem(key,JSON.stringify({member:this.member,profile:this.profile,weeks:this.weeks,partnerActivity:this.partnerActivity,partnerActivitySince:this.partnerActivitySince,partnerActivityUntil:this.partnerActivityUntil}));}catch(e){console.warn('private profile cache',e);}}
+  loadProfileCache(){const key=this.cacheKey();if(!key)return false;let saved;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch{return false;}if(!['hus','wife'].includes(saved?.member?.person)||!saved?.member?.family||!saved?.profile?.confirmedAt)return false;try{this.member=saved.member;this.profile=saved.profile;this.draft={...this.blank(),...saved.profile};this.weeks=saved.weeks&&typeof saved.weeks==='object'?saved.weeks:{};this.readPartnerActivity({partnerActivity:Object.entries(saved.partnerActivity||{}).map(([date,checked])=>({date,checked})),partnerActivitySince:saved.partnerActivitySince,partnerActivityUntil:saved.partnerActivityUntil});this.partnerTrend=[];this.provisional=false;this.h.setIdentity(this.person,this.member.family,this.session.user?.id||this.session.user_id);this.root.hidden=true;this.current=null;this.h.setSync?.('offline');this.h.render();return true;}catch(e){console.warn('private cached startup',e);return false;}}
   mount(){this.root=document.createElement('div');this.root.id='duoCoach';this.root.hidden=true;document.body.appendChild(this.root);this.root.addEventListener('click',e=>this.click(e));this.root.addEventListener('input',e=>this.input(e));this.root.addEventListener('keydown',e=>{if(e.target.matches('[data-profile-note]')&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();this.root.querySelector('[data-coach="interpret"]')?.click();}});document.addEventListener('click',e=>{if(!this.root.contains(e.target)&&e.target.closest('[data-coach]'))this.click(e);});}
   async start(){
     this.mount();try{this.session=JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch{this.session=null;}
@@ -224,7 +224,7 @@ class DuoCoach {
   }
   renderRecovery(){this.current='recovery';this.shell(`<div class="coach-top"><div><b>保存个人恢复码</b><small>只属于你，不要发给伴侣</small></div></div><article class="coach-card"><p>换手机或清除浏览器数据时，用它找回私人档案。新码生成后旧码失效；请保存到你自己的安全位置。</p><div class="coach-recovery-code">${esc(this.recoveryCode||'')}</div><button data-coach="recovery-copy">复制恢复码</button><button class="coach-secondary" data-coach="recovery-saved">我已保存，继续</button></article>`);}
   renderRecoverEntry(msg=''){this.current='recover-entry';this.shell(`<div class="coach-top"><button data-coach="gate" aria-label="返回">${coachIcon('back')}</button><div><b>找回私人档案</b><small>输入仅你持有的恢复码</small></div></div><article class="coach-card"><p>恢复后，这台设备会成为你的新设备；原设备将不能再同步此档案。</p><label>个人恢复码<input data-coach-field="recovery" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="8 组 4 位字符"></label>${msg?`<p class="coach-alert">${esc(msg)}</p>`:''}<button data-coach="recover-submit">恢复我的档案</button></article>`);}
-  async load(r){this.assertPrivatePull(r);this.member=r.member;this.profile=r.profile||null;if(this.profile?.confirmedAt)this.draft={...this.blank(),...this.profile};this.weeks={};(r.weeks||[]).forEach(w=>this.weeks[w.weekStart]=w.body);this.partnerActivity={};(r.partnerActivity||[]).forEach(a=>this.partnerActivity[a.date]=!!a.checked);this.partnerTrend=(r.partnerTrend||[]).sort((a,b)=>a.date.localeCompare(b.date));this.h.setIdentity(this.member.person,this.member.family,this.session.user?.id||this.session.user_id);localStorage.setItem(PAIRED_KEY,'1');
+  async load(r){this.assertPrivatePull(r);this.member=r.member;this.profile=r.profile||null;if(this.profile?.confirmedAt)this.draft={...this.blank(),...this.profile};this.weeks={};(r.weeks||[]).forEach(w=>this.weeks[w.weekStart]=w.body);this.readPartnerActivity(r);this.partnerTrend=(r.partnerTrend||[]).sort((a,b)=>a.date.localeCompare(b.date));this.h.setIdentity(this.member.person,this.member.family,this.session.user?.id||this.session.user_id);localStorage.setItem(PAIRED_KEY,'1');
     const checkins={},measures={};(r.checkins||[]).forEach(x=>checkins[this.person+'_'+x.date]=x.body);(r.measures||[]).forEach(x=>measures[this.person+'_'+x.date]=x.body);this.h.setStore({checkins,measures});this.root.hidden=true;this.current=null;this.saveProfileCache();this.connectionOkay();this.h.setSync?.('ok');this.h.render();if(!this.profile?.confirmedAt){this.draft=this.legacyDraft(measures);this.step=0;this.previewPlan=null;this.renderOnboard();}else this.checkWeekly();}
   legacyDraft(measures){const d=this.blank(),history=Object.values(measures).sort((a,b)=>a.date.localeCompare(b.date));const g=history.filter(m=>m.goal).at(-1)?.goal;if(g){d.age=g.age||'';d.height=g.height||'';d.weight=g.start||'';d.target=g.target!==g.start?g.target:'';d.goals=d.target?['减脂']:['建立运动习惯'];}const latest=history.filter(m=>typeof m.weight==='number').at(-1);if(latest)d.weight=latest.weight;return d;}
   editProfile(){this.draft={...this.blank(),...this.profile,notes:[...(this.profile?.notes||['','',''])]};this.chat=[[],[],[]];this.chatInput='';this.previewPlan=null;this.step=0;this.aiError='';this.aiErrorContext=null;this.renderOnboard();}
@@ -257,7 +257,7 @@ class DuoCoach {
         this.profile=r.profile||this.profile;if(this.profile?.confirmedAt&&this.current!=='onboard')this.draft={...this.blank(),...this.profile};
         this.weeks={};(r.weeks||[]).forEach(w=>this.weeks[w.weekStart]=w.body);
       }
-      this.partnerActivity={};(r.partnerActivity||[]).forEach(a=>this.partnerActivity[a.date]=!!a.checked);
+      this.readPartnerActivity(r);
       this.partnerTrend=(r.partnerTrend||[]).sort((a,b)=>a.date.localeCompare(b.date));
       const checkins={},measures={};(r.checkins||[]).forEach(x=>checkins[this.person+'_'+x.date]=x.body);(r.measures||[]).forEach(x=>measures[this.person+'_'+x.date]=x.body);
       this.h.setStore({checkins,measures});this.saveProfileCache();this.connectionOkay();
@@ -270,6 +270,13 @@ class DuoCoach {
       else if(e.code==='session_expired'||e.code==='session_changed'){this.h.setSync('auth');this.renderStartupIssue(this.startupIssueText(e));}
       else{this.h.setSync(this.transient(e)?'offline':'error');this.scheduleReconnect(e);}
     }
+  }
+  readPartnerActivity(data){
+    const datePattern=/^\d{4}-\d{2}-\d{2}$/;
+    this.partnerActivity={};
+    (Array.isArray(data.partnerActivity)?data.partnerActivity:[]).forEach(a=>{if(datePattern.test(a.date)&&typeof a.checked==='boolean')this.partnerActivity[a.date]=a.checked;});
+    this.partnerActivitySince=datePattern.test(data.partnerActivitySince||'')?data.partnerActivitySince:null;
+    this.partnerActivityUntil=datePattern.test(data.partnerActivityUntil||'')?data.partnerActivityUntil:null;
   }
   partnerChecked(date){return this.partnerActivity[date]===true;}
   ownWeek(date=today()){return this.weeks[monday(new Date(date+'T12:00:00'))]||null;}
@@ -353,7 +360,7 @@ class DuoCoach {
       else if(a==='show-recovery'){await this.issueRecoveryCode();this.renderRecovery();}
       else if(a==='copy-family'){await navigator.clipboard.writeText(this.member.family);this.notice('已复制配对口令，请通过可信方式发给伴侣。');}
       else if(a==='signout'){this.renderSignoutConfirm();}
-      else if(a==='signout-confirm'){try{await this.request('/auth/v1/logout',{});}catch(_){}clearTimeout(this.reconnectTimer);this.reconnectTimer=null;const key=this.cacheKey();if(key)localStorage.removeItem(key);this.persistedSession=false;this.hadSavedSession=false;this.session=null;this.member=null;this.profile=null;this.weeks={};this.partnerActivity={};this.partnerTrend=[];localStorage.removeItem(AUTH_KEY);localStorage.removeItem(PAIRED_KEY);this.h.clearIdentity?.();this.root.hidden=true;this.current=null;this.h.needsRole?.();}
+      else if(a==='signout-confirm'){try{await this.request('/auth/v1/logout',{});}catch(_){}clearTimeout(this.reconnectTimer);this.reconnectTimer=null;const key=this.cacheKey();if(key)localStorage.removeItem(key);this.persistedSession=false;this.hadSavedSession=false;this.session=null;this.member=null;this.profile=null;this.weeks={};this.partnerActivity={};this.partnerActivitySince=null;this.partnerActivityUntil=null;this.partnerTrend=[];localStorage.removeItem(AUTH_KEY);localStorage.removeItem(PAIRED_KEY);this.h.clearIdentity?.();this.root.hidden=true;this.current=null;this.h.needsRole?.();}
       else if(a==='next'){await this.confirmStep();}
       else if(a==='retry-plan'){await this.generatePlan();}
       else if(a==='back'){if(this.current==='onboard'&&this.step>0){this.step--;this.previewPlan=null;this.renderOnboard();}else if(this.current==='onboard'&&this.provisional){this.member=null;this.provisional=false;this.root.hidden=true;this.current=null;this.h.showRoleChoice?.();}else this.root.hidden=true;}

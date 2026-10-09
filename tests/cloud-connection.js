@@ -167,6 +167,12 @@ function environment(extra = {}) {
     c.rpc=async()=>pull;c.checkWeekly=()=>{weekChecks++};await c.sync({checkins:{},measures:{}},[],'online');assert.equal(state,'ok');assert.equal(weekChecks,1,'weekly review follows successful background connection');
   }
   {
+    const {create}=environment();const c=create();c.saveSession(session());c.member=pull.member;c.profile=pull.profile;c.weeks={};
+    c.readPartnerActivity({partnerActivity:[{date:'2026-10-08',checked:true},{date:'2026-10-09',checked:false},{date:'bad',checked:true},{date:'2026-10-07',checked:'yes'}],partnerActivitySince:'2026-06-12',partnerActivityUntil:'2026-10-09'});c.saveProfileCache();
+    const warm=create();warm.session=session();assert(warm.loadProfileCache());assert.equal(warm.partnerChecked('2026-10-08'),true);assert.equal(warm.partnerChecked('2026-10-09'),false);assert.equal(warm.partnerActivitySince,'2026-06-12');assert.deepEqual(Object.keys(warm.partnerActivity).sort(),['2026-10-08','2026-10-09'],'only date/boolean activity summaries survive cache restore');
+    const other=create();other.session={...session(),user:{id:'account-b'}};assert.equal(other.loadProfileCache(),false,'partner history cache cannot cross accounts');
+  }
+  {
     const {create}=environment();const c=create();c.saveSession(session());let attempts=0,refreshes=0;
     c.authRequest=async()=>{refreshes++;return session('new')};
     c.request=async(path,body,auth,deadline,retries)=>{assert(path.startsWith('/functions/v1/meal-kcal'));assert.equal(deadline,90000);assert.equal(retries,0);attempts++;if(attempts===1)throw Object.assign(new Error('invalid_session'),{status:401});return {items:[]}};
