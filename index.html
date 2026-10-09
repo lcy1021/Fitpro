@@ -367,7 +367,7 @@ p{margin:0}
 .habit-day{border:1px solid transparent;border-radius:11px;background:var(--sunk);padding:8px 1px;min-height:47px;color:var(--ink)}.habit-day>b{font-size:12px;font-weight:650}.habit-day>span{display:flex;justify-content:center;gap:4px;margin-top:5px}.habit-day:disabled{opacity:.3}.habit-day.today{border-color:var(--me)}.habit-day[aria-pressed="true"]{background:var(--me-soft);border-color:var(--me)}
 .habit-day i,.habit-legend i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--faint);opacity:.25}.habit-day i.hus.checked,.habit-legend i.hus{background:var(--hus);opacity:1}.habit-day i.wife.checked,.habit-legend i.wife{background:var(--wife);opacity:1}.habit-day i.unknown,.habit-legend i.unknown{background:transparent;border:1px solid var(--muted);opacity:.65}
 .habit-legend{display:flex;align-items:center;gap:12px;font-size:10px;color:var(--muted);padding:12px 1px}.habit-legend>span{display:flex;align-items:center;gap:4px}.habit-legend>small{margin-left:auto;font-size:10px}
-.history-partner-status{display:flex;gap:7px;margin:0 0 12px;flex-wrap:wrap}.history-partner-status>span{padding:4px 9px;border-radius:99px;font-size:10px;background:var(--p-soft);color:var(--p-ink)}
+.history-partner-status{display:flex;gap:7px;margin:0 0 12px;flex-wrap:wrap}.history-partner-status>button{min-height:42px;padding:9px 12px;border:1px solid transparent;border-radius:12px;font-size:12px;background:var(--sunk);color:var(--muted);font-weight:650}.history-partner-status>button[aria-pressed="true"]{background:var(--p-soft);color:var(--p-ink);border-color:var(--p)}.history-partner-status>button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}.history-view-label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted);margin:0 0 10px}.history-view-label button{font-size:11px;min-height:36px;padding:6px}
 .history-day .diary-meal{border:0;background:var(--sunk);padding:10px 12px;border-radius:12px}.history-day .diary-meals{gap:7px}.history-day .meal-symbol{background:var(--surface)}.history-day .diary-food{font-size:11px;margin-top:5px}.history-activity{display:flex;justify-content:space-between;gap:8px;padding:12px 2px;font-size:12px;border-bottom:1px solid var(--line)}.history-activity span{display:flex;align-items:center;gap:6px;color:var(--muted)}.history-activity b{font-weight:650}.history-empty{font-size:12px;color:var(--muted);padding:18px 2px 10px}
 @media(max-width:350px){.diet-week,.checkin-history,.habit-card,.nutrition-summary{padding:14px}.nutrition-value b{font-size:27px}.nutrition-value img{width:48px;height:48px}.habit-person{padding:10px}.habit-person-head{gap:4px}.habit-person-head b{font-size:11px}.diary-meal{padding:11px}.diary-edit{padding:7px;font-size:10px}.habit-legend{gap:8px}.habit-legend>small{font-size:9px}}
 
@@ -699,7 +699,7 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="private-coach.css?v=32">
+<link rel="stylesheet" href="private-coach.css?v=33">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -832,7 +832,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=32"></script>
+<script src="private-coach.js?v=33"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1679,8 +1679,8 @@ function mealRecordText(c,m){
   if(fd&&Array.isArray(fd.items)&&fd.items.length)return fd.items.map(i=>i.n+(i.q?" "+i.q:"")).join("、");
   return v==="plan"?"按计划记录了这餐":v==="over"?"已记录，下一顿照常吃就好":"还没有留下这餐的记录";
 }
-function dietDayRows(person,date,interactive=false){
-  const c=getCheckin(person,date),canEdit=interactive&&date===ymd(new Date())&&person===me;
+function dietDayRows(person,date,interactive=false,record=null){
+  const c=record||getCheckin(person,date),canEdit=interactive&&date===ymd(new Date())&&person===me;
   return `<div class="diary-meals">${MEALS.map(m=>{const v=c.meals?.[m],st=MEAL_STATES[v]||["empty","未打卡"],fd=c.food?.[m];
     const kcal=v!=="skip"&&Number.isFinite(fd?.kcal)?`<span class="diary-kcal">约 <b>${Math.round(fd.kcal)}</b> kcal</span>`:"";
     return `<article class="diary-meal"><div class="diary-meal-head"><span class="meal-symbol m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><div><h4>${MEAL_NAMES[m]}</h4><span class="meal-status ${st[0]}" aria-label="${date} ${MEAL_NAMES[m]}：${st[1]}">${st[1]}</span></div>${canEdit?`<button type="button" class="diary-edit" data-food="${m}" aria-label="${fd?"修改":"记录"}${MEAL_NAMES[m]}食物">${icon("note","sm")}${fd?"修改食物":"记食物"}</button>`:kcal}</div>
@@ -1887,7 +1887,7 @@ function prevValue(person,field,date){
 }
 const fmtDelta=(d,unit)=>{ d=Math.round(d*10)/10; return d===0?"持平":(d>0?"+":"−")+Math.abs(d)+" "+unit; };
 /* A day counts when a check-in was saved, independently of meal completion. */
-let historyWindowOffset=0,historySelectedDate=null;
+let historyWindowOffset=0,historySelectedDate=null,historyPerson=null;
 function activityInfo(person){
   const today=ymd(new Date()),floor=ymd(addDays(new Date(),-119));
   if(privateCoach?.active&&person!==me){
@@ -1922,12 +1922,20 @@ function checkinHistoryCard(){
   const cells=Array.from({length:28},(_,i)=>{const date=ymd(addDays(start,i)),future=date>todayDate;
     return `<button type="button" class="habit-day${date===todayDate?" today":""}" data-history-date="${date}" aria-pressed="${date===historySelectedDate}" aria-label="${date} ${future?"尚未开始":["hus","wife"].map(p=>stateLabel(p,date)).join("，")}"${future?" disabled":""}><b>${Number(date.slice(8))}</b><span aria-hidden="true">${["hus","wife"].map(p=>`<i class="${p} ${info[p].checked(date)===true?"checked":info[p].checked(date)===null?"unknown":""}"></i>`).join("")}</span></button>`;
   }).join("");
-  const selected=getCheckin(me,historySelectedDate),own=!!store.checkins[me+"_"+historySelectedDate];
-  const details=own?dietDayRows(me,historySelectedDate)+`<div class="history-activity"><span>${icon("train","sm")} 训练</span><b>${selected.workout==="done"?"已完成":"未记录完成"}</b></div>${selected.stand?`<div class="history-activity"><span>${icon("desk","sm")} 起身活动</span><b>${Number(selected.stand)||0} 次</b></div>`:""}${extraDone(selected).length?`<div class="history-activity"><span>${icon("stretch","sm")} 可选活动</span><b>${extraDone(selected).length} 项</b></div>`:""}`:`<p class="history-empty">这天还没有你的打卡记录。</p>`;
+  if(!['hus','wife'].includes(historyPerson))historyPerson=me;
+  const peer=historyPerson!==me,isPrivatePeer=peer&&privateCoach?.active;
+  const selected=isPrivatePeer?privateCoach.partnerCheckin?.(historySelectedDate):getCheckin(historyPerson,historySelectedDate);
+  const hasRecord=isPrivatePeer?!!selected:!!store.checkins[historyPerson+"_"+historySelectedDate];
+  const peerState=privateCoach?.partnerRecordSharing||'unknown';
+  const unavailable=isPrivatePeer&&peerState!=='on';
+  const unavailableText=peerState==='unpaired'?"还没有配对的伴侣。":peerState==='off'?"伴侣已关闭打卡详情共享，可由伴侣在记录页的「设置 → 共享我的打卡详情」中重新开启。":"暂时无法确认伴侣的共享记录，请联网后重新连接。";
+  const outsideRange=isPrivatePeer&&historySelectedDate<(privateCoach.partnerActivitySince||activityInfo(historyPerson).since);
+  const pending=isPrivatePeer&&peerState==="on"&&!hasRecord&&!privateCoach.partnerLoadedDates?.has(historySelectedDate);
+  const details=outsideRange?`<p class="history-empty">伴侣详情可查看近 120 天的记录。</p>`:pending?`<p class="history-empty" role="status">正在读取伴侣这一天的记录…</p>`:unavailable?`<p class="history-empty" role="status">${unavailableText}</p>`:hasRecord?dietDayRows(historyPerson,historySelectedDate,false,selected)+`<div class="history-activity"><span>${icon("train","sm")} 训练</span><b>${selected.workout==="done"?"已完成":"未记录完成"}</b></div>${selected.stand?`<div class="history-activity"><span>${icon("desk","sm")} 起身活动</span><b>${Number(selected.stand)||0} 次</b></div>`:""}${extraDone(selected).length?`<div class="history-activity"><span>${icon("stretch","sm")} 可选活动</span><b>${extraDone(selected).length} 项</b></div>`:""}`:`<p class="history-empty">这天还没有${peer?"伴侣":"你"}的打卡记录。</p>`;
   return `<div class="card checkin-history"><div class="diary-nav"><div><b>两个人的打卡足迹</b><small>${first.replaceAll("-","/")}—${last.slice(5).replace("-","/")}</small></div><div class="calendar-arrows"><button type="button" data-history-window="-1" aria-label="更早四周"${earliest&&earliest<first?"":" disabled"}>${icon("back","sm")}</button><button type="button" data-history-window="1" aria-label="更新四周"${historyWindowOffset<0?"":" disabled"}>${icon("chevron-right","sm")}</button></div></div>
     <div class="habit-weekdays">${["一","二","三","四","五","六","日"].map(d=>`<span>${d}</span>`).join("")}</div><div class="habit-calendar" role="group" aria-label="选择历史打卡日期">${cells}</div>
     <div class="habit-legend"><span><i class="hus"></i>老公</span><span><i class="wife"></i>老婆</span><span><i class="unknown"></i>未同步</span><small>点日期看当天</small></div>
-    <div class="history-day"><div class="diary-day-title"><b>${shortDay(historySelectedDate)}的记录</b><span>${Number(historySelectedDate.slice(5,7))}月${Number(historySelectedDate.slice(8))}日</span></div><div class="history-partner-status">${["hus","wife"].map(p=>`<span class="${p}">${stateLabel(p,historySelectedDate)}</span>`).join("")}</div>${details}</div><p class="diary-foot">伴侣只显示是否打卡，餐食、目标和身体数据仅自己可见。</p></div>`;
+    <div class="history-day"><div class="diary-day-title"><b>${shortDay(historySelectedDate)}的记录</b><span>${Number(historySelectedDate.slice(5,7))}月${Number(historySelectedDate.slice(8))}日</span></div><div class="history-partner-status" role="group" aria-label="查看谁的打卡记录">${["hus","wife"].map(p=>`<button type="button" class="${p}" data-history-person="${p}" aria-pressed="${historyPerson===p}" aria-label="查看${PEOPLE[p].label}的打卡记录">${stateLabel(p,historySelectedDate)}${p===me?" · 我":""}</button>`).join("")}</div><div class="history-view-label"><span>正在查看${PEOPLE[historyPerson].label}的记录${peer?" · 只读":""}</span>${isPrivatePeer?`<button type="button" class="linkbtn" data-coach="sharing-refresh"${privateCoach.partnerReadBusy?" disabled":""}>${privateCoach.partnerReadBusy?"刷新中…":"刷新记录"}</button>`:""}</div>${details}</div><p class="diary-foot">打卡详情由本人决定是否向伴侣共享；目标、体重、围度和健康档案仅自己可见。</p></div>`;
 }
 
 function insightCard(){return coupleStreakCard();}
@@ -1946,7 +1954,7 @@ function renderRecordData(){
   const pair=$("#recPair"); if(pair) pair.innerHTML=privateCoach?.active ? whoCard(me)+privateCoach.partnerCard() : whoCard("hus")+whoCard("wife");
   const gc=$("#recGoal"); if(gc) gc.innerHTML=goalCard();
   const ins=$("#recInsight"); if(ins) ins.innerHTML=insightCard();
-  const history=$("#recHistory");if(history)history.innerHTML=checkinHistoryCard();
+  const history=$("#recHistory");if(history){history.innerHTML=checkinHistoryCard();if(privateCoach?.active&&historyPerson!==me)privateCoach.ensurePartnerCheckin?.(historySelectedDate);}
   const box=$("#recData"); if(!box) return;
   box.innerHTML=`<section class="sec">${secH("record","趋势")}${trendCard()}</section>
     <section class="sec">${secH("clock","最近更新",privateCoach?.active?"我的记录":"两个人的记录")}<div class="card">${feedRows()}</div></section>`;
@@ -1974,7 +1982,7 @@ function viewRecord(){
       <div class="mtiles">${tiles.map(tile).join("")}</div>
       <button class="cta" type="submit">${icon("check","sm")} 保存记录</button>
     </form>
-  </section><div id="recData"></div>${privateCoach?.active?privateCoach.pushCard()+`<details class="private-settings"><summary>${icon("settings")}<span>设置</span>${icon("chevron-down","settings-chevron")}</summary><div class="private-settings-body"><p>私人档案仅自己可见。换手机前请保存个人恢复码。</p><button type="button" data-coach="show-recovery">生成新的个人恢复码</button><button type="button" data-coach="copy-family">复制家庭配对口令</button><button type="button" data-coach="connection-copy">复制连接诊断</button><button type="button" data-coach="signout">清除本机登录</button></div></details>`:""}${tokenCard}`;
+  </section><div id="recData"></div>${privateCoach?.active?privateCoach.pushCard()+`<details class="private-settings"><summary>${icon("settings")}<span>设置</span>${icon("chevron-down","settings-chevron")}</summary><div class="private-settings-body"><p>私人档案仅自己可见。换手机前请保存个人恢复码。</p><button type="button" data-coach="sharing-open">共享我的打卡详情</button><button type="button" data-coach="show-recovery">生成新的个人恢复码</button><button type="button" data-coach="copy-family">复制家庭配对口令</button><button type="button" data-coach="connection-copy">复制连接诊断</button><button type="button" data-coach="signout">清除本机登录</button></div></details>`:""}${tokenCard}`;
   renderRecordData();
   $("#mForm").addEventListener("input",e=>{
     const i=e.target; if(!i.dataset || i.name==="date") return;
@@ -2138,6 +2146,7 @@ document.addEventListener("click",async e=>{
   if(t.dataset.dietWeek){dietWeekOffset=Math.min(0,dietWeekOffset+Number(t.dataset.dietWeek));dietSelectedDate=null;viewDiet();return;}
   if(t.dataset.dietDate){dietSelectedDate=t.dataset.dietDate;viewDiet();return;}
   if(t.hasAttribute("data-diet-today")){dietWeekOffset=0;dietSelectedDate=null;viewDiet();return;}
+  if(t.dataset.historyPerson){historyPerson=t.dataset.historyPerson;renderRecordData();return;}
   if(t.dataset.historyDate){historySelectedDate=t.dataset.historyDate;renderRecordData();return;}
   if(t.dataset.historyWindow){historyWindowOffset=Math.min(0,historyWindowOffset+Number(t.dataset.historyWindow));historySelectedDate=null;renderRecordData();return;}
   if(t.dataset.view){ if(privateCoach?.active)return; viewP=t.dataset.view; lastTab=null; render(); return; }
@@ -2495,7 +2504,7 @@ if(CLOUD){
     getSyncData:()=>({store,dirty}),
     requestSync:reason=>{setTimeout(()=>sync(reason),0);},
     setSync:v=>{syncState=v;if(v==="ok")lastSync=new Date();renderSync();},
-    getCheckin:date=>getCheckin(me,date),putCheckin:b=>putCheckin(b),render:()=>{lastTab=null;render();},
+    getCheckin:date=>getCheckin(me,date),putCheckin:b=>putCheckin(b),renderHistory:()=>renderRecordData(),render:()=>{lastTab=null;render();},
     clearIdentity:()=>{store={checkins:{},measures:{}};dirty=[];LS_DATA="fatloss.local";LS_DIRTY="fatloss.dirty";LS_AI="fatloss.aicache";$("#view").innerHTML="";},
     saveLegacyGoal:p=>{const date=ymd(new Date()),ex=store.measures[me+"_"+date]||{},old=goalOf(me)||{};
       const start=Number(p.weight),floor=minHealthy(Number(p.height)),target=p.target?Number(p.target):(p.goals.includes("减脂")?Math.max(floor,Math.round(start*.95*10)/10):start);

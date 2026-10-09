@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');assert(fs.readFileSync(path.join(root,'sw.js'),'utf8').includes('notificationclick'),'push click handler');
-assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=32"></script>'), 'config loads before coaching');
+assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=33"></script>'), 'config loads before coaching');
 const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('</script>'));
 const memory = new Map();
 const elements = new Map();
@@ -19,7 +19,7 @@ const sandbox = {
   setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame:f=>f(), matchMedia:()=>({matches:true}), console, Date, AbortController, URL,
 };
 const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','viewToday','viewDiet','dietWeekCard','viewTrain','viewRecord','renderRecordData','privateTrendCard','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','drawRun','feedRows','openPicker','showRoleChoice','extraMoveRows','extraDone','toggleExtraMove','EXTRA_MOVES','refreshCalendarDay','ackDirty','markDirty','activityInfo','activityStreak','coupleStreakCard','checkinHistoryCard','dietDayRows'];
-const code = inline.replace('/* ---------- boot ---------- */', `globalThis.__app = {${exported.join(',')},getDirty:()=>dirty,setDietSelectedDate:v=>{dietSelectedDate=v},setHistorySelectedDate:v=>{historySelectedDate=v}, setStore:v=>{store=v},setMe:v=>{me=v;viewP=v},setViewP:v=>{viewP=v},setDietWeekOffset:v=>{dietWeekOffset=v},setCoach:v=>{privateCoach=v},setTab:v=>{tab=v},setRunState:v=>{runState=v}};return;`);
+const code = inline.replace('/* ---------- boot ---------- */', `globalThis.__app = {${exported.join(',')},getDirty:()=>dirty,setDietSelectedDate:v=>{dietSelectedDate=v},setHistorySelectedDate:v=>{historySelectedDate=v},setHistoryPerson:v=>{historyPerson=v}, setStore:v=>{store=v},setMe:v=>{me=v;viewP=v},setViewP:v=>{viewP=v},setDietWeekOffset:v=>{dietWeekOffset=v},setCoach:v=>{privateCoach=v},setTab:v=>{tab=v},setRunState:v=>{runState=v}};return;`);
 vm.runInNewContext(code, sandbox, {filename:'index-inline.js'});
 const app = sandbox.__app;
 app.openPicker(false);assert(element('#pick').classList.contains('open'),'original animation picker opens');assert.equal(element('#lm').dataset.phase,'choose','reduced motion lands on role choice');
@@ -75,6 +75,12 @@ historyCoach.partnerActivityUntil=dayAgo(3);assert.equal(app.activityInfo('wife'
 delete historyCoach.partnerActivitySince;assert(app.coupleStreakCard().includes('历史状态待同步'),'older servers do not pretend missing history means no check-ins');
 app.setStore({checkins:{['hus_'+dayAgo(1)]:{person:'hus',date:dayAgo(1),meals:{breakfast:'skip'},food:{breakfast:{items:[{n:'旧食物',q:'',k:999}],kcal:999}}},['wife_'+dayAgo(1)]:{person:'wife',date:dayAgo(1),food:{breakfast:{items:[{n:'PRIVATE_PEER_FOOD'}],kcal:444}}}},measures:{}});
 app.setHistorySelectedDate(dayAgo(1));const historyHtml=app.checkinHistoryCard();assert(!historyHtml.includes('PRIVATE_PEER_FOOD'),'partner meal details never enter shared history');
+app.setHistoryPerson('wife');historyCoach.partnerRecordSharing='off';
+assert(app.checkinHistoryCard().includes('已关闭打卡详情共享'),'unshared partner details have an explanation');assert(!app.checkinHistoryCard().includes('PRIVATE_PEER_FOOD'),'a tab cannot expose legacy partner rows');
+historyCoach.partnerRecordSharing='on';historyCoach.partnerCheckin=d=>d===dayAgo(1)?{person:'wife',date:d,meals:{breakfast:'plan'},food:{breakfast:{items:[{n:'共享酸奶',q:'1 杯',k:120}],kcal:120}},workout:'done',stand:2}:null;
+const sharedHistory=app.checkinHistoryCard();assert(sharedHistory.includes('共享酸奶')&&sharedHistory.includes('120')&&sharedHistory.includes('已完成'),'opted-in peer meal and activity details are rendered');assert(!sharedHistory.includes('data-meal=')&&!sharedHistory.includes('data-food='),'peer records are read-only');assert(!sharedHistory.includes('PRIVATE_PEER_FOOD'),'shared results come only from the scoped RPC');
+historyCoach.partnerRecordSharing='unknown';assert(app.checkinHistoryCard().includes('联网后重新连接'),'unavailable shared records are not mislabelled empty');
+app.setHistoryPerson('hus');
 assert(!app.dietDayRows('hus',dayAgo(1)).includes('999'),'a skipped meal does not display stale food calories');
 assert(!app.dietDayRows('hus',dayAgo(1),true).includes('data-meal='),'past days are read-only and cannot accidentally change today');
 console.log('PASS saved-day streaks, today grace, real gaps, history bounds, unknown peer data and private food isolation');

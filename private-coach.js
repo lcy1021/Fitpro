@@ -8,7 +8,7 @@ const AUTH_KEY='duofit.auth.v1';
 const PAIRED_KEY='duofit.paired.v1';
 const PROFILE_CACHE='duofit.profile.v1.';
 const CONNECTION_LOG='duofit.connection.v1';
-const SAFE_RETRY_RPC=new Set(['fl_private_pull','fl_private_put_checkin','fl_private_put_measure','fl_private_put_profile','fl_private_put_week','fl_claim_role','fl_recovery_set','fl_push_save','fl_push_remove']);
+const SAFE_RETRY_RPC=new Set(['fl_partner_checkin_get','fl_private_pull','fl_private_put_checkin','fl_private_put_measure','fl_private_put_profile','fl_private_put_week','fl_checkin_sharing_set','fl_claim_role','fl_recovery_set','fl_push_save','fl_push_remove']);
 const INVALID_SESSION_CODES=new Set(['refresh_token_not_found','refresh_token_already_used','session_not_found','session_expired','user_not_found','user_banned']);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const coachIcon=name=>`<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-${name}"></use></svg>`;
@@ -17,7 +17,7 @@ const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+
 const recoveryHash=async code=>{const clean=String(code||'').replace(/[^a-fA-F0-9]/g,'').toLowerCase();if(!/^[a-f0-9]{32}$/.test(clean))throw new Error('恢复码格式不正确，请输入完整的 32 位字符。');const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(clean));return Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');};
 const pick=(arr,v,exclusive=[])=>exclusive.includes(v)?(arr.includes(v)?[]:[v]):(arr.includes(v)?arr.filter(x=>x!==v):[...arr.filter(x=>!exclusive.includes(x)),v]);
 class DuoCoach {
-  constructor(hooks){this.h=hooks;this.session=null;this.member=null;this.profile=null;this.weeks={};this.partnerActivity={};this.partnerActivitySince=null;this.partnerActivityUntil=null;this.partnerTrend=[];this.current=null;this.step=0;this.draft=this.blank();this.note='';this.aiText='';this.chat=[[],[],[]];this.chatInput='';this.weekHealth=[];this.weekNote='';this.weekShown=false;this.busy=false;this.root=null;this.aiErrorContext=null;this.pushSupported=('serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window);}
+  constructor(hooks){this.h=hooks;this.session=null;this.member=null;this.profile=null;this.weeks={};this.partnerActivity={};this.partnerActivitySince=null;this.partnerActivityUntil=null;this.resetRecordSharing();this.partnerTrend=[];this.current=null;this.step=0;this.draft=this.blank();this.note='';this.aiText='';this.chat=[[],[],[]];this.chatInput='';this.weekHealth=[];this.weekNote='';this.weekShown=false;this.busy=false;this.root=null;this.aiErrorContext=null;this.pushSupported=('serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window);}
   blank(){return {version:1,goals:[],focus:[],age:'',height:'',weight:'',target:'',health:[],healthDetail:'',frequency:'',duration:'',equipment:[],diet:'',notes:['','',''],confirmedAt:null};}
   get active(){return !!this.member&&!this.provisional;}
   get person(){return this.member?.person||null;}
@@ -26,7 +26,7 @@ class DuoCoach {
   userId(session=this.session){return session?.user?.id||session?.user_id||null;}
   assertSessionOwner(owner){if(this.userId()!==owner){const e=new Error('本机登录已更新，请重新打开应用。');e.code='session_changed';throw e;}}
   assertPrivatePull(data){
-    if(!data||!['hus','wife'].includes(data.member?.person)||!data.member.family||['checkins','measures','weeks','partnerActivity','partnerTrend'].some(key=>data[key]!==undefined&&!Array.isArray(data[key]))){const e=new Error('云端档案回复不完整，请稍后重试。');e.kind='invalid_response';e.code='invalid_private_pull';throw e;}
+    if(!data||!['hus','wife'].includes(data.member?.person)||!data.member.family||['checkins','measures','weeks','partnerActivity','partnerTrend','partnerCheckins'].some(key=>data[key]!==undefined&&!Array.isArray(data[key]))){const e=new Error('云端档案回复不完整，请稍后重试。');e.kind='invalid_response';e.code='invalid_private_pull';throw e;}
   }
   recordClientFailure(path,error){if(!error.kind&&!error.status&&!error.code){error.kind='client';error.code=error.name||'client_error';this.recordConnection(path,1,Date.now(),error,0);}else if(error.code==='invalid_private_pull')this.recordConnection(path,1,Date.now(),error,0);}
   waitForRetry(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
@@ -37,7 +37,7 @@ class DuoCoach {
     try{let log=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');if(!Array.isArray(log))log=[];localStorage.setItem(CONNECTION_LOG,JSON.stringify([...log.slice(-39),entry]));}catch{}
     if(error)this.lastConnectionError=entry;
   }
-  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v32\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
+  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v33\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
   async fetchJSON(path,body,{auth=true,timeoutMs=15000,retries=0}={}){
     const serialized=JSON.stringify(body),owner=auth?this.userId():null;
     for(let attempt=0;;attempt++){
@@ -171,7 +171,7 @@ class DuoCoach {
     return '暂时无法读取已保存的档案。请重试；如果持续失败，可复制连接诊断。';
   }
   saveProfileCache(){const key=this.cacheKey();if(!key||!this.member||!this.profile?.confirmedAt)return;try{localStorage.setItem(key,JSON.stringify({member:this.member,profile:this.profile,weeks:this.weeks,partnerActivity:this.partnerActivity,partnerActivitySince:this.partnerActivitySince,partnerActivityUntil:this.partnerActivityUntil}));}catch(e){console.warn('private profile cache',e);}}
-  loadProfileCache(){const key=this.cacheKey();if(!key)return false;let saved;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch{return false;}if(!['hus','wife'].includes(saved?.member?.person)||!saved?.member?.family||!saved?.profile?.confirmedAt)return false;try{this.member=saved.member;this.profile=saved.profile;this.draft={...this.blank(),...saved.profile};this.weeks=saved.weeks&&typeof saved.weeks==='object'?saved.weeks:{};this.readPartnerActivity({partnerActivity:Object.entries(saved.partnerActivity||{}).map(([date,checked])=>({date,checked})),partnerActivitySince:saved.partnerActivitySince,partnerActivityUntil:saved.partnerActivityUntil});this.partnerTrend=[];this.provisional=false;this.h.setIdentity(this.person,this.member.family,this.session.user?.id||this.session.user_id);this.root.hidden=true;this.current=null;this.h.setSync?.('offline');this.h.render();return true;}catch(e){console.warn('private cached startup',e);return false;}}
+  loadProfileCache(){const key=this.cacheKey();if(!key)return false;let saved;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch{return false;}if(!['hus','wife'].includes(saved?.member?.person)||!saved?.member?.family||!saved?.profile?.confirmedAt)return false;try{this.member=saved.member;this.profile=saved.profile;this.draft={...this.blank(),...saved.profile};this.weeks=saved.weeks&&typeof saved.weeks==='object'?saved.weeks:{};this.readPartnerActivity({partnerActivity:Object.entries(saved.partnerActivity||{}).map(([date,checked])=>({date,checked})),partnerActivitySince:saved.partnerActivitySince,partnerActivityUntil:saved.partnerActivityUntil});this.partnerTrend=[];this.resetRecordSharing();this.provisional=false;this.h.setIdentity(this.person,this.member.family,this.session.user?.id||this.session.user_id);this.root.hidden=true;this.current=null;this.h.setSync?.('offline');this.h.render();return true;}catch(e){console.warn('private cached startup',e);return false;}}
   mount(){this.root=document.createElement('div');this.root.id='duoCoach';this.root.hidden=true;document.body.appendChild(this.root);this.root.addEventListener('click',e=>this.click(e));this.root.addEventListener('input',e=>this.input(e));this.root.addEventListener('keydown',e=>{if(e.target.matches('[data-profile-note]')&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();this.root.querySelector('[data-coach="interpret"]')?.click();}});document.addEventListener('click',e=>{if(!this.root.contains(e.target)&&e.target.closest('[data-coach]'))this.click(e);});}
   async start(){
     this.mount();try{this.session=JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch{this.session=null;}
@@ -224,7 +224,7 @@ class DuoCoach {
   }
   renderRecovery(){this.current='recovery';this.shell(`<div class="coach-top"><div><b>保存个人恢复码</b><small>只属于你，不要发给伴侣</small></div></div><article class="coach-card"><p>换手机或清除浏览器数据时，用它找回私人档案。新码生成后旧码失效；请保存到你自己的安全位置。</p><div class="coach-recovery-code">${esc(this.recoveryCode||'')}</div><button data-coach="recovery-copy">复制恢复码</button><button class="coach-secondary" data-coach="recovery-saved">我已保存，继续</button></article>`);}
   renderRecoverEntry(msg=''){this.current='recover-entry';this.shell(`<div class="coach-top"><button data-coach="gate" aria-label="返回">${coachIcon('back')}</button><div><b>找回私人档案</b><small>输入仅你持有的恢复码</small></div></div><article class="coach-card"><p>恢复后，这台设备会成为你的新设备；原设备将不能再同步此档案。</p><label>个人恢复码<input data-coach-field="recovery" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="8 组 4 位字符"></label>${msg?`<p class="coach-alert">${esc(msg)}</p>`:''}<button data-coach="recover-submit">恢复我的档案</button></article>`);}
-  async load(r){this.assertPrivatePull(r);this.member=r.member;this.profile=r.profile||null;if(this.profile?.confirmedAt)this.draft={...this.blank(),...this.profile};this.weeks={};(r.weeks||[]).forEach(w=>this.weeks[w.weekStart]=w.body);this.readPartnerActivity(r);this.partnerTrend=(r.partnerTrend||[]).sort((a,b)=>a.date.localeCompare(b.date));this.h.setIdentity(this.member.person,this.member.family,this.session.user?.id||this.session.user_id);localStorage.setItem(PAIRED_KEY,'1');
+  async load(r){this.assertPrivatePull(r);this.member=r.member;this.profile=r.profile||null;if(this.profile?.confirmedAt)this.draft={...this.blank(),...this.profile};this.weeks={};(r.weeks||[]).forEach(w=>this.weeks[w.weekStart]=w.body);this.readPartnerActivity(r);this.readPartnerRecords(r);this.partnerTrend=(r.partnerTrend||[]).sort((a,b)=>a.date.localeCompare(b.date));this.h.setIdentity(this.member.person,this.member.family,this.session.user?.id||this.session.user_id);localStorage.setItem(PAIRED_KEY,'1');
     const checkins={},measures={};(r.checkins||[]).forEach(x=>checkins[this.person+'_'+x.date]=x.body);(r.measures||[]).forEach(x=>measures[this.person+'_'+x.date]=x.body);this.h.setStore({checkins,measures});this.root.hidden=true;this.current=null;this.saveProfileCache();this.connectionOkay();this.h.setSync?.('ok');this.h.render();if(!this.profile?.confirmedAt){this.draft=this.legacyDraft(measures);this.step=0;this.previewPlan=null;this.renderOnboard();}else this.checkWeekly();}
   legacyDraft(measures){const d=this.blank(),history=Object.values(measures).sort((a,b)=>a.date.localeCompare(b.date));const g=history.filter(m=>m.goal).at(-1)?.goal;if(g){d.age=g.age||'';d.height=g.height||'';d.weight=g.start||'';d.target=g.target!==g.start?g.target:'';d.goals=d.target?['减脂']:['建立运动习惯'];}const latest=history.filter(m=>typeof m.weight==='number').at(-1);if(latest)d.weight=latest.weight;return d;}
   editProfile(){this.draft={...this.blank(),...this.profile,notes:[...(this.profile?.notes||['','',''])]};this.chat=[[],[],[]];this.chatInput='';this.previewPlan=null;this.step=0;this.aiError='';this.aiErrorContext=null;this.renderOnboard();}
@@ -241,7 +241,7 @@ class DuoCoach {
   }
   async runSync(store,dirty){
     this.h.setSync('syncing');
-    const planRevision=this.planRevision||0;
+    const planRevision=this.planRevision||0,sharingRevision=this.sharingRevision||0;
     try{
       for(const key of [...dirty]){
         const current=this.h.getSyncData?.().store||store,kind=key[0],id=key.slice(2),b=kind==='c'?current.checkins[id]:current.measures[id];
@@ -257,13 +257,14 @@ class DuoCoach {
         this.profile=r.profile||this.profile;if(this.profile?.confirmedAt&&this.current!=='onboard')this.draft={...this.blank(),...this.profile};
         this.weeks={};(r.weeks||[]).forEach(w=>this.weeks[w.weekStart]=w.body);
       }
-      this.readPartnerActivity(r);
+      this.readPartnerActivity(r);this.readPartnerRecords(r,sharingRevision!==(this.sharingRevision||0));
       this.partnerTrend=(r.partnerTrend||[]).sort((a,b)=>a.date.localeCompare(b.date));
       const checkins={},measures={};(r.checkins||[]).forEach(x=>checkins[this.person+'_'+x.date]=x.body);(r.measures||[]).forEach(x=>measures[this.person+'_'+x.date]=x.body);
       this.h.setStore({checkins,measures});this.saveProfileCache();this.connectionOkay();
       const pending=this.h.getSyncData?.().dirty.length||0;this.h.setSync(pending?'pending':'ok');this.h.render();
       if(this.pendingWeekCheck&&this.current===null){this.pendingWeekCheck=false;this.checkWeekly();}
     }catch(e){
+      this.partnerCheckins={};this.partnerRecordSharing='unknown';this.h.renderHistory?.();
       if(this.recovering||this.current==='recover-entry')return;
       this.recordClientFailure('/client/sync',e);
       if(String(e.message).includes('pairing_required')){const key=this.cacheKey();if(key)localStorage.removeItem(key);this.member=null;this.profile=null;this.h.clearIdentity?.();this.renderRecoverEntry('这个档案已在另一台设备恢复。');}
@@ -277,6 +278,65 @@ class DuoCoach {
     (Array.isArray(data.partnerActivity)?data.partnerActivity:[]).forEach(a=>{if(datePattern.test(a.date)&&typeof a.checked==='boolean')this.partnerActivity[a.date]=a.checked;});
     this.partnerActivitySince=datePattern.test(data.partnerActivitySince||'')?data.partnerActivitySince:null;
     this.partnerActivityUntil=datePattern.test(data.partnerActivityUntil||'')?data.partnerActivityUntil:null;
+  }
+  resetRecordSharing(){this.recordSharing=false;this.sharingAvailable=false;this.partnerRecordSharing='unknown';this.partnerCheckins={};this.partnerLoadedDates=new Set();this.partnerRequests=new Map();this.partnerGeneration=(this.partnerGeneration||0)+1;}
+  readPartnerRecords(data,preserveOwn=false){
+    if(!preserveOwn){this.sharingAvailable=typeof data.recordSharing==='boolean';this.recordSharing=data.recordSharing===true;}
+    this.partnerRecordSharing=['on','off','unpaired'].includes(data.partnerRecordSharing)?data.partnerRecordSharing:'unknown';
+    this.partnerCheckins={};this.partnerLoadedDates=new Set();this.partnerGeneration=(this.partnerGeneration||0)+1;
+    if(this.partnerRecordSharing!=='on')return;
+    const peer=this.person==='hus'?'wife':'hus',floor=new Date(Date.now()-119*864e5);const since=[floor.getFullYear(),String(floor.getMonth()+1).padStart(2,'0'),String(floor.getDate()).padStart(2,'0')].join('-');
+    for(const row of (Array.isArray(data.partnerCheckins)?data.partnerCheckins:[]).slice(0,120)){
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(row?.date||'')||row.date<since||row.date>today()||!row.body||typeof row.body!=='object')continue;
+      const body=row.body,c={person:peer,date:row.date,meals:{},food:{},workout:body.workout==='done'?'done':null,stand:Number.isFinite(body.stand)?Math.max(0,Math.min(10000,body.stand)):0,extraMoves:Array.isArray(body.extraMoves)?body.extraMoves.filter(x=>typeof x==='string'&&/^[a-z0-9-]{1,64}$/.test(x)).slice(0,60):[]};
+      for(const meal of ['breakfast','lunch','snack','dinner']){
+        if(['plan','over','skip'].includes(body.meals?.[meal]))c.meals[meal]=body.meals[meal];
+        const f=body.food?.[meal];if(!f||typeof f!=='object')continue;
+        const items=(Array.isArray(f.items)?f.items:[]).slice(0,30).filter(i=>i&&typeof i.n==='string').map(i=>({n:i.n.slice(0,100),q:typeof i.q==='string'?i.q.slice(0,100):'',...(Number.isFinite(i.k)&&i.k>=0&&i.k<=20000?{k:i.k}:{})}));
+        c.food[meal]={items,...(Number.isFinite(f.kcal)&&f.kcal>=0&&f.kcal<=20000?{kcal:f.kcal}:{})};
+      }
+      this.partnerCheckins[row.date]=c;this.partnerLoadedDates.add(row.date);
+    }
+  }
+  partnerCheckin(date){return this.partnerRecordSharing==='on'?this.partnerCheckins[date]||null:null;}
+  ensurePartnerCheckin(date){
+    const since=this.partnerActivitySince;
+    if(this.partnerReadBusy||this.partnerRecordSharing!=='on'||!since||date<since||date>today()||this.partnerLoadedDates.has(date))return Promise.resolve();
+    const generation=this.partnerGeneration,key=generation+':'+date;
+    if(this.partnerRequests.has(key))return this.partnerRequests.get(key);
+    const run=async()=>{
+      try{
+        const r=await this.rpc('fl_partner_checkin_get',{p_date:date});if(generation!==this.partnerGeneration)return;
+        if(!r||r.date!==date||!['on','off','unpaired'].includes(r.partnerRecordSharing))throw new Error('invalid_partner_record');
+        if(r.partnerRecordSharing!=='on'){this.partnerCheckins={};this.partnerLoadedDates.clear();this.partnerRecordSharing=r.partnerRecordSharing;return;}
+        if(r.body!==null&&(!r.body||typeof r.body!=='object'||Array.isArray(r.body)))throw new Error('invalid_partner_record');
+        const saved=this.partnerCheckins,loaded=new Set(this.partnerLoadedDates);
+        // Reuse the nested whitelist, then keep previously viewed days in memory.
+        this.readPartnerRecords({recordSharing:this.recordSharing,partnerRecordSharing:'on',partnerCheckins:r.body?[{date,body:r.body}]:[]},true);
+        this.partnerGeneration=generation;this.partnerCheckins={...saved,...this.partnerCheckins};this.partnerLoadedDates=new Set([...loaded,...this.partnerLoadedDates,date]);
+      }catch(e){if(generation===this.partnerGeneration){this.partnerCheckins={};this.partnerLoadedDates.clear();this.partnerRecordSharing='unknown';}}
+      finally{this.partnerRequests.delete(key);this.h.renderHistory?.();}
+    };
+    const promise=Promise.resolve().then(run);this.partnerRequests.set(key,promise);return promise;
+  }
+
+  async refreshPartnerRecords(){
+    if(this.partnerReadBusy)return;
+    this.partnerReadBusy=true;this.h.renderHistory?.();let msg='';const revision=this.sharingRevision||0;
+    try{const r=await this.rpc('fl_private_pull',{p_since:new Date(Date.now()-120*864e5).toISOString().slice(0,10)});this.assertPrivatePull(r);this.readPartnerActivity(r);this.readPartnerRecords(r,revision!==(this.sharingRevision||0));}
+    catch(e){this.partnerCheckins={};this.partnerRecordSharing='unknown';msg='未能读取共享状态，请联网后重试。';}
+    finally{this.partnerReadBusy=false;this.h.renderHistory?.();if(this.current==='record-sharing')this.renderSharing(msg);}
+  }
+  renderSharing(msg=''){
+    this.current='record-sharing';
+    this.shell(`<div class="coach-top"><button data-coach="close" aria-label="关闭">${coachIcon('close')}</button><div><b>与伴侣共享打卡详情</b><small>由你决定是否共享自己的记录</small></div></div><article class="coach-card"><p>默认与已配对的伴侣共享近 120 天及之后的餐次状态、食物名称与份量、热量、训练是否完成、起身次数和可选活动。你可以在这里手动关闭。</p><p>体重、围度、目标、健康状态和聊天内容仍仅你可见。</p><p>随时可以关闭，关闭后云端不再提供详情；已经看过的内容无法收回。</p>${msg?`<p class="coach-alert" role="status">${esc(msg)}</p>`:''}<p>当前：<b>${this.sharingAvailable?this.recordSharing?'已开启':'未开启':'等待联网确认'}</b></p><button data-coach="${this.recordSharing?'sharing-disable':'sharing-enable'}"${!this.sharingAvailable||this.sharingBusy?' disabled':''}>${this.sharingBusy?'正在保存…':this.recordSharing?'停止共享我的打卡详情':'开启共享我的打卡详情'}</button>${!this.sharingAvailable?`<button class="coach-secondary" data-coach="sharing-refresh"${this.partnerReadBusy?' disabled':''}>重新连接</button>`:''}</article>`);
+  }
+  async setRecordSharing(enabled){
+    if(this.sharingBusy||!this.sharingAvailable)return;
+    this.sharingBusy=true;this.renderSharing();let msg='';
+    try{const saved=await this.rpc('fl_checkin_sharing_set',{p_enabled:enabled});if(saved!==enabled)throw new Error('共享设置未确认，请重试。');this.recordSharing=saved;this.sharingRevision=(this.sharingRevision||0)+1;msg=enabled?'已开启，伴侣刷新记录后即可查看。':'已停止共享。';}
+    catch(e){this.sharingAvailable=false;msg='未能确认共享设置，请联网后重试。';}
+    finally{this.sharingBusy=false;if(this.current==='record-sharing')this.renderSharing(msg);}
   }
   partnerChecked(date){return this.partnerActivity[date]===true;}
   ownWeek(date=today()){return this.weeks[monday(new Date(date+'T12:00:00'))]||null;}
@@ -357,10 +417,14 @@ class DuoCoach {
       else if(a==='recover-submit'){if(this.ready)await this.ready;const code=this.root.querySelector('[data-coach-field="recovery"]')?.value||this.recoveryInput;await this.recover(code);}
       else if(a==='recovery-copy'){await navigator.clipboard.writeText(this.recoveryCode);this.renderRecovery();}
       else if(a==='recovery-saved'){this.recoveryCode=null;this.root.hidden=true;this.current=null;if(!this.profile?.confirmedAt)this.renderOnboard();else this.checkWeekly();}
+      else if(a==='sharing-refresh'){await this.refreshPartnerRecords();}
+      else if(a==='sharing-open'){this.renderSharing();}
+      else if(a==='sharing-enable'){await this.setRecordSharing(true);}
+      else if(a==='sharing-disable'){await this.setRecordSharing(false);}
       else if(a==='show-recovery'){await this.issueRecoveryCode();this.renderRecovery();}
       else if(a==='copy-family'){await navigator.clipboard.writeText(this.member.family);this.notice('已复制配对口令，请通过可信方式发给伴侣。');}
       else if(a==='signout'){this.renderSignoutConfirm();}
-      else if(a==='signout-confirm'){try{await this.request('/auth/v1/logout',{});}catch(_){}clearTimeout(this.reconnectTimer);this.reconnectTimer=null;const key=this.cacheKey();if(key)localStorage.removeItem(key);this.persistedSession=false;this.hadSavedSession=false;this.session=null;this.member=null;this.profile=null;this.weeks={};this.partnerActivity={};this.partnerActivitySince=null;this.partnerActivityUntil=null;this.partnerTrend=[];localStorage.removeItem(AUTH_KEY);localStorage.removeItem(PAIRED_KEY);this.h.clearIdentity?.();this.root.hidden=true;this.current=null;this.h.needsRole?.();}
+      else if(a==='signout-confirm'){try{await this.request('/auth/v1/logout',{});}catch(_){}clearTimeout(this.reconnectTimer);this.reconnectTimer=null;const key=this.cacheKey();if(key)localStorage.removeItem(key);this.persistedSession=false;this.hadSavedSession=false;this.session=null;this.member=null;this.profile=null;this.weeks={};this.partnerActivity={};this.partnerActivitySince=null;this.partnerActivityUntil=null;this.resetRecordSharing();this.partnerTrend=[];localStorage.removeItem(AUTH_KEY);localStorage.removeItem(PAIRED_KEY);this.h.clearIdentity?.();this.root.hidden=true;this.current=null;this.h.needsRole?.();}
       else if(a==='next'){await this.confirmStep();}
       else if(a==='retry-plan'){await this.generatePlan();}
       else if(a==='back'){if(this.current==='onboard'&&this.step>0){this.step--;this.previewPlan=null;this.renderOnboard();}else if(this.current==='onboard'&&this.provisional){this.member=null;this.provisional=false;this.root.hidden=true;this.current=null;this.h.showRoleChoice?.();}else this.root.hidden=true;}

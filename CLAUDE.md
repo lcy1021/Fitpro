@@ -158,8 +158,10 @@
 
 - 2026-10-09 AI 热量估算：全量文字块 + 平衡 JSON 提取/校验；中转输出 4096/6144 tokens，截断或格式异常修复一次；未识别 kcal 为 null 且不缓存。私人估算使用共享登录刷新和连接诊断，不依赖 dirty 上传；客户端 90 秒，无消费请求自动网络重试。部分热量不判断整餐计划；旧请求不覆盖修改原文/另一餐/另一身份。版本头 `2026-10-09-meal-format`，回归 `tests/meal-function.mjs`、`tests/meal-ui.js`。
 
-- 2026-10-09 图片性能：应用缓存 v32，独立 `duofit-images-v1` 跨应用版本保存图片，命中不联网，冷请求去重；激活迁移旧 DuoFit 缓存中的图片后只删除旧应用缓存。素材改动需同步递增 URL 的 `media1`/`logo3`；只改应用时不要改图片缓存名。CORE 仅含应用文件，图片按需保存。验证与尺寸统计见 `docs/qa/image-loading/README.md`、`tests/sw-cache.js`、`tests/image-browser.js`。
+- 2026-10-09 图片性能：应用缓存 v33，独立 `duofit-images-v1` 跨应用版本保存图片，命中不联网，冷请求去重；激活迁移旧 DuoFit 缓存中的图片后只删除旧应用缓存。素材改动需同步递增 URL 的 `media1`/`logo3`；只改应用时不要改图片缓存名。CORE 仅含应用文件，图片按需保存。验证与尺寸统计见 `docs/qa/image-loading/README.md`、`tests/sw-cache.js`、`tests/image-browser.js`。
 
 - 2026-10-09 启动顺序：HTML 默认显示入场层，主页面与导航在脚本加载前隐藏并 inert；启动期间合并首页渲染与同步请求，动画结束后只构建一次缓存首页，随后同步与注册 SW。避免首页先闪出、动画中重复构建和安装下载竞争。缩略图 picture 与 img 显式随宽度保持 4:3，覆盖 Today 的普通与 10 分钟计划；验证见 `tests/startup-browser.js`、`docs/qa/startup/README.md`。
 
 - 2026-10-09 饮食与历史样式：饮食页采用摄入范围摘要、七天日期条和餐次日志；过去日期只读，显示当时保存的食物与热量。记录页增加双方连续保存打卡天数、同日连续天数和四周日历。当天保存过 check-in 就算记录，今天未记录保留昨天的连续天数，连续统计最多近 120 天。伴侣仅共享日期和是否打卡；旧接口缺少范围元数据时显示待同步，不当作零天。迁移 `supabase-partner-history.sql` 更新读取 RPC，缓存布尔状态支持离线查看，按匿名 UID 隔离。验证见 `docs/qa/checkin-design/README.md`、`tests/checkin-browser.js`。
+
+- 2026-10-09 伴侣打卡详情：记录日历中的老公/老婆标签可切换所选日期详情，只读。默认向已配对伴侣共享，可在「记录 → 设置 → 共享我的打卡详情」手动关闭，配对伴侣可读取近 120 天的四餐状态、食物名称/份量/热量、训练完成、起身次数、可选动作。默认共享餐食/活动；双方独立开关，显式关闭优先，随时可关闭。`fl_checkin_sharing` 按家庭/角色存共享偏好，FK 关联成员，UID 恢复保留共享偏好；表禁止客户端直读写。共享 RPC 按 auth.uid 验证、同家庭查伴侣、白名单裁剪嵌套字段；不共享自由文本、日常身体状态、目标、身体数据或聊天。普通同步只拉开关元数据，详情通过 `fl_partner_checkin_get(date)` 按选中日期读取、同日请求合并；详情仅保存在运行内存，断网读取失败清空、重启后重新确认，账号缓存不保存详情。增量迁移先 `supabase-checkin-sharing.sql`，再 `supabase-checkin-sharing-default.sql`；测试 `tests/partner-records-browser.js`。

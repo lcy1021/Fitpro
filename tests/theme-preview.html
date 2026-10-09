@@ -37,7 +37,7 @@
   const script = document.createElement('script');
   const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('<\/script>'));
   script.textContent = inline.replace('/* ---------- boot ---------- */', `
-    window.themePreviewApp = {render, viewToday, viewDiet, viewTrain, viewRecord, openGoal, openFood, openCode, showRoleChoice, buildSteps, drawRun, ymd, getCheckin, onFoodText, initTabBarSpace,
+    window.themePreviewApp = {render, viewToday, viewDiet, viewTrain, viewRecord, renderRecordData, openGoal, openFood, openCode, showRoleChoice, buildSteps, drawRun, ymd, getCheckin, onFoodText, initTabBarSpace,
       setMe:v=>{me=v;viewP=v}, setTab:v=>{tab=v}, setStore:v=>{store=v}, setCoach:v=>{privateCoach=v}, setRunState:v=>{runState=v}};
     return;
   `);
@@ -49,7 +49,7 @@
   app.initTabBarSpace();
   const date = app.ymd(new Date());
   const previous = app.ymd(new Date(Date.now() - 7*864e5));
-  const coach = new window.DuoCoach({getCheckin:()=>({}), render:()=>{}, putCheckin:()=>{}, showRoleChoice:()=>app.showRoleChoice()});
+  const coach = new window.DuoCoach({getCheckin:()=>({}), render:()=>{}, renderHistory:()=>app.renderRecordData(), putCheckin:()=>{}, showRoleChoice:()=>app.showRoleChoice()});
   coach.mount();
   coach.member = {person, family:'local-theme-fixture'};
   coach.session = {user:{id:'local-theme-fixture'}};
@@ -89,6 +89,12 @@
     }
     coach.partnerActivitySince=app.ymd(new Date(Date.now()-119*864e5));coach.partnerActivityUntil=date;
     app.setStore({checkins:fixtureChecks,measures:{[person+'_'+previous]:{person,date:previous,weight:person==='hus'?76.5:52.2},[person+'_'+date]:{person,date,weight:person==='hus'?76:52}}});
+  }
+  if(params.get('journal')==='1'){
+    coach.readPartnerRecords({recordSharing:true,partnerRecordSharing:params.get('sharing')==='on'?'on':'off',partnerCheckins:[date,app.ymd(new Date(Date.now()-864e5))].map(d=>({date:d,body:{meals:{breakfast:'plan',lunch:'plan',snack:'skip'},food:{breakfast:{items:[{n:'原味酸奶',q:'1 杯',k:120},{n:'全麦面包',q:'2 片',k:160}],kcal:280}},workout:'done',stand:4,extraMoves:['warm-march']}}))});
+    if(params.get('sharing')==='on')for(const d of Object.keys(coach.partnerCheckins))coach.partnerActivity[d]=true;
+    const sharedFixtureRecords={...coach.partnerCheckins};
+    coach.rpc=async(name,args)=>{if(name==='fl_partner_checkin_get')return {date:args.p_date,partnerRecordSharing:coach.partnerRecordSharing,body:sharedFixtureRecords[args.p_date]||null};if(name==='fl_checkin_sharing_set')return args.p_enabled;if(name==='fl_private_pull')return {member:coach.member,checkins:[],measures:[],weeks:[],recordSharing:coach.recordSharing,partnerRecordSharing:coach.partnerRecordSharing,partnerCheckins:[],partnerActivity:Object.entries(coach.partnerActivity).map(([date,checked])=>({date,checked})),partnerActivitySince:coach.partnerActivitySince,partnerActivityUntil:coach.partnerActivityUntil};throw new Error('No backend in preview');};
   }
   coach.partnerTrend=[{date:previous,changeKg:0},{date,changeKg:-.3}];
   app.setCoach(coach);
