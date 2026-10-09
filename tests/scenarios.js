@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');assert(fs.readFileSync(path.join(root,'sw.js'),'utf8').includes('notificationclick'),'push click handler');
-assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=26"></script>'), 'config loads before coaching');
+assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=27"></script>'), 'config loads before coaching');
 const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('</script>'));
 const memory = new Map();
 const elements = new Map();
@@ -18,8 +18,8 @@ const sandbox = {
   location: {hash:'',pathname:'/',search:'',protocol:'file:'}, history:{replaceState(){}}, navigator:{},
   setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame:f=>f(), matchMedia:()=>({matches:true}), console, Date, AbortController, URL,
 };
-const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','viewToday','viewDiet','dietWeekCard','viewTrain','viewRecord','renderRecordData','privateTrendCard','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','drawRun','feedRows','openPicker','showRoleChoice','extraMoveRows','extraDone','toggleExtraMove','EXTRA_MOVES','refreshCalendarDay'];
-const code = inline.replace('/* ---------- boot ---------- */', `globalThis.__app = {${exported.join(',')}, setStore:v=>{store=v},setMe:v=>{me=v;viewP=v},setViewP:v=>{viewP=v},setDietWeekOffset:v=>{dietWeekOffset=v},setCoach:v=>{privateCoach=v},setTab:v=>{tab=v},setRunState:v=>{runState=v}};return;`);
+const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','viewToday','viewDiet','dietWeekCard','viewTrain','viewRecord','renderRecordData','privateTrendCard','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','drawRun','feedRows','openPicker','showRoleChoice','extraMoveRows','extraDone','toggleExtraMove','EXTRA_MOVES','refreshCalendarDay','ackDirty','markDirty'];
+const code = inline.replace('/* ---------- boot ---------- */', `globalThis.__app = {${exported.join(',')},getDirty:()=>dirty, setStore:v=>{store=v},setMe:v=>{me=v;viewP=v},setViewP:v=>{viewP=v},setDietWeekOffset:v=>{dietWeekOffset=v},setCoach:v=>{privateCoach=v},setTab:v=>{tab=v},setRunState:v=>{runState=v}};return;`);
 vm.runInNewContext(code, sandbox, {filename:'index-inline.js'});
 const app = sandbox.__app;
 app.openPicker(false);assert(element('#pick').classList.contains('open'),'original animation picker opens');assert.equal(element('#lm').dataset.phase,'choose','reduced motion lands on role choice');
@@ -27,6 +27,11 @@ const date = app.ymd(new Date());
 const goal = (start,target) => ({height:170,age:32,start,target,pace:'gentle',adj:0,level:0,cardio:false,at:date});
 const meals = Object.fromEntries([...app.MEALS].map(m=>[m,'plan']));
 app.setMe('hus');
+const pendingCheckin={person:'hus',date,meals:{breakfast:'plan'}},pendingKey='c:hus_'+date;
+app.setStore({checkins:{['hus_'+date]:pendingCheckin},measures:{}});app.markDirty(pendingKey);
+const sentCheckin=JSON.stringify(pendingCheckin);pendingCheckin.meals.lunch='over';
+assert.equal(app.ackDirty(pendingKey,sentCheckin),false,'old upload cannot acknowledge a newer local checkin');assert(app.getDirty().includes(pendingKey));
+assert.equal(app.ackDirty(pendingKey,JSON.stringify(pendingCheckin)),true);assert(!app.getDirty().includes(pendingKey),'matching upload clears the pending record');
 app.setStore({checkins:{['hus_'+date]:{person:'hus',date,meals,workout:'done'},['wife_'+date]:{person:'wife',date,meals,workout:'done'}},measures:{['hus_'+date]:{person:'hus',date,weight:78,goal:goal(78,72)},['wife_'+date]:{person:'wife',date,weight:47.3,goal:goal(47.3,46),waist:63}}});
 assert(app.planFor('hus').kcal >= 1500, 'historical kcal floor');
 assert(app.dayRange('hus')[0] > 0, 'historical menu calculates');
@@ -172,7 +177,7 @@ c.profile={...c.draft,confirmedAt:new Date().toISOString()};c.dailyState='身体
   const aiBeforePair=new DuoCoach({family:()=>''});aiBeforePair.member={person:'hus',family:'abcdefgh'};aiBeforePair.provisional=true;aiBeforePair.session={access_token:'anon'};let sent=null,waitLimit=0,refreshCalls=0;aiBeforePair.refresh=async()=>{refreshCalls++;return true};aiBeforePair.request=async(_,body,__,timeout)=>{sent=body;waitLimit=timeout;return {summary:'已理解'}};await aiBeforePair.coachAI('interpret','想减脂',{step:0});assert.equal(sent.person,'hus','AI can receive role before pairing');assert.equal(waitLimit,60000,'client waits long enough for the server interpretation deadline');assert.equal(refreshCalls,1,'AI refreshes the login session before sending');await aiBeforePair.coachAI('plan','生成计划');assert.equal(waitLimit,90000,'plan request covers the server retry window');aiBeforePair.request=async()=>{const e=new Error('Function not found');e.status=404;throw e};await aiBeforePair.coachAI('interpret','想减脂',{step:0});assert(aiBeforePair.aiError.includes('尚未部署'),'missing AI function has actionable message');assert.equal(aiBeforePair.aiErrorContext,0,'AI error belongs to the step where it happened');aiBeforePair.request=async()=>{const e=new Error('ai_timeout');e.status=504;throw e};await aiBeforePair.coachAI('interpret','想减脂',{step:0});assert(aiBeforePair.aiError.includes('响应太慢'),'slow AI has a specific retry message');
   aiBeforePair.request=async()=>{const e=new Error('ai_invalid_output');e.status=502;throw e};assert.equal((await aiBeforePair.coachAI('interpret','想减脂',{step:0})).partial,true,'deployed older function format error uses client fallback');
   const choiceBefore=[...aiBeforePair.draft.goals];aiBeforePair.applySuggestions({goals:['更轻松']});assert.deepEqual([...aiBeforePair.draft.goals],choiceBefore,'unrecognized AI category does not erase selected goal');
-  classSandbox.fetch=async()=>({ok:false,status:400,json:async()=>({msg:'Anonymous sign-ins are disabled'})});await assert.rejects(new DuoCoach({}).authRequest('/auth/v1/signup',{}),/尚未开启免邮箱进入/,'disabled anonymous auth is translated');
+  classSandbox.fetch=async()=>({ok:false,status:400,text:async()=>JSON.stringify({msg:'Anonymous sign-ins are disabled'})});await assert.rejects(new DuoCoach({}).authRequest('/auth/v1/signup',{}),/尚未开启免邮箱进入/,'disabled anonymous auth is translated');
   console.log('PASS coach health guard, daily alternatives, AI preview, weekly confirmation, private sync, anonymous entry, recovery, signout');
 })().catch(e=>{console.error(e);process.exitCode=1});
 

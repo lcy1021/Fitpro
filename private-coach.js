@@ -7,6 +7,9 @@ const KEY=String(cfg.SUPABASE_KEY||'');
 const AUTH_KEY='duofit.auth.v1';
 const PAIRED_KEY='duofit.paired.v1';
 const PROFILE_CACHE='duofit.profile.v1.';
+const CONNECTION_LOG='duofit.connection.v1';
+const SAFE_RETRY_RPC=new Set(['fl_private_pull','fl_private_put_checkin','fl_private_put_measure','fl_private_put_profile','fl_private_put_week','fl_claim_role','fl_recovery_set','fl_push_save','fl_push_remove']);
+const INVALID_SESSION_CODES=new Set(['refresh_token_not_found','refresh_token_already_used','session_not_found','session_expired','user_not_found','user_banned']);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const coachIcon=name=>`<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-${name}"></use></svg>`;
 const monday=d=>{const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return todayFrom(x);};
@@ -20,49 +23,229 @@ class DuoCoach {
   get person(){return this.member?.person||null;}
   get peer(){return this.person==='hus'?'wife':'hus';}
   headers(auth=true){const h={'Content-Type':'application/json','apikey':KEY};if(auth&&this.session?.access_token)h.Authorization='Bearer '+this.session.access_token;return h;}
-  async request(path,body,auth=true,timeoutMs=0){const ctl=timeoutMs?new AbortController():null,timer=ctl?setTimeout(()=>ctl.abort(),timeoutMs):null;try{const r=await fetch(BASE+path,{method:'POST',headers:this.headers(auth),body:JSON.stringify(body),...(ctl?{signal:ctl.signal}:{})});const raw=await r.text();let data;try{data=raw?JSON.parse(raw):null;}catch{data={message:raw};}if(!r.ok){const e=new Error(data?.message||data?.error||data?.msg||'请求失败 '+r.status);e.status=r.status;throw e;}return data;}catch(e){if(ctl?.signal.aborted){const timeout=new Error(path.startsWith('/functions/v1/coach')?'ai_timeout':'request_timeout');timeout.status=504;throw timeout;}throw e;}finally{if(timer)clearTimeout(timer);}}
-  async authRequest(path,body){const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),12000);try{const r=await fetch(BASE+path,{method:'POST',headers:{'Content-Type':'application/json','apikey':KEY},body:JSON.stringify(body),signal:ctl.signal});const d=await r.json().catch(()=>({}));if(!r.ok){const raw=d.msg||d.message||d.error_description||d.error||'登录失败';const e=new Error(/anonymous sign-ins are disabled|anonymous_provider_disabled/i.test(raw)?'云端尚未开启免邮箱进入，暂时无法保存档案。请在 Supabase Auth 中开启匿名登录。':raw);e.status=r.status;throw e;}return d;}finally{clearTimeout(timer);}}
-  saveSession(d){this.session={...d,expires_at:d.expires_at||(d.expires_in?Math.floor(Date.now()/1000)+d.expires_in:undefined)};localStorage.setItem(AUTH_KEY,JSON.stringify(this.session));}
-  async refresh(force=false){if(!this.session?.refresh_token)return false;if(!force&&this.session.expires_at&&this.session.expires_at>Date.now()/1000+90)return true;try{const d=await this.authRequest('/auth/v1/token?grant_type=refresh_token',{refresh_token:this.session.refresh_token});this.saveSession(d);return true;}catch(e){if(![400,401,403].includes(e.status))throw e;this.session=null;localStorage.removeItem(AUTH_KEY);return false;}}
-  async rpc(name,args={}){if(!await this.refresh())throw new Error('登录已过期，请重新登录。');const path='/rest/v1/rpc/'+name,timeout=name==='fl_private_pull'?15000:0;try{return await this.request(path,args,true,timeout);}catch(e){if(e.status!==401)throw e;if(!await this.refresh(true))throw e;return this.request(path,args,true,timeout);}}
+  userId(session=this.session){return session?.user?.id||session?.user_id||null;}
+  assertSessionOwner(owner){if(this.userId()!==owner){const e=new Error('本机登录已更新，请重新打开应用。');e.code='session_changed';throw e;}}
+  assertPrivatePull(data){
+    if(!data||!['hus','wife'].includes(data.member?.person)||!data.member.family||['checkins','measures','weeks','partnerActivity','partnerTrend'].some(key=>data[key]!==undefined&&!Array.isArray(data[key]))){const e=new Error('云端档案回复不完整，请稍后重试。');e.kind='invalid_response';e.code='invalid_private_pull';throw e;}
+  }
+  recordClientFailure(path,error){if(!error.kind&&!error.status&&!error.code){error.kind='client';error.code=error.name||'client_error';this.recordConnection(path,1,Date.now(),error,0);}else if(error.code==='invalid_private_pull')this.recordConnection(path,1,Date.now(),error,0);}
+  waitForRetry(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
+  transient(error){return ['network','timeout','invalid_response'].includes(error.kind)||[408,429,500,502,503,504,520,521,522,523,524].includes(error.status)||['conflict','40001','40P01','request_timeout'].includes(error.code);}
+  recordConnection(path,attempt,started,error,status){
+    const code=String(error?.code||'');
+    const entry={at:new Date().toISOString(),path:path.split('?')[0],attempt,ms:Date.now()-started,status:error?.status||status||0,kind:error?.kind||'ok',code:/^[a-zA-Z0-9_]{1,64}$/.test(code)?code:''};
+    try{let log=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');if(!Array.isArray(log))log=[];localStorage.setItem(CONNECTION_LOG,JSON.stringify([...log.slice(-39),entry]));}catch{}
+    if(error)this.lastConnectionError=entry;
+  }
+  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v27\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
+  async fetchJSON(path,body,{auth=true,timeoutMs=15000,retries=0}={}){
+    const serialized=JSON.stringify(body),owner=auth?this.userId():null;
+    for(let attempt=0;;attempt++){
+      if(auth)this.assertSessionOwner(owner);
+      const started=Date.now(),ctl=new AbortController(),timer=timeoutMs?setTimeout(()=>ctl.abort(),timeoutMs):null;
+      let status=0;
+      try{
+        const r=await fetch(BASE+path,{method:'POST',headers:this.headers(auth),body:serialized,signal:ctl.signal,cache:'no-store'});
+        status=r.status;
+        const raw=await r.text();let data;
+        try{data=raw?JSON.parse(raw):null;}catch{if(r.ok){const e=new Error('云端回复不完整，请稍后重试。');e.kind='invalid_response';throw e;}data={};}
+        if(!r.ok){
+          const e=new Error(data?.message||data?.error_description||data?.error||data?.msg||'请求失败 '+r.status);
+          e.status=r.status;e.code=data?.error_code||data?.code||data?.error||'';e.kind=[401,403].includes(r.status)?'auth':'http';
+          const retryAfter=r.headers?.get('Retry-After');
+          if(retryAfter)e.retryAfterMs=Math.max(0,/^\d+(\.\d+)?$/.test(retryAfter)?Number(retryAfter)*1000:Date.parse(retryAfter)-Date.now());
+          throw e;
+        }
+        this.recordConnection(path,attempt+1,started,null,status);return data;
+      }catch(cause){
+        let e=cause;
+        if(ctl.signal.aborted){e=new Error(path.startsWith('/functions/v1/coach')?'ai_timeout':'request_timeout');e.status=504;e.kind='timeout';}
+        else if(!e.kind&&e.name==='TypeError')e.kind='network';
+        this.recordConnection(path,attempt+1,started,e,status);
+        if(attempt>=retries||!this.transient(e))throw e;
+        // Clear the request timer before waiting. Never replay a consuming operation.
+        clearTimeout(timer);
+        const backoff=Math.max(600*2**attempt+Math.floor(Math.random()*300),e.retryAfterMs||0);
+        if(backoff>10000)throw e;
+        await this.waitForRetry(backoff);
+      }finally{clearTimeout(timer);}
+    }
+  }
+  request(path,body,auth=true,timeoutMs=15000,retries=0){return this.fetchJSON(path,body,{auth,timeoutMs,retries});}
+  async authRequest(path,body){
+    try{return await this.fetchJSON(path,body,{auth:false,timeoutMs:12000,retries:path.includes('grant_type=refresh_token')?2:0});}
+    catch(e){if(/anonymous sign-ins are disabled|anonymous_provider_disabled/i.test(e.message+' '+e.code))e.message='云端尚未开启免邮箱进入，暂时无法保存档案。请在 Supabase Auth 中开启匿名登录。';throw e;}
+  }
+  saveSession(d){
+    this.session={...d,expires_at:d.expires_at||(d.expires_in?Math.floor(Date.now()/1000)+d.expires_in:undefined)};
+    try{localStorage.setItem(AUTH_KEY,JSON.stringify(this.session));this.persistedSession=true;}catch{this.h.entryError?.('浏览器未能保存本机登录，请保存个人恢复码。');}
+  }
+  adoptSavedSession(){
+    let saved;try{saved=JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch{return;}
+    const uid=this.userId();
+    if(!saved&&this.persistedSession){this.session=null;this.persistedSession=false;const e=new Error('本机登录已被清除，请重新打开应用。');e.code='session_changed';throw e;}
+    if(saved&&uid&&this.userId(saved)===uid&&saved.refresh_token&&(saved.expires_at||0)>=(this.session.expires_at||0))this.session=saved;
+    else if(saved&&uid&&this.userId(saved)&&this.userId(saved)!==uid){const e=new Error('本机登录已在另一个页面更新，请重新打开应用。');e.code='session_changed';throw e;}
+  }
+  async refresh(force=false,rejectedToken=null){
+    if(this.refreshPromise)return this.refreshPromise;
+    const run=async()=>{
+      this.adoptSavedSession();
+      if(!this.session?.refresh_token)return false;
+      if(rejectedToken&&this.session.access_token!==rejectedToken)force=false;
+      if(!force&&this.session.expires_at&&this.session.expires_at>Date.now()/1000+90)return true;
+      const token=this.session.refresh_token,uid=this.userId();
+      try{
+        const d=await this.authRequest('/auth/v1/token?grant_type=refresh_token',{refresh_token:token});
+        if(!d?.access_token||!d?.refresh_token){const e=new Error('登录服务回复不完整，请稍后重试。');e.kind='invalid_response';throw e;}
+        if(this.session?.refresh_token!==token||this.userId()!==uid){const e=new Error('本机登录已更新，请重新打开应用。');e.code='session_changed';throw e;}
+        this.saveSession(d);return true;
+      }catch(e){
+        // A different tab may have saved the replacement token while this request failed.
+        this.adoptSavedSession();
+        if(this.session?.refresh_token!==token&&this.userId()===uid)return !!this.session?.access_token;
+        if(!force&&this.transient(e)&&this.session?.access_token&&this.session.expires_at>Date.now()/1000+10)return true;
+        const terminal=INVALID_SESSION_CODES.has(e.code)||((!e.code||e.code==='invalid_grant')&&/invalid refresh token|refresh token.*(not found|already used)|session.*(expired|not found)/i.test(e.message));
+        if(!terminal)throw e;
+        this.session=null;this.persistedSession=false;try{localStorage.removeItem(AUTH_KEY);}catch{}return false;
+      }
+    };
+    // Web Locks also serialize refreshes in Safari tabs/PWA windows that share storage.
+    const work=this.withRefreshLock(run);
+    this.refreshPromise=work;
+    try{return await work;}finally{if(this.refreshPromise===work)this.refreshPromise=null;}
+  }
+  async withRefreshLock(run){
+    if(!navigator.locks?.request)return run();
+    const ctl=new AbortController(),started=Date.now(),timer=setTimeout(()=>ctl.abort(),10000);
+    try{return await navigator.locks.request('duofit.auth.refresh.'+BASE,{mode:'exclusive',signal:ctl.signal},()=>{clearTimeout(timer);return run();});}
+    catch(error){if(!ctl.signal.aborted)throw error;const e=new Error('身份刷新正在等待，请稍后重试。');e.kind='timeout';e.code='auth_lock_timeout';this.recordConnection('/auth/refresh-lock',1,started,e,0);throw e;}
+    finally{clearTimeout(timer);}
+  }
+  rpc(name,args={}){
+    if(name==='fl_private_pull'&&this.pullPromise)return this.pullPromise;
+    const work=this.performRPC(name,args);
+    if(name!=='fl_private_pull')return work;
+    this.pullPromise=work;
+    return work.finally(()=>{if(this.pullPromise===work)this.pullPromise=null;});
+  }
+  async performRPC(name,args){
+    if(!await this.refresh()){const e=new Error('登录已过期，请用个人恢复码找回档案。');e.code='session_expired';e.status=401;throw e;}
+    const path='/rest/v1/rpc/'+name,owner=this.userId(),retries=SAFE_RETRY_RPC.has(name)?2:0,timeout=name==='fl_recover_role'?0:15000;
+    const send=()=>{this.assertSessionOwner(owner);return this.request(path,args,true,timeout,retries);};
+    const rejected=this.session.access_token;let result;
+    try{result=await send();}catch(e){if(e.status!==401)throw e;this.assertSessionOwner(owner);if(!await this.refresh(true,rejected)){e.code='session_expired';throw e;}result=await send();}
+    this.assertSessionOwner(owner);
+    return result;
+  }
   cacheKey(){const uid=this.session?.user?.id||this.session?.user_id;return uid?PROFILE_CACHE+uid:null;}
+  connectionOkay(){this.reconnectFailures=0;this.nextReconnectAt=0;this.lastCloudPullAt=Date.now();clearTimeout(this.reconnectTimer);this.reconnectTimer=null;}
+  scheduleReconnect(error){
+    if(!this.session||!this.h.requestSync||!this.transient(error)||this.reconnectTimer)return;
+    const count=this.reconnectFailures||0;this.reconnectFailures=count+1;
+    const delay=Math.max(Math.min(60000,2000*2**Math.min(count,5))+Math.floor(Math.random()*500),Math.min(300000,error.retryAfterMs||0));
+    this.nextReconnectAt=Date.now()+delay;
+    this.reconnectTimer=setTimeout(()=>{this.reconnectTimer=null;if(document.visibilityState!=='hidden')this.h.requestSync('retry');},delay);
+  }
+  startupIssueText(error){
+    if(error.code==='session_expired')return '本机身份已过期，请用个人恢复码找回档案。';
+    if(error.code==='session_changed')return '本机登录已在另一个页面更新，请关闭后重新打开应用。';
+    if(error.kind==='timeout')return '云端连接超时，稍后会自动重试，也可以点“重新连接”。';
+    if(this.transient(error))return '云端暂时连接不上，稍后会自动重试；已保存的档案不会被清除。';
+    return '暂时无法读取已保存的档案。请重试；如果持续失败，可复制连接诊断。';
+  }
   saveProfileCache(){const key=this.cacheKey();if(!key||!this.member||!this.profile?.confirmedAt)return;try{localStorage.setItem(key,JSON.stringify({member:this.member,profile:this.profile,weeks:this.weeks}));}catch(e){console.warn('private profile cache',e);}}
   loadProfileCache(){const key=this.cacheKey();if(!key)return false;let saved;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch{return false;}if(!['hus','wife'].includes(saved?.member?.person)||!saved?.member?.family||!saved?.profile?.confirmedAt)return false;try{this.member=saved.member;this.profile=saved.profile;this.draft={...this.blank(),...saved.profile};this.weeks=saved.weeks&&typeof saved.weeks==='object'?saved.weeks:{};this.partnerActivity={};this.partnerTrend=[];this.provisional=false;this.h.setIdentity(this.person,this.member.family,this.session.user?.id||this.session.user_id);this.root.hidden=true;this.current=null;this.h.setSync?.('offline');this.h.render();return true;}catch(e){console.warn('private cached startup',e);return false;}}
   mount(){this.root=document.createElement('div');this.root.id='duoCoach';this.root.hidden=true;document.body.appendChild(this.root);this.root.addEventListener('click',e=>this.click(e));this.root.addEventListener('input',e=>this.input(e));this.root.addEventListener('keydown',e=>{if(e.target.matches('[data-profile-note]')&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();this.root.querySelector('[data-coach="interpret"]')?.click();}});document.addEventListener('click',e=>{if(!this.root.contains(e.target)&&e.target.closest('[data-coach]'))this.click(e);});}
-  async start(){this.mount();try{this.session=JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch{this.session=null;}const uid=this.session?.user?.id||this.session?.user_id;this.hadSavedSession=!!(this.session||localStorage.getItem(PAIRED_KEY));if(uid&&localStorage.getItem('duofit.private.'+uid))localStorage.setItem(PAIRED_KEY,'1');return this.restoreSession();}
-  async restoreSession(){
+  async start(){this.mount();try{this.session=JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch{this.session=null;}this.persistedSession=!!this.session;const uid=this.session?.user?.id||this.session?.user_id;this.hadSavedSession=!!(this.session||localStorage.getItem(PAIRED_KEY));if(uid&&localStorage.getItem('duofit.private.'+uid))localStorage.setItem(PAIRED_KEY,'1');return this.restoreSession();}
+  restoreSession(){
+    if(this.startupPromise)return this.startupPromise;
+    const work=this.restoreSavedSession();this.startupPromise=work;
+    return work.finally(()=>{if(this.startupPromise===work)this.startupPromise=null;});
+  }
+  async restoreSavedSession(){
     if(this.session||this.hadSavedSession){
       if(!this.session){this.renderStartupIssue('本机身份无法验证，请用个人恢复码找回档案。');return 'error';}
       try{
-        if(!await this.refresh()){this.renderStartupIssue('本机身份已过期，请用个人恢复码找回档案。');return 'error';}
         const r=await this.rpc('fl_private_pull',{p_since:new Date(Date.now()-120*864e5).toISOString().slice(0,10)});
+        if(this.recovering||this.current==='recover-entry')return 'error';
         await this.load(r);return 'home';
       }catch(e){
-        if(String(e.message).includes('pairing_required')){this.member=null;if(!localStorage.getItem(PAIRED_KEY)){this.root.hidden=true;this.current=null;this.h.needsRole?.();return 'choose';}this.renderStartupIssue('云端暂时未识别这台设备的档案，请重试或用个人恢复码找回。');return 'error';}
-        if(this.session&&![400,401,403].includes(e.status)&&this.loadProfileCache())return 'home';
-        console.warn('private startup',e);
-        this.renderStartupIssue('暂时无法读取已保存的档案，请检查网络后重试。');return 'error';
+        if(this.recovering||this.current==='recover-entry')return 'error';
+        this.recordClientFailure('/client/profile-load',e);
+        if(String(e.message).includes('pairing_required')){const key=this.cacheKey();if(key)localStorage.removeItem(key);this.member=null;if(!localStorage.getItem(PAIRED_KEY)){this.root.hidden=true;this.current=null;this.h.needsRole?.();return 'choose';}this.h.clearIdentity?.();this.renderStartupIssue('云端未识别这台设备的档案，请用个人恢复码找回。');return 'error';}
+        this.scheduleReconnect(e);
+        if(this.session&&e.code!=='session_changed'&&![400,401,403].includes(e.status)&&this.loadProfileCache())return 'home';
+        this.renderStartupIssue(this.startupIssueText(e));return 'error';
       }
     }
     try{await this.signInAnonymous();}catch(e){this.h.entryError?.(/尚未开启免邮箱进入/.test(e.message)?'云端尚未开启免邮箱进入；现在仍可先填写 4 步，保存前需开启。':'暂时无法建立本机身份，请检查网络。');}
     this.h.needsRole?.();return 'choose';
   }
-  renderStartupIssue(msg){this.current='startup-error';this.shell(`<div class="coach-top"><div><b>读取档案遇到问题</b><small>已保存的目标和记录不会因此被清除</small></div></div><article class="coach-card"><p class="coach-alert">${esc(msg)}</p><button data-coach="startup-retry">重新连接</button><button class="coach-secondary" data-coach="recover-open">用个人恢复码找回</button></article>`);}
+  renderStartupIssue(msg){this.current='startup-error';this.shell(`<div class="coach-top"><div><b>读取档案遇到问题</b><small>已保存的目标和记录不会因此被清除</small></div></div><article class="coach-card"><p class="coach-alert">${esc(msg)}</p><button data-coach="startup-retry">重新连接</button><button class="coach-secondary" data-coach="recover-open">用个人恢复码找回</button><button class="coach-secondary" data-coach="connection-copy">复制连接诊断</button></article>`);}
   async signInAnonymous(){const d=await this.authRequest('/auth/v1/signup',{data:{}});if(!d?.access_token||!d?.user?.id)throw new Error('没有获得本机身份，请检查匿名登录配置。');this.saveSession(d);return d;}
   async pair(family,person,showRecovery=true){const m=await this.rpc('fl_claim_role',{p_family:family,p_person:person});this.member=m;const r=await this.rpc('fl_private_pull',{p_since:new Date(Date.now()-120*864e5).toISOString().slice(0,10)});this.provisional=false;await this.load(r);if(showRecovery)try{await this.issueRecoveryCode();this.renderRecovery();}catch(e){this.notice('档案已建立，但恢复码生成失败：'+e.message);}}
   beginRole(person,family){if(!['hus','wife'].includes(person))throw new Error('请先选择角色。');const code=String(family||this.h.family()||'').trim()||Array.from(crypto.getRandomValues(new Uint8Array(16)),x=>(x%36).toString(36)).join('');if(!/^[A-Za-z0-9]{8,40}$/.test(code))throw new Error('家庭口令需要 8–40 位字母或数字。');this.member={person,family:code};this.provisional=true;this.profile=null;this.draft=this.legacyDraft(this.h.initialMeasures?.(person)||{});this.step=0;this.previewPlan=null;this.chat=[[],[],[]];this.chatInput='';this.aiError='';this.aiErrorContext=null;this.renderOnboard();}
   async ensurePaired(){if(!this.provisional)return;if(this.ready)await this.ready;if(!this.session)await this.signInAnonymous();const draft=this.draft,plan=this.previewPlan,chat=this.chat;await this.pair(this.member.family,this.member.person,false);this.draft=draft;this.previewPlan=plan;this.chat=chat;this.step=3;this.provisional=false;this.renderOnboard();}
   async issueRecoveryCode(){const bytes=crypto.getRandomValues(new Uint8Array(16));const raw=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');await this.rpc('fl_recovery_set',{p_hash:await recoveryHash(raw)});this.recoveryCode=raw.toUpperCase().match(/.{1,4}/g).join('-');}
-  async recover(code){const hash=await recoveryHash(code),oldSession=this.session,replacing=!!(this.hadSavedSession&&oldSession);if(replacing||!this.session)await this.signInAnonymous();let m;try{m=await this.rpc('fl_recover_role',{p_hash:hash});}catch(e){if(replacing)this.saveSession(oldSession);throw e;}this.member=m;const r=await this.rpc('fl_private_pull',{p_since:new Date(Date.now()-120*864e5).toISOString().slice(0,10)});await this.load(r);try{await this.issueRecoveryCode();this.renderRecovery();}catch(e){this.notice('档案已恢复，但新恢复码生成失败：'+e.message);}}
+  async recover(code){
+    this.recovering=true;clearTimeout(this.reconnectTimer);this.reconnectTimer=null;
+    try{
+      const hash=await recoveryHash(code),oldSession=this.session,replacing=!!(this.hadSavedSession&&oldSession);
+      if(replacing||!this.session)await this.signInAnonymous();let m;
+      try{m=await this.rpc('fl_recover_role',{p_hash:hash});}catch(e){if(replacing)this.saveSession(oldSession);throw e;}
+      this.member=m;const r=await this.rpc('fl_private_pull',{p_since:new Date(Date.now()-120*864e5).toISOString().slice(0,10)});await this.load(r);
+      try{await this.issueRecoveryCode();this.renderRecovery();}catch(e){this.notice('档案已恢复，但新恢复码生成失败：'+e.message);}
+    }finally{this.recovering=false;}
+  }
   renderRecovery(){this.current='recovery';this.shell(`<div class="coach-top"><div><b>保存个人恢复码</b><small>只属于你，不要发给伴侣</small></div></div><article class="coach-card"><p>换手机或清除浏览器数据时，用它找回私人档案。新码生成后旧码失效；请保存到你自己的安全位置。</p><div class="coach-recovery-code">${esc(this.recoveryCode||'')}</div><button data-coach="recovery-copy">复制恢复码</button><button class="coach-secondary" data-coach="recovery-saved">我已保存，继续</button></article>`);}
   renderRecoverEntry(msg=''){this.current='recover-entry';this.shell(`<div class="coach-top"><button data-coach="gate" aria-label="返回">${coachIcon('back')}</button><div><b>找回私人档案</b><small>输入仅你持有的恢复码</small></div></div><article class="coach-card"><p>恢复后，这台设备会成为你的新设备；原设备将不能再同步此档案。</p><label>个人恢复码<input data-coach-field="recovery" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="8 组 4 位字符"></label>${msg?`<p class="coach-alert">${esc(msg)}</p>`:''}<button data-coach="recover-submit">恢复我的档案</button></article>`);}
-  async load(r){this.member=r.member;this.profile=r.profile||null;if(this.profile?.confirmedAt)this.draft={...this.blank(),...this.profile};this.weeks={};(r.weeks||[]).forEach(w=>this.weeks[w.weekStart]=w.body);this.partnerActivity={};(r.partnerActivity||[]).forEach(a=>this.partnerActivity[a.date]=!!a.checked);this.partnerTrend=(r.partnerTrend||[]).sort((a,b)=>a.date.localeCompare(b.date));this.h.setIdentity(this.member.person,this.member.family,this.session.user?.id||this.session.user_id);localStorage.setItem(PAIRED_KEY,'1');
-    const checkins={},measures={};(r.checkins||[]).forEach(x=>checkins[this.person+'_'+x.date]=x.body);(r.measures||[]).forEach(x=>measures[this.person+'_'+x.date]=x.body);this.h.setStore({checkins,measures});this.root.hidden=true;this.saveProfileCache();this.h.setSync?.('ok');this.h.render();if(!this.profile?.confirmedAt){this.draft=this.legacyDraft(measures);this.step=0;this.previewPlan=null;this.renderOnboard();}else this.checkWeekly();}
+  async load(r){this.assertPrivatePull(r);this.member=r.member;this.profile=r.profile||null;if(this.profile?.confirmedAt)this.draft={...this.blank(),...this.profile};this.weeks={};(r.weeks||[]).forEach(w=>this.weeks[w.weekStart]=w.body);this.partnerActivity={};(r.partnerActivity||[]).forEach(a=>this.partnerActivity[a.date]=!!a.checked);this.partnerTrend=(r.partnerTrend||[]).sort((a,b)=>a.date.localeCompare(b.date));this.h.setIdentity(this.member.person,this.member.family,this.session.user?.id||this.session.user_id);localStorage.setItem(PAIRED_KEY,'1');
+    const checkins={},measures={};(r.checkins||[]).forEach(x=>checkins[this.person+'_'+x.date]=x.body);(r.measures||[]).forEach(x=>measures[this.person+'_'+x.date]=x.body);this.h.setStore({checkins,measures});this.root.hidden=true;this.current=null;this.saveProfileCache();this.connectionOkay();this.h.setSync?.('ok');this.h.render();if(!this.profile?.confirmedAt){this.draft=this.legacyDraft(measures);this.step=0;this.previewPlan=null;this.renderOnboard();}else this.checkWeekly();}
   legacyDraft(measures){const d=this.blank(),history=Object.values(measures).sort((a,b)=>a.date.localeCompare(b.date));const g=history.filter(m=>m.goal).at(-1)?.goal;if(g){d.age=g.age||'';d.height=g.height||'';d.weight=g.start||'';d.target=g.target!==g.start?g.target:'';d.goals=d.target?['减脂']:['建立运动习惯'];}const latest=history.filter(m=>typeof m.weight==='number').at(-1);if(latest)d.weight=latest.weight;return d;}
   editProfile(){this.draft={...this.blank(),...this.profile,notes:[...(this.profile?.notes||['','',''])]};this.chat=[[],[],[]];this.chatInput='';this.previewPlan=null;this.step=0;this.aiError='';this.aiErrorContext=null;this.renderOnboard();}
-  async sync(store,dirty){if(!this.active||this.busy)return;this.busy=true;try{for(const key of [...dirty]){const kind=key[0],id=key.slice(2),b=kind==='c'?store.checkins[id]:store.measures[id];if(!b||b.person!==this.person)continue;await this.rpc(kind==='c'?'fl_private_put_checkin':'fl_private_put_measure',{p_date:b.date,p_body:b});this.h.clearDirty(key);}
-      const r=await this.rpc('fl_private_pull',{p_since:new Date(Date.now()-120*864e5).toISOString().slice(0,10)});this.profile=r.profile||this.profile;this.weeks={};(r.weeks||[]).forEach(w=>this.weeks[w.weekStart]=w.body);this.partnerActivity={};(r.partnerActivity||[]).forEach(a=>this.partnerActivity[a.date]=!!a.checked);this.partnerTrend=(r.partnerTrend||[]).sort((a,b)=>a.date.localeCompare(b.date));const checkins={},measures={};(r.checkins||[]).forEach(x=>checkins[this.person+'_'+x.date]=x.body);(r.measures||[]).forEach(x=>measures[this.person+'_'+x.date]=x.body);this.h.setStore({checkins,measures});this.saveProfileCache();this.h.setSync('ok');this.h.render();
-    }catch(e){if(String(e.message).includes('pairing_required')){this.member=null;this.profile=null;this.h.clearIdentity?.();this.renderRecoverEntry('这个档案已在另一台设备恢复。');}else this.h.setSync('error');console.warn('private sync',e);}finally{this.busy=false;}}
+  sync(store,dirty,reason='change'){
+    if(this.recovering||this.current==='recover-entry')return Promise.resolve();
+    if(this.startupPromise)return this.startupPromise;
+    if(this.busy){if(reason==='change')this.syncAgain=true;return this.syncPromise||Promise.resolve();}
+    if(!['change','online','manual'].includes(reason)&&Date.now()<(this.nextReconnectAt||0))return Promise.resolve();
+    if(!this.active){return this.session&&this.current==='startup-error'?this.restoreSession():Promise.resolve();}
+    if(!dirty.length&&((reason==='poll'&&Date.now()-(this.lastCloudPullAt||0)<90000)||(reason==='foreground'&&Date.now()-(this.lastCloudPullAt||0)<15000)))return Promise.resolve();
+    this.busy=true;
+    const work=this.runSync(store,dirty);this.syncPromise=work;
+    return work.finally(()=>{this.busy=false;if(this.syncPromise===work)this.syncPromise=null;if(this.syncAgain){this.syncAgain=false;if(!this.nextReconnectAt)this.h.requestSync?.('change');}});
+  }
+  async runSync(store,dirty){
+    this.h.setSync('syncing');
+    const planRevision=this.planRevision||0;
+    try{
+      for(const key of [...dirty]){
+        const current=this.h.getSyncData?.().store||store,kind=key[0],id=key.slice(2),b=kind==='c'?current.checkins[id]:current.measures[id];
+        if(!b||b.person!==this.person)continue;
+        const sent=JSON.stringify(b),snapshot=JSON.parse(sent);
+        await this.rpc(kind==='c'?'fl_private_put_checkin':'fl_private_put_measure',{p_date:snapshot.date,p_body:snapshot});
+        // An edit made while the upload was running still needs its own acknowledgement.
+        if(this.h.clearDirty(key,sent)===false)this.syncAgain=true;
+      }
+      const r=await this.rpc('fl_private_pull',{p_since:new Date(Date.now()-120*864e5).toISOString().slice(0,10)});
+      this.assertPrivatePull(r);
+      if(planRevision===(this.planRevision||0)){
+        this.profile=r.profile||this.profile;if(this.profile?.confirmedAt&&this.current!=='onboard')this.draft={...this.blank(),...this.profile};
+        this.weeks={};(r.weeks||[]).forEach(w=>this.weeks[w.weekStart]=w.body);
+      }
+      this.partnerActivity={};(r.partnerActivity||[]).forEach(a=>this.partnerActivity[a.date]=!!a.checked);
+      this.partnerTrend=(r.partnerTrend||[]).sort((a,b)=>a.date.localeCompare(b.date));
+      const checkins={},measures={};(r.checkins||[]).forEach(x=>checkins[this.person+'_'+x.date]=x.body);(r.measures||[]).forEach(x=>measures[this.person+'_'+x.date]=x.body);
+      this.h.setStore({checkins,measures});this.saveProfileCache();this.connectionOkay();
+      const pending=this.h.getSyncData?.().dirty.length||0;this.h.setSync(pending?'pending':'ok');this.h.render();
+    }catch(e){
+      if(this.recovering||this.current==='recover-entry')return;
+      this.recordClientFailure('/client/sync',e);
+      if(String(e.message).includes('pairing_required')){const key=this.cacheKey();if(key)localStorage.removeItem(key);this.member=null;this.profile=null;this.h.clearIdentity?.();this.renderRecoverEntry('这个档案已在另一台设备恢复。');}
+      else if(e.code==='session_expired'||e.code==='session_changed'){this.h.setSync('auth');this.renderStartupIssue(this.startupIssueText(e));}
+      else{this.h.setSync(this.transient(e)?'offline':'error');this.scheduleReconnect(e);}
+    }
+  }
   partnerChecked(date){return this.partnerActivity[date]===true;}
   ownWeek(date=today()){return this.weeks[monday(new Date(date+'T12:00:00'))]||null;}
   schedule(date,base){const c=this.h.getCheckin(date);if(c.dailyChoice==='rest')return {kind:'rest'};const plan=this.carryPlan(date);if(date<plan.cycleStart)return base;const key=plan.days[date];if(key)return key==='REST'?{kind:'rest'}:{kind:'train',w:key};return base;}
@@ -125,11 +308,11 @@ class DuoCoach {
   async confirmStep(){const d=this.draft,s=this.step;if(s<3&&this.chatInput.trim()){d.notes[s]=(d.notes[s]+' '+this.chatInput.trim()).trim().slice(0,500);this.chatInput='';}if(s===0){if(!d.goals.length&&!d.notes[0])return this.renderOnboard('先选目标，或用自己的话描述。');if(!(Number(d.age)>=18&&Number(d.age)<=80&&Number(d.height)>=130&&Number(d.height)<=210&&Number(d.weight)>=30&&Number(d.weight)<=200))return this.renderOnboard('请检查年龄、身高和当前体重。');if(d.target&&(Number(d.target)<30||Number(d.target)>200||Number(d.target)<18.5*(Number(d.height)/100)**2))return this.renderOnboard('期待体重过低，请调整或留空。');}
     if(s===1&&!d.health.length&&!d.notes[1])return this.renderOnboard('请选择身体情况，或选“暂不想说”。');if(s===2&&(!d.frequency||!d.duration)&&!d.notes[2])return this.renderOnboard('请选训练频率和时长，或描述你的安排。');if(s<3){this.step++;this.aiText='';if(this.step===3){this.previewPlan=this.proposedPlan();await this.generatePlan();}else this.renderOnboard();return;}
     if(this.previewPlan?.startDate&&this.previewPlan.startDate!==today()){this.previewPlan=this.proposedPlan();await this.generatePlan();return this.renderOnboard('日期已变化，已更新从今天开始的计划，请核对后启用。');}const profile={...d,planStartDate:today(),confirmedAt:new Date().toISOString(),notes:d.notes.map(x=>String(x).slice(0,500))};const plan=this.previewPlan||this.proposedPlan();
-    await this.ensurePaired();await this.rpc('fl_private_put_profile',{p_body:profile});const weekStart=monday(new Date());await this.rpc('fl_private_put_week',{p_week_start:weekStart,p_body:{plan,bodyStatus:d.health,reviewedAt:new Date().toISOString()}});this.profile=profile;this.weeks[weekStart]={plan,bodyStatus:d.health,reviewedAt:new Date().toISOString()};this.saveProfileCache();this.h.saveLegacyGoal(profile);this.h.render();try{await this.issueRecoveryCode();this.renderRecovery();}catch(e){this.notice('计划已保存，但恢复码生成失败：'+e.message);}}
+    await this.ensurePaired();await this.rpc('fl_private_put_profile',{p_body:profile});const weekStart=monday(new Date());await this.rpc('fl_private_put_week',{p_week_start:weekStart,p_body:{plan,bodyStatus:d.health,reviewedAt:new Date().toISOString()}});this.profile=profile;this.weeks[weekStart]={plan,bodyStatus:d.health,reviewedAt:new Date().toISOString()};this.planRevision=(this.planRevision||0)+1;this.saveProfileCache();this.h.saveLegacyGoal(profile);this.h.render();try{await this.issueRecoveryCode();this.renderRecovery();}catch(e){this.notice('计划已保存，但恢复码生成失败：'+e.message);}}
   checkWeekly(){if(!this.profile?.confirmedAt)return;const week=monday(new Date()),key='duofit.week.prompt.'+(this.session.user?.id||this.person)+'.'+week;if(this.weeks[week]?.reviewedAt||localStorage.getItem(key))return;this.weekHealth=[];this.weekNote='';this.weekProposed=null;this.weekKey=key;this.renderWeekly();}
   renderWeekly(msg=''){this.current='weekly';const old=this.weeks[monday(new Date(Date.now()-7*864e5))]?.bodyStatus||this.profile.health||[];this.shell(`<div class="coach-top"><button data-coach="close" aria-label="关闭">${coachIcon('close')}</button><div><b>新的一周</b><small>计划要调整吗？</small></div></div><article class="coach-card"><div class="coach-bubble"><img src="assets/avatar-${this.person}.png" alt=""><div><b>你的健康伙伴</b><p>先确认这周的身体状态，再决定要不要改计划。</p></div></div><div class="coach-summary"><b>你设定的目标</b><p>${esc(this.goalTitle())} · 想改善 ${esc(this.profile.focus?.join('、')||'全身')}${this.profile.target?` · 期待 ${esc(this.profile.target)} kg`:''}</p><b>上次身体记录</b><p>${esc(old.join('、')||'暂无记录')}</p></div>${this.q('这周身体状态如何？','可多选',this.chips('weekHealth',['目前无特别不适','经期不适','最近生病','身体疼痛','疲惫或睡眠差','慢性病情况变化'],this.weekHealth))}<textarea data-week-note placeholder="可补充：这周膝盖不舒服、时间变少了…">${esc(this.weekNote)}</textarea>${this.weekProposed?`<div class="coach-summary"><b>建议的新安排</b><p>${esc(Object.entries(this.weekProposed.days||{}).filter(([,v])=>v!=='REST').map(([k,v])=>k.slice(5)+' '+v).join(' · ')||'本周以休息为主')}</p><b>饮食建议</b><p>${esc(Object.values(this.weekProposed.mealSwaps||{}).filter(Boolean).join('；')||'沿用现有饮食份量')}</p></div>`:''}${msg?`<p class="coach-alert">${esc(msg)}</p>`:''}<button data-coach="week-adjust">${this.weekProposed?'确认使用这个计划':'需要调整，和伙伴聊聊'}</button><button class="coach-secondary" data-coach="week-keep">沿用现有计划</button></article>`);}
   async weeklyDecision(adjust){if(!this.weekHealth.length&&!this.weekNote.trim())return this.renderWeekly('先确认这周的身体状态。');const risk=this.weekHealth.some(x=>['经期不适','最近生病','身体疼痛','慢性病情况变化','疲惫或睡眠差'].includes(x))||/疼|痛|伤|病|不适|疲惫|睡眠差|没睡/.test(this.weekNote);if(!adjust&&risk)return this.renderWeekly('这周身体状态有变化，先看看更合适的安排。');const weekStart=monday(new Date()),plan=this.carryPlan();let newPlan=plan;if(adjust&&!this.weekProposed){const ai=await this.coachAI('weekly',this.weekNote||this.weekHealth.join('、'),{weekStart});if(ai?.plan?.days)newPlan=this.safePlan(ai.plan,plan,this.weekHealth);else if(risk)newPlan={...plan,days:Object.fromEntries(Object.keys(plan.days||{}).map(k=>[k,'REST'])),reason:'身体状态有变化，先以休息和轻量活动为主；恢复后再调整。'};}if(risk)newPlan={...newPlan,days:Object.fromEntries(Object.keys(newPlan.days||{}).map(k=>[k,'REST'])),cycleDays:Array(7).fill('REST')};if(adjust&&!this.weekProposed){this.weekProposed=newPlan;this.renderWeekly();return;}if(adjust)newPlan=this.weekProposed;
-    const body={plan:{...newPlan,startDate:Object.keys(newPlan.days).sort()[0]},bodyStatus:[...this.weekHealth],bodyNote:this.weekNote.slice(0,500),reviewedAt:new Date().toISOString()};await this.rpc('fl_private_put_week',{p_week_start:weekStart,p_body:body});this.weeks[weekStart]=body;this.saveProfileCache();if(this.weekKey)localStorage.setItem(this.weekKey,'1');this.root.hidden=true;this.current=null;this.h.render();}
+    const body={plan:{...newPlan,startDate:Object.keys(newPlan.days).sort()[0]},bodyStatus:[...this.weekHealth],bodyNote:this.weekNote.slice(0,500),reviewedAt:new Date().toISOString()};await this.rpc('fl_private_put_week',{p_week_start:weekStart,p_body:body});this.weeks[weekStart]=body;this.planRevision=(this.planRevision||0)+1;this.saveProfileCache();if(this.weekKey)localStorage.setItem(this.weekKey,'1');this.root.hidden=true;this.current=null;this.h.render();}
   renderDaily(msg=''){this.current='daily';this.shell(`<div class="coach-top"><button data-coach="close" aria-label="关闭">${coachIcon('close')}</button><div><b>调整今天</b><small>只调整今天，不改整周</small></div></div><article class="coach-card"><div class="coach-bubble"><img src="assets/avatar-${this.person}.png" alt=""><div><b>你的健康伙伴</b><p>今天身体和时间怎么样？</p></div></div>${this.q('身体状态','选最接近的一项',this.chips('dailyState',['状态不错','经期不适','生病或恢复中','身体疼痛','很疲惫'],[this.dailyState]))}${this.q('今天可用时间','选一项',this.chips('dailyTime',['按原计划','只有 10 分钟','今天没时间'],[this.dailyTime]))}${msg?`<p class="coach-alert">${esc(msg)}</p>`:''}<button data-coach="daily-save">确认今天的调整</button></article>`);}
   async saveDaily(){if(!this.dailyState||!this.dailyTime)return this.renderDaily('先告诉我身体状态和可用时间。');const choice=this.dailyState==='状态不错'?(this.dailyTime==='按原计划'?'original':this.dailyTime==='只有 10 分钟'?'short':'rest'):'rest';const c={...this.h.getCheckin(today()),person:this.person,date:today(),dailyState:this.dailyState,dailyTime:this.dailyTime,dailyChoice:choice};this.h.putCheckin(c);this.root.hidden=true;this.current=null;this.h.render();}
   async subscribePush(){if(!this.pushSupported)return this.notice('当前设备不支持系统通知。');const pub=String(cfg.PUSH_PUBLIC_KEY||'');if(!pub)return this.notice('推送服务尚未配置，站内提醒仍然可用。');try{const perm=await Notification.requestPermission();if(perm!=='granted')return this.notice('你没有开启通知，站内提醒仍然可用。');const reg=await navigator.serviceWorker.ready;const bytes=Uint8Array.from(atob(pub.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));const sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:bytes});const j=sub.toJSON();await this.rpc('fl_push_save',{p_endpoint:j.endpoint,p_p256dh:j.keys.p256dh,p_auth:j.keys.auth});this.notice('已开启每周系统提醒。');}catch(e){this.notice('开启失败：'+e.message);}}
@@ -138,13 +321,14 @@ class DuoCoach {
     try{if(a==='gate'){if(this.hadSavedSession&&!this.active)this.renderStartupIssue('可以重新连接，或用个人恢复码找回档案。');else{this.root.hidden=true;this.current=null;this.h.showRoleChoice?.();}}
       else if(a==='recover-open'){this.h.hideEntry?.();this.recoveryInput='';this.renderRecoverEntry();}
       else if(a==='startup-retry'){b.disabled=true;await this.restoreSession();}
+      else if(a==='connection-copy'){await navigator.clipboard.writeText(this.connectionDiagnostics());b.textContent='已复制连接诊断';}
       else if(a==='recover-submit'){if(this.ready)await this.ready;const code=this.root.querySelector('[data-coach-field="recovery"]')?.value||this.recoveryInput;await this.recover(code);}
       else if(a==='recovery-copy'){await navigator.clipboard.writeText(this.recoveryCode);this.renderRecovery();}
       else if(a==='recovery-saved'){this.recoveryCode=null;this.root.hidden=true;this.current=null;if(!this.profile?.confirmedAt)this.renderOnboard();else this.checkWeekly();}
       else if(a==='show-recovery'){await this.issueRecoveryCode();this.renderRecovery();}
       else if(a==='copy-family'){await navigator.clipboard.writeText(this.member.family);this.notice('已复制配对口令，请通过可信方式发给伴侣。');}
       else if(a==='signout'){this.renderSignoutConfirm();}
-      else if(a==='signout-confirm'){try{await this.request('/auth/v1/logout',{});}catch(_){}this.session=null;this.member=null;this.profile=null;this.weeks={};this.partnerActivity={};this.partnerTrend=[];localStorage.removeItem(AUTH_KEY);localStorage.removeItem(PAIRED_KEY);this.h.clearIdentity?.();this.root.hidden=true;this.current=null;this.h.needsRole?.();}
+      else if(a==='signout-confirm'){try{await this.request('/auth/v1/logout',{});}catch(_){}clearTimeout(this.reconnectTimer);this.reconnectTimer=null;const key=this.cacheKey();if(key)localStorage.removeItem(key);this.persistedSession=false;this.hadSavedSession=false;this.session=null;this.member=null;this.profile=null;this.weeks={};this.partnerActivity={};this.partnerTrend=[];localStorage.removeItem(AUTH_KEY);localStorage.removeItem(PAIRED_KEY);this.h.clearIdentity?.();this.root.hidden=true;this.current=null;this.h.needsRole?.();}
       else if(a==='next'){await this.confirmStep();}
       else if(a==='retry-plan'){await this.generatePlan();}
       else if(a==='back'){if(this.current==='onboard'&&this.step>0){this.step--;this.previewPlan=null;this.renderOnboard();}else if(this.current==='onboard'&&this.provisional){this.member=null;this.provisional=false;this.root.hidden=true;this.current=null;this.h.showRoleChoice?.();}else this.root.hidden=true;}

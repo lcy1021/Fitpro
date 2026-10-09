@@ -668,7 +668,7 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="private-coach.css?v=26">
+<link rel="stylesheet" href="private-coach.css?v=27">
 </head>
 <body class="me-hus">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -801,7 +801,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=26"></script>
+<script src="private-coach.js?v=27"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1375,6 +1375,11 @@ let lastSync = null;
 
 function saveLocal(){ try{ localStorage.setItem(LS_DATA,JSON.stringify(store)); localStorage.setItem(LS_DIRTY,JSON.stringify(dirty)); }catch(e){} }
 function markDirty(key){ if(!dirty.includes(key)) dirty.push(key); }
+function ackDirty(key,sent){
+  const id=key.slice(2),body=key[0]==="c"?store.checkins[id]:store.measures[id];
+  if(JSON.stringify(body)!==sent)return false;
+  dirty=dirty.filter(k=>k!==key);saveLocal();return true;
+}
 
 async function rpc(fn,args){
   const headers={"Content-Type":"application/json","apikey":SUPABASE_KEY};
@@ -1388,8 +1393,8 @@ async function rpc(fn,args){
 }
 
 let syncing=false, syncAgain=false;
-async function sync(){
-  if(privateCoach){ if(privateCoach.active) return privateCoach.sync(store,dirty); return; }
+async function sync(reason="change"){
+  if(privateCoach)return privateCoach.sync(store,dirty,reason);
   if(!CLOUD || !family) return;
   if(syncing){ syncAgain=true; return; }
   syncing=true; syncState="syncing"; renderSync();
@@ -1420,7 +1425,7 @@ async function sync(){
   }
 }
 let pushTimer=null;
-function schedulePush(delay){ clearTimeout(pushTimer); pushTimer=setTimeout(sync,delay||400); }
+function schedulePush(delay){ clearTimeout(pushTimer); pushTimer=setTimeout(()=>sync("change"),delay||400); }
 
 function checkinId(person,date){ return person+"_"+date; }
 function getCheckin(person,date){
@@ -1474,9 +1479,11 @@ function renderSync(){
     case "local": t="数据只保存在这台手机上（没读到 config.js 里的 Supabase 配置）"; warn=true; break;
     case "nocode": t="还没设置家庭口令，暂时不会同步"; warn=true; break;
     case "syncing": t="正在同步…"; break;
+    case "pending": t="记录已保存，正在继续上传…"; break;
     case "ok": t="已同步，"+hm(lastSync||new Date())+" 更新"; break;
-    case "offline": t="网络不通，已存在本机，恢复后自动同步"; warn=true; break;
-    case "error": t="同步失败：请检查 Supabase 配置和建表脚本"; warn=true; break;
+    case "offline": t="暂时连不上云端，记录已保存在本机，会自动重试"; warn=true; break;
+    case "error": t="云端同步未完成，记录已保存在本机；可在设置里复制连接诊断"; warn=true; break;
+    case "auth": t="本机身份需要重新连接，记录仍保存在本机"; warn=true; break;
     default: t="准备同步…";
   }
   if(dirty.length && syncState!=="syncing" && syncState!=="local") t+="（"+dirty.length+" 条待上传）";
@@ -1877,7 +1884,7 @@ function viewRecord(){
       <div class="mtiles">${tiles.map(tile).join("")}</div>
       <button class="cta" type="submit">${icon("check","sm")} 保存记录</button>
     </form>
-  </section><div id="recData"></div>${privateCoach?.active?privateCoach.pushCard()+`<details class="private-settings"><summary>${icon("settings")}<span>设置</span>${icon("chevron-down","settings-chevron")}</summary><div class="private-settings-body"><p>私人档案仅自己可见。换手机前请保存个人恢复码。</p><button type="button" data-coach="show-recovery">生成新的个人恢复码</button><button type="button" data-coach="copy-family">复制家庭配对口令</button><button type="button" data-coach="signout">清除本机登录</button></div></details>`:""}${tokenCard}`;
+  </section><div id="recData"></div>${privateCoach?.active?privateCoach.pushCard()+`<details class="private-settings"><summary>${icon("settings")}<span>设置</span>${icon("chevron-down","settings-chevron")}</summary><div class="private-settings-body"><p>私人档案仅自己可见。换手机前请保存个人恢复码。</p><button type="button" data-coach="show-recovery">生成新的个人恢复码</button><button type="button" data-coach="copy-family">复制家庭配对口令</button><button type="button" data-coach="connection-copy">复制连接诊断</button><button type="button" data-coach="signout">清除本机登录</button></div></details>`:""}${tokenCard}`;
   renderRecordData();
   $("#mForm").addEventListener("input",e=>{
     const i=e.target; if(!i.dataset || i.name==="date") return;
@@ -2359,7 +2366,9 @@ if(CLOUD){
       saveLocal();
     },
     setStore:data=>{const next={checkins:data.checkins||{},measures:data.measures||{}};dirty.forEach(k=>{const id=k.slice(2),src=k[0]==="c"?store.checkins:store.measures,dst=k[0]==="c"?next.checkins:next.measures;if(src[id])dst[id]=src[id];});store=next;saveLocal();},
-    clearDirty:key=>{dirty=dirty.filter(k=>k!==key);saveLocal();},
+    clearDirty:ackDirty,
+    getSyncData:()=>({store,dirty}),
+    requestSync:reason=>{setTimeout(()=>sync(reason),0);},
     setSync:v=>{syncState=v;if(v==="ok")lastSync=new Date();renderSync();},
     getCheckin:date=>getCheckin(me,date),putCheckin:b=>putCheckin(b),render:()=>{lastTab=null;render();},
     clearIdentity:()=>{store={checkins:{},measures:{}};dirty=[];LS_DATA="fatloss.local";LS_DIRTY="fatloss.dirty";LS_AI="fatloss.aicache";$("#view").innerHTML="";},
@@ -2371,9 +2380,9 @@ if(CLOUD){
   let savedCoachSession=false;try{savedCoachSession=!!(localStorage.getItem("duofit.auth.v1")||localStorage.getItem("duofit.paired.v1"));}catch(_){}
   if(savedCoachSession)openSplash(async()=>{const status=await coachReady.catch(()=>"error");return status==="error"?"error":privateCoach.active?"home":"choose";});else openPicker(false);
   coachReady=privateCoach.start();privateCoach.ready=coachReady;
-  setInterval(()=>{if(document.visibilityState==="visible"){refreshCalendarDay();sync();}},30000);
-  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){refreshCalendarDay();sync();}});
-  window.addEventListener("online",()=>sync());
+  setInterval(()=>{if(document.visibilityState==="visible"){refreshCalendarDay();sync("poll");}},30000);
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){refreshCalendarDay();sync("foreground");}});
+  window.addEventListener("online",()=>sync("online"));
 }else if(storedMe!=="hus" && storedMe!=="wife") openPicker(false);
 else openSplash();
 })();
