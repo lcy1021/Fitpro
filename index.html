@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=37">
+<link rel="stylesheet" href="design-system/tokens.css?v=38">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -545,8 +545,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=37">
-<link rel="stylesheet" href="private-coach.css?v=37">
+<link rel="stylesheet" href="design-system/components.css?v=38">
+<link rel="stylesheet" href="private-coach.css?v=38">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -680,7 +680,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=37"></script>
+<script src="private-coach.js?v=38"></script>
+<script src="design-system/mascots.js?v=38"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1530,7 +1531,7 @@ function mealEnergy(value,label='约'){
   return number==null?'':`<span class="meal-energy"><small>${label}</small><b>${esc(number)}</b><small>kcal</small></span>`;
 }
 function mealArt(m){
-  return `<img class="meal-art" src="assets/meal-art/${m}${['breakfast','lunch'].includes(m)?'-detail-v1.webp?v=detail1':'-v1.webp?v=meal1'}" width="106" height="72" alt="" loading="lazy" decoding="async">`;
+  return `<span class="meal-art-stage"><img class="meal-art" src="assets/meal-art/${m}${['breakfast','lunch'].includes(m)?'-detail-v1.webp?v=detail1':'-v1.webp?v=meal1'}" width="106" height="72" alt="" loading="lazy" decoding="async"></span>`;
 }
 function mealHeading(m,title,time,range,layout='plan'){
   return `<div class="meal-heading"><span class="meal-symbol m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><div class="meal-title"><h4>${esc(title)}</h4><time>${esc(time)}</time></div>${mealArt(m)}${layout==='today'?'':mealEnergy(range)}</div>`;
@@ -1538,8 +1539,7 @@ function mealHeading(m,title,time,range,layout='plan'){
 function mealSectionHeading(title,date,kind,person=me){
   const d=new Date(date+'T12:00:00');
   const label=`${d.getMonth()+1}月${d.getDate()}日 周${WEEK[d.getDay()]}`;
-  const src=kind==='record'?'assets/meal-art/record-couple-detail-v1.webp?v=detail1':`assets/meal-art/${kind}-${person}-detail-v1.webp?v=detail1`;
-  return `<div class="meal-section-heading ds-section-heading ${person}"><div><h3>${esc(title)}</h3><time datetime="${esc(date)}">${label}</time></div><img class="${kind==='record'?'couple-art':kind==='today'?'today-art':'diet-art'}" src="${src}" alt="${kind==='today'?'好好吃饭，就是爱自己':''}" width="${kind==='record'?160:kind==='today'?180:96}" height="${kind==='today'?112:96}" loading="lazy" decoding="async"></div>`;
+  return `<div class="meal-section-heading ds-section-heading ${person}"><div><h3>${esc(title)}</h3><time datetime="${esc(date)}">${label}</time></div>${window.DuoFitMascots.render(kind,person)}</div>`;
 }
 function mealPlanContent(person,m,hasDietRule){
   const swap=privateCoach?.active?privateCoach.mealSwap(m):'';

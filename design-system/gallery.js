@@ -2,9 +2,9 @@
 let role='hus';
 const icon=(n,small=false)=>`<svg class="ui-icon${small?' sm':''}" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-${n}"/></svg>`;
 const meals=[['breakfast','早餐','7:00','330–545','燕麦 60g、无糖豆浆 300ml、水煮蛋 2 个','豆皮包 1 个、脱脂牛奶 200ml',280],['lunch','午餐','12:00','640–840','杂粮饭 150g、清蒸鸡胸 120g、西兰花 200g','清汤面 250g、蔬菜沙拉 100g',375],['snack','下午加餐','16:00','150–340','原味酸奶 150g、苹果 1 个','',null],['dinner','晚餐','20:00 后','585–785','清蒸鱼 150g、绿叶蔬菜 250g、米饭半碗','',null]];
-const art=m=>`<img class="meal-art" src="../assets/meal-art/${m}${['breakfast','lunch'].includes(m)?'-detail-v1.webp?v=detail1':'-v1.webp?v=meal1'}" width="140" height="86" alt="" loading="lazy" decoding="async">`;
+const art=m=>`<span class="meal-art-stage"><img class="meal-art" src="../assets/meal-art/${m}${['breakfast','lunch'].includes(m)?'-detail-v1.webp?v=detail1':'-v1.webp?v=meal1'}" width="140" height="86" alt="" loading="lazy" decoding="async"></span>`;
 const energy=v=>`<span class="meal-energy"><small>约</small><b>${v}</b><small>kcal</small></span>`;
-function heading(title,kind){return `<div class="ds-section-heading ${role}"><div><h3>${title}</h3><time>10月9日 周五</time></div><img class="${kind==='record'?'couple-art':kind==='today'?'today-art':'diet-art'}" src="${kind==='record'?'../assets/meal-art/record-couple-detail-v1.webp?v=detail1':`../assets/meal-art/${kind}-${role}-detail-v1.webp?v=detail1`}" alt="${kind==='today'?'好好吃饭，就是爱自己':''}" width="${kind==='today'?180:96}" height="96" loading="lazy" decoding="async"></div>`;}
+function heading(title,kind){return `<div class="ds-section-heading ${role}"><div><h3>${title}</h3><time>10月9日 周五</time></div>${window.DuoFitMascots.render(kind,role,'../')}</div>`;}
 function rowHead(m,plan=false){return `<div class="meal-heading"><span class="meal-symbol" aria-hidden="true">${icon(m[0])}</span><div class="meal-title"><h4>${m[1]}</h4><time>${m[2]}</time></div>${art(m[0])}${plan?energy(m[3]):''}</div>`;}
 function actions(){return `<div class="ds-checkin ${role}" role="group" aria-label="示例餐次打卡">${['按计划','吃多了','没吃'].map((n,i)=>`<button type="button" aria-pressed="${i===0}"><span class="check-indicator" aria-hidden="true">${i===0?icon('check',true):''}</span>${n}</button>`).join('')}</div>`;}
 function render(){

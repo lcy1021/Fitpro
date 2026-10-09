@@ -1,0 +1,35 @@
+{
+  "partner": {
+    "editActions": 0,
+    "identity": "me-hus",
+    "owner": "history-day wife",
+    "selected": [
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px",
+        "pressed": "false",
+        "text": "老公"
+      },
+      {
+        "background": "rgb(225, 29, 72)",
+        "border": "0px",
+        "pressed": "true",
+        "text": "老婆"
+      }
+    ],
+    "weight": "77.2"
+  },
+  "past": {
+    "date": "2026-09-14",
+    "editActions": 0,
+    "weight": "77.2"
+  },
+  "skip": {
+    "actual": 0,
+    "selected": "没吃"
+  },
+  "editor": {
+    "opened": "pick open"
+  },
+  "logs": []
+}

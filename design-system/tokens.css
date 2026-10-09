@@ -51,14 +51,16 @@
 /* Approved visual system, semantic scales. Historical special layouts remain opt-in. */
 :root{
  --ds-font:"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
- --ds-text-meta:12px;--ds-text-body:14px;--ds-text-title:16px;--ds-text-section:17px;--ds-text-page:24px;--ds-text-metric:32px;
+ --ds-text-meta:12px;--ds-text-body:14px;--ds-text-title:16px;--ds-text-section:19px;--ds-text-page:24px;--ds-text-metric:32px;
  --ds-weight-body:400;--ds-weight-action:600;--ds-weight-title:700;--ds-weight-section:800;
  --ds-leading-body:1.7;--ds-leading-title:1.3;
  --ds-space-1:4px;--ds-space-2:8px;--ds-space-3:12px;--ds-space-4:16px;--ds-space-5:20px;--ds-space-6:24px;--ds-gap-tight:6px;
  --ds-page-max:520px;--ds-page-gutter:16px;--ds-radius-meal:22px;--ds-radius-inset:16px;--ds-radius-tabs:15px;--ds-radius-tab:11px;
  --ds-radius-track:13px;--ds-radius-segment:10px;--ds-radius-full:999px;--ds-tint-header:65%;--ds-tint-track:38%;--ds-tint-history:70%;
  --ds-touch:44px;--ds-touch-compact:40px;--ds-motion-fast:100ms;--ds-motion-normal:200ms;
- --ds-scene-tint:50%;--ds-cloud-opacity:.55;--ds-cloud-filter:brightness(1.3);
+ --ds-scene-tint:50%;
+ --ds-food-shadow:0 7px 5px rgb(57 71 80 / .18);--ds-food-tint:52%;
+ --ds-cloud-opacity:.55;--ds-cloud-filter:brightness(1.3);
  --ds-scene-border-tint:18%;--ds-meal-border-tint:22%;
  --ds-tab-shadow:0 2px 8px rgba(25,32,36,.13);
 }
@@ -66,3 +68,9 @@
 /* Decorative details stay theme-aware; cloud imagery is shared and cacheable. */
 :root[data-theme="dark"]{--ds-cloud-opacity:.12;--ds-cloud-filter:brightness(.7)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ds-cloud-opacity:.12;--ds-cloud-filter:brightness(.7)}}
+
+/* Resolve role-dependent aliases where the content owner is defined, not on :root. */
+.hus,.wife,.ds-root{
+ --ds-fill-selected:var(--p-ink);--ds-fill-selected-ink:var(--surface);
+ --ds-surface-gradient:linear-gradient(125deg,var(--surface) 5%,color-mix(in srgb,var(--surface) 78%,var(--p-soft)) 48%,var(--p-soft) 100%);
+}
