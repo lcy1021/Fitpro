@@ -32,7 +32,7 @@ const respondImage=(url,method='GET')=>new Promise((resolve,reject)=>{let interc
   failStorage=true;assert.equal((await respondImage('https://example.com/assets/uncached.webp')).body,'new page','full image cache does not hide a successfully downloaded image');failStorage=false;
   assert.equal(await respondImage('https://project.supabase.co/rest/v1/fl_members'),'bypassed');assert.equal(await respondImage(url,'POST'),'bypassed');
   const oldRequest={url:'https://example.com/Fitpro/assets/moves/old.gif'},apiRequest={url:'https://example.com/private-data.json'},already={url};
-  const deleted=[];sandbox.caches.keys=async()=>['duofit-v29','duofit-v30','duofit-images-v1','another-app'];
+  const deleted=[];sandbox.caches.keys=async()=>['duofit-v29','duofit-v31','duofit-images-v1','another-app'];
   const oldCache={keys:async()=>[oldRequest,apiRequest,already],match:async()=>stale};
   sandbox.caches.open=async key=>key==='duofit-images-v1'?imageCache:key==='duofit-v29'?oldCache:cache;sandbox.caches.delete=async key=>{deleted.push(key)};
   await new Promise((resolve,reject)=>handlers.activate({waitUntil:p=>p.then(resolve,reject)}));

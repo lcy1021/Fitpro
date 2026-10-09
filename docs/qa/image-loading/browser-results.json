@@ -5,6 +5,10 @@
       "smallImages": 3
     },
     {
+      "view": "today-short",
+      "smallImages": 3
+    },
+    {
       "view": "train",
       "smallImages": 5
     },

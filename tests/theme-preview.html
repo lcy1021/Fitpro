@@ -43,6 +43,9 @@
   `);
   document.body.appendChild(script);
   const app = window.themePreviewApp;
+  document.querySelector("#pick").classList.remove("open");
+  document.querySelector("#lm").classList.remove("splash");
+  document.querySelector("#appShell").inert=false;document.querySelector("#appTabs").inert=false;
   app.initTabBarSpace();
   const date = app.ymd(new Date());
   const previous = app.ymd(new Date(Date.now() - 7*864e5));

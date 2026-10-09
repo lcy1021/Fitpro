@@ -68,6 +68,9 @@ html{height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padd
 body{margin:0;min-height:100%;background:var(--mesh),var(--bg);background-attachment:fixed;color:var(--ink);
   font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
   font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+/* Keep the app hidden until the initial entry flow is ready, including before scripts load. */
+body.booting{overflow:hidden}
+body.booting > #appShell,body.booting > #appTabs{visibility:hidden}
 button{font:inherit;color:inherit;cursor:pointer;transition:background-color .2s,color .2s,box-shadow .2s,transform .1s}
 button:active{transform:scale(.97)}
 button:focus-visible,input:focus-visible{outline:3px solid color-mix(in srgb,var(--me) 45%,transparent);outline-offset:2px}
@@ -258,7 +261,8 @@ p{margin:0}
 .obs .moves-chips span em{font-style:normal;color:rgba(241,245,249,.6);margin-left:4px}
 .today-move-preview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
 .today-move-preview .item{min-width:0;border-radius:14px;background:rgba(255,255,255,.07);padding:6px;text-align:center}
-.today-move-preview img{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:10px;background:var(--sunk)}
+.today-move-preview picture{display:block;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:10px}
+.today-move-preview img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;border-radius:10px;background:var(--sunk)}
 .today-move-preview b{display:block;margin-top:5px;font-size:11px;line-height:1.3;overflow-wrap:anywhere}
 .cta{width:100%;border:0;border-radius:999px;padding:15px;font-size:16px;font-weight:800;color:#fff;background:var(--me-grad);box-shadow:var(--me-glow),inset 0 1px 1px rgba(255,255,255,.35)}
 .obs .cta.done{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15);color:rgba(241,245,249,.8)}
@@ -654,6 +658,7 @@ p{margin:0}
 .rrest .mood{width:88px;height:88px;object-fit:contain;display:block;margin:0 auto 6px}
 .obs .ol li.has-art{grid-template-columns:76px minmax(0,1fr) auto}
 .obs .ol .art{position:relative;width:76px;height:57px;border-radius:10px;overflow:hidden;background:var(--sunk);flex:none}
+.obs .ol .art picture,.desk .art picture{display:block;width:100%;height:100%}
 .obs .ol .art img{width:100%;height:100%;object-fit:contain;display:block}
 .obs .ol .art .n{position:absolute;left:4px;bottom:4px;width:20px;height:20px;font-size:11px;background:rgba(24,28,36,.72);color:#fff}
 .desk .art{width:100%;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:var(--sunk);margin-bottom:6px}
@@ -671,9 +676,9 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="private-coach.css?v=30">
+<link rel="stylesheet" href="private-coach.css?v=31">
 </head>
-<body class="me-hus">
+<body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
   <symbol id="ic-today" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="3.8"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17M8 15l2.4 2.4 5.2-5.3"/></symbol>
   <symbol id="ic-diet" viewBox="0 0 24 24"><path d="M3.5 12.5h17a8.5 8.5 0 0 1-17 0ZM6 20.5h12M9 9.5c-1.3-1.5-.2-2.7.8-4M14 9.5c-1.3-1.5-.2-2.7.8-4"/><path d="M16.4 7.3c1.6-.2 2.6-1.2 2.9-2.7-1.7.1-2.7.9-2.9 2.7Z" fill="currentColor" stroke="none" opacity=".25"/></symbol>
@@ -708,7 +713,7 @@ p{margin:0}
   <symbol id="ic-bulb" viewBox="0 0 24 24"><path d="M8.5 17c-.3-1.5-1.1-2.1-2-3.3A6 6 0 1 1 17.5 14c-.9 1.1-1.7 1.6-2 3H8.5ZM9 20h6M10 22h4"/></symbol>
   <symbol id="ic-cloud" viewBox="0 0 24 24"><path d="M6.7 18.5a4.2 4.2 0 0 1-.5-8.3 6.3 6.3 0 0 1 12-.1 4.2 4.2 0 0 1-.7 8.4H6.7Z"/></symbol>
 </defs></svg>
-<div class="wrap">
+<div class="wrap" id="appShell" inert>
   <header class="top">
     <span class="tile" id="pageIcon" aria-hidden="true"></span><div class="title"><h1 id="pageTitle">今日</h1><div class="date" id="dateLabel"></div></div>
     <button class="role" data-open-picker aria-label="切换身份，当前是老公" id="roleBtn"><span class="r hus">老公</span><span class="sw">⇄</span><span class="r wife">老婆</span></button>
@@ -718,7 +723,7 @@ p{margin:0}
   <main id="view"></main>
 </div>
 
-<div class="tabs"><nav>
+<div class="tabs" id="appTabs" inert><nav>
   <button data-tab="today" aria-current="page"><span class="tab-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-today"/></svg></span>今日</button>
   <button data-tab="diet"><span class="tab-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-diet"/></svg></span>饮食</button>
   <button data-tab="train"><span class="tab-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-train"/></svg></span>训练</button>
@@ -729,7 +734,7 @@ p{margin:0}
 <div class="toast" id="toast" role="status"></div>
 <div class="react" id="react" role="status" aria-live="polite"></div>
 <!-- 首次进入 / 切换身份：两个云朵从远处跑近、会合，再弹出角色选择（设计见 UIset/login-motion） -->
-<div class="pick lm-pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickTitle"><div class="lm" id="lm" data-phase="choose">
+<div class="pick lm-pick open" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickTitle"><div class="lm splash" id="lm" data-phase="start">
   <div class="lm-grain" aria-hidden="true"></div>
   <div class="lm-top"><button class="lm-skip" data-lm-skip type="button">跳过</button></div>
   <img class="lm-wordmark" src="assets/brand/duofit-wordmark.svg" alt="DuoFit">
@@ -742,7 +747,7 @@ p{margin:0}
     <div class="lm-spark"></div>
   </div>
   <div class="lm-line">每一步，都有人和你一起</div>
-  <section class="lm-choice" id="lmChoice">
+  <section class="lm-choice" id="lmChoice" inert aria-hidden="true">
     <span class="lm-eyebrow">START TOGETHER</span>
     <h2 id="pickTitle">你是谁？</h2>
     <p class="lm-lead">选好角色，健康伙伴会带你用 4 步定好目标和计划。</p>
@@ -804,7 +809,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=30"></script>
+<script src="private-coach.js?v=31"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1372,6 +1377,18 @@ let tab = "today";
 const LS_FAMILY="fatloss.family"; let LS_DIRTY="fatloss.dirty";
 const CLOUD = !!(SUPABASE_URL && SUPABASE_KEY);
 let privateCoach=null, coachReady=Promise.resolve();
+let startupPending=false, startupSyncReason=null;
+function finishStartup(home=false){
+  if(!startupPending)return;
+  startupPending=false;
+  if(home){lastTab=null;render();}
+  document.body.classList.remove("booting");
+  $("#appShell").inert=false;$("#appTabs").inert=false;
+  const reason=startupSyncReason;startupSyncReason=null;
+  if(reason)setTimeout(()=>sync(reason),500);
+  // Worker installation fetches the app shell; keep it out of the entry animation.
+  if("serviceWorker" in navigator && location.protocol==="https:")setTimeout(()=>navigator.serviceWorker.register("sw.js").catch(()=>{}),800);
+}
 let family = (()=>{ try{ return localStorage.getItem(LS_FAMILY)||""; }catch(e){ return ""; } })();
 /* 旧邀请链接曾把口令放在 URL 中；清掉片段，不再自动保存口令。 */
 if(/^#k=/.test(location.hash)) history.replaceState(null,"",location.pathname+location.search);
@@ -1402,6 +1419,7 @@ async function rpc(fn,args){
 
 let syncing=false, syncAgain=false;
 async function sync(reason="change"){
+  if(startupPending){startupSyncReason=reason;return;}
   if(privateCoach)return privateCoach.sync(store,dirty,reason);
   if(!CLOUD || !family) return;
   if(syncing){ syncAgain=true; return; }
@@ -1910,6 +1928,7 @@ function viewRecord(){
 }
 
 function render(){
+  if(startupPending)return;
   renderHeader(); renderSync();
   if(runState) return; // don't touch views mid-workout
   if(tab==="today") viewToday();
@@ -2049,7 +2068,7 @@ document.addEventListener("click",async e=>{
   if(t.hasAttribute("data-code-close")){ codeNextGoal=false; $("#codeDlg").classList.remove("open"); document.body.style.overflow=""; lastTab=null; render(); return; }
   if(t.hasAttribute("data-pick-cancel")){ closePicker(); return; }
   if(t.dataset.lmRole){ lmSelect(t.dataset.lmRole); return; }
-  if(t.hasAttribute("data-lm-skip")){ if($("#lm").classList.contains("splash")){ $("#lm").onclick(); return; } lmClear(); lmPhase("choose"); return; }
+  if(t.hasAttribute("data-lm-skip")){ if($("#lm").classList.contains("splash")){ $("#lm").onclick?.(); return; } lmClear(); lmPhase("choose"); finishStartup(); return; }
   if(t.hasAttribute("data-lm-replay")){ lmPlay(); return; }
   if(t.hasAttribute("data-open-picker")){ if(privateCoach) return; openPicker(true); return; }
   if(t.dataset.dietWeek){dietWeekOffset=Math.min(0,dietWeekOffset+Number(t.dataset.dietWeek));viewDiet();return;}
@@ -2127,9 +2146,9 @@ function lmSelect(role){
 }
 function lmPlay(){
   lmClear(); lmSelect(null); lmPhase("start");
-  if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmPhase("choose"); return; }
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmPhase("choose"); finishStartup(); return; }
   lmReady().then(()=>{ if($("#lm").dataset.phase!=="start") return;
-    lmTimers.push(setTimeout(()=>lmPhase("run"),60), setTimeout(()=>lmPhase("meet"),1840), setTimeout(()=>lmPhase("choose"),2550)); });
+    lmTimers.push(setTimeout(()=>lmPhase("run"),60), setTimeout(()=>lmPhase("meet"),1840), setTimeout(()=>{lmPhase("choose");finishStartup();},2550)); });
 }
 /* 每次打开 App：已经选过身份的，播完跑近会合直接进主页（点任意处或"跳过"可提前进入）；首次打开播完弹出选择卡片 */
 function openSplash(after){
@@ -2140,11 +2159,12 @@ function openSplash(after){
   const done=async()=>{ if(!lm.classList.contains("splash")||finishing) return; finishing=true; lmClear(); lm.onclick=null;
     const next=after?await after():null;
     lm.classList.remove("splash");
-    if(next==="choose"){lmSelect(null);lmPhase("choose");return;}
+    if(next==="choose"){lmSelect(null);lmPhase("choose");finishStartup();return;}
+    finishStartup(next!=="error");
     pk.classList.add("leaving"); setTimeout(()=>{ pk.classList.remove("open","leaving"); document.body.style.overflow=""; lmPhase("choose"); },450); };
   lm.onclick=done;
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmTimers.push(setTimeout(done,600)); return; }
-  lmReady().then(()=>{ if(!lm.classList.contains("splash")) return;
+  lmReady().then(()=>{ if(!lm.classList.contains("splash")||finishing) return;
     lmTimers.push(setTimeout(()=>lmPhase("run"),60), setTimeout(()=>lmPhase("meet"),1840), setTimeout(done,2400)); });
 }
 function openPicker(canCancel){
@@ -2363,8 +2383,8 @@ function refreshCalendarDay(){
 }
 
 /* ---------- boot ---------- */
+startupPending=true;
 initTabBarSpace();
-if(!CLOUD) render();
 $("#goalForm").addEventListener("input",goalPreview);
 $("#codeInput").addEventListener("input",()=>{ codeCreating=false; });
 $("#foodText").addEventListener("input",onFoodText);
@@ -2377,7 +2397,7 @@ $("#goalForm").addEventListener("submit",e=>{
   putMeasure({...ex, person:me, date:today, weight:v.start, goal:{height:v.height,age:v.age,start:v.start,target:v.target,pace:v.pace,adj:0,level:old.level||0,cardio:!!old.cardio,mode:null,at:today}});
   menuCache={}; closeGoal(); lastTab=null; render(); react("weigh","目标已保存","今天吃什么已经按你的目标调好了");
 });
-if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
+
 if(CLOUD){
   privateCoach=new window.DuoCoach({
     family:()=>family,
@@ -2416,7 +2436,8 @@ if(CLOUD){
   });
   let savedCoachSession=false;try{savedCoachSession=!!(localStorage.getItem("duofit.auth.v1")||localStorage.getItem("duofit.paired.v1"));}catch(_){}
   if(savedCoachSession)openSplash(async()=>{const status=await coachReady.catch(()=>"error");return status==="error"?"error":privateCoach.active?"home":"choose";});else openPicker(false);
-  coachReady=privateCoach.start();privateCoach.ready=coachReady;
+  // Let the startup screen paint before restoring local data or doing cloud work.
+  coachReady=new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,0))).then(()=>privateCoach.start());privateCoach.ready=coachReady;
   setInterval(()=>{if(document.visibilityState==="visible"){refreshCalendarDay();sync("poll");}},30000);
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){refreshCalendarDay();sync("foreground");}});
   window.addEventListener("online",()=>sync("online"));

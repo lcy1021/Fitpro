@@ -11,12 +11,16 @@ const output=path.join(__dirname,'../docs/qa/image-loading');
     const page=await context.newPage(), requests=[],errors=[];
     page.on('request',r=>requests.push(new URL(r.url()).pathname));page.on('pageerror',e=>errors.push(e.message));
     const checks=[];
-    for(const view of ['today','train','workout']){
-      await page.goto(origin+'/tests/theme-preview.html?view='+view+'&person=hus&theme=light');
+    for(const view of ['today','today-short','train','workout']){
+      await page.goto(origin+'/tests/theme-preview.html?view='+(view==='today-short'?'today&state=short':view)+'&person=hus&theme=light');
       await page.waitForSelector('body[data-preview-ready="true"]');
       const first=page.locator(view==='workout'?'.rlist .move-art img':'.today-move-preview .move-art img,.obs .move-art img').first();
       if(await first.count())await first.scrollIntoViewIfNeeded();
       const selected=await page.locator('.move-art img').evaluateAll(imgs=>imgs.map(i=>i.currentSrc));
+      if(view.startsWith('today')){
+        const sizes=await page.locator('.today-move-preview img').evaluateAll(imgs=>imgs.map(i=>({width:i.getBoundingClientRect().width,height:i.getBoundingClientRect().height})));
+        assert(sizes.length&&sizes.every(s=>Math.abs(s.height-s.width*.75)<1),'Today previews keep 4:3 ratio on mobile');
+      }
       assert(selected.length,view+' contains movement images');assert(selected.every(url=>url.includes('-small.webp?v=media1')),view+' uses small animated WebP');
       await page.screenshot({path:path.join(output,view+'-mobile.png')});checks.push({view,smallImages:selected.length});
       if(view==='workout'){
