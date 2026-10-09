@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+const calls=[];
+let outputs=[], authStatus=200, memberStatus=200;
+const family='testfamily';
+globalThis.Deno={env:{get:name=>({SUPABASE_URL:'https://project.supabase.co',SUPABASE_SECRET_KEYS:JSON.stringify({default:'sb_secret_test'}),ANTHROPIC_API_KEY:'test-key',ANTHROPIC_BASE_URL:'https://relay.test'})[name]},serve:handler=>{globalThis.mealHandler=handler}};
+globalThis.fetch=async(url,options={})=>{
+  calls.push({url:String(url),options});
+  if(String(url).endsWith('/auth/v1/user'))return Response.json({id:'user-1'},{status:authStatus});
+  if(String(url).includes('/rest/v1/fl_members'))return Response.json([{family}],{status:memberStatus});
+  if(String(url).endsWith('/rest/v1/rpc/fl_ai_quota'))return Response.json(true);
+  if(String(url).endsWith('/v1/messages')){
+    const next=outputs.shift();assert(next,'unexpected additional AI request');
+    if(next instanceof Error)throw next;
+    return next instanceof Response?next:Response.json(next);
+  }
+  throw new Error('unexpected request');
+};
+await import('../supabase/functions/meal-kcal/index.ts');
+const text='一个豆皮包\n一个200ml脱脂牛奶';
+const request=(method='POST')=>new Request('https://project.supabase.co/functions/v1/meal-kcal',{method,headers:{origin:'https://lcy1021.github.io',authorization:'Bearer user-token',apikey:'public-key'},...(method==='POST'?{body:JSON.stringify({family,text})}:{})});
+const result={items:[{name:'豆皮包',amount:'1个，按常见做法估算',kcal:250},{name:'脱脂牛奶',amount:'200ml',kcal:70}],note:'示例测试数据，不是营养测定'};
+const message=(value,stop_reason='end_turn')=>({stop_reason,content:[{type:'text',text:typeof value==='string'?value:JSON.stringify(value)}]});
+assert.equal((await globalThis.mealHandler(request('OPTIONS'))).headers.get('x-meal-version'),'2026-10-09-meal-format');assert.equal(calls.length,0);
+outputs=[{stop_reason:'end_turn',content:[{type:'thinking',thinking:'ignored'},{type:'text',text:'说明 {"debug":true}\n```json\n'},{type:'text',text:JSON.stringify(result)+'\n```\n额外说明 {无关}'}]}];
+let response=await globalThis.mealHandler(request());assert.equal(response.status,200);assert.deepEqual(await response.json(),result,'later text block and unrelated braces do not lose the result');
+assert.equal(calls.filter(c=>c.url.endsWith('/v1/messages')).length,1);
+assert.equal(calls.find(c=>c.url.includes('/fl_members')).options.headers.authorization,undefined,'secret key is not sent as bearer');
+assert.equal(JSON.parse(calls.find(c=>c.url.endsWith('/v1/messages')).options.body).messages[0].content,text,'original two-line description is preserved');
+calls.length=0;outputs=[message('{"items":[','max_tokens'),message(result)];
+response=await globalThis.mealHandler(request());assert.equal(response.status,200);assert.equal(calls.filter(c=>c.url.endsWith('/v1/messages')).length,2);assert.equal(calls.filter(c=>c.url.endsWith('/fl_ai_quota')).length,1,'format retry does not consume the daily quota twice');
+const aiBodies=calls.filter(c=>c.url.endsWith('/v1/messages')).map(c=>JSON.parse(c.options.body));assert(aiBodies[1].max_tokens>aiBodies[0].max_tokens);
+calls.length=0;outputs=[message(result,'max_tokens'),message(result)];
+response=await globalThis.mealHandler(request());assert.equal(response.status,200);assert.equal(calls.filter(c=>c.url.endsWith('/v1/messages')).length,2,'even parseable truncated prefix requires a complete response');
+outputs=[message({items:[{name:'豆皮包',amount:'1个',kcal:'unknown'}]}),message({items:[{name:'豆皮包',amount:'1个',kcal:null}],note:'请补充做法'})];
+response=await globalThis.mealHandler(request());assert.equal((await response.json()).items[0].kcal,null,'unknown calories are not converted to zero');
+outputs=[message('{"items":'),message('{"items":')];response=await globalThis.mealHandler(request());assert.equal(response.status,502);assert.equal((await response.json()).error,'no_output');
+calls.length=0;outputs=[new Response('secret upstream detail',{status:503})];response=await globalThis.mealHandler(request());assert.deepEqual(await response.json(),{error:'upstream'});assert.equal(calls.filter(c=>c.url.endsWith('/v1/messages')).length,1,'no network/server replay after quota');
+outputs=[new DOMException('deadline','TimeoutError')];response=await globalThis.mealHandler(request());assert.equal(response.status,504);assert.equal((await response.json()).error,'ai_timeout');
+calls.length=0;authStatus=503;response=await globalThis.mealHandler(request());assert.equal(response.status,503);assert.equal((await response.json()).error,'auth_unavailable');assert.equal(calls.length,1,'auth outage is not reported as an expired identity');
+authStatus=401;response=await globalThis.mealHandler(request());assert.equal(response.status,401);
+authStatus=200;memberStatus=503;response=await globalThis.mealHandler(request());assert.equal(response.status,503);assert.equal((await response.json()).error,'family_check_failed');
+console.log('PASS meal format, exact input, repair, quota, null calories, auth and timeout');

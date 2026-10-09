@@ -16,7 +16,7 @@
 
 ## 费用
 
-- 每次估算调用一次 Claude（`claude-opus-5-5`，低推理强度），大约几分钱人民币。
+- 每次估算通常调用一次配置的 AI 模型；仅当回复格式异常或截断时，内部最多补做一次格式修复。两次合计只计一次家庭每日限额，上游调用费用按实际请求计算。
 - 每个家庭每天最多 60 次（在 `supabase/functions/meal-kcal/index.ts` 的 `DAILY_LIMIT` 改），超过当天就不能再用，防止被滥用。
 - 想更省钱，可以在 Secrets 里加 `AI_MODEL` = `claude-haiku-4-5`，不用改代码（估算质量会差一些）。
 
@@ -47,7 +47,7 @@ Supabase 控制台 → **Edge Functions** → **Deploy a new function** → **Vi
 
 1. 函数名填 `meal-kcal`（必须一模一样）。
 2. 把 [`supabase/functions/meal-kcal/index.ts`](../supabase/functions/meal-kcal/index.ts) 的全部内容粘贴进去，替换默认代码 → **Deploy**。
-3. 部署完进入函数的 **Settings**（或 Details），把 **Enforce JWT Verification / Verify JWT** 关掉并保存。App 用的是公开密钥，函数自己会检查家庭口令。
+3. 部署完进入函数的 **Settings**（或 Details），把 **Enforce JWT Verification / Verify JWT** 关掉并保存。函数自行校验用户身份和家庭归属；旧版客户端校验家庭记录。
 
 > 用命令行部署也可以：`supabase functions deploy meal-kcal --no-verify-jwt`。
 
@@ -137,3 +137,14 @@ DeepSeek 官方提供兼容 Anthropic 格式的接口，不需要中转，费用
 - 函数只接受 GitHub Pages（`lcy1021.github.io`）和本地预览发来的请求。
 - 每次请求都要带一个**已经有数据的家庭口令**，并且按家庭每天限额；仓库里没有你们的口令，外人拿到公开密钥也用不了。
 - 发给 Claude 的只有你写的那句"吃了什么"，不含体重等其他数据。
+
+## 2026-10-09 估算回复修复
+
+- 读取所有文字块，提取完整且符合 items 格式的 JSON；不再只读取第一段或把无关大括号一起解析。
+- 输出预算 4096 tokens；截断或格式异常时最多补做一次（6144 tokens）。`max_tokens` 截断回复不当作完整的一餐。
+- 无法合理估算的项目保留 `kcal: null`，不会转换成 0；部分热量不显示整餐“在计划范围内”。未完成的估算不缓存，方便重试。
+- 私人档案估算不再等待打卡同步；沿用共享登录刷新、90 秒客户端截止和连接诊断。仅 401 身份拒绝会更新 token 后重试一次；网络/服务失败不自动重发消耗额度的请求。
+- 日志只记录版本、尝试次数、结束原因、文字块数、字符数和耗时，不记录食物原文、模型回复、家庭口令或 token。
+- 函数响应版本头：`X-Meal-Version: 2026-10-09-meal-format`。GitHub Pages 页面发布不会部署 Edge Function，必须另外更新 `meal-kcal`。
+
+验证：`node tests/meal-function.mjs`、`node tests/meal-ui.js`、`node tests/cloud-connection.js`。测试热量为虚构数据，只验证处理流程。

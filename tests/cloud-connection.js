@@ -166,5 +166,13 @@ function environment(extra = {}) {
     assert.equal(await c.start(),'home');assert(c.active&&c.root.hidden);assert.deepEqual(requests,['online']);assert.equal(state,'syncing','warm startup opens its own cached profile and connects in the background');
     c.rpc=async()=>pull;c.checkWeekly=()=>{weekChecks++};await c.sync({checkins:{},measures:{}},[],'online');assert.equal(state,'ok');assert.equal(weekChecks,1,'weekly review follows successful background connection');
   }
-  console.log('PASS shared refresh, browser locks, Auth conflicts, transient retries, safe recovery, shared pulls, 401 races, signout, write deadlines, versioned acknowledgements, polling, automatic reconnect and private diagnostics');
+  {
+    const {create}=environment();const c=create();c.saveSession(session());let attempts=0,refreshes=0;
+    c.authRequest=async()=>{refreshes++;return session('new')};
+    c.request=async(path,body,auth,deadline,retries)=>{assert(path.startsWith('/functions/v1/meal-kcal'));assert.equal(deadline,90000);assert.equal(retries,0);attempts++;if(attempts===1)throw Object.assign(new Error('invalid_session'),{status:401});return {items:[]}};
+    await c.estimateMeal({family:'family-secret',text:'一个豆皮包'});assert.equal(attempts,2);assert.equal(refreshes,1,'AI retries an authentication rejection once before quota');
+    attempts=0;c.request=async()=>{attempts++;throw Object.assign(new Error('no_output'),{status:502})};await assert.rejects(c.estimateMeal({family:'family-secret',text:'食物'}));assert.equal(attempts,1,'AI format/server failures are not replayed by the client');
+    const pending=deferred();c.request=async()=>pending.promise;const request=c.estimateMeal({family:'family-secret',text:'食物'});await Promise.resolve();await Promise.resolve();c.saveSession({...session('other'),user:{id:'account-b'}});pending.resolve({items:[]});await assert.rejects(request,e=>e.code==='session_changed','late AI result cannot cross accounts');
+  }
+  console.log('PASS shared refresh, browser locks, Auth conflicts, transient retries, safe recovery, shared pulls, 401 races, signout, write deadlines, versioned acknowledgements, polling, automatic reconnect, private diagnostics and meal AI');
 })().catch(error => {console.error(error);process.exitCode = 1});

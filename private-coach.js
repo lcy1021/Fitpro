@@ -37,7 +37,7 @@ class DuoCoach {
     try{let log=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');if(!Array.isArray(log))log=[];localStorage.setItem(CONNECTION_LOG,JSON.stringify([...log.slice(-39),entry]));}catch{}
     if(error)this.lastConnectionError=entry;
   }
-  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v28\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
+  connectionDiagnostics(){let entries=[];try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}return 'DuoFit 连接诊断 v29\n'+JSON.stringify(Array.isArray(entries)?entries:[],null,2);}
   async fetchJSON(path,body,{auth=true,timeoutMs=15000,retries=0}={}){
     const serialized=JSON.stringify(body),owner=auth?this.userId():null;
     for(let attempt=0;;attempt++){
@@ -72,6 +72,22 @@ class DuoCoach {
     }
   }
   request(path,body,auth=true,timeoutMs=15000,retries=0){return this.fetchJSON(path,body,{auth,timeoutMs,retries});}
+  async estimateMeal(body){
+    const owner=this.userId(),payload=JSON.parse(JSON.stringify(body));
+    if(!owner||!await this.refresh()){const e=new Error('invalid_session');e.code='invalid_session';throw e;}
+    this.assertSessionOwner(owner);
+    const path='/functions/v1/meal-kcal'+(cfg.AI_REGION?'?forceFunctionRegion='+encodeURIComponent(cfg.AI_REGION):'');
+    const rejectedToken=this.session.access_token;
+    try{const result=await this.request(path,payload,true,90000,0);this.assertSessionOwner(owner);return result;}
+    catch(e){
+      // An authentication rejection occurs before quota/AI. All other failures may have consumed the request.
+      if(e.status!==401)throw e;
+      this.assertSessionOwner(owner);
+      if(!await this.refresh(true,rejectedToken)){e.code='invalid_session';throw e;}
+      this.assertSessionOwner(owner);
+      const result=await this.request(path,payload,true,90000,0);this.assertSessionOwner(owner);return result;
+    }
+  }
   async authRequest(path,body){
     try{return await this.fetchJSON(path,body,{auth:false,timeoutMs:12000,retries:path.includes('grant_type=refresh_token')?2:0});}
     catch(e){if(/anonymous sign-ins are disabled|anonymous_provider_disabled/i.test(e.message+' '+e.code))e.message='云端尚未开启免邮箱进入，暂时无法保存档案。请在 Supabase Auth 中开启匿名登录。';throw e;}

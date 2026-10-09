@@ -588,6 +588,7 @@ p{margin:0}
 .ftotal b{font-size:22px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
 .ftotal .st{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--good-soft);color:var(--good)}
 .ftotal .st.over{background:var(--sun-soft);color:var(--sun-ink)}
+.ftotal .st.pending{background:var(--sun-soft);color:var(--sun-ink)}
 .logged{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--me-soft) 60%,var(--surface));border-radius:var(--radius-s);padding:10px 12px;font-size:13px}
 .logged .t{flex:1;min-width:0} .logged b{display:block;font-size:14px;color:var(--me-ink)}
 .logged small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -668,7 +669,7 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="private-coach.css?v=28">
+<link rel="stylesheet" href="private-coach.css?v=29">
 </head>
 <body class="me-hus">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -801,7 +802,7 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=28"></script>
+<script src="private-coach.js?v=29"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -2178,13 +2179,13 @@ async function copyInvite(){
   try{ await navigator.clipboard.writeText(invite); toast("邀请信息已复制"); }catch(e){ window.prompt("长按复制邀请信息",invite); }
 }
 /* ---------- 记录一顿吃了什么 ---------- */
-let foodMeal=null, foodRows=[];
+let foodMeal=null, foodRows=[], foodRequest=0, foodBusy=false;
 const QUICK={breakfast:["水煮蛋 2 个","纯牛奶 1 盒","全麦面包 2 片","燕麦片 40g","包子 2 个","无糖豆浆 1 杯"],
   lunch:["米饭 1 碗","番茄炒蛋 1 份","宫保鸡丁 1 份","炒青菜 1 份","黄焖鸡米饭","麻辣烫 1 份"],
   snack:["无糖酸奶 1 盒","苹果 1 个","香蕉 1 根","拿铁 1 杯","坚果 1 把","奶茶 1 杯"],
   dinner:["米饭 半碗","清蒸鱼 1 份","鸡胸肉 150g","蒜蓉西兰花 1 份","虾仁 150g","豆腐 1 块"]};
 function openFood(m){
-  foodMeal=m; const c=getCheckin(me,ymd(new Date())); const fd=c.food&&c.food[m];
+  foodRequest++; foodMeal=m; const c=getCheckin(me,ymd(new Date())); const fd=c.food&&c.food[m];
   $("#foodTitle").textContent=MEAL_PLAN[me][m].t+"吃了什么";
   $("#foodText").value=fd?fd.text:"";
   $("#foodChips").innerHTML=QUICK[m].map(x=>`<button type="button" data-chip="${esc(x)}">+ ${esc(x)}</button>`).join("");
@@ -2198,43 +2199,56 @@ let LS_AI="fatloss.aicache";
 const aiCache={ get(t){ try{ return (JSON.parse(localStorage.getItem(LS_AI)||"{}"))[t]||null; }catch(e){ return null; } },
   set(t,v){ try{ const c=JSON.parse(localStorage.getItem(LS_AI)||"{}"); c[t]={...v,at:Date.now()};
     const keys=Object.keys(c).sort((a,b)=>c[b].at-c[a].at); keys.slice(60).forEach(k=>delete c[k]); localStorage.setItem(LS_AI,JSON.stringify(c)); }catch(e){} } };
+function validMealResult(d){
+  return !!d && Array.isArray(d.items) && d.items.length<=20 && (d.note==null || typeof d.note==="string") && d.items.every(i=>i && typeof i.name==="string" && i.name.trim() && typeof i.amount==="string" && (i.kcal===null || typeof i.kcal==="number" && Number.isFinite(i.kcal) && i.kcal>=0 && i.kcal<=3000));
+}
 function showAi(d){
   foodRows=d.items.map(i=>({n:i.name,q:i.amount,k:i.kcal,ai:true}));
   const note=$("#foodNote"); note.hidden=!d.note; note.textContent=d.note?"🤖 "+d.note:"";
   drawFood();
 }
 async function aiFood(){
+  if(foodBusy)return;
   const text=$("#foodText").value.trim(); if(!text){ toast("先写一下吃了什么"); return; }
   clearTimeout(foodT);
-  const hit=aiCache.get(text); if(hit){ showAi(hit); toast("这句话之前估算过，直接用了上次的结果"); return; }
-  const btn=$("[data-food-ai]"); btn.disabled=true; const t0=Date.now();
-  const tick=()=>{ btn.textContent=`🤖 正在估算… ${Math.round((Date.now()-t0)/1000)}s`; }; tick(); const tk=setInterval(tick,1000);
+  const hit=aiCache.get(text); if(validMealResult(hit)&&hit.items.length&&hit.items.every(i=>i.kcal!==null)){ showAi(hit); toast("这句话之前估算过，直接用了上次的结果"); return; }
+  const request=++foodRequest,meal=foodMeal,person=me,sourceFamily=family,sourceCoach=privateCoach,owner=privateCoach?.userId(),date=ymd(new Date());
+  const sameIdentity=()=>sourceCoach===privateCoach&&owner===privateCoach?.userId()&&sourceFamily===family&&person===me;
+  const current=()=>request===foodRequest&&sameIdentity()&&date===ymd(new Date())&&meal===foodMeal&&$("#foodDlg").classList.contains("open")&&$("#foodText").value.trim()===text;
+  const btn=$("[data-food-ai]"); foodBusy=true;btn.disabled=true; const t0=Date.now();
+  const tick=()=>{ if(current())btn.textContent=`🤖 正在估算… ${Math.round((Date.now()-t0)/1000)}s`; }; tick(); const tk=setInterval(tick,1000);
   try{
-    if(!Object.keys(store.checkins).length && !Object.keys(store.measures).length){ toast("先设定目标或打一次卡，完成同步后再试 AI 估算",5000); return; }
-    if(dirty.length){
-      await sync();
-      if(syncState!=="ok"){ toast("打卡记录还没同步成功，请联网后再试 AI 估算",5000); return; }
+    let d;
+    if(privateCoach?.active){d=await privateCoach.estimateMeal({family:sourceFamily,text});}
+    else {
+      if(!Object.keys(store.checkins).length && !Object.keys(store.measures).length){ toast("先设定目标或打一次卡，完成同步后再试 AI 估算",5000); return; }
+      if(dirty.length){
+        await sync();
+        if(syncState!=="ok"){ toast("打卡记录还没同步成功，请联网后再试 AI 估算",5000); return; }
+      }
+      const headers={"Content-Type":"application/json","apikey":SUPABASE_KEY};
+      if(!SUPABASE_KEY.startsWith("sb_")) headers["Authorization"]="Bearer "+SUPABASE_KEY;
+      const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),90000);
+      try{
+        const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/functions/v1/meal-kcal"+(AI_REGION?"?forceFunctionRegion="+encodeURIComponent(AI_REGION):""),{method:"POST",headers,body:JSON.stringify({family:sourceFamily,text}),signal:ctl.signal});
+        d=await r.json();if(!r.ok)throw Object.assign(new Error(d.error||"upstream"),{code:d.error,status:r.status});
+      }finally{clearTimeout(timer);}
     }
-    const headers={"Content-Type":"application/json","apikey":SUPABASE_KEY};
-    if(privateCoach?.active){if(!await privateCoach.refresh()){toast("本机身份已过期，请用个人恢复码找回档案后再试 AI",7000);return;}headers["Authorization"]="Bearer "+privateCoach.session.access_token;}
-    else if(!SUPABASE_KEY.startsWith("sb_")) headers["Authorization"]="Bearer "+SUPABASE_KEY;
-    const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/functions/v1/meal-kcal"+(AI_REGION?"?forceFunctionRegion="+encodeURIComponent(AI_REGION):""),{method:"POST",headers,body:JSON.stringify({family,text})});
-    const d=await r.json().catch(()=>({}));
-    if(!r.ok){
-      const known={daily_limit:"今天 AI 估算次数用完了，明天再试",unknown_family:"家庭口令下还没有同步记录，请先完成目标设定或打卡并等待同步",family_check_failed:"AI 服务无法读取家庭记录，请检查 Supabase 函数日志",busy:"AI 有点忙，稍后再试",bad_key:"AI 服务的密钥或余额有问题，请检查 Supabase Secrets",unreachable:"服务器连不上 AI 接口，请检查函数地区或中转地址",quota_check_failed:"AI 次数表还没配置好，请运行 supabase-ai-setup.sql",model_unavailable:"当前模型在中转分组不可用，请检查 Supabase Secrets 里的 AI_MODEL 与令牌分组",no_output:"AI 没有返回可识别的结果，请换种说法再试",refused:"AI 没有处理这段描述，请换种说法再试",bad_family:"家庭口令格式不正确，请重新设置",upstream:"AI 上游服务返回错误，请检查模型名、密钥和余额"};
-      const detail=d.detail?`：${String(d.detail).slice(0,100)}`:"";
-      const modelMissing=/model_not_found|No available channel/i.test(detail);
-      toast(modelMissing?known.model_unavailable:(known[d.error]||"AI 估算失败")+detail,7000); console.warn("meal-kcal",r.status,d); return;
-    }
-    if(!d.items||!d.items.length){ toast(d.note||"没看出吃了什么，换个说法试试"); return; }
-    aiCache.set(text,{items:d.items,note:d.note||""}); showAi(d);
-  }catch(e){ toast("网络不通，AI 估算失败，可以先手动填热量"); }
-  finally{ clearInterval(tk); btn.disabled=false; btn.textContent="🤖 让 AI 估算这一顿"; }
+    if(!sameIdentity())return;
+    if(!validMealResult(d))throw Object.assign(new Error("no_output"),{code:"no_output"});
+    if(!d.items.length){if(current())toast(d.note||"这段描述里没有识别到食物，请补充食物名称和份量");return;}
+    if(d.items.every(i=>i.kcal!==null))aiCache.set(text,{items:d.items,note:d.note||""}); if(current())showAi(d);
+  }catch(e){
+    if(!current())return;
+    const known={daily_limit:"今天 AI 估算次数用完了，明天再试",unknown_family:"家庭档案还没有同步，请完成目标设定后重试",family_check_failed:"AI 服务暂时读不到家庭档案，请稍后重试",auth_unavailable:"登录验证服务暂时不可用，请稍后重试",wrong_family:"当前身份与家庭档案不匹配，请重新连接档案",invalid_session:"登录验证失败，请重新连接档案后再试",session_changed:"本机身份已切换，请重新打开这一餐",busy:"AI 有点忙，稍后再试",bad_key:"AI 服务配置或余额有问题，请检查后台",unreachable:"AI 服务连接失败，可以先手动填热量",quota_check_failed:"AI 次数检查暂时失败，请稍后重试",model_unavailable:"当前 AI 模型暂时不可用，请检查后台配置",no_output:"AI 回复格式异常，未能完成估算；原文已保留，可重试或手动填热量",refused:"AI 未处理这段描述，可以补充食物名称和份量",bad_family:"家庭口令格式不正确，请重新设置",upstream:"AI 上游服务暂时不可用，请稍后重试",ai_timeout:"AI 估算等待超时，可稍后重试或先手动填写",request_timeout:"AI 估算等待超时，可稍后重试或先手动填写",ai_not_configured:"AI 服务尚未配置，请检查后台",server_not_configured:"AI 服务尚未配置，请检查后台"};
+    toast(known[e.code||e.message]||(e.name==="AbortError"?known.ai_timeout:"AI 连接失败，原文已保留，可以先手动填热量"),7000);
+  }
+  finally{ clearInterval(tk); foodBusy=false;btn.disabled=false; btn.textContent="🤖 让 AI 估算这一顿"; }
 }
-function closeFood(){ if(document.activeElement) document.activeElement.blur(); $("#foodDlg").classList.remove("open"); document.body.style.overflow=""; }
+function closeFood(){ foodRequest++;clearTimeout(foodT);if(document.activeElement) document.activeElement.blur(); $("#foodDlg").classList.remove("open"); document.body.style.overflow=""; }
 function foodStatus(total){ const hi=mealRange(menuFor(me)[foodMeal])[1]; return total>hi*1.1 ? ["over",`比计划多约 ${total-hi} kcal，记为"吃多了"`] : ["plan",`在计划范围内（上限约 ${hi}），记为"按计划吃了"`]; }
 function drawFood(){
-  const aiBtn=$("[data-food-ai]"); aiBtn.hidden=!(AI_KCAL && CLOUD && family); aiBtn.classList.toggle("hot", foodRows.some(r=>r.k==null));
+  const aiBtn=$("[data-food-ai]"); aiBtn.disabled=foodBusy;aiBtn.hidden=!(AI_KCAL && CLOUD && family); aiBtn.classList.toggle("hot", foodRows.some(r=>r.k==null));
   $("#foodRes").innerHTML=foodRows.map((r,i)=>`<li class="${r.k==null?"miss":""}"><div>${esc(r.n)}${r.ai?`<span class="ai">AI</span>`:""}<small>${r.k==null?"没认出来，填个大概热量，或者换个说法":esc(r.q)}</small></div>
     <input type="number" inputmode="numeric" min="0" max="3000" step="5" value="${r.k==null?"":r.k}" data-fk="${i}" aria-label="${esc(r.n)}的热量" placeholder="kcal">
     <button class="x" type="button" data-fx="${i}" aria-label="去掉${esc(r.n)}">×</button></li>`).join("");
@@ -2242,14 +2256,15 @@ function drawFood(){
 }
 function drawFoodTotal(){
   const total=foodRows.reduce((a,r)=>a+(r.k||0),0), missing=foodRows.some(r=>r.k==null);
-  const [st,txt]=foodStatus(total);
-  $("#foodTotal").innerHTML = foodRows.length ? `<span>这顿一共约 <b>${total}</b> kcal</span><span class="st ${st==="over"?"over":""}">${txt.split("，")[0]}</span>` : "";
+  const [st,txt]=missing ? ["missing","还有食物未估算，暂不能判断是否在计划内"] : foodStatus(total);
+  $("#foodTotal").innerHTML = foodRows.length ? `<span>${missing?"已估算部分约":"这顿一共约"} <b>${total}</b> kcal</span><span class="st ${st==="over"?"over":missing?"pending":""}">${missing?txt:txt.split("，")[0]}</span>` : "";
   $("[data-food-save]").disabled = !foodRows.length || missing;
   $("[data-food-save]").textContent = missing ? "还有没认出的，填上热量再保存" : "保存并打卡";
 }
 let foodT=null;
-function onFoodText(){ clearTimeout(foodT); foodT=setTimeout(()=>{ foodRows=parseMeal($("#foodText").value); drawFood(); },250); }
+function onFoodText(){ foodRequest++;clearTimeout(foodT); foodT=setTimeout(()=>{ foodRows=parseMeal($("#foodText").value); drawFood(); },250); }
 function saveFood(){
+  if(!foodRows.length||foodRows.some(r=>r.k==null||!Number.isFinite(r.k)))return;
   const total=foodRows.reduce((a,r)=>a+(r.k||0),0); const [st]=foodStatus(total);
   const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date)));
   c.food=c.food||{}; c.food[foodMeal]={text:$("#foodText").value.trim().slice(0,200), items:foodRows.map(r=>({n:r.n.slice(0,20),q:r.q,k:r.k,...(r.ai?{ai:1}:{})})), kcal:total};
