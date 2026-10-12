@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=46">
-<link rel="stylesheet" href="design-system/components.css?v=46">
+<link rel="stylesheet" href="design-system/tokens.css?v=47">
+<link rel="stylesheet" href="design-system/components.css?v=47">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -39,7 +39,7 @@
 
 - 页面动作使用 `--me-*`，跟随登录者；餐卡、历史详情使用 `--p-*`，跟随记录所有者。老公查看老婆记录时，页面导航仍蓝色，详情变为粉色。
 - 正文、辅助、角色强调组成常规三种文字色。成功 / 提醒 / 错误仅在真实状态出现，用 `--good-* / --sun-* / --danger`，同时配明确文案；不能按早餐、午餐分别分配黄色、绿色等随机图标底色。
-- 一般面板与标题氛围层使用 `--ds-surface-gradient`：125度，从 `--surface` 过渡到 `--p-soft`，浅色为白到浅蓝/粉，深色为深灰到角色暗色。云层仍使用共享透明图片，浅色opacity .55、深色 .12。角色相关复合token须在 `.hus/.wife/.ds-root` 上解析，不能在没有 `--p-*` 的 `:root` 上定义。
+- 一般面板与标题氛围层使用 `--ds-surface-gradient`：135度，从近 `--surface` 过渡到角色浅色，浅色为白到浅蓝/粉，深色为深灰到角色暗色。外壳和餐卡标题均不叠云朵图片；餐区使用 `--ds-meal-scene-bg`、餐卡标题使用 `--ds-meal-header-gradient`，维持外壳与白色内卡的层次。角色相关复合 token 须在 `.hus/.wife/.ds-root` 上解析，不能在没有 `--p-*` 的 `:root` 上定义。
 - tab选中填充统一 `--ds-fill-selected:var(--p-ink)` / `--ds-fill-selected-ink:var(--surface)`，未选中透明灰字；无默认线框、无下划线。键盘焦点轮廓保留。餐品 `.meal-art-stage` 以 `--ds-food-tint:52%` 的浅色底托和 `--ds-food-shadow` 轻投影承托真实图片。
 - `--faint` 用于低优先级装饰或禁用，不能作为重要正文色。渐变主按钮沿用现有风格；不要把角色亮色白字默认当作小字号标签，组件页不代表完整 WCAG 认证。
 - 页面顶部保留 `--app-background` 作为普通页面底色；四页正式场景使用 `.ds-page-hero` 背景图。场景启用时，根画布通过 `--ds-root-hero-image` 复用当前同一张图，顶部共用 `--ds-hero-top-shade`（浅色透明，深色仅顶部 80px 轻微暗角），不另做灵动岛背景或黑条。iOS 主屏幕模式若在首屏预留顶部区域，场景向上延展到该区域，同时保持标题、角色按钮与首卡在原屏幕位置；已安装图标实际能否绘制由设备验收。`--app-top-color` 是图片加载前的底色；根节点与正文同步 `.me-hus/.me-wife`。浅深 `theme-color` 在身份切换时同步对应顶部底色。`apple-mobile-web-app-status-bar-style=black-translucent` 保留覆盖模式。
@@ -72,7 +72,8 @@
 | tab 轨道 / 按钮 | `--ds-radius-tabs / --ds-radius-tab` | 15 / 11px |
 | 一级投影 | `--ds-shadow-primary` | 今日概览、模块外壳、独立大卡；中性灰/黑，不随蓝粉角色换色 |
 | 二级投影 | `--ds-shadow-secondary` | 模块内正文、餐卡、历史时间线和次级卡；同为中性色，深度小于一级 |
-| 今日餐区底色 | `--ds-meal-scene-bg` | `--surface` 与所有者 `--p-soft` 混合，白色餐卡能从浅蓝/粉底上分离；深色主题也保持层次 |
+| 今日餐区底色 | `--ds-meal-scene-bg` | `--surface` 与所有者 `--p-soft` 组成柔和渐变，白色餐卡能从浅蓝/粉底上分离；深色主题也保持层次 |
+| 餐卡标题底色 | `--ds-meal-header-gradient` | 近白到主表面的小幅渐变，不使用云朵贴图 |
 
 4px 为主网格，不强行取整已有 9/10/14px 光学间距。组件内部可有已记录的精细参数；新布局优先主间距。长菜名自然换行，父级 `min-width:0`，网格 `minmax(0,1fr)`。320px 不能横向溢出。页面下方保留实际导航高度 + 24px 和安全区。
 
@@ -115,7 +116,7 @@
 
 ### 通用模块组合（v39）
 
-`moduleCard(title, body, {id, person, meta, art, symbol})`：`person` 为内容所有者；`meta` 是标题下辅助文字；`art` 使用现有 `mood` 原版姿态，或 `symbol` 使用已有 sprite，二者选一。标题 19px/800，说明 12px；外壳沿用白→角色浅色渐变和云层，正文纯 `--surface` 内层、16px 圆角、二级中性投影。窄屏仅压缩内距与图槽，不另建颜色表。
+`moduleCard(title, body, {id, person, meta, art, symbol})`：`person` 为内容所有者；`meta` 是标题下辅助文字；`art` 使用现有 `mood` 原版姿态，或 `symbol` 使用已有 sprite，二者选一。标题 19px/800，说明 12px；外壳沿用白→角色浅色渐变、不叠云层，正文纯 `--surface` 内层、16px 圆角、二级中性投影。窄屏仅压缩内距与图槽，不另建颜色表。
 
 饮食日志复用现有日期条、餐次行、记食物按钮和三态打卡：本人选近 120 天任意日期（包括无记录日）后可补记或修改。未打卡餐次保持「未打卡」文字状态，仅提供「补打卡」入口，不预先显示三态按钮；进入食物弹窗并确认完整热量后按当前计划范围生成「按计划」或「吃多了」，再呈现常规状态控件。已有记录可继续改食物和状态。日期附在餐次按钮和食物编辑入口，弹窗标题显示历史日期；未来与范围外日期不可操作。记录页的历史详情和伴侣内容仍只读。今天热量汇总只取今天，不随历史日期切换。
 
@@ -151,6 +152,8 @@
 四餐图仍为通用装饰，`alt=""`，不能暗示用户真实吃了图上的东西。`object-fit:contain`、显式尺寸、WebP、lazy / async；原有角色URL保持原样命中缓存，素材未改不递增图片版本。不得用新插图覆盖原版文件。
 
 ## 8. 当前接入与后续维护
+
+v47 按用户手机端反馈移除卡片外壳和餐卡标题的云朵图层，改为蓝粉身份对应的柔和渐变；原版角色、标题小字、数据和两级投影保留。四页、蓝粉、浅深和窄屏对照见[卡片背景 QA](qa/card-cloud-v47/README.md)。
 
 v44 按用户确认的四页高清规格稿接入场景表头。390px 表头为 390×520、320px 为 320×426.7；标题 x=24，日期与同步固定在标题下方，首卡紧接场景。手写句统一 Long Cang，背景图只包含场景、角色、姿态与道具；页面标题、日期和同步均为 DOM，不能烧入图片。底图分别为湖岸晨光、厨房窗景、晨光运动室、双人围桌记录；蓝色与粉色单人场景均以原版角色身份为编辑依据，记录页保留蓝粉双人。详情见[高清规格](qa/page-header-proposal/spec/README.md)与[实现 QA](qa/page-header-implementation/README.md)。图中系统状态栏只用于视觉稿，App 使用 iOS 原生状态栏。蓝粉与浅深主题同一布局；训练休息日小字按真实日程切换。同步无时间时保留行高，只有确认成功才显示「已同步 · 时间」。饮食与记录首卡移除和场景重复的角色插画，实际数据和操作保留。旧模块标题插画仍按各模块原有含义使用。v45 针对用户实机反馈调整场景渐隐和图片交付，见[场景深色与加载 QA](qa/page-hero-dark-v45/README.md)。
 
