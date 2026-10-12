@@ -15,12 +15,14 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=43">
+<link rel="stylesheet" href="design-system/tokens.css?v=44">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
 *,*::before,*::after{box-sizing:inherit}
 html{height:100%;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px);scroll-padding-bottom:calc(var(--tab-bar-height) + 24px)}
+html.app-hero-active{padding-top:0}
+html.app-hero-active,html.app-hero-active body{background:var(--bg)}
 body{margin:0;min-height:100%;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;color:var(--ink);
   font-family:var(--ds-font);
   font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
@@ -32,24 +34,19 @@ button:active{transform:scale(.97)}
 button:focus-visible,input:focus-visible{outline:3px solid color-mix(in srgb,var(--me) 45%,transparent);outline-offset:2px}
 .cta .ui-icon,.btn .ui-icon,.logbtn .ui-icon,.chip .ui-icon,.tag2 .ui-icon{margin-right:4px}
 .wrap{max-width:var(--ds-page-max);margin:0 auto;padding:10px var(--ds-page-gutter) max(104px,calc(var(--tab-bar-height) + 24px))}
+#appShell.wrap{padding:0 0 max(104px,calc(var(--tab-bar-height) + 24px))}
+#appShell #view{padding:0 var(--ds-page-gutter)}
+#appShell #view>.today-summary-pair{margin-top:0}
 h1,h2,h3{margin:0;line-height:1.3;letter-spacing:-.01em}
 p{margin:0}
 .num{font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 
-/* top bar */
-.top{display:flex;align-items:center;gap:10px;padding:6px 0 14px}
-.top .title{flex:1;min-width:0}
-.top .tile{width:42px;height:42px;border-radius:14px;background:var(--surface);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;color:var(--me);flex:none}
-.top .tile svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.top h1{font-size:24px;font-weight:800;display:flex;align-items:center;gap:6px}
-.top h1::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--me)}
-.date{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Identity picker remains available in legacy family mode; private profiles hide it. */
 .role{display:flex;align-items:center;gap:2px;border:0;border-radius:999px;padding:4px;background:var(--surface);box-shadow:var(--shadow);font-size:13px;font-weight:700}
 .role .r{padding:5px 11px;border-radius:999px;color:var(--faint)}
 .role .sw{color:var(--faint);font-size:12px}
 .me-hus .role .r.hus{background:var(--hus-soft);color:var(--hus-ink)}
 .me-wife .role .r.wife{background:var(--wife-soft);color:var(--wife-ink)}
-.me-ava{width:44px;height:44px;border-radius:50%;background:var(--me-soft);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--me);object-fit:contain;padding:3px;flex:none}
 
 /* role picker & code dialog */
 .pick{position:fixed;inset:0;z-index:40;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;display:none;overflow:auto;
@@ -156,8 +153,6 @@ p{margin:0}
 .peek button[aria-pressed="true"]{background:var(--p-soft);color:var(--p-ink);font-weight:800}
 .peek-note{font-size:12px;color:var(--muted);margin:-8px 6px 14px}
 
-.sync{font-size:12px;color:var(--muted);margin:-6px 4px 12px}
-.sync.warn{color:var(--danger)}
 
 /* generic cards */
 .stack{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
@@ -530,14 +525,13 @@ p{margin:0}
   .meal-top{flex-wrap:wrap}.meal-top .kcal{margin-left:48px}
 }
 @media(max-width:350px){
-  .top{gap:6px}.top .tile{width:38px;height:38px}.top h1{font-size:21px;white-space:nowrap}.me-ava{width:38px;height:38px}
   .role .sw,.me-hus .role .r.wife,.me-wife .role .r.hus{display:none}.role .r{padding:5px 9px}
 }
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=43">
-<link rel="stylesheet" href="private-coach.css?v=43">
+<link rel="stylesheet" href="design-system/components.css?v=44">
+<link rel="stylesheet" href="private-coach.css?v=44">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -577,12 +571,11 @@ p{margin:0}
 <symbol id="ic-person" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
 </defs></svg>
 <div class="wrap" id="appShell" inert>
-  <header class="top">
-    <span class="tile" id="pageIcon" aria-hidden="true"></span><div class="title"><h1 id="pageTitle">今日</h1><div class="date" id="dateLabel"></div></div>
-    <button class="role" data-open-picker aria-label="切换身份，当前是老公" id="roleBtn"><span class="r hus">老公</span><span class="sw">⇄</span><span class="r wife">老婆</span></button>
-    <img class="me-ava" id="meAva" src="assets/avatar-hus.webp?v=media1" alt="" width="44" height="44">
+  <header class="ds-page-hero" id="pageHero" data-page="today">
+    <div class="ds-page-hero-hand" aria-hidden="true"><span id="heroHandA">把今天</span><span id="heroHandB">过好就很棒</span><svg viewBox="0 0 135 16"><path d="M2 12.5 C27 8.2 56 5.4 88 5.2 C109 5.1 126 5.8 134 7.4 C112 6.2 91 7.1 67 8.3 C38 9.8 17 12.1 2 13.7 Z"/></svg></div>
+    <div class="ds-page-hero-info"><h1 id="pageTitle">今日</h1><p class="ds-page-hero-date" id="dateLabel"></p><div class="ds-page-hero-sync" id="sync" role="status" aria-live="polite"><svg id="syncIcon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M20 16.5a4.5 4.5 0 0 1-4.5 4.5H6a4 4 0 0 1-.4-8 6.8 6.8 0 0 1 13-1.4A4.5 4.5 0 0 1 20 16.5Z"/><path d="m9 15 2 2 4-4"/></svg><span id="syncText"></span></div></div>
+    <button class="role ds-page-hero-role" data-open-picker aria-label="切换身份，当前是老公" id="roleBtn"><span class="r hus">老公</span><span class="sw">⇄</span><span class="r wife">老婆</span></button>
   </header>
-  <p class="sync" id="sync">数据保存在这台手机上</p>
   <main id="view"></main>
 </div>
 
@@ -672,8 +665,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=43"></script>
-<script src="design-system/mascots.js?v=43"></script>
+<script src="private-coach.js?v=44"></script>
+<script src="design-system/mascots.js?v=44"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1355,11 +1348,13 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 function renderHeader(){
   const d=new Date();
   $("#pageTitle").textContent={today:"今日",diet:"饮食",train:"训练",record:"记录"}[tab];
-  const tb=document.querySelector(`.tabs [data-tab="${tab}"] svg`); if(tb) $("#pageIcon").innerHTML=tb.outerHTML;
+  $("#pageHero").dataset.page=tab;
+  const hand={today:["把今天","过好就很棒"],diet:["好好吃饭","慢慢记下来"],train:scheduleFor(me,d).kind==="rest"?["休息，","也是计划的一部分"]:["照着计划，","一点点动起来"],record:["每一次记录","都在靠近自己"]}[tab];
+  $("#heroHandA").textContent=hand[0]; $("#heroHandB").textContent=hand[1];
   $("#dateLabel").textContent=`${d.getMonth()+1}月${d.getDate()}日 周${WEEK[d.getDay()]}`;
   $("#roleBtn").hidden=!!privateCoach;
   $("#roleBtn").setAttribute("aria-label","切换身份，当前是"+PEOPLE[me].label);
-  $("#meAva").src="assets/avatar-"+me+".webp?v=media1"; $("#meAva").alt=PEOPLE[me].label+"的形象";
+  document.documentElement.classList.add("app-hero-active");
   document.documentElement.classList.toggle("me-hus",me==="hus");
   document.documentElement.classList.toggle("me-wife",me==="wife");
   document.body.className="me-"+me;
@@ -1370,21 +1365,25 @@ function renderHeader(){
   if(darkMeta)darkMeta.content=topColors.getPropertyValue('--app-top-dark').trim();
 }
 function renderSync(){
-  const el=$("#sync"); let t="", warn=false;
-  const hm=d=>pad(d.getHours())+":"+pad(d.getMinutes());
+  const el=$("#sync"); let t="", detail="", warn=false;
+  const hm=d=>d.getHours()+":"+pad(d.getMinutes());
   switch(syncState){
-    case "local": t="数据只保存在这台手机上（没读到 config.js 里的 Supabase 配置）"; warn=true; break;
-    case "nocode": t="还没设置家庭口令，暂时不会同步"; warn=true; break;
+    case "local": t="仅保存在本机"; detail="数据只保存在这台手机上（没读到 config.js 里的 Supabase 配置）"; warn=true; break;
+    case "nocode": t="尚未设置同步"; detail="还没设置家庭口令，暂时不会同步"; warn=true; break;
     case "syncing": t="正在同步…"; break;
-    case "pending": t="记录已保存，正在继续上传…"; break;
-    case "ok": t="已同步，"+hm(lastSync||new Date())+" 更新"; break;
-    case "offline": t="暂时连不上云端，记录已保存在本机，会自动重试"; warn=true; break;
-    case "error": t="云端同步未完成，记录已保存在本机；可在设置里复制连接诊断"; warn=true; break;
-    case "auth": t="本机身份需要重新连接，记录仍保存在本机"; warn=true; break;
-    default: t="准备同步…";
+    case "pending": t="记录待同步"; detail="记录已保存，正在继续上传…"; break;
+    case "ok": t=lastSync?"已同步 · "+hm(lastSync):""; break;
+    case "offline": t="离线 · 稍后重试"; detail="暂时连不上云端，记录已保存在本机，会自动重试"; warn=true; break;
+    case "error": t="同步未完成"; detail="云端同步未完成，记录已保存在本机；可在设置里复制连接诊断"; warn=true; break;
+    case "auth": t="需要重新连接"; detail="本机身份需要重新连接，记录仍保存在本机"; warn=true; break;
+    default: t="";
   }
-  if(dirty.length && syncState!=="syncing" && syncState!=="local") t+="（"+dirty.length+" 条待上传）";
-  el.textContent=t; el.className="sync"+(warn?" warn":"");
+  if(dirty.length && syncState!=="syncing" && syncState!=="local")t=`待同步 · ${dirty.length} 条`;
+  $("#syncText").textContent=t;
+  $("#syncIcon").hidden=!(syncState==="ok"&&!!lastSync&&!dirty.length);
+  el.classList.toggle("warn",warn);
+  el.title=detail||t;
+  el.setAttribute("aria-label",detail||t||"同步状态暂不可用");
 }
 
 function beadsFor(person){
@@ -1540,6 +1539,7 @@ function mealSectionHeading(title,date,kind,person=me){
   const label=`${d.getMonth()+1}月${d.getDate()}日 周${WEEK[d.getDay()]}`;
   return `<div class="meal-section-heading ds-section-heading ${person}"><div><h3>${esc(title)}</h3><time datetime="${esc(date)}">${label}</time></div>${window.DuoFitMascots.render(kind,person)}</div>`;
 }
+const recordSectionHeading=()=>`<div class="meal-section-heading ds-section-heading is-compact ${me}"><div><h3>我们的记录</h3></div></div>`;
 function mealPlanContent(person,m,hasDietRule){
   const swap=privateCoach?.active?privateCoach.mealSwap(m):'';
   if(swap||hasDietRule)return `<div class="mplan-suggestion">${swap?'':'<span>餐食待确认</span>'}<p>${esc(swap||'已记录饮食限制，个性餐食暂未生成；请勿照搬默认菜品。')}</p></div>`;
@@ -1564,7 +1564,7 @@ function dietDayRows(person,date,interactive=false,record=null){
 function ringCard(person){
   const e=eatenToday(person),day=dayRange(person),mid=Math.round((e.lo+e.hi)/2),pct=Math.min(1,mid/((day[0]+day[1])/2));
   return `<div class="nutrition-summary ${person}"><div class="nutrition-top"><span>今日热量估算</span><span class="nutrition-count">${e.n} / 4 餐已记录</span></div>
-    <div class="nutrition-value"><div><b>${e.n?kcalText([e.lo,e.hi]):"—"}</b><small>kcal</small></div><img src="${mood(person,e.n===4?"day-done":"meal")}" width="60" height="60" alt=""></div>
+    <div class="nutrition-value"><div><b>${e.n?kcalText([e.lo,e.hi]):"—"}</b><small>kcal</small></div></div>
     <div class="nutrition-track" role="img" aria-label="已记录 ${e.n} 餐，估算 ${e.n?kcalText([e.lo,e.hi]):"暂无"} kcal，全天计划 ${kcalText(day)} kcal"><span style="width:${(pct*100).toFixed(1)}%"></span></div>
     <div class="nutrition-meta"><span>全天计划 <b>${kcalText(day)}</b> kcal</span><span>${e.n===4?"四餐都记下了":"按自己的节奏来"}</span></div>
     <p class="nutrition-note">${privateCoach?.active&&privateCoach.profile?.diet?"有饮食限制时，请优先记录实际食物。":"实际食物按记录计算，其余餐次按计划估算。"}</p></div>`;
@@ -1821,7 +1821,7 @@ function renderRecordData(){
   const gc=$("#recGoal"); if(gc) gc.innerHTML=goalCard();
   const ins=$("#recInsight"); if(ins) ins.innerHTML=insightCard();
   const history=$("#recHistory");if(history){history.innerHTML=checkinHistoryCard();if(privateCoach?.active&&historyPerson!==me)privateCoach.ensurePartnerCheckin?.(historySelectedDate);}
-  const title=$("#recTitle");if(title)title.innerHTML=mealSectionHeading("我们的记录",historySelectedDate||ymd(new Date()),"record",me);
+  const title=$("#recTitle");if(title)title.innerHTML=recordSectionHeading();
   const box=$("#recData"); if(!box) return;
   box.innerHTML=`<section class="ds-module-section" aria-label="趋势">${trendCard()}</section><section class="ds-module-section"><h4>最近更新</h4>${feedRows()}</section>`;
 }
@@ -1838,7 +1838,7 @@ function viewRecord(){
       ${family?`<button class="btn primary" data-code-copy>复制邀请信息</button>`:`<button class="btn primary" data-open-code>去设置</button>`}</div>
       ${family?`<button class="linkbtn" data-open-code>查看或修改口令</button>`:`<p class="empty" style="padding-top:8px">两台手机填同一个口令，数据才会同步到一起。</p>`}</div></section>` : "";
   $("#view").innerHTML=`
-  <section class="sec ds-scene ${me}"><div id="recTitle">${mealSectionHeading("我们的记录",today,"record",me)}</div>
+  <section class="sec ds-scene ${me}"><div id="recTitle">${recordSectionHeading()}</div>
   <div id="recInsight"></div><div id="recHistory"></div></section>
   ${moduleCard("我的目标",`<div id="recGoal">${goalCard()}</div>`,{id:"goalModule",meta:"让目标更贴近现在的自己",symbol:"goal"})}
   ${moduleCard("我与伴侣",`<div class="pair" id="recPair"></div>`,{id:"pairModule",meta:"各自努力，也彼此陪伴",symbol:"people"})}

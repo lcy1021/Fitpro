@@ -1,0 +1,1538 @@
+[
+  {
+    "view": "today",
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 76
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "diet",
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 282.078125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/diet-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "train",
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 573.75
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/train-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "record",
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 1544.53125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/record-couple-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "hus",
+    "theme": "light",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 76
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "diet",
+    "person": "hus",
+    "theme": "light",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 260.078125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/diet-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "train",
+    "person": "hus",
+    "theme": "light",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 600.5
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/train-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "record",
+    "person": "hus",
+    "theme": "light",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 1566.828125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/record-couple-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "hus",
+    "theme": "dark",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 76
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "diet",
+    "person": "hus",
+    "theme": "dark",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 282.078125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/diet-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "train",
+    "person": "hus",
+    "theme": "dark",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 573.75
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/train-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "record",
+    "person": "hus",
+    "theme": "dark",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 1544.53125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/record-couple-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "hus",
+    "theme": "dark",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 76
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "diet",
+    "person": "hus",
+    "theme": "dark",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 260.078125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/diet-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "train",
+    "person": "hus",
+    "theme": "dark",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 600.5
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/train-hus-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "record",
+    "person": "hus",
+    "theme": "dark",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 1566.828125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/record-couple-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "wife",
+    "theme": "light",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 76
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/today-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "diet",
+    "person": "wife",
+    "theme": "light",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 282.078125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/diet-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "train",
+    "person": "wife",
+    "theme": "light",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 573.75
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/train-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "record",
+    "person": "wife",
+    "theme": "light",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 1569.625
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/record-couple-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "wife",
+    "theme": "light",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 76
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/today-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "diet",
+    "person": "wife",
+    "theme": "light",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 260.078125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/diet-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "train",
+    "person": "wife",
+    "theme": "light",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 600.5
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/train-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "record",
+    "person": "wife",
+    "theme": "light",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 1567.421875
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/record-couple-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "wife",
+    "theme": "dark",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 76
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/today-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "diet",
+    "person": "wife",
+    "theme": "dark",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 282.078125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/diet-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "train",
+    "person": "wife",
+    "theme": "dark",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 573.75
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/train-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "record",
+    "person": "wife",
+    "theme": "dark",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 1569.625
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/record-couple-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "wife",
+    "theme": "dark",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 76
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/today-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "diet",
+    "person": "wife",
+    "theme": "dark",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 260.078125
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/diet-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "train",
+    "person": "wife",
+    "theme": "dark",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 600.5
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/train-wife-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  },
+  {
+    "view": "record",
+    "person": "wife",
+    "theme": "dark",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 1567.421875
+    },
+    "nav": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "scene": "url(\"http://127.0.0.1:8765/assets/page-hero/record-couple-v1.png\")",
+    "overflow": false,
+    "font": true,
+    "recordDup": false,
+    "nutritionDup": false,
+    "errors": []
+  }
+]

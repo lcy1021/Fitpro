@@ -1,3 +1,21 @@
+# DuoFit 四页表头 · 设计到代码核对
+
+状态：**通过（本地浏览器）**；iPhone 安装态状态栏保留为实机检查项。
+
+| 核对项 | 结果 | 证据 |
+| --- | --- | --- |
+| 今日／饮食／训练／记录与确认稿同视口、同状态对比 | 通过；场景、手写句、标题、日期、同步及首卡位置一致 | [逐页目标与实装](docs/qa/page-header-implementation/README.md) |
+| 390／320px 几何 | 通过；四页共用 x=24 的信息列，首卡 y=520／426.656 | [测量](docs/qa/page-header-proposal/implementation/checks.json) |
+| 蓝粉、浅深、四页 | 32／32 截图无脚本错误、缺字体或横溢 | [截图目录](docs/qa/page-header-proposal/implementation/) |
+| 同步状态与页面切换 | 空时间、成功、离线、身份及 tab 切换通过，首卡不跳动 | [状态检查](docs/qa/page-header-implementation/check-states.cjs) |
+| 回归 | 设计系统、业务场景、餐次与 SW 缓存四项通过 | [QA 说明](docs/qa/page-header-implementation/README.md) |
+
+规格图的系统状态栏只用于展示，正式网页由 iOS 绘制。粉色单人场景是基于确认构图和原版粉角色制作的必要身份变体，仍需用户在真实手机上看整体观感。当前未上线。
+
+---
+
+## 历史核对记录（v39）
+
 # DuoFit v39 · 通用渐变卡片与记录顺序
 
 **final result: passed**

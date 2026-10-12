@@ -1,0 +1,418 @@
+{
+  "today": {
+    ".wrap": {
+      "x": 0,
+      "y": 59,
+      "width": 390,
+      "height": 2391.453125,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "10px 16px 104px",
+      "text": "今日10月12日 周一 老公⇄老婆 已同步 · 9:41 本周方向腰腹、背肩 每日状态安心休息 工位起身给久坐的身体一个小休息起来动一动每坐 1 小时起身 2–3 分钟−4/6 次+ 今天吃什么10月12日 周一好好吃饭就是爱自己 早餐7:"
+    },
+    "#pageTitle": {
+      "x": 68,
+      "y": 75,
+      "width": 252,
+      "height": 31.1875,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "今日"
+    },
+    "#dateLabel": {
+      "x": 68,
+      "y": 106.1875,
+      "width": 252,
+      "height": 19.1875,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "10月12日 周一"
+    },
+    "#sync": {
+      "x": 20,
+      "y": 133.375,
+      "width": 350,
+      "height": 19.1875,
+      "marginTop": "-6px",
+      "marginBottom": "12px",
+      "padding": "0px",
+      "text": "已同步 · 9:41"
+    },
+    "#view": {
+      "x": 16,
+      "y": 164.5625,
+      "width": 358,
+      "height": 2159.890625,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "本周方向腰腹、背肩 每日状态安心休息 工位起身给久坐的身体一个小休息起来动一动每坐 1 小时起身 2–3 分钟−4/6 次+ 今天吃什么10月12日 周一好好吃饭就是爱自己 早餐7:00 计划约330–465kcal燕麦 60g、无糖豆浆 "
+    },
+    "#view>*": {
+      "x": 16,
+      "y": 164.5625,
+      "width": 358,
+      "height": 76,
+      "marginTop": "8px",
+      "marginBottom": "14px",
+      "padding": "0px",
+      "text": "本周方向腰腹、背肩 每日状态安心休息"
+    },
+    ".tabs": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "今日 饮食 训练 记录"
+    },
+    "firstChildren": [
+      {
+        "tag": "SECTION",
+        "class": "today-summary-pair hus",
+        "id": "",
+        "y": 164.5625,
+        "height": 76,
+        "text": "本周方向腰腹、背肩 每日状态安心休息"
+      },
+      {
+        "tag": "SECTION",
+        "class": "sec ds-scene ds-module hus",
+        "id": "standModule",
+        "y": 254.5625,
+        "height": 262.78125,
+        "text": "工位起身给久坐的身体一个小休息起来动一动每坐 1 小时起身 2–3 分钟−4/6 次+"
+      },
+      {
+        "tag": "SECTION",
+        "class": "sec ds-scene ds-meal-scene hus",
+        "id": "",
+        "y": 539.34375,
+        "height": 1446.140625,
+        "text": "今天吃什么10月12日 周一好好吃饭就是爱自己 早餐7:00 计划约330–465kcal燕麦 60g、无糖豆浆 300ml、水煮蛋 2 个"
+      },
+      {
+        "tag": "SECTION",
+        "class": "sec",
+        "id": "",
+        "y": 2007.484375,
+        "height": 316.96875,
+        "text": "今天休息休息日也可以轻轻动一动可选小活动不影响休息日安排；做了哪项就记哪项。 坐姿夹臀双手向上伸展站姿提踵 查看可选动作并打卡"
+      }
+    ]
+  },
+  "diet": {
+    ".wrap": {
+      "x": 0,
+      "y": 59,
+      "width": 390,
+      "height": 2744.703125,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "10px 16px 104px",
+      "text": "饮食10月12日 周一 老公⇄老婆 已同步 · 9:41 饮食日志把每一餐，慢慢记下来今日热量估算3 / 4 餐已记录 655kcal 全天计划 1235–1885 kcal按自己的节奏来 有饮食限制时，请优先记录实际食物。 饮食打卡记录按"
+    },
+    "#pageTitle": {
+      "x": 68,
+      "y": 75,
+      "width": 252,
+      "height": 31.1875,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "饮食"
+    },
+    "#dateLabel": {
+      "x": 68,
+      "y": 106.1875,
+      "width": 252,
+      "height": 19.1875,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "10月12日 周一"
+    },
+    "#sync": {
+      "x": 20,
+      "y": 133.375,
+      "width": 350,
+      "height": 19.1875,
+      "marginTop": "-6px",
+      "marginBottom": "12px",
+      "padding": "0px",
+      "text": "已同步 · 9:41"
+    },
+    "#view": {
+      "x": 16,
+      "y": 164.5625,
+      "width": 358,
+      "height": 2513.140625,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "饮食日志把每一餐，慢慢记下来今日热量估算3 / 4 餐已记录 655kcal 全天计划 1235–1885 kcal按自己的节奏来 有饮食限制时，请优先记录实际食物。 饮食打卡记录按日期回看，每一餐都有迹可循这周的饮食2026 年 10/1"
+    },
+    "#view>*": {
+      "x": 16,
+      "y": 164.5625,
+      "width": 358,
+      "height": 303.6875,
+      "marginTop": "0px",
+      "marginBottom": "22px",
+      "padding": "0px 8px 12px",
+      "text": "饮食日志把每一餐，慢慢记下来今日热量估算3 / 4 餐已记录 655kcal 全天计划 1235–1885 kcal按自己的节奏来 有饮食限制时，请优先记录实际食物。"
+    },
+    ".tabs": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "今日 饮食 训练 记录"
+    },
+    "firstChildren": [
+      {
+        "tag": "SECTION",
+        "class": "sec ds-scene ds-module hus",
+        "id": "nutritionModule",
+        "y": 164.5625,
+        "height": 303.6875,
+        "text": "饮食日志把每一餐，慢慢记下来今日热量估算3 / 4 餐已记录 655kcal 全天计划 1235–1885 kcal按自己的节奏来 有饮食限"
+      },
+      {
+        "tag": "SECTION",
+        "class": "sec ds-scene ds-module hus",
+        "id": "dietLogModule",
+        "y": 490.25,
+        "height": 1109.515625,
+        "text": "饮食打卡记录按日期回看，每一餐都有迹可循这周的饮食2026 年 10/12—10/18 · 已记录 3 餐 今天12周二13周三14周四15"
+      },
+      {
+        "tag": "SECTION",
+        "class": "sec ds-scene hus",
+        "id": "",
+        "y": 1621.765625,
+        "height": 697.984375,
+        "text": "我的一天10月12日 周一 早餐7:00约330–465kcal燕麦 60g、无糖豆浆 300ml、水煮蛋 2 个午餐12:00约500–7"
+      },
+      {
+        "tag": "SECTION",
+        "class": "sec",
+        "id": "",
+        "y": 2341.75,
+        "height": 335.953125,
+        "text": "常见场景 沙拉酱怎么选？选油醋汁，只倒一半；沙拉里要有肉蛋和一点主食。 下午想喝咖啡？美式随便喝；拿铁就当加餐；避开糖浆、生椰、厚乳；3–4"
+      }
+    ]
+  },
+  "train": {
+    ".wrap": {
+      "x": 0,
+      "y": 59,
+      "width": 390,
+      "height": 1098.484375,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "10px 16px 104px",
+      "text": "训练10月12日 周一 老公⇄老婆 已同步 · 9:41 今天休息今天没有必须完成的训练下方有可选小活动，做了再打卡即可。休息日可选小活动想活动一下就选一项，做完点打卡；不做也没关系。 坐姿夹臀15 次 · 收紧臀部保持 3 秒再放松打卡双"
+    },
+    "#pageTitle": {
+      "x": 68,
+      "y": 75,
+      "width": 252,
+      "height": 31.1875,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "训练"
+    },
+    "#dateLabel": {
+      "x": 68,
+      "y": 106.1875,
+      "width": 252,
+      "height": 19.1875,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "10月12日 周一"
+    },
+    "#sync": {
+      "x": 20,
+      "y": 133.375,
+      "width": 350,
+      "height": 19.1875,
+      "marginTop": "-6px",
+      "marginBottom": "12px",
+      "padding": "0px",
+      "text": "已同步 · 9:41"
+    },
+    "#view": {
+      "x": 16,
+      "y": 164.5625,
+      "width": 358,
+      "height": 866.921875,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "今天休息今天没有必须完成的训练下方有可选小活动，做了再打卡即可。休息日可选小活动想活动一下就选一项，做完点打卡；不做也没关系。 坐姿夹臀15 次 · 收紧臀部保持 3 秒再放松打卡双手向上伸展15 秒 · 双手交叉向上，拉长身体打卡站姿提踵"
+    },
+    "#view>*": {
+      "x": 16,
+      "y": 164.5625,
+      "width": 358,
+      "height": 573.75,
+      "marginTop": "0px",
+      "marginBottom": "22px",
+      "padding": "0px",
+      "text": "今天休息今天没有必须完成的训练下方有可选小活动，做了再打卡即可。休息日可选小活动想活动一下就选一项，做完点打卡；不做也没关系。 坐姿夹臀15 次 · 收紧臀部保持 3 秒再放松打卡双手向上伸展15 秒 · 双手交叉向上，拉长身体打卡站姿提踵"
+    },
+    ".tabs": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "今日 饮食 训练 记录"
+    },
+    "firstChildren": [
+      {
+        "tag": "SECTION",
+        "class": "sec",
+        "id": "",
+        "y": 164.5625,
+        "height": 573.75,
+        "text": "今天休息今天没有必须完成的训练下方有可选小活动，做了再打卡即可。休息日可选小活动想活动一下就选一项，做完点打卡；不做也没关系。 坐姿夹臀15"
+      },
+      {
+        "tag": "SECTION",
+        "class": "sec ds-scene ds-module hus",
+        "id": "weekModule",
+        "y": 760.3125,
+        "height": 271.171875,
+        "text": "这周我的安排按自己的节奏，一天一点进步今天周二周三周四周五周六周日我的安排休休徒手休徒手休休 表示已完成的训练"
+      }
+    ]
+  },
+  "record": {
+    ".wrap": {
+      "x": 0,
+      "y": 59,
+      "width": 390,
+      "height": 3499.453125,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "10px 16px 104px",
+      "text": "记录10月12日 周一 老公⇄老婆 已同步 · 9:41 我们的记录10月12日 周一 一起坚持的日子每一次记录，都是在照顾自己。老公连续记录5天本周记录 1 天老婆连续记录3天本周记录 0 天两人同日连续记录 3 天当天保存过打卡就算记录"
+    },
+    "#pageTitle": {
+      "x": 68,
+      "y": 75,
+      "width": 252,
+      "height": 31.1875,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "记录"
+    },
+    "#dateLabel": {
+      "x": 68,
+      "y": 106.1875,
+      "width": 252,
+      "height": 19.1875,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "10月12日 周一"
+    },
+    "#sync": {
+      "x": 20,
+      "y": 133.375,
+      "width": 350,
+      "height": 19.1875,
+      "marginTop": "-6px",
+      "marginBottom": "12px",
+      "padding": "0px",
+      "text": "已同步 · 9:41"
+    },
+    "#view": {
+      "x": 16,
+      "y": 164.5625,
+      "width": 358,
+      "height": 3289.890625,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "我们的记录10月12日 周一 一起坚持的日子每一次记录，都是在照顾自己。老公连续记录5天本周记录 1 天老婆连续记录3天本周记录 0 天两人同日连续记录 3 天当天保存过打卡就算记录，今天尚未记录时沿用昨天的连续天数。连续天数按近 120 "
+    },
+    "#view>*": {
+      "x": 16,
+      "y": 164.5625,
+      "width": 358,
+      "height": 1612.53125,
+      "marginTop": "0px",
+      "marginBottom": "22px",
+      "padding": "0px 8px 12px",
+      "text": "我们的记录10月12日 周一 一起坚持的日子每一次记录，都是在照顾自己。老公连续记录5天本周记录 1 天老婆连续记录3天本周记录 0 天两人同日连续记录 3 天当天保存过打卡就算记录，今天尚未记录时沿用昨天的连续天数。连续天数按近 120 "
+    },
+    ".tabs": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375,
+      "marginTop": "0px",
+      "marginBottom": "0px",
+      "padding": "0px",
+      "text": "今日 饮食 训练 记录"
+    },
+    "firstChildren": [
+      {
+        "tag": "SECTION",
+        "class": "sec ds-scene hus",
+        "id": "",
+        "y": 164.5625,
+        "height": 1612.53125,
+        "text": "我们的记录10月12日 周一 一起坚持的日子每一次记录，都是在照顾自己。老公连续记录5天本周记录 1 天老婆连续记录3天本周记录 0 天两人"
+      },
+      {
+        "tag": "SECTION",
+        "class": "sec ds-scene ds-module hus",
+        "id": "goalModule",
+        "y": 1799.09375,
+        "height": 220.359375,
+        "text": "我的目标让目标更贴近现在的自己我的目标 · 建立运动习惯修改想改善：腰腹、背肩身体状态与计划只有你可见。每周第一天确认后可以调整。"
+      },
+      {
+        "tag": "SECTION",
+        "class": "sec ds-scene ds-module hus",
+        "id": "pairModule",
+        "y": 2041.453125,
+        "height": 377.765625,
+        "text": "我与伴侣各自努力，也彼此陪伴 老公 76kg 近 4 周 −0.5 kg最新 10/12 伴侣今天还没有打卡这里展示打卡状态与相对体重变化相"
+      },
+      {
+        "tag": "SECTION",
+        "class": "sec ds-scene ds-module hus",
+        "id": "bodyModule",
+        "y": 2441.21875,
+        "height": 825.65625,
+        "text": "记录老公的数据记录、趋势与更新，都在这里 记在哪天 晨起体重kg 上次 76.5 kg腰围cm 还没有记录 保存记录 我的体重趋势体重腰围7"
+      },
+      {
+        "tag": "SECTION",
+        "class": "coach-mini",
+        "id": "",
+        "y": 3288.875,
+        "height": 79.578125,
+        "text": "每周计划提醒推送服务尚未配置，打开 App 时仍会提醒。"
+      }
+    ]
+  }
+}

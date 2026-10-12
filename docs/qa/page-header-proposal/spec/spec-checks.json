@@ -1,0 +1,359 @@
+[
+  {
+    "view": "today",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 76
+    },
+    "tab": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "overflow": false,
+    "font": true
+  },
+  {
+    "view": "diet",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 282.078125
+    },
+    "tab": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "overflow": false,
+    "font": true
+  },
+  {
+    "view": "train",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 573.75
+    },
+    "tab": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "overflow": false,
+    "font": true
+  },
+  {
+    "view": "record",
+    "width": 390,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 520
+    },
+    "title": {
+      "x": 24,
+      "y": 393.375,
+      "width": 342,
+      "height": 46.625
+    },
+    "date": {
+      "x": 24,
+      "y": 450,
+      "width": 342,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 479,
+      "width": 342,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 520,
+      "width": 358,
+      "height": 1544.53125
+    },
+    "tab": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 390,
+      "height": 66.59375
+    },
+    "overflow": false,
+    "font": true
+  },
+  {
+    "view": "today",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 76
+    },
+    "tab": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "overflow": false,
+    "font": true
+  },
+  {
+    "view": "diet",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 260.078125
+    },
+    "tab": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "overflow": false,
+    "font": true
+  },
+  {
+    "view": "train",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 600.5
+    },
+    "tab": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "overflow": false,
+    "font": true
+  },
+  {
+    "view": "record",
+    "width": 320,
+    "hero": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 426.65625
+    },
+    "title": {
+      "x": 24,
+      "y": 304.265625,
+      "width": 272,
+      "height": 42.390625
+    },
+    "date": {
+      "x": 24,
+      "y": 356.65625,
+      "width": 272,
+      "height": 20
+    },
+    "sync": {
+      "x": 24,
+      "y": 385.65625,
+      "width": 272,
+      "height": 23
+    },
+    "firstCard": {
+      "x": 16,
+      "y": 426.65625,
+      "width": 288,
+      "height": 1566.828125
+    },
+    "tab": {
+      "x": 0,
+      "y": 777.40625,
+      "width": 320,
+      "height": 66.59375
+    },
+    "overflow": false,
+    "font": true
+  },
+  {
+    "view": "today-no-sync",
+    "width": 390,
+    "title": {
+      "y": 393.375,
+      "height": 46.625
+    },
+    "date": {
+      "y": 450,
+      "height": 20
+    },
+    "sync": {
+      "y": 479,
+      "height": 23
+    },
+    "firstCard": {
+      "y": 520,
+      "height": 76
+    },
+    "syncText": ""
+  }
+]

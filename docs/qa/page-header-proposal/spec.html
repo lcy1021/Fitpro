@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DuoFit · 四页表头高清规格稿</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;padding:28px 20px 60px;background:#e9eef2;color:#1b2a35;font:14px/1.55 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+    h1{margin:0 0 4px;font-size:24px}p{margin:0 0 22px;color:#53697b}.grid{display:grid;grid-template-columns:repeat(auto-fit,390px);gap:30px;justify-content:center}.item{width:390px}.item h2{margin:0 0 9px;font-size:16px}.phone{width:390px;height:844px;border:0;border-radius:30px;box-shadow:0 12px 32px #27455a29;background:#fff;display:block}
+    @media(max-width:420px){body{padding:12px 0}.grid{grid-template-columns:100%;gap:22px}.item,.phone{width:100%}.phone{border-radius:0;box-shadow:none}.item h2,h1,p{margin-inline:16px}}
+  </style>
+</head>
+<body>
+<h1>四页表头 · 基于当前 App 真实组件</h1>
+<p>蓝色身份 / 浅色 / 390 × 844 CSS px。下方首卡、正文、导航来自当前 App 的本机合成数据预览；仅页头为待确认规格。</p>
+<div class="grid" id="grid"></div>
+<script>
+const info={
+  today:{label:'今日',scene:'today-scene.png',lines:['把今天','过好就很棒']},
+  diet:{label:'饮食',scene:'diet-scene.png',lines:['好好吃饭','慢慢记下来']},
+  train:{label:'训练',scene:'train-scene.png',lines:['休息，','也是计划的一部分']},
+  record:{label:'记录',scene:'record-previous-style.png',lines:['每一次记录','都在靠近自己']}
+};
+const base='/tests/theme-preview.html?journal=1&meal-design=1&reference=1&state=daily-rest&person=hus&theme=light';
+const showSync=new URLSearchParams(location.search).get('sync')!=='none';
+const status=`<div class="spec-status"><span>9:41</span><span class="spec-island"></span><span class="spec-system" aria-hidden="true"><svg width="20" height="15" viewBox="0 0 20 15"><rect x="1" y="10" width="3" height="5" rx=".8"/><rect x="6" y="7" width="3" height="8" rx=".8"/><rect x="11" y="4" width="3" height="11" rx=".8"/><rect x="16" y="1" width="3" height="14" rx=".8"/></svg><svg width="19" height="15" viewBox="0 0 19 15" fill="none"><path d="M1 5.2C5.5 1.1 13.5 1.1 18 5.2M4.2 8.4c3-2.7 7.7-2.7 10.6 0M7.5 11.4c1.2-1 2.8-1 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="9.5" cy="13" r="1.2" fill="currentColor"/></svg><span class="spec-battery">84</span></span></div>`;
+const cloud=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 16.5a4.5 4.5 0 0 1-4.5 4.5H6a4 4 0 0 1-.4-8 6.8 6.8 0 0 1 13-1.4A4.5 4.5 0 0 1 20 16.5Z"/><path d="m9 15 2 2 4-4"/></svg>`;
+const underline=`<svg class="spec-underline" viewBox="0 0 135 16" aria-hidden="true"><path d="M2 12.5 C27 8.2 56 5.4 88 5.2 C109 5.1 126 5.8 134 7.4 C112 6.2 91 7.1 67 8.3 C38 9.8 17 12.1 2 13.7 Z"/></svg>`;
+const css=`
+@font-face{font-family:LongCangSpec;src:url('/docs/qa/page-header-proposal/assets/LongCang-Regular.ttf') format('truetype');font-display:swap}
+html,body{padding-top:0!important;min-height:100%;background:var(--bg)!important;background-image:none!important}
+.wrap{padding:0 0 104px!important;max-width:520px}.top,.wrap>#sync,#pageHero{display:none!important}#view{padding:0 16px}.today-summary-pair{margin-top:0!important}
+.spec-hero{position:relative;height:520px;isolation:isolate;background:#e1f0fb var(--spec-scene) center top/100% 100% no-repeat;color:#132638}
+.spec-hero::after{content:'';position:absolute;z-index:0;left:0;right:0;bottom:0;height:102px;background:linear-gradient(transparent,var(--bg));pointer-events:none;opacity:.13}
+.spec-status{position:absolute;z-index:2;top:0;left:0;right:0;height:59px;padding:16px 26px 0;display:flex;justify-content:space-between;align-items:flex-start;color:#183147;font:700 16px/1.3 -apple-system,BlinkMacSystemFont,sans-serif}
+.spec-island{position:absolute;left:50%;top:10px;transform:translateX(-50%);width:105px;height:31px;background:#0a0b0d;border-radius:24px}
+.spec-system{display:flex;align-items:center;gap:5px;color:#183147}.spec-system svg{fill:currentColor}.spec-battery{display:grid;place-items:center;width:23px;height:15px;border:1.5px solid currentColor;border-radius:4px;font-size:10px;line-height:1}
+.spec-handwrite{position:absolute;z-index:2;top:104px;left:30px;width:52%;color:#08365e;font:24px/1.13 LongCangSpec,cursive;transform:rotate(-6deg);text-shadow:0 1px 0 #ffffff60;pointer-events:none}
+.spec-handwrite span{display:block;white-space:nowrap}.spec-handwrite span+span{margin-left:4px}.spec-underline{display:block;width:135px;height:16px;margin-left:9px;transform:rotate(-3deg);fill:#2978c3}
+.spec-hero.train .spec-handwrite{top:13.5%}.spec-hero.record .spec-handwrite{top:9.5%;left:15%;color:#173e66}
+.spec-hero.record .spec-status{color:#fff;text-shadow:0 1px 3px #1a223b99}.spec-hero.record .spec-system{color:#fff}
+.spec-copy{position:absolute;z-index:2;left:24px;right:24px;bottom:18px}.spec-copy h1{margin:0;font-size:44px;line-height:1.06;letter-spacing:-.04em;font-weight:850;color:#132638}
+.spec-date{margin:10px 0 0;color:#4f718e;font-size:16px;line-height:20px;font-variant-numeric:tabular-nums}
+.spec-sync{height:23px;margin-top:9px;display:flex;align-items:center;gap:6px;font-size:13px;color:#67849c;font-variant-numeric:tabular-nums}.spec-sync svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.spec-hero.diet~#view #nutritionModule .nutrition-value img{display:none}
+.spec-hero.record~#view #recTitle .meal-section-heading{min-height:48px;margin-bottom:12px}
+.spec-hero.record~#view #recTitle .ds-mascot-group,.spec-hero.record~#view #recTitle time{display:none}
+@media(max-width:350px){.spec-hero{height:calc(100vw * 4 / 3)}.spec-handwrite{font-size:21px}.spec-underline{width:119px}.spec-copy h1{font-size:40px}}
+`;
+let loaded=0;
+for(const [view,d] of Object.entries(info)){
+  const item=document.createElement('section');item.className='item';item.innerHTML=`<h2>${d.label}</h2><iframe class="phone" title="${d.label}页面规格稿" src="${base}&view=${view}"></iframe>`;
+  document.querySelector('#grid').append(item);
+  const frame=item.querySelector('iframe');
+  frame.addEventListener('load',()=>{
+    const doc=frame.contentDocument;
+    const ready=()=>{
+      if(doc.body.dataset.previewReady!=='true'){setTimeout(ready,30);return}
+      const style=doc.createElement('style');style.textContent=css;doc.head.append(style);
+      const hero=doc.createElement('section');hero.className=`spec-hero ${view}`;hero.style.setProperty('--spec-scene',`url('/docs/qa/page-header-proposal/assets/${d.scene}')`);
+      const date=doc.querySelector('#dateLabel').textContent;
+      hero.innerHTML=status+`<div class="spec-handwrite"><span>${d.lines[0]}</span><span>${d.lines[1]}</span>${underline}</div><div class="spec-copy"><h1>${d.label}</h1><p class="spec-date">${date}</p><div class="spec-sync">${showSync?`${cloud}已同步 · 9:41`:''}</div></div>`;
+      doc.querySelector('#view').before(hero);
+      doc.fonts.ready.then(()=>{frame.dataset.specReady='true';if(++loaded===4)document.body.dataset.specReady='true'});
+    };ready();
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DuoFit · 今日表头系统预览</title>
+  <style>
+    @font-face { font-family: "Long Cang"; src: url("assets/LongCang-Regular.ttf") format("truetype"); font-display: swap; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e8eef4; color: #192024; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+    .board { max-width: 850px; margin: auto; padding: 30px 16px 64px; }
+    .board > h1 { margin: 0 0 8px; font-size: 24px; }
+    .board > p { color: #64748b; font-size: 14px; line-height: 1.6; margin: 0 0 20px; }
+    .examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr)); gap: 24px; justify-items: center; }
+    .example { width: min(100%, 390px); }
+    .example h2 { font-size: 15px; margin: 0 0 9px; }
+    .phone { width: 100%; height: 760px; overflow: hidden; border-radius: 35px; background: #fdfaf6; box-shadow: 0 12px 40px #19324a26; position: relative; }
+    .hero { height: 520px; position: relative; background: url("assets/today-scene.png") center top / 100% 100% no-repeat; }
+    .hero.diet { background-image: url("assets/diet-scene.png"); }
+    .hero.train { background-image: url("assets/train-scene.png"); }
+    .hero.record { background-image: url("assets/record-previous-style.png"); }
+    .status-bar { position: absolute; z-index: 2; top: 0; left: 0; right: 0; height: 58px; padding: 17px 27px 0; display: flex; justify-content: space-between; align-items: flex-start; font: 700 16px -apple-system, sans-serif; color: #173956; }
+    .island { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 105px; height: 31px; background: #090b0e; border-radius: 30px; }
+    .handwrite { position: absolute; top: 104px; left: 30px; width: 45%; color: #08365e; font: 24px/1.13 "Long Cang", cursive; transform: rotate(-6deg); text-shadow: 0 1px 0 #ffffff60; }
+    .handwrite span { display: block; white-space: nowrap; }
+    .handwrite span + span { margin-left: 4px; }
+    .handwrite svg { display: block; width: 135px; height: 16px; margin: 0 0 0 9px; transform: rotate(-3deg); fill: #2978c3; }
+    .hero-info { position: absolute; bottom: 18px; left: 24px; right: 24px; }
+    .record .hero-info { z-index: 2; }
+    .record .handwrite { z-index: 2; top: 9.5%; left: 15%; color: #173e66; }
+    .train .handwrite { top: 13.5%; }
+    .hero-title { margin: 0; font-size: 44px; line-height: 1.06; letter-spacing: -.04em; font-weight: 850; color: #132638; }
+    .hero-date { margin: 10px 0 0; color: #4f718e; font-size: 16px; line-height: 20px; font-variant-numeric: tabular-nums; }
+    .sync-slot { height: 23px; margin-top: 9px; display: flex; align-items: center; font-size: 13px; color: #67849c; font-variant-numeric: tabular-nums; }
+    .sync-slot svg { width: 17px; height: 17px; margin-right: 6px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .content { padding: 0 16px 24px; }
+    .summary { margin: 0; min-height: 106px; padding: 18px 16px; display: grid; grid-template-columns: 1fr 1fr; border-radius: 24px; background: #fff; box-shadow: 0 10px 28px #283f591a; }
+    .summary > div { padding: 1px 10px; }
+    .summary > div + div { border-left: 1px solid #e4edf3; }
+    .summary small { display: block; font-size: 13px; color: #64748b; margin-bottom: 7px; }
+    .summary strong { font-size: 17px; color: #21354a; }
+    .note { margin: 15px 4px; font-size: 12px; line-height: 1.55; color: #64748b; }
+    .sheet { margin-top: 32px; }
+    .sheet h2 { font-size: 18px; margin: 0 0 10px; }
+    .sheet-grid { display: grid; gap: 16px; }
+    .sheet img { display: block; width: 100%; border-radius: 18px; background: white; box-shadow: 0 6px 22px #283f5915; }
+    .sheet p { font-size: 13px; line-height: 1.6; color: #64748b; }
+    @media (max-width: 350px) { .handwrite { font-size: 21px; } .handwrite svg { width: 119px; } }
+    @media (max-width: 390px) { .board { padding-inline: 0; } .board > h1,.board > p,.example h2,.sheet { margin-inline: 16px; } .phone { border-radius: 0; box-shadow: none; } .hero { height: calc(100vw * 4 / 3); background-size: 100% 100%; } }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <h1>四页表头系统 · 分层组合预览</h1>
+    <p>今日展示两种同步状态；饮食、训练、记录沿用同一字体、标题、日期、同步行和首卡起点。手写句、标题与时间均为网页文字。</p>
+    <div class="examples">
+      <section class="example">
+        <h2>已同步</h2>
+        <div class="phone">
+          <div class="hero">
+            <div class="status-bar"><span>9:41</span><span class="island"></span><span>▮▮▮ ◕ ▰</span></div>
+            <div class="handwrite"><span>把今天</span><span>过好就很棒</span><svg viewBox="0 0 135 16" aria-hidden="true"><path d="M2 12.5 C27 8.2 56 5.4 88 5.2 C109 5.1 126 5.8 134 7.4 C112 6.2 91 7.1 67 8.3 C38 9.8 17 12.1 2 13.7 Z"/></svg></div>
+            <div class="hero-info"><h3 class="hero-title">今日</h3><p class="hero-date">10月12日 周一</p><div class="sync-slot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 16.5a4.5 4.5 0 0 1-4.5 4.5H6a4 4 0 0 1-.4-8 6.8 6.8 0 0 1 13-1.4A4.5 4.5 0 0 1 20 16.5Z"/><path d="m9 15 2 2 4-4"/></svg>已同步 · 9:41</div></div>
+          </div>
+          <div class="content"><div class="summary"><div><small>本周方向</small><strong>腰腹、背肩</strong></div><div><small>每日状态</small><strong>安心休息</strong></div></div><p class="note">第一张卡固定从同一位置开始。</p></div>
+        </div>
+      </section>
+      <section class="example">
+        <h2>尚无同步时间</h2>
+        <div class="phone">
+          <div class="hero">
+            <div class="status-bar"><span>9:41</span><span class="island"></span><span>▮▮▮ ◕ ▰</span></div>
+            <div class="handwrite"><span>把今天</span><span>过好就很棒</span><svg viewBox="0 0 135 16" aria-hidden="true"><path d="M2 12.5 C27 8.2 56 5.4 88 5.2 C109 5.1 126 5.8 134 7.4 C112 6.2 91 7.1 67 8.3 C38 9.8 17 12.1 2 13.7 Z"/></svg></div>
+            <div class="hero-info"><h3 class="hero-title">今日</h3><p class="hero-date">10月12日 周一</p><div class="sync-slot" aria-hidden="true"></div></div>
+          </div>
+          <div class="content"><div class="summary"><div><small>本周方向</small><strong>腰腹、背肩</strong></div><div><small>每日状态</small><strong>安心休息</strong></div></div><p class="note">只隐藏同步文案，保留同高行，标题、日期与下方组件不跳动。</p></div>
+        </div>
+      </section>
+    </div>
+    <div class="examples" style="margin-top:32px">
+    <section class="example">
+      <h2>饮食 · 晨间厨房</h2>
+      <div class="phone">
+        <div class="hero diet">
+          <div class="status-bar"><span>9:41</span><span class="island"></span><span>▮▮▮ ◕ ▰</span></div>
+          <div class="handwrite"><span>好好吃饭</span><span>慢慢记下来</span><svg viewBox="0 0 135 16" aria-hidden="true"><path d="M2 12.5 C27 8.2 56 5.4 88 5.2 C109 5.1 126 5.8 134 7.4 C112 6.2 91 7.1 67 8.3 C38 9.8 17 12.1 2 13.7 Z"/></svg></div>
+          <div class="hero-info"><h3 class="hero-title">饮食</h3><p class="hero-date">10月12日 周一</p><div class="sync-slot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 16.5a4.5 4.5 0 0 1-4.5 4.5H6a4 4 0 0 1-.4-8 6.8 6.8 0 0 1 13-1.4A4.5 4.5 0 0 1 20 16.5Z"/><path d="m9 15 2 2 4-4"/></svg>已同步 · 9:41</div></div>
+        </div>
+        <div class="content"><div class="summary"><div><small>饮食日志</small><strong>今天吃什么</strong></div><div><small>今日餐次</small><strong>查看记录</strong></div></div><p class="note">场景不替代真实餐次和热量数据。</p></div>
+      </div>
+    </section>
+    <section class="example">
+      <h2>训练 · 休息日状态</h2>
+      <div class="phone">
+        <div class="hero train">
+          <div class="status-bar"><span>9:41</span><span class="island"></span><span>▮▮▮ ◕ ▰</span></div>
+          <div class="handwrite"><span>休息，</span><span>也是计划的一部分</span><svg viewBox="0 0 135 16" aria-hidden="true"><path d="M2 12.5 C27 8.2 56 5.4 88 5.2 C109 5.1 126 5.8 134 7.4 C112 6.2 91 7.1 67 8.3 C38 9.8 17 12.1 2 13.7 Z"/></svg></div>
+          <div class="hero-info"><h3 class="hero-title">训练</h3><p class="hero-date">10月12日 周一</p><div class="sync-slot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 16.5a4.5 4.5 0 0 1-4.5 4.5H6a4 4 0 0 1-.4-8 6.8 6.8 0 0 1 13-1.4A4.5 4.5 0 0 1 20 16.5Z"/><path d="m9 15 2 2 4-4"/></svg>已同步 · 9:41</div></div>
+        </div>
+        <div class="content"><div class="summary"><div><small>今日安排</small><strong>安心休息</strong></div><div><small>本周训练</small><strong>查看计划</strong></div></div><p class="note">休息日只展示真实休息语义；训练日需匹配实际计划。</p></div>
+      </div>
+    </section>
+    <section class="example">
+      <h2>记录 · 恢复两人围桌的构图</h2>
+      <div class="phone">
+        <div class="hero record">
+          <div class="status-bar"><span>9:41</span><span class="island"></span><span>▮▮▮ ◕ ▰</span></div>
+          <div class="handwrite"><span>每一次记录</span><span>都在靠近自己</span><svg viewBox="0 0 135 16" aria-hidden="true"><path d="M2 12.5 C27 8.2 56 5.4 88 5.2 C109 5.1 126 5.8 134 7.4 C112 6.2 91 7.1 67 8.3 C38 9.8 17 12.1 2 13.7 Z"/></svg></div>
+          <div class="hero-info"><h3 class="hero-title">记录</h3><p class="hero-date">10月12日 周一</p><div class="sync-slot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 16.5a4.5 4.5 0 0 1-4.5 4.5H6a4 4 0 0 1-.4-8 6.8 6.8 0 0 1 13-1.4A4.5 4.5 0 0 1 20 16.5Z"/><path d="m9 15 2 2 4-4"/></svg>已同步 · 9:41</div></div>
+        </div>
+        <div class="content"><div class="summary"><div><small>连续记录</small><strong>一起坚持</strong></div><div><small>本周记录</small><strong>查看日历</strong></div></div><p class="note">回到傍晚围桌看记录册的构图，手写句与标题仍是独立文字层。</p></div>
+      </div>
+    </section>
+    </div>
+    <section class="sheet"><h2>角色结构母版</h2><div class="sheet-grid"><img src="assets/hus-turnaround.png" alt="蓝色角色正面、四分之三、侧面、背面和局部结构图"><img src="assets/wife-turnaround.png" alt="粉色角色正面、四分之三、侧面、背面和局部结构图"></div><p>四页后续姿态均按这两张多视角母版延展。蓝色角色已获确认；粉色角色待你看过这一版再定稿。</p></section>
+  </main>
+</body>
+</html>

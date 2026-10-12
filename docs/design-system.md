@@ -1,4 +1,4 @@
-# DuoFit Design System · 1.7
+# DuoFit Design System · 1.8
 
 状态：正式沿用。以用户确认的 v35「方案一」页面为视觉依据；实现入口是 `design-system/tokens.css`、`design-system/components.css`，可操作样例是 `design-system/index.html`。
 
@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=43">
-<link rel="stylesheet" href="design-system/components.css?v=43">
+<link rel="stylesheet" href="design-system/tokens.css?v=44">
+<link rel="stylesheet" href="design-system/components.css?v=44">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -31,6 +31,9 @@
 | 老公 `--hus / --hus-ink / --hus-soft` | #0284C7 / #0369A1 / #E0F2FE | #38BDF8 / #7DD3FC / #0C3246 | 蓝色角色 |
 | 老婆 `--wife / --wife-ink / --wife-soft` | #FF4B72 / #E11D48 / #FFE4E6 | #FF7A95 / #FDA4B8 / #4A1E2A | 粉色角色 |
 | 顶部 `--app-top-color` | 蓝 #E4F2FB / 粉 #FDEBF0 | 蓝 #172B36 / 粉 #30232B | 安全区与页面渐变的起点；由本人身份与主题解析 |
+| 场景标题 `--ds-hero-ink` | #132638 | #F4F7FA | 四页场景上方的页面标题 |
+| 场景日期／同步 `--ds-hero-date / --ds-hero-sync` | #4F718E / #67849C | #C6D4DD / #B5C8D3 | 固定信息列；警告状态改用现有 `--danger` |
+| 手写句／线 `--ds-hero-hand / --ds-hero-stroke` | 蓝 #08365E / #2978C3；粉 #713853 / #C8537D | #F5F4F0 / #D8EAF4 | Long Cang 文字与独立手绘线，不写进场景图 |
 
 - 模块标题按2026-10-09用户最新手机反馈从17px提高为19px/800，颜色统一 `--ink`（与“今日”大标题同色）；餐内12/14/16px不变。
 
@@ -39,11 +42,11 @@
 - 一般面板与标题氛围层使用 `--ds-surface-gradient`：125度，从 `--surface` 过渡到 `--p-soft`，浅色为白到浅蓝/粉，深色为深灰到角色暗色。云层仍使用共享透明图片，浅色opacity .55、深色 .12。角色相关复合token须在 `.hus/.wife/.ds-root` 上解析，不能在没有 `--p-*` 的 `:root` 上定义。
 - tab选中填充统一 `--ds-fill-selected:var(--p-ink)` / `--ds-fill-selected-ink:var(--surface)`，未选中透明灰字；无默认线框、无下划线。键盘焦点轮廓保留。餐品 `.meal-art-stage` 以 `--ds-food-tint:52%` 的浅色底托和 `--ds-food-shadow` 轻投影承托真实图片。
 - `--faint` 用于低优先级装饰或禁用，不能作为重要正文色。渐变主按钮沿用现有风格；不要把角色亮色白字默认当作小字号标签，组件页不代表完整 WCAG 认证。
-- 页面顶部采用 `--app-background`：`--app-top-color` 从安全区连续渐变到 `--bg`，叠加原有 `--mesh`；`html`、`body`、角色选择层和训练层使用同一背景。根节点与正文同步 `.me-hus/.me-wife`，`env(safe-area-inset-top)` 保护标题及按钮。浅深 `theme-color` 在身份切换时同步对应顶部底色，供浏览器及可用的 iOS 状态栏着色。`apple-mobile-web-app-status-bar-style=black-translucent` 保留覆盖模式，但已安装图标的状态栏布局由系统决定，网页无法保证其后来改用覆盖模式；真实灵动岛区域以设备截图验收。不要加独立黑条或页面级硬编码颜色。
+- 页面顶部保留 `--app-background` 作为页面底色；四页正式场景使用 `.ds-page-hero` 背景图从安全区连续铺到首卡，`--app-top-color` 是图片加载前的底色。根节点与正文同步 `.me-hus/.me-wife`，`env(safe-area-inset-top)` 保护角色按钮。浅深 `theme-color` 在身份切换时同步对应顶部底色，供浏览器及可用的 iOS 状态栏着色。`apple-mobile-web-app-status-bar-style=black-translucent` 保留覆盖模式，但已安装图标的状态栏布局由系统决定；真实灵动岛区域以设备截图验收。不要加独立黑条或页面级硬编码颜色。
 
 ## 3. 字体：同级同大小
 
-系统中文字体，不加载网络字体。数字使用等宽数字属性。
+正文使用系统中文字体，不加载网络字体。四页表头手写句单独使用本地 `LongCang-Regular.ttf`，统一字号、笔触和手绘下划线，属于装饰文本层，不替代数据。数字使用等宽数字属性。
 
 | 层级 / token | 大小 / 常用字重 | 场景 |
 | --- | --- | --- |
@@ -54,7 +57,7 @@
 | `--ds-text-page` | 24px / 800 | 页面一级标题 |
 | `--ds-text-metric` | 32px / 800 | 独立统计卡的主要数字 |
 
-正文行高 `--ds-leading-body:1.7`；标题 `--ds-leading-title:1.3`。卡内只用 12 / 14 / 16 三档；独立统计与入场海报可使用大数字，不将其用于每个小模块。日期左对齐放在标题下，右侧只放装饰形象。记录页先展示双人连续打卡、双人日历，再展示角色切换和当天餐次详情；标题日期随选择更新。省略重复的「本周个性建议」；缺少受限餐食时保留明确的「餐食待确认」。
+正文行高 `--ds-leading-body:1.7`；标题 `--ds-leading-title:1.3`。卡内只用 12 / 14 / 16 三档；独立统计与入场海报可使用大数字，不将其用于每个小模块。四页表头标题为 44px/850（320px 为 40px/850），日期 16px、同步 13px，均为卡片外的场景规格，不改变通用卡片字号。记录页先展示双人连续打卡、双人日历，再展示角色切换和当天餐次详情；标题日期随选择更新。省略重复的「本周个性建议」；缺少受限餐食时保留明确的「餐食待确认」。
 
 ## 4. 间距、圆角、阴影
 
@@ -77,6 +80,7 @@
 
 | 组件 | 代码接口 | 变体 / 行为 |
 | --- | --- | --- |
+| 四页场景表头 | `.ds-page-hero[data-page]`、`.ds-page-hero-hand/info/sync` | 今日 / 饮食 / 训练 / 记录共用一套尺寸与信息位置；蓝粉场景按本人身份切换，深色有可读性遮罩；同步状态由真实数据驱动 |
 | 基础卡片 | `.card` | 主表面、中圆角、16px 内距、二级投影；不滥套多层卡片 |
 | 今日概览 | `.today-summary-pair` | 本周方向和每日状态双入口；短词概述，点击进入原调整界面；一级投影、两列自适应 |
 | 模块标题 | `.ds-section-heading`，App `.meal-section-heading` | `h3 + time + .ds-mascot-group`；跑步 / 吃饭 / 双人图，日期在左下 |
@@ -132,19 +136,23 @@
 
 角色身份以现有原版素材为准：蓝色帽檐与深蓝发卷、条纹短裤/青色鞋；粉色高马尾、深粉发带、条纹运动裙/珊瑚色鞋，以及原有眼睛、腮红、云朵轮廓和身体比例。不能只凭“蓝色/粉色云朵”重新生成角色。
 
+四页场景图在 `assets/page-hero/`，手写字体在 `assets/fonts/`；各素材的身份来源和独立图层见[角色资产规范](../assets/mascots.md)。场景图不含页面数据和系统状态栏。深色主题只在场景上叠统一透明遮罩，不重绘角色或改动角色服饰。正式实现与高清规格应按相同视口同屏对照，不得以本文反推视觉稿。
+
 共用入口 `design-system/mascots.js`，App、组件展示页和本机预览共同调用，来源清单见[角色资产规范](../assets/mascots.md)：
 
 | 用途 | 原版来源 | 当前呈现 |
 | --- | --- | --- |
-| 今日 | `assets/login/{hus,wife}-running.webp` | 与登录动画使用完全相同文件；右侧128px角色，两行小字作为独立UI文字 |
-| 饮食 | `assets/mood/{hus,wife}-meal.webp` | 原有吃饭角色，保留西兰花和饭碗，128px |
-| 记录 | `assets/meal-art/record-couple-v1.webp?v=meal1` | 用户曾认可的方案一双人形象，184×112px；不再重绘 |
+| 今日卡片标题 | `assets/login/{hus,wife}-running.webp` | 与登录动画使用完全相同文件；右侧128px角色 |
+| 饮食卡片标题 | `assets/mood/{hus,wife}-meal.webp` | 原有吃饭角色，保留西兰花和饭碗，128px |
+| 记录卡片标题 | `assets/meal-art/record-couple-v1.webp?v=meal1` | 用户曾认可的方案一双人形象；表头改用独立双人场景，首卡标题去重 |
 
 标题图轻微向下探出8–18px，允许与首卡边缘重合；不可遮挡标题、日期、数据和点击区域，装饰 `pointer-events:none`。320px压缩图槽，标题保持19px。爱心复用现有图标库，记录的三颗爱心以不同尺寸、角度、高度错落排列，4秒轻微上下浮动；减弱动态时静止。背景/小字/装饰不与角色像素绑定。v37重新生成的5张角色图留作历史证据，退出当前页面引用。此处按用户要求恢复原版身份；v37“必须通过重绘补碗勺星星”的规则作废。
 
 四餐图仍为通用装饰，`alt=""`，不能暗示用户真实吃了图上的东西。`object-fit:contain`、显式尺寸、WebP、lazy / async；原有角色URL保持原样命中缓存，素材未改不递增图片版本。不得用新插图覆盖原版文件。
 
 ## 8. 当前接入与后续维护
+
+v44 按用户确认的四页高清规格稿接入场景表头。390px 表头为 390×520、320px 为 320×426.7；标题 x=24，日期与同步固定在标题下方，首卡紧接场景。手写句统一 Long Cang，背景图只包含场景、角色、姿态与道具；页面标题、日期和同步均为 DOM，不能烧入图片。底图分别为湖岸晨光、厨房窗景、晨光运动室、双人围桌记录；蓝色与粉色单人场景均以原版角色身份为编辑依据，记录页保留蓝粉双人。详情见[高清规格](qa/page-header-proposal/spec/README.md)与[实现 QA](qa/page-header-implementation/README.md)。图中系统状态栏只用于视觉稿，App 使用 iOS 原生状态栏。蓝粉与浅深主题同一布局；训练休息日小字按真实日程切换。同步无时间时保留行高，只有确认成功才显示「已同步 · 时间」。饮食与记录首卡移除和场景重复的角色插画，实际数据和操作保留。旧模块标题插画仍按各模块原有含义使用。
 
 v41 按用户确认的今日稿收起本周方向/每日状态为双入口，状态仅显示「安心休息 / 短版训练 / 照常训练」等事实短词；保留原工位起身内容，顺序为概览→工位起身→饮食→训练，并去掉今日伴侣打卡提示。两级中性投影接入共用卡片，饮食外壳改用更明确的角色浅色底。其他页面共享卡片同步沿用投影规则；具体同屏对照见[今日重构 QA](qa/today-restructure/README.md)。右上角双角色动效仍等候单独设计与确认。
 
