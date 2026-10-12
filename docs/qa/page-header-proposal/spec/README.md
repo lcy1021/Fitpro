@@ -1,6 +1,6 @@
 # 四页表头高清规格稿 · v1
 
-日期：2026-10-12。状态：**用户已确认的设计规格；v44 已在本地按稿接入，尚未发布**。实现证据见[四页表头 QA](../../page-header-implementation/README.md)。
+日期：2026-10-12。状态：**用户已确认的设计规格；v44 已按稿接入并发布**。实现证据见[四页表头 QA](../../page-header-implementation/README.md)。
 
 ## 依据与打开方式
 
@@ -39,4 +39,4 @@
 
 ## 发布
 
-本段记录的是规格稿创建时的状态。后续 v44 已接入本地 App 与组件库并更新 SW，仍未发布；以[实现 QA](../../page-header-implementation/README.md)中的当前证据为准。
+本段记录的是规格稿创建时的状态。后续 v44 已接入 App 与组件库、更新 SW 并发布；以[实现 QA](../../page-header-implementation/README.md)中的当前证据为准。

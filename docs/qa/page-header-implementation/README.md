@@ -1,6 +1,6 @@
 # 四页场景表头实现 QA · v44
 
-日期：2026-10-12。状态：本地实现与验证完成，**未发布线上**。依据为用户确认的[高清规格稿](../page-header-proposal/spec/README.md)；正式 App 继续使用原生 iOS 状态栏，规格图顶部的 9:41 / 灵动岛 / 信号为演示图层。
+日期：2026-10-12。状态：**v44 已发布线上**。依据为用户确认的[高清规格稿](../page-header-proposal/spec/README.md)；正式 App 继续使用原生 iOS 状态栏，规格图顶部的 9:41 / 灵动岛 / 信号为演示图层。
 
 ## 同屏证据
 
@@ -31,4 +31,4 @@
 
 ## 发布
 
-本地核心缓存版本 v44；CSS／JS 查询参数、SW CORE、主题预览与版本测试已同步，图片缓存仍独立 `duofit-images-v1`。新场景图使用独立文件名，不覆盖历史角色素材。本次**未推送或部署**。
+应用提交 [`6c8ae86`](https://github.com/lcy1021/Fitpro/commit/6c8ae86b3c63badf2267e81fbdb366e2c82b2c2b) 已推送 `main`，[Pages 构建 38267761692](https://github.com/lcy1021/Fitpro/actions/runs/38267761692) 成功。线上入口、SW、设计系统、字体与 7 张场景图共 15 项均为 200，逐字节匹配本地提交，详见[发布核对](release-verification.json)。核心缓存 v44；CSS／JS 查询参数、SW CORE、主题预览与版本测试已同步，图片缓存仍独立 `duofit-images-v1`。新场景图使用独立文件名，不覆盖历史角色素材。已安装主屏幕入口读取新版网页内容，无需重新分享；原生 iOS 状态栏效果仍需用户手机实测。
