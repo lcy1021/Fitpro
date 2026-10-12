@@ -20,4 +20,4 @@
 
 ## 发布状态
 
-本地 v42，待发布。核心 CSS/JS 与 SW 壳为 v42；图片缓存仍为 `duofit-images-v1`。
+v42 已通过 [GitHub Pages 部署](https://github.com/lcy1021/Fitpro/actions/runs/38239828471)；入口、主题 token 与 SW 线上文件逐字节等于本地。核心 CSS/JS 与 SW 壳为 v42；图片缓存仍为 `duofit-images-v1`。真实 iPhone 的状态栏呈现仍需在设备上复核。
