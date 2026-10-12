@@ -1,4 +1,4 @@
-/* DuoFit Design System 1.8. Canonical theme/role tokens; see docs/design-system.md. */
+/* DuoFit Design System 1.9. Canonical theme/role tokens; see docs/design-system.md. */
 :root{
   color-scheme:light;
   --safe-bottom:env(safe-area-inset-bottom,0px);
@@ -75,8 +75,8 @@
 /* Decorative details stay theme-aware; cloud imagery is shared and cacheable. */
 :root[data-theme="dark"]{--ds-cloud-opacity:.12;--ds-cloud-filter:brightness(.7);--ds-shadow-primary:0 12px 28px -13px rgba(0,0,0,.62),0 2px 8px -3px rgba(0,0,0,.34);--ds-shadow-secondary:0 7px 17px -9px rgba(0,0,0,.46),0 1px 4px -2px rgba(0,0,0,.28)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ds-cloud-opacity:.12;--ds-cloud-filter:brightness(.7);--ds-shadow-primary:0 12px 28px -13px rgba(0,0,0,.62),0 2px 8px -3px rgba(0,0,0,.34);--ds-shadow-secondary:0 7px 17px -9px rgba(0,0,0,.46),0 1px 4px -2px rgba(0,0,0,.28)}}
-:root[data-theme="dark"],:root[data-theme="dark"] .me-hus,:root[data-theme="dark"] .me-wife{--ds-hero-ink:#F4F7FA;--ds-hero-date:#C6D4DD;--ds-hero-sync:#B5C8D3;--ds-hero-hand:#F5F4F0;--ds-hero-stroke:#D8EAF4}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]),:root:not([data-theme="light"]) .me-hus,:root:not([data-theme="light"]) .me-wife{--ds-hero-ink:#F4F7FA;--ds-hero-date:#C6D4DD;--ds-hero-sync:#B5C8D3;--ds-hero-hand:#F5F4F0;--ds-hero-stroke:#D8EAF4}}
+:root[data-theme="dark"],:root[data-theme="dark"] .me-hus,:root[data-theme="dark"] .me-wife{--ds-hero-ink:#F4F7FA;--ds-hero-date:#C6D4DD;--ds-hero-sync:#B5C8D3}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]),:root:not([data-theme="light"]) .me-hus,:root:not([data-theme="light"]) .me-wife{--ds-hero-ink:#F4F7FA;--ds-hero-date:#C6D4DD;--ds-hero-sync:#B5C8D3}}
 
 /* Resolve role-dependent aliases where the content owner is defined, not on :root. */
 .hus,.wife,.ds-root{

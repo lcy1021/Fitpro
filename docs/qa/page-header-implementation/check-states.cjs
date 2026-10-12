@@ -32,7 +32,7 @@ const assert = require('node:assert/strict');
     assert.equal(result.offline.text,'离线 · 稍后重试');assert.equal(result.offline.icon,true);
     assert.equal(result.initial.first.y,result.noTime.first.y);assert.equal(result.initial.first.y,result.offline.first.y);
     assert.deepEqual(result.diet,{title:'饮食',page:'diet',hand:'好好吃饭'});
-    assert.match(result.wife.scene,/diet-wife-v1\.png/);assert.equal(result.wife.role,'me-wife');
+    assert.match(result.wife.scene,/diet-wife-v2\.jpg/);assert.equal(result.wife.role,'me-wife');
     assert.equal(result.longest.viewport,false);assert.ok(result.longest.right<=width);
     results.push({width,...result});await page.close();
   }

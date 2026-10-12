@@ -1,11 +1,14 @@
 // DuoFit 离线缓存：页面和脚本优先取新版，断网时才使用本机缓存；图片可先读缓存。
 // 只缓存本站的文件；Supabase 数据同步和 AI 请求（其他域名）一律不经过缓存。
-const CACHE = "duofit-v44";
+const CACHE = "duofit-v45";
 // Media URLs carry their own revision. Keep downloaded images through app-only releases.
 const IMAGE_CACHE = "duofit-images-v1";
 const imageRequests = new Map();
+const HERO_SCENES = [
+  "today-hus", "today-wife", "diet-hus", "diet-wife", "train-hus", "train-wife", "record-couple",
+].map(name => `assets/page-hero/${name}-v2.jpg`);
 const CORE = [
-  "./", "index.html", "config.js", "design-system/tokens.css?v=44", "design-system/components.css?v=44", "design-system/mascots.js?v=44", "private-coach.js?v=44", "private-coach.css?v=44", "assets/fonts/LongCang-Regular.ttf", "manifest.webmanifest",
+  "./", "index.html", "config.js", "design-system/tokens.css?v=45", "design-system/components.css?v=45", "design-system/mascots.js?v=45", "private-coach.js?v=45", "private-coach.css?v=45", "assets/fonts/LongCang-Regular.ttf", "manifest.webmanifest",
 ];
 const isImage = url => /\.(?:avif|webp|png|gif|jpe?g|svg)$/i.test(url.pathname);
 
@@ -24,21 +27,41 @@ async function retainImages(){
   }
 }
 async function imageResponse(request){
-  const cache = await caches.open(IMAGE_CACHE);
-  const hit = await cache.match(request);
+  let cache;
+  try{cache = await caches.open(IMAGE_CACHE);}catch{return fetch(request);}
+  let hit;
+  try{hit = await cache.match(request);}catch{/* A damaged image cache should not hide a network image. */}
   if(hit)return hit; // No background re-download for an unchanged media revision.
   if(!imageRequests.has(request.url)){
-    const pending = fetch(request).then(async response=>{
+    const pending = (async()=>{
+      let response;
+      try{response = await fetch(request);}catch(error){
+        if(!new URL(request.url).pathname.includes("/assets/page-hero/"))throw error;
+        response = await fetch(request,{cache:"reload"});
+      }
       if(response.ok){try{await cache.put(request,response.clone());}catch{/* Still display the network image if storage is full. */}}
       return response;
-    }).finally(()=>imageRequests.delete(request.url));
+    })().finally(()=>imageRequests.delete(request.url));
     imageRequests.set(request.url,pending);
   }
   return (await imageRequests.get(request.url)).clone();
 }
+async function warmHeroScenes(){
+  const images = await caches.open(IMAGE_CACHE);
+  await Promise.allSettled(HERO_SCENES.map(async path => {
+    const request = new Request(path, {cache: "no-store"});
+    if(await images.match(request))return;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    try{
+      const response = await fetch(request,{signal:controller.signal});
+      if(response.ok)await images.put(request,response);
+    }finally{clearTimeout(timer);}
+  }));
+}
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE.map(path => new Request(path, {cache: "no-store"})))).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE.map(path => new Request(path, {cache: "no-store"})))).then(() => warmHeroScenes().catch(() => {})).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", (e) => {

@@ -6,15 +6,15 @@ const path = require('node:path');
 const handlers = {};
 const stale = {body:'old page',ok:true,clone(){return this}};
 const fresh = {body:'new page',ok:true,clone(){return this}};
-let online = true;
-const cache = {put:async()=>{}};
+let online = true,failHeroOnce=false;
+const cache = {put:async()=>{},addAll:async()=>{}};
 const images=new Map();let downloads=0,failStorage=false;
 const imageCache={match:async req=>images.get(req.url),put:async(req,response)=>{if(failStorage)throw Error('full');images.set(req.url,response)}};
 const sandbox = {
-  self:{location:{origin:'https://example.com'},clients:{claim:async()=>{}},addEventListener:(name,fn)=>{handlers[name]=fn}},
+  self:{location:{origin:'https://example.com'},clients:{claim:async()=>{}},skipWaiting:async()=>{},addEventListener:(name,fn)=>{handlers[name]=fn}},
   caches:{open:async key=>key==='duofit-images-v1'?imageCache:cache,match:async()=>stale,keys:async()=>[]},
-  fetch:async()=>{downloads++;if(!online)throw Error('offline');return fresh},
-  URL,Request,Promise,
+  fetch:async request=>{downloads++;if(!online)throw Error('offline');if(failHeroOnce&&request.url.includes('/page-hero/')){failHeroOnce=false;throw Error('transient')}return fresh},
+  URL,Request:function(path){this.url=new URL(path,'https://example.com/Fitpro/').href},Promise,AbortController,setTimeout,clearTimeout,
 };
 vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..','sw.js'),'utf8'),sandbox);
 const request={method:'GET',url:'https://example.com/index.html',mode:'navigate'};
@@ -30,12 +30,16 @@ const respondImage=(url,method='GET')=>new Promise((resolve,reject)=>{let interc
   online=false;assert.equal((await respondImage(url)).body,'new page');assert.equal(downloads,1,'cached image is returned offline without a background fetch');
   online=true;await respondImage(url.replace('media1','media2'));assert.equal(downloads,2,'changed media revision gets a fresh image');
   failStorage=true;assert.equal((await respondImage('https://example.com/assets/uncached.webp')).body,'new page','full image cache does not hide a successfully downloaded image');failStorage=false;
+  const hero='https://example.com/Fitpro/assets/page-hero/today-wife-v2.jpg';failHeroOnce=true;
+  const beforeRetry=downloads;assert.equal((await respondImage(hero)).body,'new page','a transient scene request retries once');assert.equal(downloads-beforeRetry,2,'scene retry is bounded');
   assert.equal(await respondImage('https://project.supabase.co/rest/v1/fl_members'),'bypassed');assert.equal(await respondImage(url,'POST'),'bypassed');
   const oldRequest={url:'https://example.com/Fitpro/assets/moves/old.gif'},apiRequest={url:'https://example.com/private-data.json'},already={url};
-  const deleted=[];sandbox.caches.keys=async()=>['duofit-v29','duofit-v40','duofit-v41','duofit-v42','duofit-v43','duofit-v44','duofit-images-v1','another-app'];
+  const deleted=[];sandbox.caches.keys=async()=>['duofit-v29','duofit-v40','duofit-v41','duofit-v42','duofit-v43','duofit-v44','duofit-v45','duofit-images-v1','another-app'];
   const oldCache={keys:async()=>[oldRequest,apiRequest,already],match:async()=>stale};
-  sandbox.caches.open=async key=>key==='duofit-images-v1'?imageCache:['duofit-v29','duofit-v40','duofit-v41','duofit-v42','duofit-v43'].includes(key)?oldCache:cache;sandbox.caches.delete=async key=>{deleted.push(key)};
+  sandbox.caches.open=async key=>key==='duofit-images-v1'?imageCache:['duofit-v29','duofit-v40','duofit-v41','duofit-v42','duofit-v43','duofit-v44'].includes(key)?oldCache:cache;sandbox.caches.delete=async key=>{deleted.push(key)};
   await new Promise((resolve,reject)=>handlers.activate({waitUntil:p=>p.then(resolve,reject)}));
-  assert(images.has(oldRequest.url),'existing image survives shell upgrade');assert(!images.has(apiRequest.url),'migration does not preserve unrelated data');assert.equal(images.get(url).body,'new page','older shell does not replace a current image');assert.deepEqual(deleted,['duofit-v29','duofit-v40','duofit-v41','duofit-v42','duofit-v43'],'only old DuoFit shell caches are deleted');
-  console.log('PASS fresh app shell, offline fallback, image cache hits, request coalescing, media revisions, cache migration and external data bypass');
+  assert(images.has(oldRequest.url),'existing image survives shell upgrade');assert(!images.has(apiRequest.url),'migration does not preserve unrelated data');assert.equal(images.get(url).body,'new page','older shell does not replace a current image');assert.deepEqual(deleted,['duofit-v29','duofit-v40','duofit-v41','duofit-v42','duofit-v43','duofit-v44'],'only old DuoFit shell caches are deleted');
+  await new Promise((resolve,reject)=>handlers.install({waitUntil:p=>p.then(resolve,reject)}));
+  for(const name of ['today-hus','today-wife','diet-hus','diet-wife','train-hus','train-wife','record-couple'])assert(images.has(`https://example.com/Fitpro/assets/page-hero/${name}-v2.jpg`),`${name} is available offline after the new shell installs`);
+  console.log('PASS fresh app shell, offline fallback, image cache hits, scene retry and prewarm, request coalescing, media revisions, cache migration and external data bypass');
 })().catch(error=>{console.error(error);process.exitCode=1});

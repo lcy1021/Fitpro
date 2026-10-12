@@ -1,4 +1,4 @@
-/* DuoFit Design System 1.5. Shared app + component gallery CSS. */
+/* DuoFit Design System 1.9. Shared app + component gallery CSS. */
 .icon-sprite{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
 .ui-icon{display:inline-block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.85;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:-.2em}
 .ui-icon.sm{width:16px;height:16px;vertical-align:-.25em}
@@ -6,19 +6,19 @@
 @font-face{font-family:"DuoFit Long Cang";src:url("../assets/fonts/LongCang-Regular.ttf") format("truetype");font-display:swap}
 /* Four app headers share one measured text grid; the scene is decorative, data stays in DOM. */
 .ds-page-hero{position:relative;isolation:isolate;width:100%;aspect-ratio:3/4;background:var(--app-top-color) var(--ds-hero-image) center top/100% 100% no-repeat;overflow:hidden}
-.me-hus .ds-page-hero[data-page="today"]{--ds-hero-image:url("../assets/page-hero/today-hus-v1.png")}
-.me-wife .ds-page-hero[data-page="today"]{--ds-hero-image:url("../assets/page-hero/today-wife-v1.png")}
-.me-hus .ds-page-hero[data-page="diet"]{--ds-hero-image:url("../assets/page-hero/diet-hus-v1.png")}
-.me-wife .ds-page-hero[data-page="diet"]{--ds-hero-image:url("../assets/page-hero/diet-wife-v1.png")}
-.me-hus .ds-page-hero[data-page="train"]{--ds-hero-image:url("../assets/page-hero/train-hus-v1.png")}
-.me-wife .ds-page-hero[data-page="train"]{--ds-hero-image:url("../assets/page-hero/train-wife-v1.png")}
-.ds-page-hero[data-page="record"]{--ds-hero-image:url("../assets/page-hero/record-couple-v1.png")}
-.ds-page-hero::after{content:"";position:absolute;z-index:0;left:0;right:0;bottom:0;height:102px;background:linear-gradient(transparent,var(--bg));opacity:.13;pointer-events:none}
+.me-hus .ds-page-hero[data-page="today"]{--ds-hero-image:url("../assets/page-hero/today-hus-v2.jpg")}
+.me-wife .ds-page-hero[data-page="today"]{--ds-hero-image:url("../assets/page-hero/today-wife-v2.jpg")}
+.me-hus .ds-page-hero[data-page="diet"]{--ds-hero-image:url("../assets/page-hero/diet-hus-v2.jpg")}
+.me-wife .ds-page-hero[data-page="diet"]{--ds-hero-image:url("../assets/page-hero/diet-wife-v2.jpg")}
+.me-hus .ds-page-hero[data-page="train"]{--ds-hero-image:url("../assets/page-hero/train-hus-v2.jpg")}
+.me-wife .ds-page-hero[data-page="train"]{--ds-hero-image:url("../assets/page-hero/train-wife-v2.jpg")}
+.ds-page-hero[data-page="record"]{--ds-hero-image:url("../assets/page-hero/record-couple-v2.jpg")}
+.ds-page-hero::after{content:"";position:absolute;z-index:0;inset:0;background:linear-gradient(180deg,transparent 58%,color-mix(in srgb,var(--bg) 10%,transparent) 70%,color-mix(in srgb,var(--bg) 54%,transparent) 83%,var(--bg) 100%);pointer-events:none}
 .ds-page-hero-hand{position:absolute;z-index:1;top:104px;left:30px;width:52%;font:24px/1.13 "DuoFit Long Cang",cursive;color:var(--ds-hero-hand);transform:rotate(-6deg);text-shadow:0 1px 0 #ffffff60;pointer-events:none}
 .ds-page-hero-hand span{display:block;white-space:nowrap}.ds-page-hero-hand span+span{margin-left:4px}
 .ds-page-hero-hand svg{display:block;width:135px;height:16px;margin-left:9px;transform:rotate(-3deg);fill:var(--ds-hero-stroke)}
 .ds-page-hero[data-page="train"] .ds-page-hero-hand{top:13.5%}
-.ds-page-hero[data-page="record"] .ds-page-hero-hand{top:9.5%;left:15%;color:#173e66}
+.ds-page-hero[data-page="record"] .ds-page-hero-hand{top:9.5%;left:15%;color:#173e66;--ds-hero-stroke:#2978C3}
 .ds-page-hero-info{position:absolute;z-index:1;left:24px;right:24px;bottom:18px}
 .ds-page-hero-info h1{margin:0;color:var(--ds-hero-ink);font-size:44px;line-height:1.06;letter-spacing:-.04em;font-weight:850}
 .ds-page-hero-date{margin:10px 0 0;color:var(--ds-hero-date);font-size:16px;line-height:20px;font-variant-numeric:tabular-nums}
@@ -26,10 +26,9 @@
 .ds-page-hero-sync svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .ds-page-hero-sync span{overflow:hidden;text-overflow:ellipsis}.ds-page-hero-sync.warn{color:var(--danger)}
 .ds-page-hero-role{position:absolute;z-index:2;top:calc(env(safe-area-inset-top,0px) + 8px);right:16px}
-:root[data-theme="dark"] .ds-page-hero::before{content:"";position:absolute;z-index:0;inset:0;background:linear-gradient(180deg,rgba(7,14,25,.62),rgba(11,19,29,.28) 50%,rgba(6,13,22,.72));pointer-events:none}
-:root[data-theme="dark"] .ds-page-hero::after{opacity:.74}
-:root[data-theme="dark"] .ds-page-hero[data-page="record"] .ds-page-hero-hand{color:var(--ds-hero-hand)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ds-page-hero::before{content:"";position:absolute;z-index:0;inset:0;background:linear-gradient(180deg,rgba(7,14,25,.62),rgba(11,19,29,.28) 50%,rgba(6,13,22,.72));pointer-events:none}:root:not([data-theme="light"]) .ds-page-hero::after{opacity:.74}:root:not([data-theme="light"]) .ds-page-hero[data-page="record"] .ds-page-hero-hand{color:var(--ds-hero-hand)}}
+:root[data-theme="dark"] .ds-page-hero::before{content:"";position:absolute;z-index:0;left:0;right:0;top:0;height:80px;background:linear-gradient(180deg,rgba(7,14,25,.36),transparent);pointer-events:none}
+:root[data-theme="dark"] .ds-page-hero::after{background:linear-gradient(180deg,transparent 48%,color-mix(in srgb,var(--bg) 8%,transparent) 55%,color-mix(in srgb,var(--bg) 42%,transparent) 65%,color-mix(in srgb,var(--bg) 82%,transparent) 77%,var(--bg) 91%,var(--bg) 100%)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ds-page-hero::before{content:"";position:absolute;z-index:0;left:0;right:0;top:0;height:80px;background:linear-gradient(180deg,rgba(7,14,25,.36),transparent);pointer-events:none}:root:not([data-theme="light"]) .ds-page-hero::after{background:linear-gradient(180deg,transparent 48%,color-mix(in srgb,var(--bg) 8%,transparent) 55%,color-mix(in srgb,var(--bg) 42%,transparent) 65%,color-mix(in srgb,var(--bg) 82%,transparent) 77%,var(--bg) 91%,var(--bg) 100%)}}
 @media(max-width:350px){.ds-page-hero-hand{font-size:21px}.ds-page-hero-hand svg{width:119px}.ds-page-hero-info h1{font-size:40px}}
 .card{background:var(--surface);border-radius:var(--radius-m);padding:var(--ds-space-4);box-shadow:var(--ds-shadow-secondary)}
 .today-summary-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:8px 0 14px;min-height:76px;overflow:hidden;border-radius:21px;background:var(--surface);box-shadow:var(--ds-shadow-primary)}
