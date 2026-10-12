@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=39">
+<link rel="stylesheet" href="design-system/tokens.css?v=40">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -435,6 +435,7 @@ p{margin:0}
 .toast.show{opacity:1}
 /* 记录吃了什么 */
 .foodf{display:grid;gap:12px}
+.foodf [data-food-save]:disabled{background:var(--sunk);color:var(--muted);box-shadow:none;cursor:not-allowed}
 .foodf textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--sunk);border:0;border-radius:var(--radius-s);padding:12px 14px;width:100%;resize:none;line-height:1.5}
 .foodf textarea:focus{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--me) 25%,transparent)}
 .fchips{display:flex;flex-wrap:wrap;gap:6px}
@@ -533,8 +534,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=39">
-<link rel="stylesheet" href="private-coach.css?v=39">
+<link rel="stylesheet" href="design-system/components.css?v=40">
+<link rel="stylesheet" href="private-coach.css?v=40">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -622,7 +623,7 @@ p{margin:0}
 </div></div>
 <div class="pick" id="foodDlg" role="dialog" aria-modal="true" aria-labelledby="foodTitle"><div class="inner">
   <h1 id="foodTitle">吃了什么</h1>
-  <p class="lead">用一句话说就行，比如"一碗米饭，宫保鸡丁半份，一杯拿铁"。算出来的热量可以直接改。</p>
+  <p class="lead" id="foodLead">用一句话说就行，比如"一碗米饭，宫保鸡丁半份，一杯拿铁"。算出来的热量可以直接改。</p>
   <div class="card foodf">
     <textarea id="foodText" rows="3" maxlength="200" placeholder="一碗米饭，宫保鸡丁半份，一个卤蛋"></textarea>
     <div class="fchips" id="foodChips"></div>
@@ -631,7 +632,7 @@ p{margin:0}
     <ul class="fres" id="foodRes"></ul>
     <div class="ftotal" id="foodTotal"></div>
     <button class="cta" data-food-save type="button">保存并打卡</button>
-    <button class="linkbtn" data-food-clear type="button" hidden>删除这顿的记录</button>
+    <button class="linkbtn" data-food-clear type="button" hidden>删除食物，保留打卡</button>
   </div>
   <button class="cancel" data-food-close type="button">取消</button>
 </div></div>
@@ -668,8 +669,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=39"></script>
-<script src="design-system/mascots.js?v=39"></script>
+<script src="private-coach.js?v=40"></script>
+<script src="design-system/mascots.js?v=40"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1512,6 +1513,7 @@ const mealCount=c=>MEALS.filter(m=>MEAL_STATES[c.meals?.[m]]).length;
 function mealRecordText(c,m){
   const v=c.meals?.[m],fd=c.food?.[m];
   if(v==="skip")return "这餐没有进食";
+  if(!v)return "还没有留下这餐的记录";
   if(fd&&Array.isArray(fd.items)&&fd.items.length)return fd.items.map(i=>i.n+(i.q?" "+i.q:"")).join("、");
   return v==="plan"?"按计划记录了这餐":v==="over"?"已记录，下一顿照常吃就好":"还没有留下这餐的记录";
 }
@@ -1538,16 +1540,18 @@ function mealPlanContent(person,m,hasDietRule){
   const f=menuFor(person)[m];
   return `<div class="meal-default"><ul class="foods">${f.items.map(i=>`<li><span>${esc(i.n)}<small>${esc(i.q)}${i.or?` · 或${esc(i.or.n)} ${kcalText(i.or.k)}`:''}</small></span><b>${kcalText(i.k)}</b></li>`).join('')}</ul>${f.pick1?'<p class="foods-note">三样里选一样</p>':''}${f.alt?`<p class="foods-note">${esc(f.alt.n)}（约 ${kcalText(f.alt.k)} kcal），就不再吃别的</p>`:''}</div>`;
 }
-function mealActions(m,v,title){
-  return `<div class="seg diary-actions ds-checkin" role="group" aria-label="${title}打卡">${Object.entries(MEAL_STATES).map(([key,[,label]])=>`<button type="button" data-meal="${m}" data-v="${key}" aria-label="${title}：${key==='plan'?'按计划吃了':label}" aria-pressed="${v===key}">${v===key?icon('check','sm'):''}${label}</button>`).join('')}</div>`;
+function mealActions(m,v,title,date=''){
+  return `<div class="seg diary-actions ds-checkin" role="group" aria-label="${title}打卡">${Object.entries(MEAL_STATES).map(([key,[,label]])=>`<button type="button" data-meal="${m}" data-v="${key}"${date?` data-meal-date="${date}"`:''} aria-label="${title}：${key==='plan'?'按计划吃了':label}" aria-pressed="${v===key}">${v===key?icon('check','sm'):''}${label}</button>`).join('')}</div>`;
 }
+const mealEditFloor=()=>ymd(addDays(new Date(),-119));
+const canEditMealDate=(person,date)=>person===me&&/^\d{4}-\d{2}-\d{2}$/.test(date)&&date>=mealEditFloor()&&date<=ymd(new Date());
 function dietDayRows(person,date,interactive=false,record=null){
-  const c=record||getCheckin(person,date),canEdit=interactive&&date===ymd(new Date())&&person===me;
-  return `<div class="diary-meals ${person}">${MEALS.map(m=>{const v=c.meals?.[m],st=MEAL_STATES[v]||['empty','未打卡'],fd=c.food?.[m];
-    const kcal=v!=='skip'&&Number.isFinite(fd?.kcal)?mealEnergy(fd.kcal):'';
+  const c=record||getCheckin(person,date),canEdit=interactive&&canEditMealDate(person,date);
+  return `<div class="diary-meals ${person}">${MEALS.map(m=>{const v=c.meals?.[m],st=MEAL_STATES[v]||['empty','未打卡'],fd=v&&v!=='skip'?c.food?.[m]:null;
+    const kcal=Number.isFinite(fd?.kcal)?mealEnergy(fd.kcal):'';
     return `<article class="diary-meal" data-meal-status="${st[0]}"><div class="diary-meal-head"><span class="meal-symbol m-${m}" aria-hidden="true">${icon(MEAL_IC[m])}</span><div><h4>${MEAL_NAMES[m]}</h4><span class="meal-status ${st[0]}" aria-label="${date} ${MEAL_NAMES[m]}：${st[1]}">${st[1]}</span></div>${kcal}</div>
       <p class="diary-food ${v?'':'empty'}">${esc(mealRecordText(c,m))}</p>
-      ${canEdit?`<button type="button" class="diary-edit" data-food="${m}" aria-label="${fd?'修改':'记录'}${MEAL_NAMES[m]}食物">${icon('note','sm')}${fd?'修改食物':'记食物，估算热量'}${icon('chevron-right','sm')}</button>${mealActions(m,v,MEAL_NAMES[m])}`:''}</article>`;
+      ${canEdit?`<button type="button" class="diary-edit" data-food="${m}" data-food-date="${date}" aria-label="${v?fd?'修改':'记录':'补打卡'}${date}${MEAL_NAMES[m]}${v?'食物':''}">${icon('note','sm')}${v?fd?'修改食物':'记食物，估算热量':'补打卡'}${icon('chevron-right','sm')}</button>${v?mealActions(m,v,MEAL_NAMES[m],date):''}`:''}</article>`;
   }).join('')}</div>`;
 }
 
@@ -1563,18 +1567,21 @@ let dietWeekOffset=0,dietSelectedDate=null;
 function dietWeekCard(person,offset=dietWeekOffset){
   const today=new Date(),todayDate=ymd(today),mon=addDays(today,-((today.getDay()+6)%7)+offset*7),end=addDays(mon,6);
   const start=ymd(mon),last=ymd(end),days=Array.from({length:7},(_,i)=>addDays(mon,i));
-  const dates=Object.values(store.checkins).filter(c=>c.person===person&&/^\d{4}-\d{2}-\d{2}$/.test(c.date)&&c.date<=todayDate&&mealCount(c)).map(c=>c.date).sort();
-  const canPrev=!!dates[0]&&dates[0]<start;
-  if(!dietSelectedDate||dietSelectedDate<start||dietSelectedDate>last||dietSelectedDate>todayDate)dietSelectedDate=offset===0?todayDate:dates.filter(d=>d>=start&&d<=last).at(-1)||start;
+  const floor=mealEditFloor(),canPrev=floor<start;
+  const dates=Object.values(store.checkins).filter(c=>c.person===person&&/^\d{4}-\d{2}-\d{2}$/.test(c.date)&&c.date>=start&&c.date>=floor&&c.date<=last&&mealCount(c)).map(c=>c.date).sort();
+  if(!dietSelectedDate||dietSelectedDate<start||dietSelectedDate>last||dietSelectedDate<floor||dietSelectedDate>todayDate){
+    const latest=last<todayDate?last:todayDate;
+    dietSelectedDate=offset===0?todayDate:dates.at(-1)|| (latest<floor?floor:latest);
+  }
   const stamp=d=>`${d.getMonth()+1}/${d.getDate()}`;
   const buttons=days.map(d=>{const date=ymd(d),c=getCheckin(person,date),count=mealCount(c),future=date>todayDate;
-    return `<button type="button" class="diary-date${date===todayDate?" today":""}" data-diet-date="${date}" aria-pressed="${date===dietSelectedDate}" aria-label="${date} ${future?"尚未开始":`已记录 ${count}/4 餐`}"${future?" disabled":""}><small>${date===todayDate?"今天":"周"+WEEK[d.getDay()]}</small><b>${d.getDate()}</b><span class="meal-dots" aria-hidden="true">${MEALS.map(m=>`<i class="${MEAL_STATES[c.meals?.[m]]?.[0]||""}"></i>`).join("")}</span></button>`;
+    return `<button type="button" class="diary-date${date===todayDate?" today":""}" data-diet-date="${date}" aria-pressed="${date===dietSelectedDate}" aria-label="${date} ${future?"尚未开始":date<floor?"超出近 120 天范围":count?`已记录 ${count}/4 餐`:person===me?"未记录，可补打卡":"未记录"}"${future||date<floor?" disabled":""}><small>${date===todayDate?"今天":"周"+WEEK[d.getDay()]}</small><b>${d.getDate()}</b><span class="meal-dots" aria-hidden="true">${MEALS.map(m=>`<i class="${MEAL_STATES[c.meals?.[m]]?.[0]||""}"></i>`).join("")}</span></button>`;
   }).join("");
   const selected=getCheckin(person,dietSelectedDate),total=days.reduce((n,d)=>n+mealCount(getCheckin(person,ymd(d))),0);
   return `<div class="diet-week ${person}"><div class="diary-nav"><div><b>${offset===0?"这周的饮食":"饮食记录"}</b><small>${mon.getFullYear()} 年 ${stamp(mon)}—${stamp(end)} · 已记录 ${total} 餐</small></div><div class="calendar-arrows"><button type="button" data-diet-week="-1" aria-label="上一周"${canPrev?"":" disabled"}>${icon("back","sm")}</button><button type="button" data-diet-week="1" aria-label="下一周"${offset<0?"":" disabled"}>${icon("chevron-right","sm")}</button></div></div>
     <div class="diary-dates" role="group" aria-label="选择饮食记录日期">${buttons}</div>
     <div class="diary-day-title"><b>${shortDay(dietSelectedDate)}的饮食</b><span>${mealCount(selected)} / 4 餐${offset<0?` · <button type="button" data-diet-today>回到今天</button>`:""}</span></div>
-    ${dietDayRows(person,dietSelectedDate,true)}<p class="diary-foot">${dietSelectedDate===todayDate&&person===me?"点一下记录这餐；也可以记食物，让 AI 帮你估算。":"已保存的饮食记录 · 按日期查看"}</p></div>`;
+    ${dietDayRows(person,dietSelectedDate,true)}<p class="diary-foot">${person===me?"选择近 120 天内的日期，可补记或修改当天每一餐。":"伴侣的饮食记录仅供查看。"}</p></div>`;
 }
 function viewDiet(){
   if(privateCoach?.active) viewP=me;
@@ -1970,7 +1977,7 @@ document.addEventListener("click",async e=>{
   }
   if(t.hasAttribute("data-open-code")){ openCode(); return; }
   if(t.hasAttribute("data-open-goal")){ if(privateCoach?.active){privateCoach.editProfile();return;} openGoal(); return; }
-  if(t.dataset.food){ openFood(t.dataset.food); return; }
+  if(t.dataset.food){ openFood(t.dataset.food,t.dataset.foodDate||ymd(new Date())); return; }
   if(t.hasAttribute("data-food-close")){ closeFood(); return; }
   if(t.hasAttribute("data-food-save")){ saveFood(); return; }
   if(t.hasAttribute("data-food-ai")){ aiFood(); return; }
@@ -1994,8 +2001,13 @@ document.addEventListener("click",async e=>{
   if(t.hasAttribute("data-lm-skip")){ if($("#lm").classList.contains("splash")){ $("#lm").onclick?.(); return; } lmClear(); lmPhase("choose"); finishStartup(); return; }
   if(t.hasAttribute("data-lm-replay")){ lmPlay(); return; }
   if(t.hasAttribute("data-open-picker")){ if(privateCoach) return; openPicker(true); return; }
-  if(t.dataset.dietWeek){dietWeekOffset=Math.min(0,dietWeekOffset+Number(t.dataset.dietWeek));dietSelectedDate=null;viewDiet();return;}
-  if(t.dataset.dietDate){dietSelectedDate=t.dataset.dietDate;viewDiet();return;}
+  if(t.dataset.dietWeek){
+    const today=new Date(),next=dietWeekOffset+Number(t.dataset.dietWeek);
+    const weekEnd=ymd(addDays(today,-((today.getDay()+6)%7)+next*7+6));
+    if(next<=0&&mealEditFloor()<=weekEnd)dietWeekOffset=next;
+    dietSelectedDate=null;viewDiet();return;
+  }
+  if(t.dataset.dietDate){if(canEditMealDate(me,t.dataset.dietDate))dietSelectedDate=t.dataset.dietDate;viewDiet();return;}
   if(t.hasAttribute("data-diet-today")){dietWeekOffset=0;dietSelectedDate=null;viewDiet();return;}
   if(t.dataset.historyPerson){historyPerson=t.dataset.historyPerson;renderRecordData();return;}
   if(t.dataset.historyDate){historySelectedDate=t.dataset.historyDate;renderRecordData();return;}
@@ -2016,16 +2028,19 @@ document.addEventListener("click",async e=>{
     putCheckin(next);if(next.extraMoves.includes(move.img))react("workout",move.n+"已打卡","今天额外动了一下，也记下来了");return;
   }
   if(t.dataset.meal){
-    if(readOnly){ toast("你现在只有查看权限"); return; }
-    const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date)));
+    const date=t.dataset.mealDate||ymd(new Date());
+    if(readOnly||!canEditMealDate(me,date)||t.dataset.mealDate&&tab!=="diet"){ toast("这一天的记录不可修改"); return; }
+    const c=JSON.parse(JSON.stringify(getCheckin(me,date)));
     c.meals=c.meals||{}; c.meals[t.dataset.meal] = c.meals[t.dataset.meal]===t.dataset.v ? null : t.dataset.v;
     if(!c.meals[t.dataset.meal]) delete c.meals[t.dataset.meal];
-    const was=dayDone(me,new Date());
+    const today=date===ymd(new Date()),was=today&&dayDone(me,new Date());
     putCheckin(c);
     const v=c.meals[t.dataset.meal];
-    if(!was && dayDone(me,new Date())) react("day-done","今天全部完成啦",scheduleFor(me,new Date()).kind==="train"?"四餐和训练都打卡了，明天继续":"四餐都打卡了，明天继续",true);
-    else if(v==="plan") react("meal","按计划吃完啦 ✨",MEAL_PLAN[me][t.dataset.meal].t+"已打卡");
-    else if(v==="over") react("meal","吃多了没关系","下一顿正常吃就好，不用饿肚子补回来");
+    if(today){
+      if(!was && dayDone(me,new Date())) react("day-done","今天全部完成啦",scheduleFor(me,new Date()).kind==="train"?"四餐和训练都打卡了，明天继续":"四餐都打卡了，明天继续",true);
+      else if(v==="plan") react("meal","按计划吃完啦 ✨",MEAL_PLAN[me][t.dataset.meal].t+"已打卡");
+      else if(v==="over") react("meal","吃多了没关系","下一顿正常吃就好，不用饿肚子补回来");
+    }else toast(shortDay(date)+"的"+MEAL_NAMES[t.dataset.meal]+"已更新");
     return;
   }
   if(t.dataset.stand){
@@ -2149,15 +2164,19 @@ async function copyInvite(){
   try{ await navigator.clipboard.writeText(invite); toast("邀请信息已复制"); }catch(e){ window.prompt("长按复制邀请信息",invite); }
 }
 /* ---------- 记录一顿吃了什么 ---------- */
-let foodMeal=null, foodRows=[], foodRequest=0, foodBusy=false;
+let foodMeal=null, foodDate=null, foodOwner=null, foodBackfill=false, foodRows=[], foodRequest=0, foodBusy=false;
 const QUICK={breakfast:["水煮蛋 2 个","纯牛奶 1 盒","全麦面包 2 片","燕麦片 40g","包子 2 个","无糖豆浆 1 杯"],
   lunch:["米饭 1 碗","番茄炒蛋 1 份","宫保鸡丁 1 份","炒青菜 1 份","黄焖鸡米饭","麻辣烫 1 份"],
   snack:["无糖酸奶 1 盒","苹果 1 个","香蕉 1 根","拿铁 1 杯","坚果 1 把","奶茶 1 杯"],
   dinner:["米饭 半碗","清蒸鱼 1 份","鸡胸肉 150g","蒜蓉西兰花 1 份","虾仁 150g","豆腐 1 块"]};
-function openFood(m){
-  foodRequest++; foodMeal=m; const c=getCheckin(me,ymd(new Date())); const fd=c.food&&c.food[m];
-  $("#foodTitle").textContent=MEAL_PLAN[me][m].t+"吃了什么";
-  $("#foodText").value=fd?fd.text:"";
+function openFood(m,date=ymd(new Date())){
+  if(!MEALS.includes(m)||!canEditMealDate(me,date)||date!==ymd(new Date())&&tab!=="diet"){toast("这一天的记录不可修改");return;}
+  foodRequest++; foodMeal=m; foodDate=date; foodOwner=me;
+  const c=getCheckin(me,date),fd=c.meals?.[m]&&c.meals[m]!=="skip"?c.food?.[m]:null;
+  foodBackfill=tab==="diet"&&!c.meals?.[m];
+  $("#foodTitle").textContent=(date===ymd(new Date())?"":`${date.slice(5,7)}月${date.slice(8)}日 `)+MEAL_PLAN[me][m].t+"吃了什么";
+  $("#foodLead").textContent=date===ymd(new Date())?"用一句话说就行，比如\"一碗米饭，宫保鸡丁半份，一杯拿铁\"。算出来的热量可以直接改。":"写下当天吃的食物和份量，核对热量后确认。历史餐次按当前计划的热量范围判断，可在保存后调整打卡状态。";
+  $("#foodText").value=fd?.text||"";
   $("#foodChips").innerHTML=QUICK[m].map(x=>`<button type="button" data-chip="${esc(x)}">+ ${esc(x)}</button>`).join("");
   $("[data-food-clear]").hidden=!fd;
   foodRows = fd ? fd.items.map(i=>({...i})) : []; $("#foodNote").hidden=true;
@@ -2182,9 +2201,9 @@ async function aiFood(){
   const text=$("#foodText").value.trim(); if(!text){ toast("先写一下吃了什么"); return; }
   clearTimeout(foodT);
   const hit=aiCache.get(text); if(validMealResult(hit)&&hit.items.length&&hit.items.every(i=>i.kcal!==null)){ showAi(hit); toast("这句话之前估算过，直接用了上次的结果"); return; }
-  const request=++foodRequest,meal=foodMeal,person=me,sourceFamily=family,sourceCoach=privateCoach,owner=privateCoach?.userId(),date=ymd(new Date());
+  const request=++foodRequest,meal=foodMeal,person=me,sourceFamily=family,sourceCoach=privateCoach,owner=privateCoach?.userId(),date=foodDate;
   const sameIdentity=()=>sourceCoach===privateCoach&&owner===privateCoach?.userId()&&sourceFamily===family&&person===me;
-  const current=()=>request===foodRequest&&sameIdentity()&&date===ymd(new Date())&&meal===foodMeal&&$("#foodDlg").classList.contains("open")&&$("#foodText").value.trim()===text;
+  const current=()=>request===foodRequest&&sameIdentity()&&date===foodDate&&canEditMealDate(person,date)&&meal===foodMeal&&$("#foodDlg").classList.contains("open")&&$("#foodText").value.trim()===text;
   const btn=$("[data-food-ai]"); foodBusy=true;btn.disabled=true; const t0=Date.now();
   const tick=()=>{ if(current())btn.textContent=`🤖 正在估算… ${Math.round((Date.now()-t0)/1000)}s`; }; tick(); const tk=setInterval(tick,1000);
   try{
@@ -2215,7 +2234,7 @@ async function aiFood(){
   }
   finally{ clearInterval(tk); foodBusy=false;btn.disabled=false; btn.textContent="🤖 让 AI 估算这一顿"; }
 }
-function closeFood(){ foodRequest++;clearTimeout(foodT);if(document.activeElement) document.activeElement.blur(); $("#foodDlg").classList.remove("open"); document.body.style.overflow=""; }
+function closeFood(){ foodRequest++;clearTimeout(foodT);foodDate=null;foodOwner=null;foodBackfill=false;if(document.activeElement) document.activeElement.blur(); $("#foodDlg").classList.remove("open"); document.body.style.overflow=""; }
 function foodStatus(total){ const hi=mealRange(menuFor(me)[foodMeal])[1]; return total>hi*1.1 ? ["over",`比计划多约 ${total-hi} kcal，记为"吃多了"`] : ["plan",`在计划范围内（上限约 ${hi}），记为"按计划吃了"`]; }
 function drawFood(){
   const aiBtn=$("[data-food-ai]"); aiBtn.disabled=foodBusy;aiBtn.hidden=!(AI_KCAL && CLOUD && family); aiBtn.classList.toggle("hot", foodRows.some(r=>r.k==null));
@@ -2229,25 +2248,27 @@ function drawFoodTotal(){
   const [st,txt]=missing ? ["missing","还有食物未估算，暂不能判断是否在计划内"] : foodStatus(total);
   $("#foodTotal").innerHTML = foodRows.length ? `<span>${missing?"已估算部分约":"这顿一共约"} <b>${total}</b> kcal</span><span class="st ${st==="over"?"over":missing?"pending":""}">${missing?txt:txt.split("，")[0]}</span>` : "";
   $("[data-food-save]").disabled = !foodRows.length || missing;
-  $("[data-food-save]").textContent = missing ? "还有没认出的，填上热量再保存" : "保存并打卡";
+  $("[data-food-save]").textContent = missing ? "还有没认出的，填上热量再保存" : foodBackfill?"确认补打卡":"保存并打卡";
 }
 let foodT=null;
 function onFoodText(){ foodRequest++;clearTimeout(foodT); foodT=setTimeout(()=>{ foodRows=parseMeal($("#foodText").value); drawFood(); },250); }
 function saveFood(){
-  if(!foodRows.length||foodRows.some(r=>r.k==null||!Number.isFinite(r.k)))return;
+  if(foodOwner!==me||!canEditMealDate(me,foodDate)||!foodRows.length||foodRows.some(r=>r.k==null||!Number.isFinite(r.k)))return;
   const total=foodRows.reduce((a,r)=>a+(r.k||0),0); const [st]=foodStatus(total);
-  const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date)));
+  const date=foodDate,c=JSON.parse(JSON.stringify(getCheckin(me,date)));
   c.food=c.food||{}; c.food[foodMeal]={text:$("#foodText").value.trim().slice(0,200), items:foodRows.map(r=>({n:r.n.slice(0,20),q:r.q,k:r.k,...(r.ai?{ai:1}:{})})), kcal:total};
-  c.meals=c.meals||{}; const was=dayDone(me,new Date()); c.meals[foodMeal]=st;
+  c.meals=c.meals||{}; const today=date===ymd(new Date()),was=today&&dayDone(me,new Date()); c.meals[foodMeal]=st;
   putCheckin(c); closeFood();
-  if(!was && dayDone(me,new Date())) react("day-done","今天全部完成啦",`这顿约 ${total} kcal，今天的打卡都满了`,true);
+  if(!today) toast(shortDay(date)+"的"+MEAL_NAMES[foodMeal]+"已保存");
+  else if(!was && dayDone(me,new Date())) react("day-done","今天全部完成啦",`这顿约 ${total} kcal，今天的打卡都满了`,true);
   else if(st==="over") react("meal",`这顿约 ${total} kcal，吃多了一点`,"没关系，下一顿正常吃就好");
   else react("meal",`这顿约 ${total} kcal ✨`,"在计划范围内，已打卡");
 }
 function clearFood(){
-  const date=ymd(new Date()); const c=JSON.parse(JSON.stringify(getCheckin(me,date)));
+  if(foodOwner!==me||!canEditMealDate(me,foodDate))return;
+  const date=foodDate,c=JSON.parse(JSON.stringify(getCheckin(me,date)));
   if(c.food){ delete c.food[foodMeal]; if(!Object.keys(c.food).length) delete c.food; }
-  putCheckin(c); closeFood(); toast("已删除这顿的记录");
+  putCheckin(c); closeFood(); toast("已删除食物，打卡状态保留");
 }
 function openGoal(){
   const f=$("#goalForm"); const g=goalOf(me)||{};

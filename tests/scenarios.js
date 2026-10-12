@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');assert(fs.readFileSync(path.join(root,'sw.js'),'utf8').includes('notificationclick'),'push click handler');
-assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=39"></script>'), 'config loads before coaching');
+assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=40"></script>'), 'config loads before coaching');
 const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('</script>'));
 const memory = new Map();
 const elements = new Map();
@@ -83,7 +83,15 @@ const sharedHistory=app.checkinHistoryCard();assert(sharedHistory.includes('共�
 historyCoach.partnerRecordSharing='unknown';assert(app.checkinHistoryCard().includes('联网后重新连接'),'unavailable shared records are not mislabelled empty');
 app.setHistoryPerson('hus');
 assert(!app.dietDayRows('hus',dayAgo(1)).includes('999'),'a skipped meal does not display stale food calories');
-assert(!app.dietDayRows('hus',dayAgo(1),true).includes('data-meal='),'past days are read-only and cannot accidentally change today');
+assert(app.dietDayRows('hus',dayAgo(1),true).includes(`data-meal-date="${dayAgo(1)}"`),'past own meals target the selected date');
+assert(app.dietDayRows('hus',dayAgo(1),true).includes(`data-food-date="${dayAgo(1)}"`),'past food editor targets the selected date');
+assert(!app.dietDayRows('wife',dayAgo(1),true).includes('data-meal='),'partner meals remain read-only');
+const blankMeal=app.dietDayRows('hus',dayAgo(119),true);
+assert(blankMeal.includes('未打卡')&&blankMeal.includes('补打卡')&&blankMeal.includes(`data-food-date="${dayAgo(119)}"`),'120-day boundary has a food-first backfill entry');
+assert(!blankMeal.includes('data-meal='),'unlogged meals do not show status choices before confirmation');
+assert(!app.dietDayRows('hus',dayAgo(119),true,{person:'hus',date:dayAgo(119),meals:{},food:{breakfast:{items:[{n:'旧食物'}],kcal:999}}}).includes('旧食物'),'unlogged status does not surface stale food');
+assert(!app.dietDayRows('hus',dayAgo(120),true).includes('data-meal='),'older than 120 days remains read-only');
+assert(!app.dietDayRows('hus',dayAgo(-1),true).includes('data-meal='),'future meals remain read-only');
 console.log('PASS saved-day streaks, today grace, real gaps, history bounds, unknown peer data and private food isolation');
 console.log('PASS historical plan, menu, partner views; PASS private today, diet, train, record, schedule');
 

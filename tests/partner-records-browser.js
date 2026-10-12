@@ -1,7 +1,8 @@
 // Synthetic records in an isolated browser; production network is blocked.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
-const origin='http://127.0.0.1:8765',output=path.join(__dirname,'../docs/qa/partner-records');
+const origin='http://127.0.0.1:8765',output=process.env.DUOFIT_QA_OUTPUT||path.join(__dirname,'../docs/qa/partner-records');
+fs.mkdirSync(output,{recursive:true});
 (async()=>{
  const browser=await chromium.launch({headless:true,channel:process.env.PLAYWRIGHT_BROWSER||'chromium'});
  try{

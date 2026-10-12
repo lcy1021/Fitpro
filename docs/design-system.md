@@ -1,4 +1,4 @@
-# DuoFit Design System · 1.3
+# DuoFit Design System · 1.4
 
 状态：正式沿用。以用户确认的 v35「方案一」页面为视觉依据；实现入口是 `design-system/tokens.css`、`design-system/components.css`，可操作样例是 `design-system/index.html`。
 
@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=39">
-<link rel="stylesheet" href="design-system/components.css?v=39">
+<link rel="stylesheet" href="design-system/tokens.css?v=40">
+<link rel="stylesheet" href="design-system/components.css?v=40">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -82,7 +82,7 @@
 | 模块子区 | `.ds-module-section` | 16px 子标题、20px 分区留白和细线；身体表单、趋势、最近更新合用一张卡 |
 | 今日餐卡 | `.meal`，`mealHeading / mealPlanContent / mealActions` | 浅染色云朵插画头、内层 `.meal-body` 圆角正文、计划区间、虚线实际分隔、打卡选择 |
 | 饮食计划 | `.meal-plan-list / .mplan` | 四餐列表、细分隔、餐食插画替代图标；餐名/时间位于插画右侧，热量靠最右；320px热量落到餐名下方 |
-| 历史日志 | `.diary-meals / .diary-meal`，`dietDayRows` | 历史染色时间线；过去 / 伴侣只读；仅今天本人显示编辑 |
+| 历史日志 | `.diary-meals / .diary-meal`，`dietDayRows` | 历史染色时间线；饮食页近 120 天本人可补记/修改，未打卡餐次仅显示补打卡入口，确认食物后出现常规状态控件；伴侣和记录页详情只读 |
 | 按钮 | `.btn.primary / .btn.ghost`；新模块 `.ds-button` | primary / secondary / disabled / busy；操作区新组件至少44px |
 | 提示 | `.ds-notice` + `data-tone` | info / success / warning / error；文本 + 图标，空态不能伪装成功 |
 | 输入 | `.ds-input` | 原生 label、16px、焦点可见；invalid / disabled |
@@ -107,6 +107,8 @@
 ### 通用模块组合（v39）
 
 `moduleCard(title, body, {id, person, meta, art, symbol})`：`person` 为内容所有者；`meta` 是标题下辅助文字；`art` 使用现有 `mood` 原版姿态，或 `symbol` 使用已有 sprite，二者选一。标题 19px/800，说明 12px；外壳沿用白→角色浅色渐变和云层，正文 94% surface 的浅染色内层、16px 圆角。窄屏仅压缩内距与图槽，不另建颜色表。
+
+饮食日志复用现有日期条、餐次行、记食物按钮和三态打卡：本人选近 120 天任意日期（包括无记录日）后可补记或修改。未打卡餐次保持「未打卡」文字状态，仅提供「补打卡」入口，不预先显示三态按钮；进入食物弹窗并确认完整热量后按当前计划范围生成「按计划」或「吃多了」，再呈现常规状态控件。已有记录可继续改食物和状态。日期附在餐次按钮和食物编辑入口，弹窗标题显示历史日期；未来与范围外日期不可操作。记录页的历史详情和伴侣内容仍只读。今天热量汇总只取今天，不随历史日期切换。
 
 已接入工位起身、饮食日志、饮食打卡记录、本周安排、目标、伴侣和身体记录。内容 helper 不再自带 `.card`，避免双层阴影。记录数据、趋势与最近更新在 `#bodyModule` 同一壳内，后台刷新仅更新 `#recData`，不能重建 `#mForm` 丢失未保存输入。起身计数器全宽轨道，增减按钮44px。
 
@@ -139,6 +141,8 @@
 
 ## 8. 当前接入与后续维护
 
+v40 在饮食日志增加近 120 天本人补记与修改；按用户二次确认，未打卡状态先显示单一补打卡入口，食物确认后才显示常规状态控件。沿用餐次控件和配色，无新组件或素材。蓝粉、浅深、320/390px和长食物文案的同状态对照见 [补打卡 QA](qa/meal-backfill/README.md)。
+
 v39将方案一外壳推广到七类模块，餐食替代计划图标，双人打卡优先，身体记录三段合卡；删除外卖推荐区及今日/训练页的“今天的训练”外部标题。角色和图像文件未重绘，见[本次QA](qa/module-unification/README.md)。
 
 v38修正角色身份并按用户手机反馈调整表面：原版角色、白至角色色渐变、餐品底托/投影、填充tab、19px主文字色模块标题及更大的右侧角色。所有三处页面与组件展示同步，见[本次QA](qa/mascot-consistency/README.md)。
@@ -157,4 +161,4 @@ v36 已接入：全局颜色与角色 / 深浅主题 tokens、基础卡片 / 按
 4. 运行 `node tests/design-system.js`；涉及布局执行浏览器验收（320 / 390，蓝 / 粉，浅 / 深、长文本、空 / 错误）。不能仅凭规范文档宣布已落地。
 5. 更新组件页、本文与 `docs/maintenance-history.md`，记录症状、确认原因、范围、证据和发布版本。有意改变视觉时更新基准并注明原因。
 
-当前验收：[v39通用卡片与记录顺序QA](qa/module-unification/README.md)。前一版：[v38角色与卡片QA](qa/mascot-consistency/README.md)。历史与方案一视觉稿的对照记录：[v37 细节QA](qa/visual-details/README.md)（v36档案保留用于定位之前漏项）。
+当前验收：[v40补打卡QA](qa/meal-backfill/README.md)。前一版：[v39通用卡片与记录顺序QA](qa/module-unification/README.md)。历史与方案一视觉稿的对照记录：[v37 细节QA](qa/visual-details/README.md)（v36档案保留用于定位之前漏项）。
