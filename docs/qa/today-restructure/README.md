@@ -1,4 +1,4 @@
-# 今日重构与两级投影 QA · 本地 v41
+# 今日重构与两级投影 QA · v41
 
 ## 对照与可执行差异
 
@@ -24,4 +24,4 @@
 
 ## 发布状态
 
-本次为本地代码及规范修改，**未提交、未推送、未上线**。核心资源查询版本和 SW 壳为 v41，图片缓存仍为 `duofit-images-v1`。真实手机和生产数据未在本次本地 QA 中验证。
+应用提交 [`8734e65`](https://github.com/lcy1021/Fitpro/commit/8734e6582acada9986f7fa7089e208d6140af07e) 已推送 `main`，[Pages 构建](https://github.com/lcy1021/Fitpro/actions/runs/38235443309)成功；[线上 11 文件 SHA-256 核对](release-verification.json)均一致。站点为 https://lcy1021.github.io/Fitpro/ 。核心资源查询版本和 SW 壳为 v41，图片缓存仍为 `duofit-images-v1`。真实手机和生产数据未在本次本地 QA 中验证。

@@ -1,0 +1,86 @@
+{
+  "commit": "8734e6582acada9986f7fa7089e208d6140af07e",
+  "runId": 38235443309,
+  "runUrl": "https://github.com/lcy1021/Fitpro/actions/runs/38235443309",
+  "siteUrl": "https://lcy1021.github.io/Fitpro/",
+  "checkedAtUtc": "2026-10-12T10:20:06Z",
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "localSha256": "fc3ef612eb79dce16a6cca64cb3ebc171926d92885307aed305a5d7b8a88bbcd",
+      "remoteSha256": "fc3ef612eb79dce16a6cca64cb3ebc171926d92885307aed305a5d7b8a88bbcd",
+      "matches": true
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "localSha256": "e2ce61e201ab45fa793673272e7522f679a8891154823f1accd6f84fc57c35f9",
+      "remoteSha256": "e2ce61e201ab45fa793673272e7522f679a8891154823f1accd6f84fc57c35f9",
+      "matches": true
+    },
+    {
+      "path": "design-system/tokens.css",
+      "status": 200,
+      "localSha256": "58f1d95b26d77847c14bad634e91a694d0207e8060c6bac05d954ce2d4c49b04",
+      "remoteSha256": "58f1d95b26d77847c14bad634e91a694d0207e8060c6bac05d954ce2d4c49b04",
+      "matches": true
+    },
+    {
+      "path": "design-system/components.css",
+      "status": 200,
+      "localSha256": "977e8384f6f401a37007b94a37faf6b2c78297644ed0e3d4d9e55d7af316940d",
+      "remoteSha256": "977e8384f6f401a37007b94a37faf6b2c78297644ed0e3d4d9e55d7af316940d",
+      "matches": true
+    },
+    {
+      "path": "design-system/index.html",
+      "status": 200,
+      "localSha256": "63f88b19f2275845bf8d336ef7dd6fa4c35e5fca28d71165113fb3fbb80bced2",
+      "remoteSha256": "63f88b19f2275845bf8d336ef7dd6fa4c35e5fca28d71165113fb3fbb80bced2",
+      "matches": true
+    },
+    {
+      "path": "design-system/gallery.css",
+      "status": 200,
+      "localSha256": "16d8c5e2c4cf203f9499ebeca91e1a8956bf715ece629efe803ad517b6018f2e",
+      "remoteSha256": "16d8c5e2c4cf203f9499ebeca91e1a8956bf715ece629efe803ad517b6018f2e",
+      "matches": true
+    },
+    {
+      "path": "design-system/gallery.js",
+      "status": 200,
+      "localSha256": "14512e7eecc6d8801e9cbc0f6ae74864f12088a1a2e3b9d6d1a6ed1f37dcee60",
+      "remoteSha256": "14512e7eecc6d8801e9cbc0f6ae74864f12088a1a2e3b9d6d1a6ed1f37dcee60",
+      "matches": true
+    },
+    {
+      "path": "private-coach.css",
+      "status": 200,
+      "localSha256": "44e763f99df5497e9b4cfa49855a0c220aa968039320b2c75b98533f5271c736",
+      "remoteSha256": "44e763f99df5497e9b4cfa49855a0c220aa968039320b2c75b98533f5271c736",
+      "matches": true
+    },
+    {
+      "path": "private-coach.js",
+      "status": 200,
+      "localSha256": "b67795c045286e3133b2e118bcb74ee4034801935e93071fbdb209d5c313b16f",
+      "remoteSha256": "b67795c045286e3133b2e118bcb74ee4034801935e93071fbdb209d5c313b16f",
+      "matches": true
+    },
+    {
+      "path": "tests/theme-preview.html",
+      "status": 200,
+      "localSha256": "c9a90754caa45c1f30896fa1d0e6cf2b28591eefbc51db7b28d817f3c2f46341",
+      "remoteSha256": "c9a90754caa45c1f30896fa1d0e6cf2b28591eefbc51db7b28d817f3c2f46341",
+      "matches": true
+    },
+    {
+      "path": "docs/design-system.md",
+      "status": 200,
+      "localSha256": "6c67165c5c1b3857eb6383f5c48c69022ef1b1340c4ef81c726dd4f9beadd465",
+      "remoteSha256": "6c67165c5c1b3857eb6383f5c48c69022ef1b1340c4ef81c726dd4f9beadd465",
+      "matches": true
+    }
+  ]
+}
