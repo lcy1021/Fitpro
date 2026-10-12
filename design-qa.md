@@ -1,6 +1,6 @@
 # DuoFit 四页表头 · 设计到代码核对
 
-状态：**v45 本地通过**；iPhone 安装态状态栏与老婆手机当次图片加载失败原因保留为实机检查项。v44 的蓝色浅色确认稿仍是场景构图基线；深色与加载修复见[同屏差异](docs/qa/page-hero-dark-v45/README.md)。
+状态：**v45 本地通过并已发布**；iPhone 安装态状态栏与老婆手机当次图片加载失败原因保留为实机检查项。v44 的蓝色浅色确认稿仍是场景构图基线；深色与加载修复见[同屏差异](docs/qa/page-hero-dark-v45/README.md)。
 
 | 核对项 | 结果 | 证据 |
 | --- | --- | --- |
@@ -12,7 +12,7 @@
 | v45 深色与接缝 | 上半场景恢复原色；32 组蓝粉／浅深／四页／两宽的图片解码与边缘像素检查通过 | [v45 截图与精确底色](docs/qa/page-hero-dark-v45/README.md) |
 | v45 首次加载与离线 | 七图交付体积缩小 82.6%，SW 预热后断网可切换老婆四页 | [缓存检查](docs/qa/page-hero-dark-v45/check-resilience.cjs) |
 
-规格图的系统状态栏只用于展示，正式网页由 iOS 绘制。粉色单人场景是基于确认构图和原版粉角色制作的必要身份变体，仍需用户在真实手机上看整体观感。v44 的线上发布证据保留在[发布记录](docs/qa/page-header-implementation/release-verification.json)；v45 正在发布核对。
+规格图的系统状态栏只用于展示，正式网页由 iOS 绘制。粉色单人场景是基于确认构图和原版粉角色制作的必要身份变体，仍需用户在真实手机上看整体观感。v44 的线上证据保留在[旧发布记录](docs/qa/page-header-implementation/release-verification.json)；v45 线上 19 项资源核对见[新发布记录](docs/qa/page-hero-dark-v45/release-verification.json)。
 
 ---
 

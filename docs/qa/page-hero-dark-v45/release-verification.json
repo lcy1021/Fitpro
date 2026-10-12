@@ -1,0 +1,141 @@
+{
+  "commit": "5d943139012fd92e4d35f5d115818cbb39c7d3a4",
+  "pagesRun": 38273325122,
+  "site": "https://lcy1021.github.io/Fitpro/",
+  "checkedAtUtc": "2026-10-12T15:54:01Z",
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 198314,
+      "sha256": "1677982f13148196eefbf63b851682253bc4f79870a96d1ff5a87dc8b5f4b4f6",
+      "matchesLocal": true
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "bytes": 5122,
+      "sha256": "72ce61734fa34ff78c6932a007d7c8bfc4dde9fa47606adbb1bdefd26b9a07b3",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/tokens.css",
+      "status": 200,
+      "bytes": 8286,
+      "sha256": "d9b145f1b335e59e872b31dd02634bd78edd01d0d9ac2482986d25c66848d7a3",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/components.css",
+      "status": 200,
+      "bytes": 34786,
+      "sha256": "42dcab5a7aa1f9ac20a9d1433e7f2e8b6d9d47977e1320f801ee6bd3fbbad98a",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/index.html",
+      "status": 200,
+      "bytes": 13069,
+      "sha256": "3f18f17f474f7a36b7146c95e3ff579587fffeaf46d28ae88e24723bb7b851cd",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/gallery.js",
+      "status": 200,
+      "bytes": 11941,
+      "sha256": "8bf48e610e50db9184e42d22e36112a23ea12a26df28eadb62770a29d530ae5c",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/mascots.js",
+      "status": 200,
+      "bytes": 1383,
+      "sha256": "3e9aaac6a3812d3f8fe7478c78f74a4f0947314df5b846bf7694237045300165",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.js",
+      "status": 200,
+      "bytes": 69245,
+      "sha256": "b67795c045286e3133b2e118bcb74ee4034801935e93071fbdb209d5c313b16f",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.css",
+      "status": 200,
+      "bytes": 12696,
+      "sha256": "44e763f99df5497e9b4cfa49855a0c220aa968039320b2c75b98533f5271c736",
+      "matchesLocal": true
+    },
+    {
+      "path": "tests/theme-preview.html",
+      "status": 200,
+      "bytes": 12933,
+      "sha256": "abdc596a3280d013f91ac8152a15d3c612616ca1b9b512b22726afe9b6cd53be",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/fonts/LongCang-Regular.ttf",
+      "status": 200,
+      "bytes": 5162508,
+      "sha256": "e5bf2c3f24ef2327c6f136d8f73e2f9dfdf44896fdbeb35a9515f44777bb91bc",
+      "matchesLocal": true
+    },
+    {
+      "path": "manifest.webmanifest",
+      "status": 200,
+      "bytes": 574,
+      "sha256": "bbb43b5585d9272a462c51b4326f6553e525912285f1cfa5540f7903701c5895",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/page-hero/diet-hus-v2.jpg",
+      "status": 200,
+      "bytes": 303243,
+      "sha256": "89a02346d4b87f578f979e4549a97e3c9abebf1bbf880cdbee1fbc4045adc91e",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/page-hero/diet-wife-v2.jpg",
+      "status": 200,
+      "bytes": 301414,
+      "sha256": "80468e0fbeadd14cfc4b90125789378a8a8e29c17fc1d987ddb816e693874fce",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/page-hero/record-couple-v2.jpg",
+      "status": 200,
+      "bytes": 336252,
+      "sha256": "8381b1a3258b53d22a60c8a96cc3fc7ec2d7681d82ac2549d4e2566de7ff90bd",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/page-hero/today-hus-v2.jpg",
+      "status": 200,
+      "bytes": 312566,
+      "sha256": "c0910488d3234bfe9ab868eb283c505719cefcaa268a0e66e091d3db52f09f9c",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/page-hero/today-wife-v2.jpg",
+      "status": 200,
+      "bytes": 316899,
+      "sha256": "a9dba081d6ad776533e9546c2d5293d722f98a918b4741aaced07e8f8722821b",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/page-hero/train-hus-v2.jpg",
+      "status": 200,
+      "bytes": 296739,
+      "sha256": "e02a4a3be2b214d5efae71fb8e3d00328bc63e0be7e3ac3006acc82c60922aa1",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/page-hero/train-wife-v2.jpg",
+      "status": 200,
+      "bytes": 295990,
+      "sha256": "c23847b2a90aab84419381ae9eb58b74349fd0c12641ba0f9dec519de85cd07d",
+      "matchesLocal": true
+    }
+  ]
+}

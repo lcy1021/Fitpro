@@ -1,6 +1,6 @@
 # 四页场景深色与加载修复 · v45
 
-日期：2026-10-12。状态：本地已实现并验证，发布待核对。依据为用户在 v44 手机端指出的整图蒙灰、老婆界面图片未加载与图片下缘边界；蓝色浅色四页仍以[已确认规格](../page-header-proposal/spec/README.md)为构图基线。
+日期：2026-10-12。状态：**v45 已发布线上**。依据为用户在 v44 手机端指出的整图蒙灰、老婆界面图片未加载与图片下缘边界；蓝色浅色四页仍以[已确认规格](../page-header-proposal/spec/README.md)为构图基线。
 
 ## 同屏差异与结果
 
@@ -33,4 +33,4 @@
 
 ## 发布
 
-待部署后补充 commit、Pages 构建及线上资源核对。应用壳版本 v45；七张图改名 `v2.jpg`，图片缓存容器仍独立保留 `duofit-images-v1`。
+应用提交 [`5d94313`](https://github.com/lcy1021/Fitpro/commit/5d943139012fd92e4d35f5d115818cbb39c7d3a4) 已推送 `main`，[Pages 构建 38273325122](https://github.com/lcy1021/Fitpro/actions/runs/38273325122) 成功；[线上核对](release-verification.json)中入口、SW、设计系统、字体、七张场景图等 19 项均为 HTTP 200 且 SHA-256 与本地一致。应用壳版本 v45；七张图改名 `v2.jpg`，图片缓存容器仍独立保留 `duofit-images-v1`。已安装旧图标可获得新版网页内容；其系统状态栏绘制模式仍由安装时的 iOS 设定决定。
