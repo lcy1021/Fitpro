@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=40">
+<link rel="stylesheet" href="design-system/tokens.css?v=41">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -191,7 +191,7 @@ p{margin:0}
 .streak b{display:block;font-size:20px;color:var(--ink);font-weight:800;line-height:1.1}
 
 /* obsidian workout card */
-.obs{background:radial-gradient(circle at 100% 0%,color-mix(in srgb,var(--me) 28%,transparent) 0%,transparent 55%),var(--obsidian);color:var(--on-obsidian);border-radius:var(--radius-l);padding:18px;box-shadow:var(--shadow-lift)}
+.obs{background:radial-gradient(circle at 100% 0%,color-mix(in srgb,var(--me) 28%,transparent) 0%,transparent 55%),var(--obsidian);color:var(--on-obsidian);border-radius:var(--radius-l);padding:18px;box-shadow:var(--ds-shadow-primary)}
 .obs .tag2{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
 .obs h4{margin:12px 0 2px;font-size:22px;font-weight:800;letter-spacing:-.01em}
 .obs p{font-size:13px;color:rgba(241,245,249,.65)}
@@ -308,7 +308,7 @@ p{margin:0}
 .hist-row small{color:var(--muted)}
 .empty{font-size:13px;color:var(--muted);padding:6px 0}
 .pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
-.insight{border-radius:var(--radius-l);padding:18px;background:linear-gradient(160deg,color-mix(in srgb,var(--me-soft) 85%,var(--surface)) 0%,var(--surface) 70%);box-shadow:var(--shadow)}
+.insight{border-radius:var(--radius-l);padding:18px;background:linear-gradient(160deg,color-mix(in srgb,var(--me-soft) 85%,var(--surface)) 0%,var(--surface) 70%);box-shadow:var(--ds-shadow-primary)}
 .insight .ih{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;margin-bottom:12px}
 .insight h3{font-size:18px;font-weight:800;margin-bottom:4px}
 .insight p{font-size:13px;color:var(--muted);line-height:1.6}
@@ -362,7 +362,7 @@ p{margin:0}
 .feed .v{text-align:right}
 .feed .v b{display:block;font-size:16px;font-weight:800;color:var(--p-ink);font-variant-numeric:tabular-nums}
 .linkbtn{border:0;background:transparent;color:var(--me-ink);font-size:13px;font-weight:700;padding:10px 4px 0}
-.who-card{background:var(--surface);border-radius:var(--radius-l);padding:16px 12px;display:grid;justify-items:center;text-align:center;gap:2px;box-shadow:var(--shadow);background-image:linear-gradient(180deg,color-mix(in srgb,var(--p-soft) 70%,transparent) 0%,transparent 55%)}
+.who-card{background:var(--surface);border-radius:var(--radius-l);padding:16px 12px;display:grid;justify-items:center;text-align:center;gap:2px;box-shadow:var(--ds-shadow-secondary);background-image:linear-gradient(180deg,color-mix(in srgb,var(--p-soft) 70%,transparent) 0%,transparent 55%)}
 .who-card .ava{width:84px;height:84px;border-radius:50%;background:var(--surface);box-shadow:0 0 0 3px var(--p),var(--p-glow);display:flex;align-items:center;justify-content:center;margin-bottom:8px}
 .who-card .ava img{width:72px;height:72px;object-fit:contain}
 .who-card h4{margin:0;font-size:14px;font-weight:800;color:var(--p-ink)}
@@ -398,7 +398,7 @@ p{margin:0}
 .media.exercise-media{display:block;border:0;background:var(--sunk);overflow:hidden}
 .media.exercise-media picture{display:block;width:100%;height:100%}
 .media.exercise-media img{display:block;width:100%;height:100%;object-fit:contain;opacity:1}
-.rcard{background:var(--surface);border-radius:var(--radius-l);padding:16px;box-shadow:var(--shadow);margin-bottom:16px}
+.rcard{background:var(--surface);border-radius:var(--radius-l);padding:16px;box-shadow:var(--ds-shadow-primary);margin-bottom:16px}
 .tag2.light{display:inline-flex;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--me-soft);color:var(--me-ink);margin-bottom:8px}
 .run-top .pc{font-size:12px;font-weight:800;color:var(--me-ink);background:var(--me-soft);border-radius:999px;padding:3px 10px}
 .rlist{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
@@ -483,17 +483,17 @@ p{margin:0}
 .goal-card p{font-size:12px;color:var(--muted);line-height:1.6}
 .goal-bar{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden;margin-top:10px}
 .goal-bar i{display:block;height:100%;background:var(--me-grad);border-radius:99px}
-.sugg{background:var(--surface);border-radius:var(--radius-l);padding:14px;box-shadow:var(--shadow);margin-bottom:14px;background-image:linear-gradient(160deg,color-mix(in srgb,var(--me-soft) 80%,transparent) 0%,transparent 60%)}
+.sugg{background:var(--surface);border-radius:var(--radius-l);padding:14px;box-shadow:var(--ds-shadow-primary);margin-bottom:14px;background-image:linear-gradient(160deg,color-mix(in srgb,var(--me-soft) 80%,transparent) 0%,transparent 60%)}
 .sugg .sh{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .sugg .sh img{width:48px;height:48px;object-fit:contain}
 .sugg .sh b{font-size:15px;font-weight:800}
 .sugg .sh small{display:block;font-size:12px;color:var(--muted)}
 .sugg ul{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px}
-.sugg li{background:var(--surface);border-radius:var(--radius-s);padding:9px 12px;font-size:13px;box-shadow:var(--shadow)}
+.sugg li{background:var(--surface);border-radius:var(--radius-s);padding:9px 12px;font-size:13px;box-shadow:var(--ds-shadow-secondary)}
 .sugg li b{display:block;font-size:14px}
 .sugg li small{color:var(--muted)}
 .sugg .acts{display:grid;grid-template-columns:1fr 2fr;gap:8px}
-.goal-cta{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--surface);border-radius:var(--radius-m);padding:10px 12px 10px 10px;box-shadow:var(--shadow);margin-bottom:14px}
+.goal-cta{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--surface);border-radius:var(--radius-m);padding:10px 12px 10px 10px;box-shadow:var(--ds-shadow-secondary);margin-bottom:14px}
 .goal-cta img{width:56px;height:56px;object-fit:contain}
 .goal-cta b{display:block;font-size:14px;font-weight:800}
 .goal-cta small{display:block;font-size:12px;color:var(--muted);line-height:1.5}
@@ -508,7 +508,7 @@ p{margin:0}
 .react.big.show{transform:translate(-50%,-50%) scale(1)}
 .react.big img{width:140px;height:140px}
 .react.big b{font-size:20px}
-.missed{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:center;background:var(--surface);border-radius:var(--radius-m);padding:10px 14px 10px 10px;box-shadow:var(--shadow);margin-bottom:14px}
+.missed{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:center;background:var(--surface);border-radius:var(--radius-m);padding:10px 14px 10px 10px;box-shadow:var(--ds-shadow-secondary);margin-bottom:14px}
 .missed img{width:64px;height:64px;object-fit:contain}
 .missed b{display:block;font-size:14px;font-weight:800}
 .missed small{display:block;font-size:12px;color:var(--muted);line-height:1.5}
@@ -534,8 +534,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=40">
-<link rel="stylesheet" href="private-coach.css?v=40">
+<link rel="stylesheet" href="design-system/components.css?v=41">
+<link rel="stylesheet" href="private-coach.css?v=41">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -555,6 +555,7 @@ p{margin:0}
   <symbol id="ic-delivery" viewBox="0 0 24 24"><path d="M5 8h14l1 12H4L5 8ZM8.5 8V6a3.5 3.5 0 0 1 7 0v2M8 13.5h8M10 16.5h4"/></symbol>
   <symbol id="ic-chat" viewBox="0 0 24 24"><path d="M20.5 11.5c0 4.4-3.7 7.5-8.5 7.5-1.3 0-2.6-.2-3.7-.7L4 20l1.1-4A7.1 7.1 0 0 1 3.5 11.5C3.5 7.1 7.2 4 12 4s8.5 3.1 8.5 7.5ZM8.5 11.5h7"/></symbol>
   <symbol id="ic-goal" viewBox="0 0 24 24"><circle cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4"/><path d="m11 13 8.5-8.5M17 4h3v3"/></symbol>
+  <symbol id="ic-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14c1.2 1.5 2.5 2.2 4 2.2s2.8-.7 4-2.2"/><path d="M9 10h.01M15 10h.01"/></symbol>
   <symbol id="ic-people" viewBox="0 0 24 24"><circle cx="8" cy="8" r="2.5"/><circle cx="16" cy="8" r="2.5"/><path d="M3.5 18v-1.7c0-2.4 1.8-4.1 4.5-4.1s4.5 1.7 4.5 4.1V18H3.5ZM12.6 12.4c1-.6 2.1-.8 3.4-.8 2.7 0 4.5 1.7 4.5 4.1V18H14"/></symbol>
   <symbol id="ic-note" viewBox="0 0 24 24"><rect x="4" y="3" width="14" height="18" rx="3"/><path d="M7.5 8h7M7.5 12h5M7.5 16h3M17.5 15.5l3-3 1.5 1.5-3 3-2.5.7.7-2.2Z"/></symbol>
   <symbol id="ic-key" viewBox="0 0 24 24"><circle cx="8" cy="10" r="4.5"/><path d="M11.3 13.3 20 22M15 17l2-2M17.3 19.4l2-2"/></symbol>
@@ -669,8 +670,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=40"></script>
-<script src="design-system/mascots.js?v=40"></script>
+<script src="private-coach.js?v=41"></script>
+<script src="design-system/mascots.js?v=41"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1435,16 +1436,12 @@ function viewToday(){
   const together=`<div class="together"><span class="fire">${icon("flame")}</span>
     <span class="t">${bs?`并肩打卡<b class="num">${bs}</b>天`:"今天一起把打卡填满吧"}</span>
     <span class="chip ${got===need?"good":""}">今天 ${got}/${need}</span></div>`;
-  const duo=`<section class="duo" aria-label="两个人今天的进度">
-    <div class="duo-h"><h2><i>${icon("heart")}</i>今天两个人的进度</h2></div>
-    ${["hus","wife"].map(p=>`<div class="track ${p}"><img class="ava" src="${dayDone(p,today)?mood(p,"day-done"):"assets/avatar-"+p+".webp?v=media1"}" alt="${PEOPLE[p].label}${dayDone(p,today)?"今天全部完成":"的形象"}" width="44" height="44">
-      <div><div class="who"><span class="name">${PEOPLE[p].label}${p===me?"（我）":""}</span>
-        <span class="last">${(t=>t?"最近打卡 "+whenText(t):"还没有打卡")(lastCheckinAt(p))}</span></div>
-        <div class="beads">${beadsFor(p)}</div></div>
-      <div class="streak"><b class="num">${streak(p)}</b>连续天</div></div>`).join("")}
-  </section>`;
-
-  const privateDuo=privateCoach?.active ? `<section class="coach-mini"><b>伴侣今天${privateCoach.partnerChecked(date)?"已打卡":"还没有打卡"}</b><small>只共享今天是否打卡；健康档案、目标和计划仅自己可见</small></section>` : duo;
+  const focus=privateCoach?.profile?.focus?.filter(Boolean).join('、')||'查看计划';
+  const dailyStatus=s.kind==='rest'?'安心休息':c.dailyChoice==='short'?'短版训练':'照常训练';
+  const summary=privateCoach?.active?`<section class="today-summary-pair ${me}" aria-label="本周方向和每日状态">
+    <button type="button" data-coach="weekly" aria-label="本周方向：${esc(focus)}；查看或调整本周计划"><span class="summary-icon">${icon('goal')}</span><span class="summary-copy"><small>本周方向</small><strong>${esc(focus)}</strong></span>${icon('chevron-right','sm')}</button>
+    <button type="button" data-coach="daily" aria-label="每日状态：${dailyStatus}；查看或调整今天"><span class="summary-icon">${icon('smile')}</span><span class="summary-copy"><small>每日状态</small><strong>${dailyStatus}</strong></span>${icon('chevron-right','sm')}</button>
+  </section>`:'';
   let trainCard;
   if(s.kind==="rest"){
     const recovering=recoveryRest(c), count=extraDone(c).length;
@@ -1478,12 +1475,12 @@ function viewToday(){
   const miss = todayAny ? 0 : yesterdayMissing(me);
   const missed = miss ? `<div class="missed"><img src="${mood(me,"day-missed")}" alt=""><div><b>昨天还差 ${miss} 项没打卡</b><small>没关系，今天重新开始就好。先把早餐打个卡吧</small></div></div>` : "";
   const gp=planFor(me);
-  const goalTop = privateCoach?.active ? privateCoach.weeklyCard() : gp ? suggCard() : `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>设定你的目标</b><small>按你的体重安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
-  $("#view").innerHTML = missed + goalTop + (privateCoach?.active ? privateCoach.dailyCard() : together) + privateDuo + `
-    <section class="sec">${trainCard}</section>
-    <section class="sec ds-scene ${me}">${mealSectionHeading("今天吃什么",date,"today",me)}
+  const goalTop = privateCoach?.active ? summary : gp ? suggCard() : `<div class="goal-cta"><img src="${mood(me,"weigh")}" alt=""><div><b>设定你的目标</b><small>按你的体重安排每天吃多少、怎么练</small></div><button class="btn primary" data-open-goal>去设定</button></div>`;
+  $("#view").innerHTML = missed + goalTop + (privateCoach?.active ? '' : together) + `
+    ${moduleCard("工位起身",`<div class="counter"><div class="txt"><h4>起来动一动</h4><p>每坐 1 小时起身 2–3 分钟</p></div><div class="ctl"><button data-stand="-1" aria-label="减一次">−</button><b>${c.stand||0}<small>/6 次</small></b><button data-stand="1" aria-label="加一次">+</button></div></div>`,{id:'standModule',meta:'给久坐的身体一个小休息',art:'workout'})}
+    <section class="sec ds-scene ds-meal-scene ${me}">${mealSectionHeading("今天吃什么",date,"today",me)}
       <div class="stack">${meals}</div>${overNote}</section>
-    ${moduleCard("工位起身",`<div class="counter"><div class="txt"><h4>起来动一动</h4><p>每坐 1 小时起身 2–3 分钟</p></div><div class="ctl"><button data-stand="-1" aria-label="减一次">−</button><b>${c.stand||0}<small>/6 次</small></b><button data-stand="1" aria-label="加一次">+</button></div></div>`,{id:'standModule',meta:'给久坐的身体一个小休息',art:'workout'})}`;
+    <section class="sec">${trainCard}</section>`;
 }
 
 // Shared compact module shell. Body renderers own data; this helper owns presentation.

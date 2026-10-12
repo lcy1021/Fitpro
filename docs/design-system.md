@@ -1,4 +1,4 @@
-# DuoFit Design System · 1.4
+# DuoFit Design System · 1.5
 
 状态：正式沿用。以用户确认的 v35「方案一」页面为视觉依据；实现入口是 `design-system/tokens.css`、`design-system/components.css`，可操作样例是 `design-system/index.html`。
 
@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=40">
-<link rel="stylesheet" href="design-system/components.css?v=40">
+<link rel="stylesheet" href="design-system/tokens.css?v=41">
+<link rel="stylesheet" href="design-system/components.css?v=41">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -35,7 +35,7 @@
 
 - 页面动作使用 `--me-*`，跟随登录者；餐卡、历史详情使用 `--p-*`，跟随记录所有者。老公查看老婆记录时，页面导航仍蓝色，详情变为粉色。
 - 正文、辅助、角色强调组成常规三种文字色。成功 / 提醒 / 错误仅在真实状态出现，用 `--good-* / --sun-* / --danger`，同时配明确文案；不能按早餐、午餐分别分配黄色、绿色等随机图标底色。
-- 面板、今日餐头和历史卡使用 `--ds-surface-gradient`：125度，从 `--surface` 过渡到 `--p-soft`，浅色为白到浅蓝/粉，深色为深灰到角色暗色。云层仍使用共享透明图片，浅色opacity .55、深色 .12。角色相关复合token须在 `.hus/.wife/.ds-root` 上解析，不能在没有 `--p-*` 的 `:root` 上定义。
+- 一般面板与标题氛围层使用 `--ds-surface-gradient`：125度，从 `--surface` 过渡到 `--p-soft`，浅色为白到浅蓝/粉，深色为深灰到角色暗色。云层仍使用共享透明图片，浅色opacity .55、深色 .12。角色相关复合token须在 `.hus/.wife/.ds-root` 上解析，不能在没有 `--p-*` 的 `:root` 上定义。
 - tab选中填充统一 `--ds-fill-selected:var(--p-ink)` / `--ds-fill-selected-ink:var(--surface)`，未选中透明灰字；无默认线框、无下划线。键盘焦点轮廓保留。餐品 `.meal-art-stage` 以 `--ds-food-tint:52%` 的浅色底托和 `--ds-food-shadow` 轻投影承托真实图片。
 - `--faint` 用于低优先级装饰或禁用，不能作为重要正文色。渐变主按钮沿用现有风格；不要把角色亮色白字默认当作小字号标签，组件页不代表完整 WCAG 认证。
 
@@ -65,7 +65,9 @@
 | 餐卡 / 内部圆角 | `--ds-radius-meal / --ds-radius-inset` | 22 / 16px |
 | 打卡轨道 / 按钮 | `--ds-radius-track / --ds-radius-segment` | 13 / 10px |
 | tab 轨道 / 按钮 | `--ds-radius-tabs / --ds-radius-tab` | 15 / 11px |
-| 常规 / 抬升阴影 | `--shadow / --shadow-lift` | 只用于层级区分，不给每段正文加阴影 |
+| 一级投影 | `--ds-shadow-primary` | 今日概览、模块外壳、独立大卡；中性灰/黑，不随蓝粉角色换色 |
+| 二级投影 | `--ds-shadow-secondary` | 模块内正文、餐卡、历史时间线和次级卡；同为中性色，深度小于一级 |
+| 今日餐区底色 | `--ds-meal-scene-bg` | `--surface` 与所有者 `--p-soft` 混合，白色餐卡能从浅蓝/粉底上分离；深色主题也保持层次 |
 
 4px 为主网格，不强行取整已有 9/10/14px 光学间距。组件内部可有已记录的精细参数；新布局优先主间距。长菜名自然换行，父级 `min-width:0`，网格 `minmax(0,1fr)`。320px 不能横向溢出。页面下方保留实际导航高度 + 24px 和安全区。
 
@@ -73,11 +75,12 @@
 
 | 组件 | 代码接口 | 变体 / 行为 |
 | --- | --- | --- |
-| 基础卡片 | `.card` | 主表面、中圆角、16px 内距；不滥套多层卡片 |
+| 基础卡片 | `.card` | 主表面、中圆角、16px 内距、二级投影；不滥套多层卡片 |
+| 今日概览 | `.today-summary-pair` | 本周方向和每日状态双入口；短词概述，点击进入原调整界面；一级投影、两列自适应 |
 | 模块标题 | `.ds-section-heading`，App `.meal-section-heading` | `h3 + time + .ds-mascot-group`；跑步 / 吃饭 / 双人图，日期在左下 |
 | 角色切换 | `.ds-role-tabs`，App `.history-partner-status` | 两列；选中角色色填充、对比文字、轻阴影；未选中灰字；只写老公 / 老婆；无下划线 |
 | 餐次打卡 | `.ds-checkin`，App `.diary-actions` | 三列；浅色轨道 + 角色色填充选中块；无选中线框；保留勾和文字 |
-| 氛围面板 | `.ds-scene` | 蓝粉轻染、透明云朵薄层、浅色边缘；用于今日餐次 / 我的一天 / 记录详情 |
+| 氛围面板 | `.ds-scene` | 蓝粉轻染、透明云朵薄层、一级中性投影；用于今日餐次 / 我的一天 / 记录详情 |
 | 紧凑模块 | `.ds-module`，`moduleCard(title, body, options)` | 复用 `.ds-scene` 渐变外壳；标题/小字/原版角色或现有图标；单一 `.ds-module-body` 内容区 |
 | 模块子区 | `.ds-module-section` | 16px 子标题、20px 分区留白和细线；身体表单、趋势、最近更新合用一张卡 |
 | 今日餐卡 | `.meal`，`mealHeading / mealPlanContent / mealActions` | 浅染色云朵插画头、内层 `.meal-body` 圆角正文、计划区间、虚线实际分隔、打卡选择 |
@@ -106,7 +109,7 @@
 
 ### 通用模块组合（v39）
 
-`moduleCard(title, body, {id, person, meta, art, symbol})`：`person` 为内容所有者；`meta` 是标题下辅助文字；`art` 使用现有 `mood` 原版姿态，或 `symbol` 使用已有 sprite，二者选一。标题 19px/800，说明 12px；外壳沿用白→角色浅色渐变和云层，正文 94% surface 的浅染色内层、16px 圆角。窄屏仅压缩内距与图槽，不另建颜色表。
+`moduleCard(title, body, {id, person, meta, art, symbol})`：`person` 为内容所有者；`meta` 是标题下辅助文字；`art` 使用现有 `mood` 原版姿态，或 `symbol` 使用已有 sprite，二者选一。标题 19px/800，说明 12px；外壳沿用白→角色浅色渐变和云层，正文纯 `--surface` 内层、16px 圆角、二级中性投影。窄屏仅压缩内距与图槽，不另建颜色表。
 
 饮食日志复用现有日期条、餐次行、记食物按钮和三态打卡：本人选近 120 天任意日期（包括无记录日）后可补记或修改。未打卡餐次保持「未打卡」文字状态，仅提供「补打卡」入口，不预先显示三态按钮；进入食物弹窗并确认完整热量后按当前计划范围生成「按计划」或「吃多了」，再呈现常规状态控件。已有记录可继续改食物和状态。日期附在餐次按钮和食物编辑入口，弹窗标题显示历史日期；未来与范围外日期不可操作。记录页的历史详情和伴侣内容仍只读。今天热量汇总只取今天，不随历史日期切换。
 
@@ -141,6 +144,8 @@
 
 ## 8. 当前接入与后续维护
 
+v41 按用户确认的今日稿收起本周方向/每日状态为双入口，状态仅显示「安心休息 / 短版训练 / 照常训练」等事实短词；保留原工位起身内容，顺序为概览→工位起身→饮食→训练，并去掉今日伴侣打卡提示。两级中性投影接入共用卡片，饮食外壳改用更明确的角色浅色底。其他页面共享卡片同步沿用投影规则；具体同屏对照见[今日重构 QA](qa/today-restructure/README.md)。右上角双角色动效仍等候单独设计与确认。
+
 v40 在饮食日志增加近 120 天本人补记与修改；按用户二次确认，未打卡状态先显示单一补打卡入口，食物确认后才显示常规状态控件。沿用餐次控件和配色，无新组件或素材。蓝粉、浅深、320/390px和长食物文案的同状态对照见 [补打卡 QA](qa/meal-backfill/README.md)。
 
 v39将方案一外壳推广到七类模块，餐食替代计划图标，双人打卡优先，身体记录三段合卡；删除外卖推荐区及今日/训练页的“今天的训练”外部标题。角色和图像文件未重绘，见[本次QA](qa/module-unification/README.md)。
@@ -161,4 +166,4 @@ v36 已接入：全局颜色与角色 / 深浅主题 tokens、基础卡片 / 按
 4. 运行 `node tests/design-system.js`；涉及布局执行浏览器验收（320 / 390，蓝 / 粉，浅 / 深、长文本、空 / 错误）。不能仅凭规范文档宣布已落地。
 5. 更新组件页、本文与 `docs/maintenance-history.md`，记录症状、确认原因、范围、证据和发布版本。有意改变视觉时更新基准并注明原因。
 
-当前验收：[v40补打卡QA](qa/meal-backfill/README.md)。前一版：[v39通用卡片与记录顺序QA](qa/module-unification/README.md)。历史与方案一视觉稿的对照记录：[v37 细节QA](qa/visual-details/README.md)（v36档案保留用于定位之前漏项）。
+当前验收：[v41今日重构QA](qa/today-restructure/README.md)。上一版：[v40补打卡QA](qa/meal-backfill/README.md)。前一版：[v39通用卡片与记录顺序QA](qa/module-unification/README.md)。历史与方案一视觉稿的对照记录：[v37 细节QA](qa/visual-details/README.md)（v36档案保留用于定位之前漏项）。

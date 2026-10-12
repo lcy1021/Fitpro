@@ -1,0 +1,347 @@
+[
+  {
+    "view": "today",
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "overflow": false,
+    "order": [
+      "today-summary-pair hus",
+      "standModule",
+      "sec ds-scene ds-meal-scene hus",
+      "sec"
+    ],
+    "partnerText": false,
+    "summary": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgb(255, 255, 255)"
+    },
+    "stand": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "standBody": {
+      "shadow": "rgba(25, 32, 36, 0.14) 0px 7px 17px -10px, rgba(25, 32, 36, 0.08) 0px 1px 4px -2px",
+      "border": "0px",
+      "bg": "rgb(255, 255, 255)"
+    },
+    "food": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "color(srgb 0.933137 0.971961 0.997843)"
+    },
+    "meal": {
+      "shadow": "rgba(25, 32, 36, 0.14) 0px 7px 17px -10px, rgba(25, 32, 36, 0.08) 0px 1px 4px -2px",
+      "border": "0px",
+      "bg": "rgb(255, 255, 255)"
+    },
+    "scene": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "longTextFits": true,
+    "status": [
+      "腰腹、背肩",
+      "安心休息"
+    ],
+    "weeklyOpens": true,
+    "dailyOpens": true,
+    "standWorks": true,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "hus",
+    "theme": "light",
+    "width": 320,
+    "overflow": false,
+    "order": [
+      "today-summary-pair hus",
+      "standModule",
+      "sec ds-scene ds-meal-scene hus",
+      "sec"
+    ],
+    "partnerText": false,
+    "summary": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgb(255, 255, 255)"
+    },
+    "stand": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "standBody": {
+      "shadow": "rgba(25, 32, 36, 0.14) 0px 7px 17px -10px, rgba(25, 32, 36, 0.08) 0px 1px 4px -2px",
+      "border": "0px",
+      "bg": "rgb(255, 255, 255)"
+    },
+    "food": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "color(srgb 0.933137 0.971961 0.997843)"
+    },
+    "meal": {
+      "shadow": "rgba(25, 32, 36, 0.14) 0px 7px 17px -10px, rgba(25, 32, 36, 0.08) 0px 1px 4px -2px",
+      "border": "0px",
+      "bg": "rgb(255, 255, 255)"
+    },
+    "scene": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "longTextFits": true,
+    "status": [
+      "腰腹、背肩",
+      "安心休息"
+    ],
+    "weeklyOpens": true,
+    "dailyOpens": true,
+    "standWorks": true,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "wife",
+    "theme": "light",
+    "width": 390,
+    "overflow": false,
+    "order": [
+      "today-summary-pair wife",
+      "standModule",
+      "sec ds-scene ds-meal-scene wife",
+      "sec"
+    ],
+    "partnerText": false,
+    "summary": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgb(255, 255, 255)"
+    },
+    "stand": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "standBody": {
+      "shadow": "rgba(25, 32, 36, 0.14) 0px 7px 17px -10px, rgba(25, 32, 36, 0.08) 0px 1px 4px -2px",
+      "border": "0px",
+      "bg": "rgb(255, 255, 255)"
+    },
+    "food": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "color(srgb 1 0.941765 0.946078)"
+    },
+    "meal": {
+      "shadow": "rgba(25, 32, 36, 0.14) 0px 7px 17px -10px, rgba(25, 32, 36, 0.08) 0px 1px 4px -2px",
+      "border": "0px",
+      "bg": "rgb(255, 255, 255)"
+    },
+    "scene": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "longTextFits": true,
+    "status": [
+      "腰腹、背肩",
+      "安心休息"
+    ],
+    "weeklyOpens": true,
+    "dailyOpens": true,
+    "standWorks": true,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "hus",
+    "theme": "dark",
+    "width": 390,
+    "overflow": false,
+    "order": [
+      "today-summary-pair hus",
+      "standModule",
+      "sec ds-scene ds-meal-scene hus",
+      "sec"
+    ],
+    "partnerText": false,
+    "summary": {
+      "shadow": "rgba(0, 0, 0, 0.62) 0px 12px 28px -13px, rgba(0, 0, 0, 0.34) 0px 2px 8px -3px",
+      "border": "0px",
+      "bg": "rgb(25, 29, 36)"
+    },
+    "stand": {
+      "shadow": "rgba(0, 0, 0, 0.62) 0px 12px 28px -13px, rgba(0, 0, 0, 0.34) 0px 2px 8px -3px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "standBody": {
+      "shadow": "rgba(0, 0, 0, 0.46) 0px 7px 17px -9px, rgba(0, 0, 0, 0.28) 0px 1px 4px -2px",
+      "border": "0px",
+      "bg": "rgb(25, 29, 36)"
+    },
+    "food": {
+      "shadow": "rgba(0, 0, 0, 0.62) 0px 12px 28px -13px, rgba(0, 0, 0, 0.34) 0px 2px 8px -3px",
+      "border": "0px",
+      "bg": "color(srgb 0.07 0.15902 0.21451)"
+    },
+    "meal": {
+      "shadow": "rgba(0, 0, 0, 0.46) 0px 7px 17px -9px, rgba(0, 0, 0, 0.28) 0px 1px 4px -2px",
+      "border": "0px",
+      "bg": "rgb(25, 29, 36)"
+    },
+    "scene": {
+      "shadow": "rgba(0, 0, 0, 0.62) 0px 12px 28px -13px, rgba(0, 0, 0, 0.34) 0px 2px 8px -3px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "longTextFits": true,
+    "status": [
+      "腰腹、背肩",
+      "安心休息"
+    ],
+    "weeklyOpens": true,
+    "dailyOpens": true,
+    "standWorks": true,
+    "errors": []
+  },
+  {
+    "view": "today",
+    "person": "wife",
+    "theme": "dark",
+    "width": 390,
+    "overflow": false,
+    "order": [
+      "today-summary-pair wife",
+      "standModule",
+      "sec ds-scene ds-meal-scene wife",
+      "sec"
+    ],
+    "partnerText": false,
+    "summary": {
+      "shadow": "rgba(0, 0, 0, 0.62) 0px 12px 28px -13px, rgba(0, 0, 0, 0.34) 0px 2px 8px -3px",
+      "border": "0px",
+      "bg": "rgb(25, 29, 36)"
+    },
+    "stand": {
+      "shadow": "rgba(0, 0, 0, 0.62) 0px 12px 28px -13px, rgba(0, 0, 0, 0.34) 0px 2px 8px -3px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "standBody": {
+      "shadow": "rgba(0, 0, 0, 0.46) 0px 7px 17px -9px, rgba(0, 0, 0, 0.28) 0px 1px 4px -2px",
+      "border": "0px",
+      "bg": "rgb(25, 29, 36)"
+    },
+    "food": {
+      "shadow": "rgba(0, 0, 0, 0.62) 0px 12px 28px -13px, rgba(0, 0, 0, 0.34) 0px 2px 8px -3px",
+      "border": "0px",
+      "bg": "color(srgb 0.203726 0.115882 0.154118)"
+    },
+    "meal": {
+      "shadow": "rgba(0, 0, 0, 0.46) 0px 7px 17px -9px, rgba(0, 0, 0, 0.28) 0px 1px 4px -2px",
+      "border": "0px",
+      "bg": "rgb(25, 29, 36)"
+    },
+    "scene": {
+      "shadow": "rgba(0, 0, 0, 0.62) 0px 12px 28px -13px, rgba(0, 0, 0, 0.34) 0px 2px 8px -3px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "longTextFits": true,
+    "status": [
+      "腰腹、背肩",
+      "安心休息"
+    ],
+    "weeklyOpens": true,
+    "dailyOpens": true,
+    "standWorks": true,
+    "errors": []
+  },
+  {
+    "view": "diet",
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "overflow": false,
+    "order": [
+      "nutritionModule",
+      "dietLogModule",
+      "sec ds-scene hus",
+      "sec"
+    ],
+    "partnerText": false,
+    "summary": null,
+    "stand": null,
+    "standBody": null,
+    "food": null,
+    "meal": null,
+    "scene": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "errors": []
+  },
+  {
+    "view": "train",
+    "person": "wife",
+    "theme": "dark",
+    "width": 390,
+    "overflow": false,
+    "order": [
+      "sec",
+      "weekModule"
+    ],
+    "partnerText": false,
+    "summary": null,
+    "stand": null,
+    "standBody": null,
+    "food": null,
+    "meal": null,
+    "scene": {
+      "shadow": "rgba(0, 0, 0, 0.62) 0px 12px 28px -13px, rgba(0, 0, 0, 0.34) 0px 2px 8px -3px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "errors": []
+  },
+  {
+    "view": "record",
+    "person": "hus",
+    "theme": "light",
+    "width": 390,
+    "overflow": false,
+    "order": [
+      "sec ds-scene hus",
+      "goalModule",
+      "pairModule",
+      "bodyModule",
+      "coach-mini",
+      "private-settings"
+    ],
+    "partnerText": true,
+    "summary": null,
+    "stand": null,
+    "standBody": null,
+    "food": null,
+    "meal": null,
+    "scene": {
+      "shadow": "rgba(25, 32, 36, 0.18) 0px 11px 28px -14px, rgba(25, 32, 36, 0.09) 0px 2px 8px -4px",
+      "border": "0px",
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    "errors": []
+  },
+  {
+    "galleryTodaySample": 1,
+    "galleryMealSample": 1,
+    "gallerySwitches": true
+  }
+]
