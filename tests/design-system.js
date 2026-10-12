@@ -7,8 +7,10 @@ const definitions=new Set([...`${tokens}\n${components}`.matchAll(/(--[\w-]+)\s*
 const references=[...`${tokens}\n${components}`.matchAll(/var\((--[\w-]+)/g)].map(m=>m[1]);
 assert.deepEqual([...new Set(references.filter(t=>!definitions.has(t)))],[],'shared CSS must resolve every token');
 const html=read('index.html'),preview=read('tests/theme-preview.html'),sw=read('sw.js');
+assert(html.includes('name="apple-mobile-web-app-capable" content="yes"')&&html.includes('name="apple-mobile-web-app-status-bar-style" content="black-translucent"'),'installed iOS app can paint beneath the status bar');
+assert(html.includes('html{height:100%;background:var(--mesh),var(--bg)')&&html.includes('document.documentElement.classList.toggle("me-wife",me==="wife")'),'root safe-area background follows the active identity');
 for(const file of ['tokens.css','components.css','mascots.js']){
- const url=`design-system/${file}?v=41`;
+ const url=`design-system/${file}?v=42`;
  assert(html.includes(url)&&preview.includes(url)&&sw.includes(url),`${file} must load in the app, preview and offline core`);
 }
 assert(html.indexOf('tokens.css')<html.indexOf('<style>'),'tokens load before app layouts');
@@ -19,7 +21,7 @@ assert(/\.(?:ds-role-tabs|ds-checkin|ds-section-heading)/.test(components));
 assert(sw.includes('duofit-images-v1'),'app releases preserve independently versioned images');
 assert(html.indexOf('id="recInsight"')<html.indexOf('id="recHistory"'),'couple check-ins precede individual details');
 const gallery=read('design-system/index.html').replace(/<pre>[\s\S]*?<\/pre>/g,'');
-for(const file of ['tokens.css','components.css','mascots.js'])assert(gallery.includes(`${file}?v=41`),`${file} uses the current version in the component gallery`);
+for(const file of ['tokens.css','components.css','mascots.js'])assert(gallery.includes(`${file}?v=42`),`${file} uses the current version in the component gallery`);
 for(const m of gallery.matchAll(/(?:href|src)="([^"#]+)"/g)){
  const url=m[1].split('?')[0];if(!/^(?:https?:|\/)/.test(url))assert(fs.existsSync(path.resolve(root,'design-system',url)),`gallery resource exists: ${url}`);
 }

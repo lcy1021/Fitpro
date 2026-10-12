@@ -32,10 +32,10 @@ const respondImage=(url,method='GET')=>new Promise((resolve,reject)=>{let interc
   failStorage=true;assert.equal((await respondImage('https://example.com/assets/uncached.webp')).body,'new page','full image cache does not hide a successfully downloaded image');failStorage=false;
   assert.equal(await respondImage('https://project.supabase.co/rest/v1/fl_members'),'bypassed');assert.equal(await respondImage(url,'POST'),'bypassed');
   const oldRequest={url:'https://example.com/Fitpro/assets/moves/old.gif'},apiRequest={url:'https://example.com/private-data.json'},already={url};
-  const deleted=[];sandbox.caches.keys=async()=>['duofit-v29','duofit-v40','duofit-v41','duofit-images-v1','another-app'];
+  const deleted=[];sandbox.caches.keys=async()=>['duofit-v29','duofit-v40','duofit-v41','duofit-v42','duofit-images-v1','another-app'];
   const oldCache={keys:async()=>[oldRequest,apiRequest,already],match:async()=>stale};
-  sandbox.caches.open=async key=>key==='duofit-images-v1'?imageCache:['duofit-v29','duofit-v40'].includes(key)?oldCache:cache;sandbox.caches.delete=async key=>{deleted.push(key)};
+  sandbox.caches.open=async key=>key==='duofit-images-v1'?imageCache:['duofit-v29','duofit-v40','duofit-v41'].includes(key)?oldCache:cache;sandbox.caches.delete=async key=>{deleted.push(key)};
   await new Promise((resolve,reject)=>handlers.activate({waitUntil:p=>p.then(resolve,reject)}));
-  assert(images.has(oldRequest.url),'existing image survives shell upgrade');assert(!images.has(apiRequest.url),'migration does not preserve unrelated data');assert.equal(images.get(url).body,'new page','older shell does not replace a current image');assert.deepEqual(deleted,['duofit-v29','duofit-v40'],'only old DuoFit shell caches are deleted');
+  assert(images.has(oldRequest.url),'existing image survives shell upgrade');assert(!images.has(apiRequest.url),'migration does not preserve unrelated data');assert.equal(images.get(url).body,'new page','older shell does not replace a current image');assert.deepEqual(deleted,['duofit-v29','duofit-v40','duofit-v41'],'only old DuoFit shell caches are deleted');
   console.log('PASS fresh app shell, offline fallback, image cache hits, request coalescing, media revisions, cache migration and external data bypass');
 })().catch(error=>{console.error(error);process.exitCode=1});

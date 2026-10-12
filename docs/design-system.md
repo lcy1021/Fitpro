@@ -1,4 +1,4 @@
-# DuoFit Design System · 1.5
+# DuoFit Design System · 1.6
 
 状态：正式沿用。以用户确认的 v35「方案一」页面为视觉依据；实现入口是 `design-system/tokens.css`、`design-system/components.css`，可操作样例是 `design-system/index.html`。
 
@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=41">
-<link rel="stylesheet" href="design-system/components.css?v=41">
+<link rel="stylesheet" href="design-system/tokens.css?v=42">
+<link rel="stylesheet" href="design-system/components.css?v=42">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -38,6 +38,7 @@
 - 一般面板与标题氛围层使用 `--ds-surface-gradient`：125度，从 `--surface` 过渡到 `--p-soft`，浅色为白到浅蓝/粉，深色为深灰到角色暗色。云层仍使用共享透明图片，浅色opacity .55、深色 .12。角色相关复合token须在 `.hus/.wife/.ds-root` 上解析，不能在没有 `--p-*` 的 `:root` 上定义。
 - tab选中填充统一 `--ds-fill-selected:var(--p-ink)` / `--ds-fill-selected-ink:var(--surface)`，未选中透明灰字；无默认线框、无下划线。键盘焦点轮廓保留。餐品 `.meal-art-stage` 以 `--ds-food-tint:52%` 的浅色底托和 `--ds-food-shadow` 轻投影承托真实图片。
 - `--faint` 用于低优先级装饰或禁用，不能作为重要正文色。渐变主按钮沿用现有风格；不要把角色亮色白字默认当作小字号标签，组件页不代表完整 WCAG 认证。
+- iOS 主屏幕应用的顶部安全区属于页面背景：`html` 与 `body` 都绘制同一 `--mesh, --bg`，根节点和正文同步 `.me-hus/.me-wife`，原有 `env(safe-area-inset-top)` 继续保护标题及按钮。`index.html` 使用 `apple-mobile-web-app-capable=yes` 和 `apple-mobile-web-app-status-bar-style=black-translucent` 让系统状态栏覆盖在页面背景上；普通 Safari 仍由浅深 `theme-color` 提示浏览器栏颜色。不要用独立黑条或角色色硬编码填充顶部。
 
 ## 3. 字体：同级同大小
 

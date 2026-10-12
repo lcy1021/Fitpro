@@ -4,21 +4,21 @@ const vm = require('node:vm');
 const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');assert(fs.readFileSync(path.join(root,'sw.js'),'utf8').includes('notificationclick'),'push click handler');
-assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=41"></script>'), 'config loads before coaching');
+assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=42"></script>'), 'config loads before coaching');
 const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('</script>'));
 const memory = new Map();
 const elements = new Map();
 const element = key => {
-  if (!elements.has(key)) {const classes=new Set();elements.set(key, {innerHTML: '', textContent: '', value: '', hidden: false, dataset:{}, classList: {add(...xs){xs.forEach(x=>classes.add(x))}, remove(...xs){xs.forEach(x=>classes.delete(x))}, contains(x){return classes.has(x)}}, addEventListener(){}, setAttribute(){}, querySelector(){return null}});}
+  if (!elements.has(key)) {const classes=new Set();elements.set(key, {innerHTML: '', textContent: '', value: '', hidden: false, dataset:{}, classList: {add(...xs){xs.forEach(x=>classes.add(x))}, remove(...xs){xs.forEach(x=>classes.delete(x))}, contains(x){return classes.has(x)}, toggle(x,on){if(on)classes.add(x);else classes.delete(x);return !!on}}, addEventListener(){}, setAttribute(){}, querySelector(){return null}});}
   return elements.get(key);
 };
 const sandbox = {
   window: {FATLOSS_CONFIG: {}}, localStorage: {getItem:k=>memory.get(k) ?? null,setItem:(k,v)=>memory.set(k,String(v)),removeItem:k=>memory.delete(k)},
-  document: {querySelector:element,querySelectorAll:()=>[],getElementById:element,body:{style:{}},addEventListener(){},activeElement:{blur(){}}},
+  document: {querySelector:element,querySelectorAll:()=>[],getElementById:element,documentElement:element('html'),body:{style:{}},addEventListener(){},activeElement:{blur(){}}},
   location: {hash:'',pathname:'/',search:'',protocol:'file:'}, history:{replaceState(){}}, navigator:{},
   setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame:f=>f(), matchMedia:()=>({matches:true}), console, Date, AbortController, URL,
 };
-const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','viewToday','viewDiet','dietWeekCard','viewTrain','viewRecord','renderRecordData','privateTrendCard','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','drawRun','feedRows','openPicker','showRoleChoice','extraMoveRows','extraDone','toggleExtraMove','EXTRA_MOVES','refreshCalendarDay','ackDirty','markDirty','activityInfo','activityStreak','coupleStreakCard','checkinHistoryCard','dietDayRows'];
+const exported = ['calcPlan','menuFor','dayRange','scheduleFor','dayDone','renderHeader','viewToday','viewDiet','dietWeekCard','viewTrain','viewRecord','renderRecordData','privateTrendCard','goalCard','roundsFor','ymd','MEALS','goalOf','getCheckin','planFor','buildSteps','drawRun','feedRows','openPicker','showRoleChoice','extraMoveRows','extraDone','toggleExtraMove','EXTRA_MOVES','refreshCalendarDay','ackDirty','markDirty','activityInfo','activityStreak','coupleStreakCard','checkinHistoryCard','dietDayRows'];
 const code = inline.replace('/* ---------- boot ---------- */', `globalThis.__app = {${exported.join(',')},getDirty:()=>dirty,setDietSelectedDate:v=>{dietSelectedDate=v},setHistorySelectedDate:v=>{historySelectedDate=v},setHistoryPerson:v=>{historyPerson=v}, setStore:v=>{store=v},setMe:v=>{me=v;viewP=v},setViewP:v=>{viewP=v},setDietWeekOffset:v=>{dietWeekOffset=v},setCoach:v=>{privateCoach=v},setTab:v=>{tab=v},setRunState:v=>{runState=v}};return;`);
 vm.runInNewContext(fs.readFileSync(path.join(root,'design-system/mascots.js'),'utf8'), sandbox);
 vm.runInNewContext(code, sandbox, {filename:'index-inline.js'});
@@ -28,6 +28,7 @@ const date = app.ymd(new Date());
 const goal = (start,target) => ({height:170,age:32,start,target,pace:'gentle',adj:0,level:0,cardio:false,at:date});
 const meals = Object.fromEntries([...app.MEALS].map(m=>[m,'plan']));
 app.setMe('hus');
+app.renderHeader();assert(element('html').classList.contains('me-hus'),'root background follows blue identity');app.setMe('wife');app.renderHeader();assert(element('html').classList.contains('me-wife')&&!element('html').classList.contains('me-hus'),'root background follows pink identity');app.setMe('hus');
 const pendingCheckin={person:'hus',date,meals:{breakfast:'plan'}},pendingKey='c:hus_'+date;
 app.setStore({checkins:{['hus_'+date]:pendingCheckin},measures:{}});app.markDirty(pendingKey);
 const sentCheckin=JSON.stringify(pendingCheckin);pendingCheckin.meals.lunch='over';

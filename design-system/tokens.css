@@ -1,4 +1,4 @@
-/* DuoFit Design System 1.5. Canonical theme/role tokens; see docs/design-system.md. */
+/* DuoFit Design System 1.6. Canonical theme/role tokens; see docs/design-system.md. */
 :root{
   color-scheme:light;
   --safe-bottom:env(safe-area-inset-bottom,0px);
@@ -40,11 +40,11 @@
 .me-wife{--me:var(--wife);--me-ink:var(--wife-ink);--me-soft:var(--wife-soft);--me-grad:var(--wife-grad);--me-glow:var(--wife-glow);
   --mesh:radial-gradient(circle at 10% 0%,rgba(255,205,215,.75) 0%,transparent 45%),radial-gradient(circle at 100% 22%,rgba(255,236,210,.55) 0%,transparent 42%),radial-gradient(circle at 40% 100%,rgba(255,228,230,.75) 0%,transparent 55%)}
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) .me-hus{--mesh:radial-gradient(circle at 10% 0%,rgba(56,189,248,.14) 0%,transparent 45%),radial-gradient(circle at 100% 30%,rgba(255,120,67,.07) 0%,transparent 42%)}
-  :root:not([data-theme="light"]) .me-wife{--mesh:radial-gradient(circle at 10% 0%,rgba(255,75,114,.15) 0%,transparent 45%),radial-gradient(circle at 100% 30%,rgba(255,170,90,.07) 0%,transparent 42%)}
+  :root:not([data-theme="light"]).me-hus,:root:not([data-theme="light"]) .me-hus{--mesh:radial-gradient(circle at 10% 0%,rgba(56,189,248,.14) 0%,transparent 45%),radial-gradient(circle at 100% 30%,rgba(255,120,67,.07) 0%,transparent 42%)}
+  :root:not([data-theme="light"]).me-wife,:root:not([data-theme="light"]) .me-wife{--mesh:radial-gradient(circle at 10% 0%,rgba(255,75,114,.15) 0%,transparent 45%),radial-gradient(circle at 100% 30%,rgba(255,170,90,.07) 0%,transparent 42%)}
 }
-:root[data-theme="dark"] .me-hus{--mesh:radial-gradient(circle at 10% 0%,rgba(56,189,248,.14) 0%,transparent 45%)}
-:root[data-theme="dark"] .me-wife{--mesh:radial-gradient(circle at 10% 0%,rgba(255,75,114,.15) 0%,transparent 45%)}
+:root[data-theme="dark"].me-hus,:root[data-theme="dark"] .me-hus{--mesh:radial-gradient(circle at 10% 0%,rgba(56,189,248,.14) 0%,transparent 45%)}
+:root[data-theme="dark"].me-wife,:root[data-theme="dark"] .me-wife{--mesh:radial-gradient(circle at 10% 0%,rgba(255,75,114,.15) 0%,transparent 45%)}
 .hus{--p:var(--hus);--p-ink:var(--hus-ink);--p-soft:var(--hus-soft);--p-grad:var(--hus-grad);--p-glow:var(--hus-glow)}
 .wife{--p:var(--wife);--p-ink:var(--wife-ink);--p-soft:var(--wife-soft);--p-grad:var(--wife-grad);--p-glow:var(--wife-glow)}
 
