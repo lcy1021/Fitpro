@@ -22,4 +22,4 @@
 
 ## 发布
 
-待记录 GitHub Pages 部署及线上文件核对。
+[`8c5c29f`](https://github.com/lcy1021/Fitpro/commit/8c5c29f0ff8762d3bde2e3a3a5d99f2fbb20bc8b) 已推送 `main`；[GitHub Pages 部署 38243285676](https://github.com/lcy1021/Fitpro/actions/runs/38243285676) 成功。线上 `index.html`、`design-system/tokens.css`、`sw.js` 与本地 v43 逐字节一致。
