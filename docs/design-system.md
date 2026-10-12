@@ -1,4 +1,4 @@
-# DuoFit Design System · 1.8
+# DuoFit Design System · 1.9
 
 状态：正式沿用。以用户确认的 v35「方案一」页面为视觉依据；实现入口是 `design-system/tokens.css`、`design-system/components.css`，可操作样例是 `design-system/index.html`。
 
@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=44">
-<link rel="stylesheet" href="design-system/components.css?v=44">
+<link rel="stylesheet" href="design-system/tokens.css?v=46">
+<link rel="stylesheet" href="design-system/components.css?v=46">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -42,7 +42,7 @@
 - 一般面板与标题氛围层使用 `--ds-surface-gradient`：125度，从 `--surface` 过渡到 `--p-soft`，浅色为白到浅蓝/粉，深色为深灰到角色暗色。云层仍使用共享透明图片，浅色opacity .55、深色 .12。角色相关复合token须在 `.hus/.wife/.ds-root` 上解析，不能在没有 `--p-*` 的 `:root` 上定义。
 - tab选中填充统一 `--ds-fill-selected:var(--p-ink)` / `--ds-fill-selected-ink:var(--surface)`，未选中透明灰字；无默认线框、无下划线。键盘焦点轮廓保留。餐品 `.meal-art-stage` 以 `--ds-food-tint:52%` 的浅色底托和 `--ds-food-shadow` 轻投影承托真实图片。
 - `--faint` 用于低优先级装饰或禁用，不能作为重要正文色。渐变主按钮沿用现有风格；不要把角色亮色白字默认当作小字号标签，组件页不代表完整 WCAG 认证。
-- 页面顶部保留 `--app-background` 作为页面底色；四页正式场景使用 `.ds-page-hero` 背景图从安全区连续铺到首卡，`--app-top-color` 是图片加载前的底色。根节点与正文同步 `.me-hus/.me-wife`，`env(safe-area-inset-top)` 保护角色按钮。浅深 `theme-color` 在身份切换时同步对应顶部底色，供浏览器及可用的 iOS 状态栏着色。`apple-mobile-web-app-status-bar-style=black-translucent` 保留覆盖模式，但已安装图标的状态栏布局由系统决定；真实灵动岛区域以设备截图验收。不要加独立黑条或页面级硬编码颜色。
+- 页面顶部保留 `--app-background` 作为普通页面底色；四页正式场景使用 `.ds-page-hero` 背景图。场景启用时，根画布通过 `--ds-root-hero-image` 复用当前同一张图，顶部共用 `--ds-hero-top-shade`（浅色透明，深色仅顶部 80px 轻微暗角），不另做灵动岛背景或黑条。iOS 主屏幕模式若在首屏预留顶部区域，场景向上延展到该区域，同时保持标题、角色按钮与首卡在原屏幕位置；已安装图标实际能否绘制由设备验收。`--app-top-color` 是图片加载前的底色；根节点与正文同步 `.me-hus/.me-wife`。浅深 `theme-color` 在身份切换时同步对应顶部底色。`apple-mobile-web-app-status-bar-style=black-translucent` 保留覆盖模式。
 
 ## 3. 字体：同级同大小
 
@@ -80,7 +80,7 @@
 
 | 组件 | 代码接口 | 变体 / 行为 |
 | --- | --- | --- |
-| 四页场景表头 | `.ds-page-hero[data-page]`、`.ds-page-hero-hand/info/sync` | 今日 / 饮食 / 训练 / 记录共用一套尺寸与信息位置；蓝粉场景按本人身份切换，上半部保留原图亮度，底部渐隐至 `--bg`；同步状态由真实数据驱动 |
+| 四页场景表头 | `.ds-page-hero[data-page]`、`.ds-page-hero-hand/info/sync`、`--ds-hero-top-shade` | 今日 / 饮食 / 训练 / 记录共用一套尺寸与信息位置；蓝粉场景按本人身份切换，根画布复用同一场景，上半部保留原图亮度，底部渐隐至 `--bg`；同步状态由真实数据驱动 |
 | 基础卡片 | `.card` | 主表面、中圆角、16px 内距、二级投影；不滥套多层卡片 |
 | 今日概览 | `.today-summary-pair` | 本周方向和每日状态双入口；短词概述，点击进入原调整界面；一级投影、两列自适应 |
 | 模块标题 | `.ds-section-heading`，App `.meal-section-heading` | `h3 + time + .ds-mascot-group`；跑步 / 吃饭 / 双人图，日期在左下 |

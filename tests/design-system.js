@@ -11,7 +11,7 @@ assert(html.includes('name="apple-mobile-web-app-capable" content="yes"')&&html.
 assert(html.includes('html{height:100%;background-color:var(--app-top-color);background-image:var(--app-background)')&&html.includes('document.documentElement.classList.toggle("me-wife",me==="wife")'),'root safe-area background follows the active identity');
 assert(tokens.includes('--app-background:')&&tokens.includes('--app-top-dark:#172B36')&&html.includes('topColors.getPropertyValue(\'--app-top-dark\')'),'top canvas and browser chrome share role-aware colors');
 for(const file of ['tokens.css','components.css','mascots.js']){
- const url=`design-system/${file}?v=45`;
+ const url=`design-system/${file}?v=46`;
  assert(html.includes(url)&&preview.includes(url)&&sw.includes(url),`${file} must load in the app, preview and offline core`);
 }
 assert(html.indexOf('tokens.css')<html.indexOf('<style>'),'tokens load before app layouts');
@@ -22,7 +22,7 @@ assert(/\.(?:ds-role-tabs|ds-checkin|ds-section-heading)/.test(components));
 assert(sw.includes('duofit-images-v1'),'app releases preserve independently versioned images');
 assert(html.indexOf('id="recInsight"')<html.indexOf('id="recHistory"'),'couple check-ins precede individual details');
 const gallery=read('design-system/index.html').replace(/<pre>[\s\S]*?<\/pre>/g,'');
-for(const file of ['tokens.css','components.css','mascots.js'])assert(gallery.includes(`${file}?v=45`),`${file} uses the current version in the component gallery`);
+for(const file of ['tokens.css','components.css','mascots.js'])assert(gallery.includes(`${file}?v=46`),`${file} uses the current version in the component gallery`);
 for(const m of gallery.matchAll(/(?:href|src)="([^"#]+)"/g)){
  const url=m[1].split('?')[0];if(!/^(?:https?:|\/)/.test(url))assert(fs.existsSync(path.resolve(root,'design-system',url)),`gallery resource exists: ${url}`);
 }
