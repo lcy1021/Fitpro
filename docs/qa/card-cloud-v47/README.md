@@ -1,6 +1,6 @@
 # 共用卡片去云层 · v47 QA
 
-日期：2026-10-13。状态：本机完成，待发布。
+日期：2026-10-13。状态：v47 已发布，手机视觉待验收。
 
 ## 对照与变更
 
@@ -21,3 +21,7 @@
 `node docs/qa/card-cloud-v47/check.cjs` 检查四页 × 蓝粉 × 浅深 × 320/390px 共 32 组：共用外壳是渐变、卡片与餐卡标题不加载云图、无横向溢出或脚本错误；320px 长说明自然换行、不压到内卡。工位起身加一次与餐次状态选择可操作。`node tests/design-system.js`、`node tests/scenarios.js`、`node tests/sw-cache.js`、`node tests/meal-ui.js` 和 `node docs/qa/page-hero-dark-v45/check-resilience.cjs` 均通过；场景底部 32 组准确衔接、老婆四页离线图能解码。`git diff --check` 通过。真实手机视觉待发布后确认。
 
 本次没有修改页面场景图、角色原版素材、食物图片、`config.js`、身份格式、记录 ID 或用户数据。
+
+## 发布
+
+应用提交 [`fbe2200`](https://github.com/lcy1021/Fitpro/commit/fbe2200bcbf3053d7b574d14ad9a6a699665cd81) 已推送 `main`，[Pages 构建 38283271992](https://github.com/lcy1021/Fitpro/actions/runs/38283271992) 成功。[线上核对](release-verification.json)覆盖 11 项，均为 HTTP 200 且 SHA-256 与本地一致。SW 核心缓存 v47，图片缓存独立保留 `duofit-images-v1`。

@@ -1,0 +1,85 @@
+{
+  "commit": "fbe2200bcbf3053d7b574d14ad9a6a699665cd81",
+  "pagesRun": 38283271992,
+  "site": "https://lcy1021.github.io/Fitpro/",
+  "checkedAtUtc": "2026-10-12T17:19:41.078179+00:00",
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 199756,
+      "sha256": "9b96c3b3782f20384fbea91362b414e8f4d63aba037612d382a81025f48f711c",
+      "matchesLocal": true
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "bytes": 5122,
+      "sha256": "101807d0fb74620ee77f3d681a32afbba4fbac87ab60f3465b1e1d77ef6e0f7c",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/tokens.css",
+      "status": 200,
+      "bytes": 8698,
+      "sha256": "ed7b0c442be47708188fa16c39eefbee2efd022fa41012dd0afefbb35ae345c8",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/components.css",
+      "status": 200,
+      "bytes": 33997,
+      "sha256": "4d0aed0f39ff154a2a06681b13e0552e39a4d627b56b9f510b5db32cb6399362",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/index.html",
+      "status": 200,
+      "bytes": 13141,
+      "sha256": "6b6fb1f08fd585f41c62fdd7b9d2c19a0d19c4b363d7f41238f13cb7ab8d3eba",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/gallery.js",
+      "status": 200,
+      "bytes": 11941,
+      "sha256": "8bf48e610e50db9184e42d22e36112a23ea12a26df28eadb62770a29d530ae5c",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/mascots.js",
+      "status": 200,
+      "bytes": 1383,
+      "sha256": "3e9aaac6a3812d3f8fe7478c78f74a4f0947314df5b846bf7694237045300165",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.css",
+      "status": 200,
+      "bytes": 12696,
+      "sha256": "44e763f99df5497e9b4cfa49855a0c220aa968039320b2c75b98533f5271c736",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.js",
+      "status": 200,
+      "bytes": 69245,
+      "sha256": "b67795c045286e3133b2e118bcb74ee4034801935e93071fbdb209d5c313b16f",
+      "matchesLocal": true
+    },
+    {
+      "path": "tests/theme-preview.html",
+      "status": 200,
+      "bytes": 12933,
+      "sha256": "387fee6bf8e2fd474591dfac24906f8f5fa81a2dd7f4ac4791627b5452b76a2b",
+      "matchesLocal": true
+    },
+    {
+      "path": "docs/qa/card-cloud-v47/after-stand-hus-dark-390.png",
+      "status": 200,
+      "bytes": 89899,
+      "sha256": "2b392833119c1f46e13afdf3c6d34cbc13b922371f85afe5ec5126036ba5c024",
+      "matchesLocal": true
+    }
+  ]
+}
