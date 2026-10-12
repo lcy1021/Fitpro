@@ -1,6 +1,6 @@
 # 首屏场景延伸 · v46 QA
 
-日期：2026-10-13。状态：本机候选，待发布和原桌面图标真机验收。
+日期：2026-10-13。状态：v46 已发布，原桌面图标真机待验收。
 
 ## 依据与可执行差异
 
@@ -22,3 +22,7 @@
 `node docs/qa/status-hero-v46/check.cjs` 通过，覆盖今日、饮食、训练、记录 × 蓝/粉 × 浅/深 × 320/390，共 32 组：同一图片可解码、根画布用当前页图、场景顶端归零、场景高度增加量匹配顶部预留、首卡屏幕位置不变、无横向溢出或脚本错误。`node docs/qa/page-hero-dark-v45/check-resilience.cjs` 通过，32 组底边颜色准确衔接，老婆四页离线图片可解码。`node tests/design-system.js`、`node tests/scenarios.js`、`node tests/sw-cache.js`、`node tests/meal-ui.js`、启动流程浏览器回归及 `git diff --check` 通过；长文字与交互按既有共用组件回归检查，业务逻辑未改。真正的桌面图标打开首屏仍需用户设备核对；原因若与模拟预留不同，应依据真机截图调整，不要求重新分享或删除旧图标。
 
 本次没有修改 `config.js`、记录 ID/角色格式、健康档案或图片资源版本。独立图片缓存继续保留。
+
+## 发布
+
+应用提交 [`f713550`](https://github.com/lcy1021/Fitpro/commit/f713550a8311cb31ef4e7ed1e35690ae57cea0b1) 已推送 `main`，[Pages 构建 38281211532](https://github.com/lcy1021/Fitpro/actions/runs/38281211532) 成功。[线上文件核对](release-verification.json)覆盖 11 项，均为 HTTP 200 且 SHA-256 与本地一致。SW 核心版本 v46；图片缓存 `duofit-images-v1` 沿用。发布成功不代表原桌面图标首屏已通过 iPhone 实测。

@@ -1,0 +1,85 @@
+{
+  "commit": "f713550a8311cb31ef4e7ed1e35690ae57cea0b1",
+  "pagesRun": 38281211532,
+  "site": "https://lcy1021.github.io/Fitpro/",
+  "checkedAtUtc": "2026-10-12T17:01:31.873402+00:00",
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 199756,
+      "sha256": "66441a2ed800d52012ac8a741f8f32a5db3bfc39e0123654739ac4ff7fda15eb",
+      "matchesLocal": true
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "bytes": 5122,
+      "sha256": "53f1e3d7ef734cda256f6d441e6f93a265b32ffd160eb0ec9217611c1d49eaa7",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/tokens.css",
+      "status": 200,
+      "bytes": 8601,
+      "sha256": "7db156a2e08254abdc15c454b58a39acb946597d74f0c2523e7274e0e53c5143",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/components.css",
+      "status": 200,
+      "bytes": 34521,
+      "sha256": "ee926db3bbf39c5a707f1e78390847546fcaa58eac086bff99b94bed95236d1e",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/index.html",
+      "status": 200,
+      "bytes": 13132,
+      "sha256": "eb0d468bd51f6c2ab1ed7511e6712f11c75c2a8693a10d748a291ac259bde6ec",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/mascots.js",
+      "status": 200,
+      "bytes": 1383,
+      "sha256": "3e9aaac6a3812d3f8fe7478c78f74a4f0947314df5b846bf7694237045300165",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.css",
+      "status": 200,
+      "bytes": 12696,
+      "sha256": "44e763f99df5497e9b4cfa49855a0c220aa968039320b2c75b98533f5271c736",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.js",
+      "status": 200,
+      "bytes": 69245,
+      "sha256": "b67795c045286e3133b2e118bcb74ee4034801935e93071fbdb209d5c313b16f",
+      "matchesLocal": true
+    },
+    {
+      "path": "tests/theme-preview.html",
+      "status": 200,
+      "bytes": 12933,
+      "sha256": "4b720cdbc04ff45cc1ae9556e7ed40a074556ec8e298de5df7a7f0d769af888e",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/page-hero/today-hus-v2.jpg",
+      "status": 200,
+      "bytes": 312566,
+      "sha256": "c0910488d3234bfe9ab868eb283c505719cefcaa268a0e66e091d3db52f09f9c",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/page-hero/today-wife-v2.jpg",
+      "status": 200,
+      "bytes": 316899,
+      "sha256": "a9dba081d6ad776533e9546c2d5293d722f98a918b4741aaced07e8f8722821b",
+      "matchesLocal": true
+    }
+  ]
+}
