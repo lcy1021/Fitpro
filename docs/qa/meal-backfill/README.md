@@ -36,4 +36,4 @@
 
 ## 发布
 
-本地 v40，待提交、推送和 Pages 核对。核心 CSS/JS 查询版本、SW CORE、本机预览已同步；图片缓存独立保持 `duofit-images-v1`。线上当前仍是 v39。
+应用提交 [`ff20e29`](https://github.com/lcy1021/Fitpro/commit/ff20e29af44f6776018a01192773cc00e5a7e38e) 已推送 `main`；[Pages 构建 38212563503](https://github.com/lcy1021/Fitpro/actions/runs/38212563503) 成功。线上 `index.html`、`sw.js`、`private-coach.js`、设计系统展示页、设计规范及本机主题预览，共 6 个文件 HTTP 200，SHA-256 与本地逐字节一致，见 [发布核对](release-verification.json)。核心 CSS/JS 查询版本、SW CORE、本机预览已同步；图片缓存独立保持 `duofit-images-v1`。

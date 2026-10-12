@@ -1,0 +1,50 @@
+{
+  "verified_at_utc": "2026-10-12T06:28:24.413558+00:00",
+  "app_commit": "ff20e29af44f6776018a01192773cc00e5a7e38e",
+  "pages_run": "https://github.com/lcy1021/Fitpro/actions/runs/38212563503",
+  "site": "https://lcy1021.github.io/Fitpro/",
+  "files": [
+    {
+      "path": "index.html",
+      "http_status": 200,
+      "local_sha256": "a60e929cedea243e0973cb949d8ca706907a69b50bad9fcfab68fb9b792dfa3a",
+      "online_sha256": "a60e929cedea243e0973cb949d8ca706907a69b50bad9fcfab68fb9b792dfa3a",
+      "match": true
+    },
+    {
+      "path": "sw.js",
+      "http_status": 200,
+      "local_sha256": "d15b3fdfcc98999f88fe71919996e85cca95ec52880a66771429b442c3f74d50",
+      "online_sha256": "d15b3fdfcc98999f88fe71919996e85cca95ec52880a66771429b442c3f74d50",
+      "match": true
+    },
+    {
+      "path": "private-coach.js",
+      "http_status": 200,
+      "local_sha256": "b67795c045286e3133b2e118bcb74ee4034801935e93071fbdb209d5c313b16f",
+      "online_sha256": "b67795c045286e3133b2e118bcb74ee4034801935e93071fbdb209d5c313b16f",
+      "match": true
+    },
+    {
+      "path": "design-system/index.html",
+      "http_status": 200,
+      "local_sha256": "8642850e63a2eb6b64e608654fc3d4b50390a8041c730059203f54d7e5ccde05",
+      "online_sha256": "8642850e63a2eb6b64e608654fc3d4b50390a8041c730059203f54d7e5ccde05",
+      "match": true
+    },
+    {
+      "path": "docs/design-system.md",
+      "http_status": 200,
+      "local_sha256": "6182be1fcbb9a6e8ffb13ca3b6f80188e86e7d57fe3d82fa07e13f2efda765bc",
+      "online_sha256": "6182be1fcbb9a6e8ffb13ca3b6f80188e86e7d57fe3d82fa07e13f2efda765bc",
+      "match": true
+    },
+    {
+      "path": "tests/theme-preview.html",
+      "http_status": 200,
+      "local_sha256": "31f2d8de0fbddb78588f29dafe2a5ffdc3b7e4e3105af26109a1a1570f7c548c",
+      "online_sha256": "31f2d8de0fbddb78588f29dafe2a5ffdc3b7e4e3105af26109a1a1570f7c548c",
+      "match": true
+    }
+  ]
+}
