@@ -29,8 +29,10 @@
 
 ## 灵动岛周围的系统栏
 
-用户补充的老婆手机截图在网页场景上方显示一段白色、黑字的 iOS 状态栏。这段区域位于网页可绘制视口之外；该旧安装无法从现有截图确定当初是否在加入主屏幕时捕获了 `black-translucent`。当前网页入口已在首屏 HTML 包含 `viewport-fit=cover`、`apple-mobile-web-app-capable=yes` 和 `apple-mobile-web-app-status-bar-style=black-translucent`，页头从网页坐标 y=0 铺图。按 [Apple 的状态栏元信息说明](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html)，只有 `black-translucent` 安装态才把网页内容绘制到状态栏后；`default` 或 `black` 会把网页放在状态栏之下。[WebKit iOS 26 问题记录](https://bugs.webkit.org/show_bug.cgi?id=316008) 指出该元信息需要在加入主屏幕时存在，旧安装不一定能用网页更新改变可绘制区域。因此 v45 的场景图和渐隐可以修复**网页内部**的图像和下边界，不能保证已经显示白色系统栏的旧图标直接变成灵动岛背景图。保留旧图标和本机记录，待用户愿意时可并列添加一个新图标做无损验证；不要先删除旧图标。
+用户补充的老婆手机截图在网页场景上方显示一段白色、黑字的 iOS 状态栏。这段区域位于网页可绘制视口之外；无法从现有截图确定当初加入主屏幕时是否捕获了 `black-translucent`。当前网页入口已在首屏 HTML 包含 `viewport-fit=cover`、`apple-mobile-web-app-capable=yes` 和 `apple-mobile-web-app-status-bar-style=black-translucent`，页头从网页坐标 y=0 铺图。按 [Apple 的状态栏元信息说明](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html)，只有 `black-translucent` 安装态才把网页内容绘制到状态栏后；`default` 或 `black` 会把网页放在状态栏之下。[WebKit iOS 26 问题记录](https://bugs.webkit.org/show_bug.cgi?id=316008) 指出该元信息需要在加入主屏幕时存在，旧安装不一定能用网页更新改变可绘制区域。因此 v45 的场景图和渐隐可以修复**网页内部**的图像和下边界，不能保证已经显示白色系统栏的图标直接变成灵动岛背景图。保留旧图标和本机记录，待用户愿意时可并列添加一个新图标做无损诊断；不要先删除旧图标。
+
+2026-10-13 复核：用户确认 v45 后原有白色灵动岛系统栏仍在；这项问题**未修复**。线上首屏透明状态栏标签与本地一致。此前只提安装时标签遗漏的可能性，不足以解释所有 iOS 26 设备。[WebKit 301994](https://bugs.webkit.org/show_bug.cgi?id=301994) 还记录了主屏幕网页在 iOS 26 中即使设置全屏，系统也可能在网页视口之外保留 62px 左右的不可绘制区域；该问题曾在 26.2 有修复报告，26.5.2 和 27 beta 又出现复现报告。现有截图不能确定用户设备属于旧安装快照还是系统回归，因此**不能承诺重新添加图标会解决**。新图标只可在保留旧图标、本机数据的前提下用于区分原因；网页代码无法将场景图绘入系统保留的白栏。本次为诊断更新，无应用代码修改或新版本发布。
 
 ## 发布
 
-应用提交 [`5d94313`](https://github.com/lcy1021/Fitpro/commit/5d943139012fd92e4d35f5d115818cbb39c7d3a4) 已推送 `main`，[Pages 构建 38273325122](https://github.com/lcy1021/Fitpro/actions/runs/38273325122) 成功；[线上核对](release-verification.json)中入口、SW、设计系统、字体、七张场景图等 19 项均为 HTTP 200 且 SHA-256 与本地一致。应用壳版本 v45；七张图改名 `v2.jpg`，图片缓存容器仍独立保留 `duofit-images-v1`。已安装旧图标可获得新版网页内容；其系统状态栏绘制模式仍由安装时的 iOS 设定决定。
+应用提交 [`5d94313`](https://github.com/lcy1021/Fitpro/commit/5d943139012fd92e4d35f5d115818cbb39c7d3a4) 已推送 `main`，[Pages 构建 38273325122](https://github.com/lcy1021/Fitpro/actions/runs/38273325122) 成功；[线上核对](release-verification.json)中入口、SW、设计系统、字体、七张场景图等 19 项均为 HTTP 200 且 SHA-256 与本地一致。应用壳版本 v45；七张图改名 `v2.jpg`，图片缓存容器仍独立保留 `duofit-images-v1`。已安装旧图标可获得新版网页内容；系统状态栏能否透明还受安装时设置与 iOS 版本行为影响。
