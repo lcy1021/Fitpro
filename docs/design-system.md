@@ -1,4 +1,4 @@
-# DuoFit Design System · 1.6
+# DuoFit Design System · 1.7
 
 状态：正式沿用。以用户确认的 v35「方案一」页面为视觉依据；实现入口是 `design-system/tokens.css`、`design-system/components.css`，可操作样例是 `design-system/index.html`。
 
@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=42">
-<link rel="stylesheet" href="design-system/components.css?v=42">
+<link rel="stylesheet" href="design-system/tokens.css?v=43">
+<link rel="stylesheet" href="design-system/components.css?v=43">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -30,6 +30,7 @@
 | 辅助 `--muted` | #64748B | #9AA5B4 | 日期、时间、说明 |
 | 老公 `--hus / --hus-ink / --hus-soft` | #0284C7 / #0369A1 / #E0F2FE | #38BDF8 / #7DD3FC / #0C3246 | 蓝色角色 |
 | 老婆 `--wife / --wife-ink / --wife-soft` | #FF4B72 / #E11D48 / #FFE4E6 | #FF7A95 / #FDA4B8 / #4A1E2A | 粉色角色 |
+| 顶部 `--app-top-color` | 蓝 #E4F2FB / 粉 #FDEBF0 | 蓝 #172B36 / 粉 #30232B | 安全区与页面渐变的起点；由本人身份与主题解析 |
 
 - 模块标题按2026-10-09用户最新手机反馈从17px提高为19px/800，颜色统一 `--ink`（与“今日”大标题同色）；餐内12/14/16px不变。
 
@@ -38,7 +39,7 @@
 - 一般面板与标题氛围层使用 `--ds-surface-gradient`：125度，从 `--surface` 过渡到 `--p-soft`，浅色为白到浅蓝/粉，深色为深灰到角色暗色。云层仍使用共享透明图片，浅色opacity .55、深色 .12。角色相关复合token须在 `.hus/.wife/.ds-root` 上解析，不能在没有 `--p-*` 的 `:root` 上定义。
 - tab选中填充统一 `--ds-fill-selected:var(--p-ink)` / `--ds-fill-selected-ink:var(--surface)`，未选中透明灰字；无默认线框、无下划线。键盘焦点轮廓保留。餐品 `.meal-art-stage` 以 `--ds-food-tint:52%` 的浅色底托和 `--ds-food-shadow` 轻投影承托真实图片。
 - `--faint` 用于低优先级装饰或禁用，不能作为重要正文色。渐变主按钮沿用现有风格；不要把角色亮色白字默认当作小字号标签，组件页不代表完整 WCAG 认证。
-- iOS 主屏幕应用的顶部安全区属于页面背景：`html` 与 `body` 都绘制同一 `--mesh, --bg`，根节点和正文同步 `.me-hus/.me-wife`，原有 `env(safe-area-inset-top)` 继续保护标题及按钮。`index.html` 使用 `apple-mobile-web-app-capable=yes` 和 `apple-mobile-web-app-status-bar-style=black-translucent` 让系统状态栏覆盖在页面背景上；普通 Safari 仍由浅深 `theme-color` 提示浏览器栏颜色。不要用独立黑条或角色色硬编码填充顶部。
+- 页面顶部采用 `--app-background`：`--app-top-color` 从安全区连续渐变到 `--bg`，叠加原有 `--mesh`；`html`、`body`、角色选择层和训练层使用同一背景。根节点与正文同步 `.me-hus/.me-wife`，`env(safe-area-inset-top)` 保护标题及按钮。浅深 `theme-color` 在身份切换时同步对应顶部底色，供浏览器及可用的 iOS 状态栏着色。`apple-mobile-web-app-status-bar-style=black-translucent` 保留覆盖模式，但已安装图标的状态栏布局由系统决定，网页无法保证其后来改用覆盖模式；真实灵动岛区域以设备截图验收。不要加独立黑条或页面级硬编码颜色。
 
 ## 3. 字体：同级同大小
 

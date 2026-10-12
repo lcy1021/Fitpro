@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <base href="/">
   <title>DuoFit 主题场景检查</title>
-  <link rel="stylesheet" href="design-system/tokens.css?v=42">
-  <link rel="stylesheet" href="design-system/components.css?v=42">
-  <link rel="stylesheet" href="private-coach.css?v=42">
+  <link rel="stylesheet" href="design-system/tokens.css?v=43">
+  <link rel="stylesheet" href="design-system/components.css?v=43">
+  <link rel="stylesheet" href="private-coach.css?v=43">
 </head>
 <body>
-<script src="private-coach.js?v=42"></script>
-<script src="design-system/mascots.js?v=42"></script>
+<script src="private-coach.js?v=43"></script>
+<script src="design-system/mascots.js?v=43"></script>
 <script>
 (async () => {
   // Only synthetic local fixtures; never load config.js or call a production backend.
@@ -28,6 +28,7 @@
   const state = params.get('state') || 'selected';
   const html = await (await fetch('index.html', {cache:'no-store'})).text();
   const parsed = new DOMParser().parseFromString(html, 'text/html');
+  for(const meta of parsed.querySelectorAll('meta[name="theme-color"]'))document.head.appendChild(meta.cloneNode(true));
   const style = parsed.querySelector('style');
   document.head.insertBefore(style, document.querySelector('link[href^="design-system/components"]'));
   const safeBottom = Math.min(60, Math.max(0, Number(params.get('safe') || 0)));

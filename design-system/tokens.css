@@ -1,4 +1,4 @@
-/* DuoFit Design System 1.6. Canonical theme/role tokens; see docs/design-system.md. */
+/* DuoFit Design System 1.7. Canonical theme/role tokens; see docs/design-system.md. */
 :root{
   color-scheme:light;
   --safe-bottom:env(safe-area-inset-bottom,0px);
@@ -9,6 +9,7 @@
   --sun:#F59E0B; --sun-ink:#B45309; --sun-soft:#FEF3C7; --good:#15803D; --good-soft:#DCFCE7; --lav:#7C3AED; --lav-soft:#EDE9FE;
   --danger:#C2410C; --obsidian:#181C24; --on-obsidian:#F1F5F9; --obsidian-2:#232833;
   --mesh:radial-gradient(circle at 8% 0%,rgba(255,226,209,.55) 0%,transparent 42%),radial-gradient(circle at 95% 18%,rgba(224,242,254,.7) 0%,transparent 45%),radial-gradient(circle at 50% 100%,rgba(255,228,230,.45) 0%,transparent 55%);
+  --app-background:linear-gradient(180deg,var(--app-top-color) 0px,color-mix(in srgb,var(--app-top-color) 35%,transparent) 70px,transparent 160px),var(--mesh),linear-gradient(180deg,var(--app-top-color),var(--bg) 240px);
   --shadow:0 4px 20px -2px rgba(25,32,36,.05),0 1px 3px rgba(25,32,36,.03);
   --shadow-lift:0 12px 32px -8px rgba(25,32,36,.18);
   --radius-l:26px; --radius-m:20px; --radius-s:14px;
@@ -36,15 +37,17 @@
 }
 /* 当前身份色：跟随"我是谁" */
 .me-hus{--me:var(--hus);--me-ink:var(--hus-ink);--me-soft:var(--hus-soft);--me-grad:var(--hus-grad);--me-glow:var(--hus-glow);
+  --app-top-light:#E4F2FB;--app-top-dark:#172B36;--app-top-color:var(--app-top-light);
   --mesh:radial-gradient(circle at 10% 0%,rgba(186,230,253,.75) 0%,transparent 45%),radial-gradient(circle at 100% 22%,rgba(255,226,209,.55) 0%,transparent 42%),radial-gradient(circle at 40% 100%,rgba(224,242,254,.7) 0%,transparent 55%)}
 .me-wife{--me:var(--wife);--me-ink:var(--wife-ink);--me-soft:var(--wife-soft);--me-grad:var(--wife-grad);--me-glow:var(--wife-glow);
+  --app-top-light:#FDEBF0;--app-top-dark:#30232B;--app-top-color:var(--app-top-light);
   --mesh:radial-gradient(circle at 10% 0%,rgba(255,205,215,.75) 0%,transparent 45%),radial-gradient(circle at 100% 22%,rgba(255,236,210,.55) 0%,transparent 42%),radial-gradient(circle at 40% 100%,rgba(255,228,230,.75) 0%,transparent 55%)}
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]).me-hus,:root:not([data-theme="light"]) .me-hus{--mesh:radial-gradient(circle at 10% 0%,rgba(56,189,248,.14) 0%,transparent 45%),radial-gradient(circle at 100% 30%,rgba(255,120,67,.07) 0%,transparent 42%)}
-  :root:not([data-theme="light"]).me-wife,:root:not([data-theme="light"]) .me-wife{--mesh:radial-gradient(circle at 10% 0%,rgba(255,75,114,.15) 0%,transparent 45%),radial-gradient(circle at 100% 30%,rgba(255,170,90,.07) 0%,transparent 42%)}
+  :root:not([data-theme="light"]).me-hus,:root:not([data-theme="light"]) .me-hus{--app-top-color:var(--app-top-dark);--mesh:radial-gradient(circle at 10% 0%,rgba(56,189,248,.14) 0%,transparent 45%),radial-gradient(circle at 100% 30%,rgba(255,120,67,.07) 0%,transparent 42%)}
+  :root:not([data-theme="light"]).me-wife,:root:not([data-theme="light"]) .me-wife{--app-top-color:var(--app-top-dark);--mesh:radial-gradient(circle at 10% 0%,rgba(255,75,114,.15) 0%,transparent 45%),radial-gradient(circle at 100% 30%,rgba(255,170,90,.07) 0%,transparent 42%)}
 }
-:root[data-theme="dark"].me-hus,:root[data-theme="dark"] .me-hus{--mesh:radial-gradient(circle at 10% 0%,rgba(56,189,248,.14) 0%,transparent 45%)}
-:root[data-theme="dark"].me-wife,:root[data-theme="dark"] .me-wife{--mesh:radial-gradient(circle at 10% 0%,rgba(255,75,114,.15) 0%,transparent 45%)}
+:root[data-theme="dark"].me-hus,:root[data-theme="dark"] .me-hus{--app-top-color:var(--app-top-dark);--mesh:radial-gradient(circle at 10% 0%,rgba(56,189,248,.14) 0%,transparent 45%)}
+:root[data-theme="dark"].me-wife,:root[data-theme="dark"] .me-wife{--app-top-color:var(--app-top-dark);--mesh:radial-gradient(circle at 10% 0%,rgba(255,75,114,.15) 0%,transparent 45%)}
 .hus{--p:var(--hus);--p-ink:var(--hus-ink);--p-soft:var(--hus-soft);--p-grad:var(--hus-grad);--p-glow:var(--hus-glow)}
 .wife{--p:var(--wife);--p-ink:var(--wife-ink);--p-soft:var(--wife-soft);--p-grad:var(--wife-grad);--p-glow:var(--wife-glow)}
 

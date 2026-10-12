@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>DuoFit · 两个人的减脂打卡</title>
-<meta name="theme-color" content="#FDFAF6" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#101318" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#E4F2FB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#172B36" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png?v=logo3">
@@ -15,13 +15,13 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=42">
+<link rel="stylesheet" href="design-system/tokens.css?v=43">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
 *,*::before,*::after{box-sizing:inherit}
-html{height:100%;background:var(--mesh),var(--bg);background-attachment:fixed;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px);scroll-padding-bottom:calc(var(--tab-bar-height) + 24px)}
-body{margin:0;min-height:100%;background:var(--mesh),var(--bg);background-attachment:fixed;color:var(--ink);
+html{height:100%;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px);scroll-padding-bottom:calc(var(--tab-bar-height) + 24px)}
+body{margin:0;min-height:100%;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;color:var(--ink);
   font-family:var(--ds-font);
   font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 /* Keep the app hidden until the initial entry flow is ready, including before scripts load. */
@@ -52,7 +52,7 @@ p{margin:0}
 .me-ava{width:44px;height:44px;border-radius:50%;background:var(--me-soft);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--me);object-fit:contain;padding:3px;flex:none}
 
 /* role picker & code dialog */
-.pick{position:fixed;inset:0;z-index:40;background:var(--mesh),var(--bg);display:none;overflow:auto;
+.pick{position:fixed;inset:0;z-index:40;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;display:none;overflow:auto;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 .pick.open{display:block}
 .pick .inner{max-width:420px;margin:0 auto;padding:10vh 20px 32px;display:grid;gap:14px}
@@ -386,7 +386,7 @@ p{margin:0}
 .tabs button[aria-current="page"]::after{content:"";position:absolute;bottom:3px;width:4px;height:4px;border-radius:50%;background:var(--me)}
 
 /* workout overlay */
-.run{position:fixed;inset:0;background:var(--mesh),var(--bg);z-index:20;display:none;overflow:auto;
+.run{position:fixed;inset:0;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;z-index:20;display:none;overflow:auto;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 .run.open{display:block}
 .run .wrap{padding-bottom:40px;min-height:100%;display:flex;flex-direction:column}
@@ -536,8 +536,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=42">
-<link rel="stylesheet" href="private-coach.css?v=42">
+<link rel="stylesheet" href="design-system/components.css?v=43">
+<link rel="stylesheet" href="private-coach.css?v=43">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -672,8 +672,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=42"></script>
-<script src="design-system/mascots.js?v=42"></script>
+<script src="private-coach.js?v=43"></script>
+<script src="design-system/mascots.js?v=43"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1363,6 +1363,11 @@ function renderHeader(){
   document.documentElement.classList.toggle("me-hus",me==="hus");
   document.documentElement.classList.toggle("me-wife",me==="wife");
   document.body.className="me-"+me;
+  const topColors=getComputedStyle(document.documentElement);
+  const lightMeta=document.querySelector('meta[name="theme-color"][media*="light"]');
+  const darkMeta=document.querySelector('meta[name="theme-color"][media*="dark"]');
+  if(lightMeta)lightMeta.content=topColors.getPropertyValue('--app-top-light').trim();
+  if(darkMeta)darkMeta.content=topColors.getPropertyValue('--app-top-dark').trim();
 }
 function renderSync(){
   const el=$("#sync"); let t="", warn=false;
