@@ -40,4 +40,4 @@ node tests/sw-cache.js
 
 ## 发布
 
-本地修复和上述验证已完成，用户已明确确认「发布 v59」。提交并推送后待 Pages/线上 SHA-256 核验。回退位置：v58 应用提交 `da32eb4`；独立图片缓存无需清除。
+用户明确确认「发布 v59」。应用提交 `3bf2013fc8b508555305df14e90cd351984d32be` 已推送 main，Pages [38370927131](https://github.com/lcy1021/Fitpro/actions/runs/38370927131) 成功，线上 10 项核心/规范文件 SHA-256 全部匹配，见[核验](release-verification.json)。后续文档提交仅补发布证据。回退位置：v58 应用提交 `da32eb4`；独立图片缓存无需清除。真实手机启动表现待用户实际反馈。

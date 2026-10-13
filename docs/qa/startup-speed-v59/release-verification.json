@@ -1,0 +1,70 @@
+{
+  "version": 59,
+  "commit": "3bf2013fc8b508555305df14e90cd351984d32be",
+  "workflow": 38370927131,
+  "deployment": "success",
+  "at": "2026-10-13T08:42:39.559120+00:00",
+  "nativeStartupMeasured": false,
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256": "365715377fc9472a55340ef681a9e28fa7b095fe57363396ac355029fb7314a1",
+      "match": true
+    },
+    {
+      "file": "sw.js",
+      "status": 200,
+      "sha256": "0d7087cd245cadecfedec6b180fc081aa569e91b9f1e32a05f1b6511d6be8a2e",
+      "match": true
+    },
+    {
+      "file": "private-coach.js",
+      "status": 200,
+      "sha256": "c9164b0d3f9fef7498234180ecfbf5bfbcf3bb7b7ed48cd8b6617e273070165d",
+      "match": true
+    },
+    {
+      "file": "private-coach.css",
+      "status": 200,
+      "sha256": "44e763f99df5497e9b4cfa49855a0c220aa968039320b2c75b98533f5271c736",
+      "match": true
+    },
+    {
+      "file": "design-system/tokens.css",
+      "status": 200,
+      "sha256": "553114580e7f8d64adc56b2db9036292435adda2bbeef5fdd0bbded3dcb4458b",
+      "match": true
+    },
+    {
+      "file": "design-system/components.css",
+      "status": 200,
+      "sha256": "c3e81caf408f2138428e976203c0267169145b41edfee4884cbdfa4d41941578",
+      "match": true
+    },
+    {
+      "file": "design-system/mascots.js",
+      "status": 200,
+      "sha256": "3e9aaac6a3812d3f8fe7478c78f74a4f0947314df5b846bf7694237045300165",
+      "match": true
+    },
+    {
+      "file": "design-system/index.html",
+      "status": 200,
+      "sha256": "c82e04df654a0b78cd02549060c3bbe3e88400acda345ca13a117afad7718680",
+      "match": true
+    },
+    {
+      "file": "tests/theme-preview.html",
+      "status": 200,
+      "sha256": "ef4033e4e7aa34c0c3bc2ba7496fb44cf8ea162e5385ee363242f3855b4747ce",
+      "match": true
+    },
+    {
+      "file": "docs/design-system.md",
+      "status": 200,
+      "sha256": "c7df67e8dc6e35ecc92337f7c0ff26c3efbe2927dbea067b83f82bf11bed3d6d",
+      "match": true
+    }
+  ]
+}
