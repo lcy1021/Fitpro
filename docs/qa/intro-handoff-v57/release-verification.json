@@ -1,0 +1,45 @@
+{
+  "version": 57,
+  "commit": "75fee0b46d1b16638354f27313bfa92cc9e694e1",
+  "workflow": 38356194830,
+  "at": "2026-10-13T06:24:42.827067+00:00",
+  "nativeFlashVerified": false,
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256": "69b63b4d3edbe3421b32762c3fcb40cee7552b476a3066ddfcdc86711e96fc2f",
+      "match": true
+    },
+    {
+      "file": "sw.js",
+      "status": 200,
+      "sha256": "94ae38490a0c637e940d1c42f5ba07b7099c70fc9e0b7b090de4fcb01d87e248",
+      "match": true
+    },
+    {
+      "file": "private-coach.js",
+      "status": 200,
+      "sha256": "0c5bddd04c2161fb72af88a9c280fb9bb7b72cd7dde5ec5382835f25a8e4ac3b",
+      "match": true
+    },
+    {
+      "file": "design-system/index.html",
+      "status": 200,
+      "sha256": "4c20a5940eeb1476221fa956b3e9a85e2b621f94bbfc97c5da192709d19ef513",
+      "match": true
+    },
+    {
+      "file": "tests/theme-preview.html",
+      "status": 200,
+      "sha256": "08df21f0947e3248779d71ca3ff6c9c2e97f1f4ccff46d13d1a0add7f4da722f",
+      "match": true
+    },
+    {
+      "file": "design-system/tokens.css",
+      "status": 200,
+      "sha256": "553114580e7f8d64adc56b2db9036292435adda2bbeef5fdd0bbded3dcb4458b",
+      "match": true
+    }
+  ]
+}

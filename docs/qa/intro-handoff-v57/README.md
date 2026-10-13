@@ -29,4 +29,4 @@
 
 ## 发布
 
-待发布后填入线上哈希与Pages结果。
+应用提交 `75fee0b`，Pages [38356194830](https://github.com/lcy1021/Fitpro/actions/runs/38356194830) 成功；线上6项文件SHA-256与本机一致，见[发布核验](release-verification.json)。手机原生效果仍待验收。
