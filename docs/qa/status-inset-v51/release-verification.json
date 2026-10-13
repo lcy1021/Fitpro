@@ -1,0 +1,64 @@
+{
+  "version": 51,
+  "commit": "a1ddd06e2ed08cd27311dfda439c4b728e025031",
+  "workflow": "https://github.com/lcy1021/Fitpro/actions/runs/38336647828",
+  "workflowConclusion": "success",
+  "verifiedAt": "2026-10-13T02:24:52.759585+00:00",
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "7c545a198400ce5bcd68b0d0624a12f4b15fbb2b05a9965f55f2ce760ae0af03",
+      "matches": true
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "sha256": "4400a47cd894337a9f813339577a500ad653cb53cfd65d7eac998fe5c848175c",
+      "matches": true
+    },
+    {
+      "path": "private-coach.js",
+      "status": 200,
+      "sha256": "971bb7936c6631c9b8f43dddf43cf3026807fb5850a27127a5bdd490ce43f432",
+      "matches": true
+    },
+    {
+      "path": "private-coach.css",
+      "status": 200,
+      "sha256": "44e763f99df5497e9b4cfa49855a0c220aa968039320b2c75b98533f5271c736",
+      "matches": true
+    },
+    {
+      "path": "design-system/tokens.css",
+      "status": 200,
+      "sha256": "9ea45786d91b19340267843712c8ee3946acffb7ec7804373a77bc74b096b6af",
+      "matches": true
+    },
+    {
+      "path": "design-system/components.css",
+      "status": 200,
+      "sha256": "9b2d89f9d65ef2e8c4a42aa0cc3e557c1b2e434d068a3643e4df6a41c0bebc61",
+      "matches": true
+    },
+    {
+      "path": "design-system/mascots.js",
+      "status": 200,
+      "sha256": "3e9aaac6a3812d3f8fe7478c78f74a4f0947314df5b846bf7694237045300165",
+      "matches": true
+    },
+    {
+      "path": "design-system/index.html",
+      "status": 200,
+      "sha256": "e3fa7cadc4c935527edc789ed57744c3f2f4768a434de1c6f817bbd979f2de85",
+      "matches": true
+    },
+    {
+      "path": "tests/theme-preview.html",
+      "status": 200,
+      "sha256": "392dfe2286cae948cef0a0eafc50e4f52a928cbf24af8d73f729c29b1aca8374",
+      "matches": true
+    }
+  ],
+  "nativeStatusBarVerified": false
+}

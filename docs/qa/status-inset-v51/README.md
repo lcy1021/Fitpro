@@ -26,3 +26,7 @@
 - 设计系统、场景、SW回归与 diff 检查。
 
 本机没有能直接验证原生状态栏的 iPhone 环境。发布后仍需用户从原图标确认，无需重装或重新分享。
+
+## 发布
+
+v51 已由提交 `a1ddd06` 发布；[Pages 部署](https://github.com/lcy1021/Fitpro/actions/runs/38336647828) 成功，9 个线上文件逐一返回 200 且 SHA-256 与本机一致。见 [核验明细](release-verification.json)。原生白条仍待真机验收。
