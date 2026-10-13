@@ -1,6 +1,7 @@
 /* DuoFit Design System 1.9. Canonical theme/role tokens; see docs/design-system.md. */
 :root{
   color-scheme:light;
+  --ds-native-top-inset:0px;
   --safe-bottom:env(safe-area-inset-bottom,0px);
   --tab-bar-height:calc(72px + var(--safe-bottom));
   --bg:#FDFAF6; --surface:#FFFFFF; --sunk:#F6F3EE; --ink:#192024; --muted:#64748B; --faint:#94A3B8; --line:rgba(25,32,36,.07);

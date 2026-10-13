@@ -26,7 +26,7 @@
 .ds-page-hero-sync{height:23px;margin-top:9px;display:flex;align-items:center;gap:6px;color:var(--ds-hero-sync);font-size:13px;font-variant-numeric:tabular-nums;overflow:hidden;white-space:nowrap}
 .ds-page-hero-sync svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .ds-page-hero-sync span{overflow:hidden;text-overflow:ellipsis}.ds-page-hero-sync.warn{color:var(--danger)}
-.ds-page-hero-role{position:absolute;z-index:2;top:calc(env(safe-area-inset-top,0px) + 8px);right:16px}
+.ds-page-hero-role{position:absolute;z-index:2;top:calc(max(env(safe-area-inset-top,0px),var(--ds-native-top-inset)) + 8px);right:16px}
 :root[data-theme="dark"] .ds-page-hero::after{background:linear-gradient(180deg,transparent 48%,color-mix(in srgb,var(--bg) 8%,transparent) 55%,color-mix(in srgb,var(--bg) 42%,transparent) 65%,color-mix(in srgb,var(--bg) 82%,transparent) 77%,var(--bg) 91%,var(--bg) 100%)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ds-page-hero::after{background:linear-gradient(180deg,transparent 48%,color-mix(in srgb,var(--bg) 8%,transparent) 55%,color-mix(in srgb,var(--bg) 42%,transparent) 65%,color-mix(in srgb,var(--bg) 82%,transparent) 77%,var(--bg) 91%,var(--bg) 100%)}}
 @media(max-width:350px){.ds-page-hero-hand{font-size:21px}.ds-page-hero-hand svg{width:119px}.ds-page-hero-info h1{font-size:40px}}

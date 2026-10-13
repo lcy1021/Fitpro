@@ -15,7 +15,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=50">
+<link rel="stylesheet" href="design-system/tokens.css?v=51">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -26,8 +26,6 @@ html{height:100%;background-color:var(--app-top-color);background-image:var(--ap
 html.app-hero-active{padding-top:0;background-color:transparent;background-image:var(--ds-hero-top-shade),var(--ds-root-hero-image,none),linear-gradient(var(--bg),var(--bg));background-position:center top;background-size:min(100%,var(--ds-page-max)) 80px,min(100%,var(--ds-page-max)) auto,100% 100%;background-repeat:no-repeat}
 html.app-hero-active body{background:transparent}
 html.app-hero-active #appShell{background:var(--bg)}
-/* A 1px runway lets iOS leave its unscrolled native tint state without moving the UI. */
-html.app-hero-scroll-start #appShell.wrap{padding-top:1px}
 body{margin:0;min-height:100%;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;color:var(--ink);
   font-family:var(--ds-font);
   font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
@@ -535,8 +533,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=50">
-<link rel="stylesheet" href="private-coach.css?v=50">
+<link rel="stylesheet" href="design-system/components.css?v=51">
+<link rel="stylesheet" href="private-coach.css?v=51">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -670,8 +668,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=50"></script>
-<script src="design-system/mascots.js?v=50"></script>
+<script src="private-coach.js?v=51"></script>
+<script src="design-system/mascots.js?v=51"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1351,7 +1349,8 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
 // iOS can composite scrolling content beneath its status bar while painting a
-// fallback at scrollY=0. Use a compensated 1px start, never a guessed safe-area height.
+// fallback until scrolling clears its native inset. The affected phone reports
+// screen=932, viewport=873, safeTop=0; 1px failed, a manual 72px scroll revealed the scene.
 let heroScrollStartReady=false,heroScrollTouch=false,heroScrollTimer=null;
 const heroViewportTrace={attempts:0,lastBlocked:null,firstApplied:null,firstUserScroll:null};
 function pageViewportSnapshot(){
@@ -1368,42 +1367,57 @@ function pageViewportSnapshot(){
     safeTop,safeBottom,heroTop:rect?.top??null,heroHeight:rect?.height??null,
     bodyOverflow:getComputedStyle(document.body).overflowY,visibility:document.visibilityState};
 }
+function heroScrollStartOffset(){
+  if(!heroScrollStartReady)return 0;
+  const vv=window.visualViewport,gap=window.screen.height-window.innerHeight;
+  // Only match the measured portrait, unzoomed, zero-safe-top layout. Browser
+  // chrome, keyboards and landscape must not be mistaken for the native inset.
+  if(window.screen.height<=window.screen.width||Math.abs(window.screen.width-window.innerWidth)>1||
+     gap<20||gap>80||parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)>0||
+     (vv&&(Math.abs(vv.scale-1)>.01||Math.abs(vv.height-window.innerHeight)>1||Math.abs(vv.offsetTop)>1)))return 0;
+  return Math.ceil(gap)+1;
+}
 function pageViewportDiagnostics(){
-  return {version:50,userAgent:navigator.userAgent,standalone:navigator.standalone===true,
+  return {version:51,userAgent:navigator.userAgent,standalone:navigator.standalone===true,
     displayStandalone:matchMedia('(display-mode: standalone)').matches,
-    compensatedStart:heroScrollStartReady,current:pageViewportSnapshot(),trace:heroViewportTrace};
+    scrollStartEnabled:heroScrollStartReady,targetScrollY:heroScrollStartOffset(),current:pageViewportSnapshot(),trace:heroViewportTrace};
 }
 function prepareHeroScrollStart(){
   if(heroScrollStartReady)return;
   const ios=/(?:iPhone|iPad|iPod)/.test(navigator.userAgent);
   if(!ios||!(navigator.standalone===true||matchMedia("(display-mode: standalone)").matches))return;
   heroScrollStartReady=true;
-  document.documentElement.classList.add("app-hero-scroll-start");
   const settle=()=>{clearTimeout(heroScrollTimer);heroScrollTimer=setTimeout(restoreHeroScrollStart,180);};
   window.addEventListener("scroll",settle,{passive:true});
   window.addEventListener("scrollend",restoreHeroScrollStart,{passive:true});
   window.addEventListener("touchstart",()=>{heroScrollTouch=true;},{passive:true});
-  window.addEventListener("touchend",()=>{heroScrollTouch=false;if(!heroViewportTrace.firstUserScroll&&window.scrollY>1)heroViewportTrace.firstUserScroll=pageViewportSnapshot();settle();},{passive:true});
+  window.addEventListener("touchend",()=>{heroScrollTouch=false;if(!heroViewportTrace.firstUserScroll&&window.scrollY>heroScrollStartOffset())heroViewportTrace.firstUserScroll=pageViewportSnapshot();settle();},{passive:true});
   window.addEventListener("touchcancel",()=>{heroScrollTouch=false;settle();},{passive:true});
   window.addEventListener("pageshow",restoreHeroScrollStart);
+  window.addEventListener("resize",settle,{passive:true});
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")restoreHeroScrollStart();});
 }
 function restoreHeroScrollStart(){
   if(!heroScrollStartReady)return;
   requestAnimationFrame(()=>{
     // Do not interrupt reading, a drag/bounce, keyboard input or any modal.
+    const target=heroScrollStartOffset();
+    document.documentElement.style.setProperty("--ds-native-top-inset",Math.max(0,target-1)+"px");
+    if(!target)return;
     heroViewportTrace.attempts++;
-    const blocked=heroScrollTouch?'touch':window.scrollY<0?'overscroll':window.scrollY>=1?'already-scrolled':
+    const blocked=heroScrollTouch?'touch':window.scrollY<0?'overscroll':window.scrollY>=target?'already-scrolled':
       document.visibilityState!=="visible"?'hidden':document.querySelector('.pick.open,.run.open,#duoCoach:not([hidden])')?'dialog':
       getComputedStyle(document.body).overflowY==="hidden"?'overflow-hidden':
       /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName||"")?'input':null;
     if(blocked){heroViewportTrace.lastBlocked=blocked;return;}
-    window.scrollTo({top:1,left:0,behavior:"instant"});
+    window.scrollTo({top:target,left:0,behavior:"instant"});
     requestAnimationFrame(()=>{if(!heroViewportTrace.firstApplied)heroViewportTrace.firstApplied=pageViewportSnapshot();});
   });
 }
 function scrollToPageStart(){
-  window.scrollTo({top:heroScrollStartReady?1:0,left:0,behavior:"instant"});
+  const target=heroScrollStartOffset();
+  document.documentElement.style.setProperty("--ds-native-top-inset",Math.max(0,target-1)+"px");
+  window.scrollTo({top:target,left:0,behavior:"instant"});
   if(heroScrollStartReady)requestAnimationFrame(()=>{if(!heroViewportTrace.firstApplied)heroViewportTrace.firstApplied=pageViewportSnapshot();});
 }
 function renderHeader(){
