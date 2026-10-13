@@ -15,7 +15,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=51">
+<link rel="stylesheet" href="design-system/tokens.css?v=52">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -533,8 +533,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=51">
-<link rel="stylesheet" href="private-coach.css?v=51">
+<link rel="stylesheet" href="design-system/components.css?v=52">
+<link rel="stylesheet" href="private-coach.css?v=52">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -668,8 +668,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=51"></script>
-<script src="design-system/mascots.js?v=51"></script>
+<script src="private-coach.js?v=52"></script>
+<script src="design-system/mascots.js?v=52"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1378,7 +1378,7 @@ function heroScrollStartOffset(){
   return Math.ceil(gap)+1;
 }
 function pageViewportDiagnostics(){
-  return {version:51,userAgent:navigator.userAgent,standalone:navigator.standalone===true,
+  return {version:52,userAgent:navigator.userAgent,standalone:navigator.standalone===true,
     displayStandalone:matchMedia('(display-mode: standalone)').matches,
     scrollStartEnabled:heroScrollStartReady,targetScrollY:heroScrollStartOffset(),current:pageViewportSnapshot(),trace:heroViewportTrace};
 }
@@ -2189,7 +2189,14 @@ function openSplash(after){
     lm.classList.remove("splash");
     if(next==="choose"){lmSelect(null);lmPhase("choose");finishStartup();return;}
     finishStartup(next!=="error");
-    pk.classList.add("leaving"); setTimeout(()=>{ pk.classList.remove("open","leaving"); document.body.style.overflow=""; lmPhase("choose"); restoreHeroScrollStart(); },450); };
+    if(next!=="error"){
+      // Keep the entry layer opaque while iOS receives the final scroll position.
+      // Unlock first: the old order waited until AFTER the fade, exposing a 60px jump.
+      document.body.style.overflow="";
+      scrollToPageStart();
+      await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    }
+    pk.classList.add("leaving"); setTimeout(()=>{ pk.classList.remove("open","leaving"); document.body.style.overflow=""; lmPhase("choose"); },450); };
   lm.onclick=done;
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmTimers.push(setTimeout(done,600)); return; }
   lmReady().then(()=>{ if(!lm.classList.contains("splash")||finishing) return;

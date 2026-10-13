@@ -1,0 +1,50 @@
+[
+  {
+    "mode": "cached",
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "errors": []
+  },
+  {
+    "mode": "skip",
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "errors": []
+  },
+  {
+    "mode": "reduced",
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "errors": []
+  },
+  {
+    "mode": "guest",
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "errors": []
+  },
+  {
+    "mode": "guest-skip",
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "errors": []
+  },
+  {
+    "mode": "cold",
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "errors": []
+  },
+  {
+    "mode": "missing-session",
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "errors": []
+  },
+  {
+    "mode": "local",
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "errors": []
+  }
+]

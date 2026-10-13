@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const origin=process.env.DUOFIT_PREVIEW_URL||'http://127.0.0.1:8765';
-const output=path.join(__dirname,'../docs/qa/startup');
+const output=process.env.DUOFIT_STARTUP_QA_DIR||path.join(__dirname,'../docs/qa/startup');
 const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'utf8');
 (async()=>{
   fs.mkdirSync(output,{recursive:true});
@@ -10,11 +10,11 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
   const checks=[];
   const iosStandalone=process.env.DUOFIT_TEST_IOS_STANDALONE==='1';
   try{
-    for(const mode of ['cached','skip','reduced','guest','guest-skip','cold','missing-session','local']){
+    for(const mode of (process.env.DUOFIT_STARTUP_MODES||'cached,skip,reduced,guest,guest-skip,cold,missing-session,local').split(',')){
       const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:mode==='reduced'?'reduce':'no-preference'});
       if(iosStandalone)await context.addInitScript(()=>{Object.defineProperty(navigator,'userAgent',{get:()=> 'Mozilla/5.0 (iPhone; CPU iPhone OS 26_2 like Mac OS X) AppleWebKit/605.1.15'});Object.defineProperty(navigator,'standalone',{get:()=>true});Object.defineProperty(screen,'height',{get:()=>903});});
       await context.addInitScript(mode=>{
-        localStorage.clear();window.startupEvents=[];
+        localStorage.clear();window.startupEvents=[];window.revealFrames=[];
         const date=new Date(),day=[date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');
         const monday=new Date(date);monday.setDate(date.getDate()-((date.getDay()+6)%7));
         const week=[monday.getFullYear(),String(monday.getMonth()+1).padStart(2,'0'),String(monday.getDate()).padStart(2,'0')].join('-');
@@ -29,6 +29,7 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
         if(mode==='local')localStorage.setItem('fatloss.me','hus');
         document.addEventListener('DOMContentLoaded',()=>{
           const view=document.querySelector('#view');
+          const sample=()=>{const picker=document.querySelector('#pick');if(picker?.classList.contains('leaving'))window.revealFrames.push({scrollY:window.scrollY,opacity:getComputedStyle(picker).opacity});requestAnimationFrame(sample);};requestAnimationFrame(sample);
           new MutationObserver(()=>window.startupEvents.push({type:'render',phase:document.querySelector('#lm').dataset.phase,booting:document.body.classList.contains('booting')})).observe(view,{childList:true});
         });
       },mode);
@@ -79,7 +80,12 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
           assert.equal(await page.locator('#view').innerHTML(),'');
         }else{
           assert(await page.locator('#view').innerHTML());
-          if(iosStandalone)await page.waitForFunction(()=>window.scrollY===60);
+          if(iosStandalone){
+            await page.waitForFunction(()=>window.scrollY===60);
+            const frames=await page.evaluate(()=>window.revealFrames);
+            assert(frames.length>0,mode+' has reveal frames');
+            assert(frames.every(f=>f.scrollY===60),mode+' reaches final status inset BEFORE any home reveal frame: '+JSON.stringify(frames.slice(0,3)));
+          }
           const events=await page.evaluate(()=>window.startupEvents);
           assert(!events.some(e=>e.type==='render'&&e.phase==='run'),'no home construction during running animation');
           if(['cached','skip','reduced'].includes(mode)){
@@ -91,7 +97,7 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
       }
       releaseCloud();
       assert.deepEqual(errors,[],mode+' has no browser exceptions');
-      checks.push({mode,initialHomeHidden:true,entryFinished:true,errors});await context.close();
+      checks.push({mode,initialHomeHidden:true,entryFinished:true,reveal:await page.evaluate(()=>({first:window.revealFrames[0]||null,last:window.revealFrames.at(-1)||null,frames:window.revealFrames.length,positions:[...new Set(window.revealFrames.map(f=>f.scrollY))]})),errors});await context.close();
     }
     fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify(checks,null,2)+'\n');
     console.log('PASS first paint, cached/cold/local startup, guest selection, skip, reduced motion and recovery error');
