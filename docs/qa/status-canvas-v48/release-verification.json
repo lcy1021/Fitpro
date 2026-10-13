@@ -1,0 +1,61 @@
+{
+  "commit": "aba9ea37e40bbab5965a2aa77f724b7d28bde3d7",
+  "pagesRun": 38328725966,
+  "checkedAtUtc": "2026-10-13T00:46:13.678418+00:00",
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "df65b1b1955c0182ff28c835402e0a240db8be507ea38ae14e9cd7d61283df85",
+      "matchesLocal": true
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "sha256": "0763af695c17a2820b0034d74dd37838211b8fe5061ba62e3ca1b3e9fcc3c9c2",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/tokens.css",
+      "status": 200,
+      "sha256": "ed7b0c442be47708188fa16c39eefbee2efd022fa41012dd0afefbb35ae345c8",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/components.css",
+      "status": 200,
+      "sha256": "4d0aed0f39ff154a2a06681b13e0552e39a4d627b56b9f510b5db32cb6399362",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/index.html",
+      "status": 200,
+      "sha256": "1574317c9c5dfe722d4967246b5e4e97d5eae846697b0c09f0c99fd509beb54f",
+      "matchesLocal": true
+    },
+    {
+      "path": "tests/theme-preview.html",
+      "status": 200,
+      "sha256": "d54f31ae581f62b3ec1e4b7ae36eca49b6d4de5eb40ece0a01b238ad8f3210c0",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.js",
+      "status": 200,
+      "sha256": "b67795c045286e3133b2e118bcb74ee4034801935e93071fbdb209d5c313b16f",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.css",
+      "status": 200,
+      "sha256": "44e763f99df5497e9b4cfa49855a0c220aa968039320b2c75b98533f5271c736",
+      "matchesLocal": true
+    },
+    {
+      "path": "design-system/mascots.js",
+      "status": 200,
+      "sha256": "3e9aaac6a3812d3f8fe7478c78f74a4f0947314df5b846bf7694237045300165",
+      "matchesLocal": true
+    }
+  ]
+}
