@@ -66,7 +66,7 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
       if(iosStandalone)assert.equal(early.boot.phase,'before-config');
       assert.equal(early.root,'rgba(0, 0, 0, 0)','launch root is transparent before config');
       assert(early.rootImage.includes('today-'+person+'-v2.jpg'),'same home scene already backs launch');
-      assert.equal(early.picker,'rgba(0, 0, 0, 0)','fixed entry layer must not sample an opaque white top');
+      assert.equal(early.picker,'rgba(0, 0, 0, 0)','entry uses an independent gradient without changing root transparency');
       if(mode==='cached')await page.screenshot({path:path.join(output,'first-paint-mobile.png')});
       releaseConfig();
       if(mode!=='local')await page.waitForSelector('#duoCoach',{state:'attached'});

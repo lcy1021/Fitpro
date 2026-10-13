@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=55">
-<link rel="stylesheet" href="design-system/components.css?v=55">
+<link rel="stylesheet" href="design-system/tokens.css?v=56">
+<link rel="stylesheet" href="design-system/components.css?v=56">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -126,6 +126,8 @@
 
 ## 6. 状态与动效
 
+v56 引导背景用 `--ds-entry-background`：蓝粉柔和径向渐变加完整页面底色渐变。`.pick.lm-pick` 与 `.lm::before` 共用，不保留顶部透明缺口或渐隐遮罩，以免首页人物和山水叠进引导。根画布仍透明，首页场景与受限 iOS 起点仍预备；引导在页面完成定位后整体淡出。组件页提供独立引导背景样例。
+
 - 正常、选中、未选中、焦点、禁用、加载、空态、错误、只读都要定义。组件页可实际切换角色、主题、餐次状态，展示这些状态。
 - 新增小交互用 `--ds-motion-fast:100ms / --ds-motion-normal:200ms`；只过渡背景、颜色、阴影和轻微按压。`prefers-reduced-motion` 下新增组件去掉过渡和按压变形；入场大动画继续沿用 App 已有跳过与减弱逻辑。
 - 加载说明当前动作，并阻止重复提交；错误保留原文且提供重试；未知或未同步不是 0，不显示成功判断。
@@ -153,7 +155,7 @@
 
 ## 8. 当前接入与后续维护
 
-v55 从文档初始就使用透明根画布与今日原场景，不再先显示启动天空色；根据既有身份选择蓝粉首图并预加载。入场顶部96px透明，之后到280px渐入内容底色。配置前的受限iOS定位沿用v51守卫；不得删除已真机确认有效的定位。原生轻闪仍待手机确认，见[QA](qa/hero-unified-v55/README.md)。
+v55 从文档初始就使用透明根画布与今日原场景，不再先显示启动天空色；根据既有身份选择蓝粉首图并预加载。v55曾让入场顶部96px透明，用户截图证实首页漏进文案；v56改为完整独立引导背景覆盖。配置前的受限iOS定位沿用v51守卫；不得删除已真机确认有效的定位。原生轻闪仍待手机确认，见[QA](qa/hero-unified-v55/README.md)。
 
 v55 四页共用 `--ds-hero-glass-blur:16px`、`--ds-hero-texture-blur:16px`，伪元素向上延伸80px、左右各延伸36px，遮罩从透明渐入再渐出。`--ds-hero-glass-scene-tint` 浅48%／深80%，避免在原图已白化下缘只叠白色。今日色源仍为 meadow-glass-v1.jpg；其他三页通过自身 `--ds-hero-image` 下部取样，不跨场景套图。`--ds-hero-glass-position` 今日50%、饮食69%、训练72%、记录默认71%，用于避开重复角色特征。角色图像层不被整体模糊，数据文字独立清晰。见[四页统一QA](qa/hero-unified-v55/README.md)。
 

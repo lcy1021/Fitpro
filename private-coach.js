@@ -41,7 +41,7 @@ class DuoCoach {
     let entries=[],page=null;
     try{entries=JSON.parse(localStorage.getItem(CONNECTION_LOG)||'[]');}catch{}
     try{page=this.h.pageDiagnostics?.()??null;}catch{page={error:'viewport_unavailable'};}
-    return 'DuoFit 连接诊断 v55\n'+JSON.stringify({page,connection:Array.isArray(entries)?entries:[]},null,2);
+    return 'DuoFit 连接诊断 v56\n'+JSON.stringify({page,connection:Array.isArray(entries)?entries:[]},null,2);
   }
   async fetchJSON(path,body,{auth=true,timeoutMs=15000,retries=0}={}){
     const serialized=JSON.stringify(body),owner=auth?this.userId():null;
