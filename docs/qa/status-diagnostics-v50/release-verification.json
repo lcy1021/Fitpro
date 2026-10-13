@@ -1,0 +1,30 @@
+{
+  "commit": "4edf568d3fe8416a825662a6d3d7705f544e23f0",
+  "pagesRun": 38334683674,
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "bb93dccf676c46dd23a303c280af3c6bb44b5592dd884683677e91e6e8776610",
+      "matchesLocal": true
+    },
+    {
+      "path": "private-coach.js",
+      "status": 200,
+      "sha256": "9d6a448f66e34336f84c10b2c480cd286ef8ddaf2daca3384694933bdf94dc1c",
+      "matchesLocal": true
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "sha256": "62684b4000ed3107870392629345b762f659288dd9ea00cd7f74dc67c76735ca",
+      "matchesLocal": true
+    },
+    {
+      "path": "tests/theme-preview.html",
+      "status": 200,
+      "sha256": "980d9e178a067bef4722e6098137b272f59565f1152c2cec55cbb8a003aef887",
+      "matchesLocal": true
+    }
+  ]
+}
