@@ -35,4 +35,4 @@ node tests/sw-cache.js
 
 ## 发布
 
-待发布。核心资源、连接诊断、SW CORE、组件展示和本机预览统一 v52，图片缓存保留。
+已发布：`27eaa32`，Pages [38340118587](https://github.com/lcy1021/Fitpro/actions/runs/38340118587) 成功，[5 个线上文件核验](release-verification.json)通过。原生过渡仍待真机确认。核心资源、连接诊断、SW CORE、组件展示和本机预览统一 v52，图片缓存保留。
