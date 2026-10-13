@@ -1,0 +1,482 @@
+[
+  {
+    "width": 320,
+    "role": "hus",
+    "theme": "light",
+    "view": "today",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "hus",
+    "theme": "light",
+    "view": "diet",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "hus",
+    "theme": "light",
+    "view": "train",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "hus",
+    "theme": "light",
+    "view": "record",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "hus",
+    "theme": "dark",
+    "view": "today",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "hus",
+    "theme": "dark",
+    "view": "diet",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "hus",
+    "theme": "dark",
+    "view": "train",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "hus",
+    "theme": "dark",
+    "view": "record",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "wife",
+    "theme": "light",
+    "view": "today",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "wife",
+    "theme": "light",
+    "view": "diet",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "wife",
+    "theme": "light",
+    "view": "train",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "wife",
+    "theme": "light",
+    "view": "record",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "wife",
+    "theme": "dark",
+    "view": "today",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "wife",
+    "theme": "dark",
+    "view": "diet",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "wife",
+    "theme": "dark",
+    "view": "train",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 320,
+    "role": "wife",
+    "theme": "dark",
+    "view": "record",
+    "hero": 358.390625,
+    "first": 358.390625,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "hus",
+    "theme": "light",
+    "view": "today",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "hus",
+    "theme": "light",
+    "view": "diet",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "hus",
+    "theme": "light",
+    "view": "train",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "hus",
+    "theme": "light",
+    "view": "record",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "hus",
+    "theme": "dark",
+    "view": "today",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "hus",
+    "theme": "dark",
+    "view": "diet",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "hus",
+    "theme": "dark",
+    "view": "train",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "hus",
+    "theme": "dark",
+    "view": "record",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "wife",
+    "theme": "light",
+    "view": "today",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "wife",
+    "theme": "light",
+    "view": "diet",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "wife",
+    "theme": "light",
+    "view": "train",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "wife",
+    "theme": "light",
+    "view": "record",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "wife",
+    "theme": "dark",
+    "view": "today",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "wife",
+    "theme": "dark",
+    "view": "diet",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "wife",
+    "theme": "dark",
+    "view": "train",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 390,
+    "role": "wife",
+    "theme": "dark",
+    "view": "record",
+    "hero": 436.796875,
+    "first": 436.796875,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "hus",
+    "theme": "light",
+    "view": "today",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "hus",
+    "theme": "light",
+    "view": "diet",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "hus",
+    "theme": "light",
+    "view": "train",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "hus",
+    "theme": "light",
+    "view": "record",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "hus",
+    "theme": "dark",
+    "view": "today",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "hus",
+    "theme": "dark",
+    "view": "diet",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "hus",
+    "theme": "dark",
+    "view": "train",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "hus",
+    "theme": "dark",
+    "view": "record",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "wife",
+    "theme": "light",
+    "view": "today",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "wife",
+    "theme": "light",
+    "view": "diet",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "wife",
+    "theme": "light",
+    "view": "train",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "wife",
+    "theme": "light",
+    "view": "record",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "wife",
+    "theme": "dark",
+    "view": "today",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "wife",
+    "theme": "dark",
+    "view": "diet",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "wife",
+    "theme": "dark",
+    "view": "train",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  },
+  {
+    "width": 430,
+    "role": "wife",
+    "theme": "dark",
+    "view": "record",
+    "hero": 481.59375,
+    "first": 481.59375,
+    "statesStable": true,
+    "longDateFits": true
+  }
+]

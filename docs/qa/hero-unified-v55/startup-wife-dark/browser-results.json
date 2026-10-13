@@ -1,0 +1,64 @@
+[
+  {
+    "mode": "cached",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(7, 14, 25, 0.36), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-wife-v2.jpg\"), linear-gradient(rgb(16, 19, 24), rgb(16, 19, 24))",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "0.978196"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "1.78048e-09"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "skip",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(7, 14, 25, 0.36), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-wife-v2.jpg\"), linear-gradient(rgb(16, 19, 24), rgb(16, 19, 24))",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0.00074931"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  }
+]

@@ -9,30 +9,31 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
   const browser=await chromium.launch({headless:true,channel:process.env.PLAYWRIGHT_BROWSER||'chromium'});
   const checks=[];
   const iosStandalone=process.env.DUOFIT_TEST_IOS_STANDALONE==='1';
+  const person=process.env.DUOFIT_STARTUP_PERSON==='wife'?'wife':'hus';
   try{
     for(const mode of (process.env.DUOFIT_STARTUP_MODES||'cached,skip,reduced,guest,guest-skip,cold,missing-session,local').split(',')){
-      const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:mode==='reduced'?'reduce':'no-preference'});
+      const context=await browser.newContext({viewport:{width:390,height:844},colorScheme:process.env.DUOFIT_STARTUP_THEME||'light',reducedMotion:mode==='reduced'?'reduce':'no-preference'});
       if(iosStandalone)await context.addInitScript(()=>{Object.defineProperty(navigator,'userAgent',{get:()=> 'Mozilla/5.0 (iPhone; CPU iPhone OS 26_2 like Mac OS X) AppleWebKit/605.1.15'});Object.defineProperty(navigator,'standalone',{get:()=>true});Object.defineProperty(screen,'height',{get:()=>903});});
-      await context.addInitScript(mode=>{
-        localStorage.clear();window.startupEvents=[];window.revealFrames=[];
+      await context.addInitScript(({mode,person})=>{
+        localStorage.clear();localStorage.setItem('fatloss.me',person);window.startupEvents=[];window.revealFrames=[];
         const date=new Date(),day=[date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');
         const monday=new Date(date);monday.setDate(date.getDate()-((date.getDay()+6)%7));
         const week=[monday.getFullYear(),String(monday.getMonth()+1).padStart(2,'0'),String(monday.getDate()).padStart(2,'0')].join('-');
         const profile={version:1,goals:['建立运动习惯'],focus:['全身'],age:32,height:172,weight:76,target:'',health:['暂时没有'],frequency:'每周 3 次',duration:'10 分钟',equipment:[],diet:'',notes:['','',''],confirmedAt:new Date().toISOString(),planStartDate:day};
-        window.fixturePull={member:{person:'hus',family:'fixture-family'},profile,checkins:[],measures:[],weeks:[{weekStart:week,body:{reviewedAt:new Date().toISOString()}}],partnerActivity:[],partnerTrend:[]};
+        window.fixturePull={member:{person,family:'fixture-family'},profile,checkins:[],measures:[],weeks:[{weekStart:week,body:{reviewedAt:new Date().toISOString()}}],partnerActivity:[],partnerTrend:[]};
         if(!['guest','guest-skip','local','missing-session'].includes(mode)){
           localStorage.setItem('duofit.auth.v1',JSON.stringify({access_token:'fixture',refresh_token:'fixture',expires_at:Date.now()/1000+3600,user:{id:'fixture-user'}}));
           localStorage.setItem('duofit.paired.v1','1');
           if(mode!=='cold')localStorage.setItem('duofit.profile.v1.fixture-user',JSON.stringify({member:window.fixturePull.member,profile,weeks:{[week]:{reviewedAt:new Date().toISOString()}}}));
         }
         if(mode==='missing-session')localStorage.setItem('duofit.paired.v1','1');
-        if(mode==='local')localStorage.setItem('fatloss.me','hus');
+        if(mode==='local')localStorage.setItem('fatloss.me',person);
         document.addEventListener('DOMContentLoaded',()=>{
           const view=document.querySelector('#view');
           const sample=()=>{const picker=document.querySelector('#pick');if(picker?.classList.contains('leaving'))window.revealFrames.push({scrollY:window.scrollY,opacity:getComputedStyle(picker).opacity});requestAnimationFrame(sample);};requestAnimationFrame(sample);
           new MutationObserver(()=>window.startupEvents.push({type:'render',phase:document.querySelector('#lm').dataset.phase,booting:document.body.classList.contains('booting')})).observe(view,{childList:true});
         });
-      },mode);
+      },{mode,person});
       let releaseConfig;const configReady=new Promise(resolve=>releaseConfig=resolve);
       let releaseCloud;const cloudReady=new Promise(resolve=>releaseCloud=resolve);
       const requests=[],errors=[];
@@ -60,10 +61,11 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
       assert.equal(await page.locator('#appTabs').isVisible(),false);
       assert.equal(await page.locator('#view').innerHTML(),'');
       assert.equal(await page.locator('#lm').getAttribute('data-phase'),'start');
-      const early=await page.evaluate(()=>({scroll:scrollY,boot:window.duoBootViewport||null,root:getComputedStyle(document.documentElement).backgroundColor,picker:getComputedStyle(document.querySelector('#pick')).backgroundColor}));
+      const early=await page.evaluate(()=>({scroll:scrollY,boot:window.duoBootViewport||null,root:getComputedStyle(document.documentElement).backgroundColor,rootImage:getComputedStyle(document.documentElement).backgroundImage,picker:getComputedStyle(document.querySelector('#pick')).backgroundColor}));
       assert.equal(early.scroll,iosStandalone?60:0,'native start is placed BEFORE blocked config/auth scripts');
       if(iosStandalone)assert.equal(early.boot.phase,'before-config');
-      assert(!['rgb(255, 255, 255)','rgb(253, 250, 246)'].includes(early.root),'launch root has no white/cream fallback');
+      assert.equal(early.root,'rgba(0, 0, 0, 0)','launch root is transparent before config');
+      assert(early.rootImage.includes('today-'+person+'-v2.jpg'),'same home scene already backs launch');
       assert.equal(early.picker,'rgba(0, 0, 0, 0)','fixed entry layer must not sample an opaque white top');
       if(mode==='cached')await page.screenshot({path:path.join(output,'first-paint-mobile.png')});
       releaseConfig();
@@ -88,6 +90,7 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
           if(iosStandalone){
             await page.waitForFunction(()=>window.scrollY===60);
             const frames=await page.evaluate(()=>window.revealFrames);
+            assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).backgroundImage),early.rootImage,'root scene remains identical through reveal');
             assert(frames.length>0,mode+' has reveal frames');
             assert(frames.every(f=>f.scrollY===60),mode+' reaches final status inset BEFORE any home reveal frame: '+JSON.stringify(frames.slice(0,3)));
           }

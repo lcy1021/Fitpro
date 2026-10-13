@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=54">
-<link rel="stylesheet" href="design-system/components.css?v=54">
+<link rel="stylesheet" href="design-system/tokens.css?v=55">
+<link rel="stylesheet" href="design-system/components.css?v=55">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -153,9 +153,9 @@
 
 ## 8. 当前接入与后续维护
 
-v54 启动使用 `--ds-launch-sky`（浅 #B9E4F8／深 #233F51），固定入场层无不透明奶油背景色。受限主屏幕顶部定位在配置加载前执行，诊断包含 earlyStart；沿用v51设备条件、v52首页揭示顺序，原生闪白仍待手机确认。见[本轮QA](qa/hero-natural-v54/README.md)。
+v55 从文档初始就使用透明根画布与今日原场景，不再先显示启动天空色；根据既有身份选择蓝粉首图并预加载。入场顶部96px透明，之后到280px渐入内容底色。配置前的受限iOS定位沿用v51守卫；不得删除已真机确认有效的定位。原生轻闪仍待手机确认，见[QA](qa/hero-unified-v55/README.md)。
 
-v54 的前景磨砂通过 `--ds-hero-title-size`（36px）、`--ds-hero-glass-blur`（10px）、`--ds-hero-glass-tint`（18%）维护。信息区伪元素向上延伸64px，自身纹理以 `--ds-hero-texture-blur:4px` 模糊，再配羽化遮罩与10px backdrop-filter，独立于角色层，无卡片边框，不覆盖人物面部。今日原图下缘已烘焙白色，新增独立虚化草地 `assets/page-hero/meadow-glass-v1.jpg` 补足确认稿的前景颜色，蓝粉共用；`--ds-hero-glass-scene-tint` 浅色64%、深色88%覆盖为页面底色以保证可读性。其他三页仅使用自身场景的磨砂，不叠草地。新增纹理没有角色／文字，原始七张场景不改；独立图片缓存预热包含该资源。见[确认稿、对照与 QA](qa/header-compact-v53/README.md)。
+v55 四页共用 `--ds-hero-glass-blur:16px`、`--ds-hero-texture-blur:16px`，伪元素向上延伸80px、左右各延伸36px，遮罩从透明渐入再渐出。`--ds-hero-glass-scene-tint` 浅48%／深80%，避免在原图已白化下缘只叠白色。今日色源仍为 meadow-glass-v1.jpg；其他三页通过自身 `--ds-hero-image` 下部取样，不跨场景套图。`--ds-hero-glass-position` 今日50%、饮食69%、训练72%、记录默认71%，用于避开重复角色特征。角色图像层不被整体模糊，数据文字独立清晰。见[四页统一QA](qa/hero-unified-v55/README.md)。
 
 
 v47 按用户手机端反馈移除卡片外壳和餐卡标题的云朵图层，改为蓝粉身份对应的柔和渐变；原版角色、标题小字、数据和两级投影保留。四页、蓝粉、浅深和窄屏对照见[卡片背景 QA](qa/card-cloud-v47/README.md)。

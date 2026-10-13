@@ -1,0 +1,234 @@
+[
+  {
+    "mode": "cached",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "0.978166"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "2.13336e-10"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "skip",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0.000746675"
+      },
+      "frames": 28,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "reduced",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "0"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "guest",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": null,
+      "last": null,
+      "frames": 0,
+      "positions": []
+    },
+    "errors": []
+  },
+  {
+    "mode": "guest-skip",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": null,
+      "last": null,
+      "frames": 0,
+      "positions": []
+    },
+    "errors": []
+  },
+  {
+    "mode": "cold",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0.00306978"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "missing-session",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 0,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 0,
+        "opacity": "0.00075031"
+      },
+      "frames": 27,
+      "positions": [
+        0
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "local",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0.00075587"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  }
+]
