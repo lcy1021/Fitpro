@@ -32,16 +32,17 @@
 | 三处餐卡样式不一致 / 长食物被截 | 共用 helper 与 CSS，是否遗留 `.note / .logged` 或历史专属大背景；320px 与长文本 | 不新增一层页面级覆盖，不减少文字完整性换取“整齐” | 合成 `theme-preview.html`；餐次 QA |
 | 伴侣没显示详情 | 是否配对、本人/伴侣开关、日期范围、按日 RPC 状态；未知状态与已关闭区分 | 不回退旧 store 内伴侣健康数据，不把未同步当成零记录 | `tests/partner-records-browser.js`、`tests/cloud-connection.js` |
 | 新角色看起来像另一套形象 / 餐卡细节又丢失 | `assets/mascots.md`原版、`mascots.js`运行引用、同屏截图；角色帽子/发型/轮廓/服装/比例与背景/文字分别核对 | 不只用颜色相近判断一致，不通过重新生成角色补小道具，不把默认线框当填充选中 | 角色与卡片QA、组件展示页、`tests/design-system.js` |
+| 主屏幕首开灵动岛白条，轻滚后可显示图 | 设备版本、standalone、屏幕与视口高度差、safeTop、首开／手动 scrollY；先读 [v51 已确认解决方案](qa/status-inset-v51/README.md) | 不先要求重装，不重复补偿 padding／负边距，不把 1px 滚动或桌面截图当原生验收 | `tests/status-scroll-browser.js`、`tests/viewport-diagnostics-browser.js`、v51 guards 与真机 |
 | 设置被挡 / 齿轮被裁 | 分别检查导航实际高+安全区、SVG viewBox 和描边范围 | 不只修底部空白就宣布图标已修好 | 设置安全区与图标 QA |
 
 ## 3. 已确认的问题、修改与证据
 
-### 2026-10-13：按设备实测顶部预留调整初始滚动（v51，已发布／真机待验收）
+### 2026-10-13：按设备实测顶部预留调整初始滚动（v51，已发布／用户真机确认解决）
 
-- **新增实测**：用户 v50 诊断：主屏幕模式为 true，宽 430，屏幕高 932，inner/client/visual 高均 873，offsetTop=0，scale=1，safeTop=0，safeBottom=34。首开已实际 scrollY=1、heroTop=0；手动滚动为 72、heroTop=-71。由此排除旧代码和 1px 未执行；59px 差值与截图白栏高度相符。WebKit `insetClipLayerRect` 按 inset−scroll 缩减裁剪，支持“1px 未跨过原生顶部预留”的判断；该源码与本机行为对应仍需最终真机确认。
+- **新增实测**：用户 v50 诊断：主屏幕模式为 true，宽 430，屏幕高 932，inner/client/visual 高均 873，offsetTop=0，scale=1，safeTop=0，safeBottom=34。首开已实际 scrollY=1、heroTop=0；手动滚动为 72、heroTop=-71。由此排除旧代码和 1px 未执行；59px 差值与截图白栏高度相符。WebKit `insetClipLayerRect` 按 inset−scroll 缩减裁剪，支持“1px 未跨过原生顶部预留”的判断；底层机制为实测与源码支持的判断，未直接调试用户系统构建。2026-10-13 用户反馈「可以终于解决了」，确认最终效果。
 - **修复**：移除 1px 额外留白。只在 iOS 主屏幕、竖屏、屏幕宽与网页宽一致、顶部安全区为 0、未缩放、键盘未改变可视视口且高度差 20–80px 的情况下，以高度差+1 作为实际滚动起点。用户设备为 60px；自然滚动整个场景穿过顶部预留，复现用户喜欢的轻滚效果，不再用负 margin／增加表头高度模拟。正常覆盖布局、普通浏览器、横屏和键盘／缩放状态返回起点 0；正在阅读、手势或弹窗仍不重置。旧家庭模式角色切换按钮使用 `--ds-native-top-inset` 保持可点击，私人模式仍隐藏。
 - **验证**：96 组 320/390/430×四页×蓝粉×浅深×浏览器/受限主屏幕行为回归；实际 430×873 / screen932 场景与六种排除条件；诊断复制保留首开和首次滚动证据；启动所有既有路径、设计系统、场景与 SW。对照截图仅网页，不伪造原生状态栏，见[QA](qa/status-inset-v51/README.md)。
-- **发布**：提交 `a1ddd06`，GitHub Pages [38336647828](https://github.com/lcy1021/Fitpro/actions/runs/38336647828) 成功；线上 9 个应用／样式／预览文件 SHA-256 与本机一致，见 [发布核验](qa/status-inset-v51/release-verification.json)。原生状态栏仍待用户真机验收。核心 CSS/JS、SW CORE、组件展示与本机预览 v51；独立图片缓存继续保留。未改 config、记录、身份或健康数据；用户诊断只在文档记录必要几何值，不提交整份连接日志。
+- **发布**：提交 `a1ddd06`，GitHub Pages [38336647828](https://github.com/lcy1021/Fitpro/actions/runs/38336647828) 成功；线上 9 个应用／样式／预览文件 SHA-256 与本机一致，见 [发布核验](qa/status-inset-v51/release-verification.json)。2026-10-13 已获用户真机确认解决；完整[排查复盘与复用条件](qa/status-inset-v51/README.md)记录失败尝试、关键证据和验证边界。核心 CSS/JS、SW CORE、组件展示与本机预览 v51；独立图片缓存继续保留。未改 config、记录、身份或健康数据；用户诊断只在文档记录必要几何值，不提交整份连接日志。
 
 ### 2026-10-13：首屏白条仍在，补充设备运行诊断（v50，已发布；白条仍未解决）
 
