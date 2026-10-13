@@ -1,0 +1,98 @@
+[
+  {
+    "role": "hus",
+    "theme": "light",
+    "width": 320,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  },
+  {
+    "role": "wife",
+    "theme": "light",
+    "width": 320,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  },
+  {
+    "role": "hus",
+    "theme": "dark",
+    "width": 320,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  },
+  {
+    "role": "wife",
+    "theme": "dark",
+    "width": 320,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  },
+  {
+    "role": "hus",
+    "theme": "light",
+    "width": 390,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  },
+  {
+    "role": "wife",
+    "theme": "light",
+    "width": 390,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  },
+  {
+    "role": "hus",
+    "theme": "dark",
+    "width": 390,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  },
+  {
+    "role": "wife",
+    "theme": "dark",
+    "width": 390,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  }
+]

@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=56">
-<link rel="stylesheet" href="design-system/components.css?v=56">
+<link rel="stylesheet" href="design-system/tokens.css?v=57">
+<link rel="stylesheet" href="design-system/components.css?v=57">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -126,7 +126,7 @@
 
 ## 6. 状态与动效
 
-v56 引导背景用 `--ds-entry-background`：蓝粉柔和径向渐变加完整页面底色渐变。`.pick.lm-pick` 与 `.lm::before` 共用，不保留顶部透明缺口或渐隐遮罩，以免首页人物和山水叠进引导。根画布仍透明，首页场景与受限 iOS 起点仍预备；引导在页面完成定位后整体淡出。组件页提供独立引导背景样例。
+v57 引导背景用 `--ds-entry-background`：蓝粉柔和径向渐变加完整页面底色渐变。`.pick.lm-pick` 与 `.lm::before` 共用，不保留顶部透明缺口或渐隐遮罩，以免首页人物和山水叠进引导。根画布仍透明，首页场景与受限 iOS 起点仍预备；引导在页面完成定位后整体淡出。组件页提供独立引导背景样例。v57 引导使用绝对定位，以 `--ds-entry-scroll-top` 锚定当前文档滚动位置；打开／早期定位／显示首页／调整视口及输入引起的文档滚动时同步，避免全宽固定层参与 Safari 顶部采样。引导仍锁定背景滚动，内部可滚动；不得用全屏 fixed 背景代替。原生过渡仍需真机确认。
 
 - 正常、选中、未选中、焦点、禁用、加载、空态、错误、只读都要定义。组件页可实际切换角色、主题、餐次状态，展示这些状态。
 - 新增小交互用 `--ds-motion-fast:100ms / --ds-motion-normal:200ms`；只过渡背景、颜色、阴影和轻微按压。`prefers-reduced-motion` 下新增组件去掉过渡和按压变形；入场大动画继续沿用 App 已有跳过与减弱逻辑。

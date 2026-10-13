@@ -1,0 +1,80 @@
+[
+  {
+    "mode": "cached",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(7, 14, 25, 0.36), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-wife-v2.jpg\"), linear-gradient(rgb(16, 19, 24), rgb(16, 19, 24))",
+      "picker": "rgba(0, 0, 0, 0)",
+      "entryPosition": "absolute",
+      "entryTop": 0
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0.000747674",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "skip",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "linear-gradient(rgba(7, 14, 25, 0.36), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-wife-v2.jpg\"), linear-gradient(rgb(16, 19, 24), rgb(16, 19, 24))",
+      "picker": "rgba(0, 0, 0, 0)",
+      "entryPosition": "absolute",
+      "entryTop": 0
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0.000749855",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  }
+]

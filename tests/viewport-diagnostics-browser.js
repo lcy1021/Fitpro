@@ -19,12 +19,12 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
   await page.locator('.private-settings summary').click();
   await page.locator('[data-coach="connection-copy"]').click();
   const text=await page.evaluate(()=>window.copiedDiagnostic),report=JSON.parse(text.slice(text.indexOf('\n')+1));
-  assert(text.startsWith('DuoFit 连接诊断 v56\n'));
-  assert.equal(report.page.version,56);assert.equal(report.page.trace.firstApplied.page,'today');assert.equal(report.page.trace.firstUserScroll.scrollY,90);
+  assert(text.startsWith('DuoFit 连接诊断 v57\n'));
+  assert.equal(report.page.version,57);assert.equal(report.page.trace.firstApplied.page,'today');assert.equal(report.page.trace.firstUserScroll.scrollY,90);
   assert.equal(report.page.current.page,'record');assert(Array.isArray(report.connection));
   assert(!/fixture-family|local-theme-fixture|恢复码|access_token|refresh_token|腰腹|76/.test(JSON.stringify(report.page)));
   assert.deepEqual(errors,[]);
-  fs.writeFileSync('docs/qa/hero-unified-v55/diagnostics.json',JSON.stringify({passed:true,nativeStatusBarVerified:false,first,report},null,2)+'\n');
+  fs.writeFileSync('docs/qa/intro-handoff-v57/diagnostics.json',JSON.stringify({passed:true,nativeStatusBarVerified:false,first,report},null,2)+'\n');
   console.log('PASS first-open evidence, first user scroll, cross-tab retention, actual copy button and private-data exclusion');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exit(1)});

@@ -1,0 +1,155 @@
+{
+  "passed": true,
+  "nativeStatusBarVerified": false,
+  "first": {
+    "version": 57,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_2 like Mac OS X) AppleWebKit/605.1.15",
+    "standalone": true,
+    "displayStandalone": false,
+    "entryLayer": {
+      "position": "absolute",
+      "open": false
+    },
+    "earlyStart": {
+      "target": 60,
+      "scrollY": 0,
+      "phase": "before-config"
+    },
+    "scrollStartEnabled": true,
+    "targetScrollY": 60,
+    "current": {
+      "page": "today",
+      "scrollY": 60,
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "screenWidth": 390,
+      "screenHeight": 903,
+      "clientHeight": 844,
+      "visualViewport": {
+        "height": 844,
+        "offsetTop": 0,
+        "pageTop": 60,
+        "scale": 1
+      },
+      "safeTop": "0px",
+      "safeBottom": "0px",
+      "heroTop": -60,
+      "heroHeight": 436.796875,
+      "bodyOverflow": "visible",
+      "visibility": "visible"
+    },
+    "trace": {
+      "attempts": 3,
+      "lastBlocked": "already-scrolled",
+      "firstApplied": {
+        "page": "today",
+        "scrollY": 60,
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "screenWidth": 390,
+        "screenHeight": 903,
+        "clientHeight": 844,
+        "visualViewport": {
+          "height": 844,
+          "offsetTop": 0,
+          "pageTop": 60,
+          "scale": 1
+        },
+        "safeTop": "0px",
+        "safeBottom": "0px",
+        "heroTop": -60,
+        "heroHeight": 436.796875,
+        "bodyOverflow": "visible",
+        "visibility": "visible"
+      },
+      "firstUserScroll": null
+    }
+  },
+  "report": {
+    "page": {
+      "version": 57,
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_2 like Mac OS X) AppleWebKit/605.1.15",
+      "standalone": true,
+      "displayStandalone": false,
+      "entryLayer": {
+        "position": "absolute",
+        "open": false
+      },
+      "earlyStart": {
+        "target": 60,
+        "scrollY": 0,
+        "phase": "before-config"
+      },
+      "scrollStartEnabled": true,
+      "targetScrollY": 60,
+      "current": {
+        "page": "record",
+        "scrollY": 3209,
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "screenWidth": 390,
+        "screenHeight": 903,
+        "clientHeight": 844,
+        "visualViewport": {
+          "height": 844,
+          "offsetTop": 0,
+          "pageTop": 3209,
+          "scale": 1
+        },
+        "safeTop": "0px",
+        "safeBottom": "0px",
+        "heroTop": -3209,
+        "heroHeight": 436.796875,
+        "bodyOverflow": "visible",
+        "visibility": "visible"
+      },
+      "trace": {
+        "attempts": 8,
+        "lastBlocked": "already-scrolled",
+        "firstApplied": {
+          "page": "today",
+          "scrollY": 60,
+          "innerWidth": 390,
+          "innerHeight": 844,
+          "screenWidth": 390,
+          "screenHeight": 903,
+          "clientHeight": 844,
+          "visualViewport": {
+            "height": 844,
+            "offsetTop": 0,
+            "pageTop": 60,
+            "scale": 1
+          },
+          "safeTop": "0px",
+          "safeBottom": "0px",
+          "heroTop": -60,
+          "heroHeight": 436.796875,
+          "bodyOverflow": "visible",
+          "visibility": "visible"
+        },
+        "firstUserScroll": {
+          "page": "today",
+          "scrollY": 90,
+          "innerWidth": 390,
+          "innerHeight": 844,
+          "screenWidth": 390,
+          "screenHeight": 903,
+          "clientHeight": 844,
+          "visualViewport": {
+            "height": 844,
+            "offsetTop": 0,
+            "pageTop": 90,
+            "scale": 1
+          },
+          "safeTop": "0px",
+          "safeBottom": "0px",
+          "heroTop": -90,
+          "heroHeight": 436.796875,
+          "bodyOverflow": "visible",
+          "visibility": "visible"
+        }
+      }
+    },
+    "connection": []
+  }
+}

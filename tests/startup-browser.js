@@ -30,7 +30,7 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
         if(mode==='local')localStorage.setItem('fatloss.me',person);
         document.addEventListener('DOMContentLoaded',()=>{
           const view=document.querySelector('#view');
-          const sample=()=>{const picker=document.querySelector('#pick');if(picker?.classList.contains('leaving'))window.revealFrames.push({scrollY:window.scrollY,opacity:getComputedStyle(picker).opacity});requestAnimationFrame(sample);};requestAnimationFrame(sample);
+          const sample=()=>{const picker=document.querySelector('#pick');if(picker?.classList.contains('leaving'))window.revealFrames.push({scrollY:window.scrollY,opacity:getComputedStyle(picker).opacity,position:getComputedStyle(picker).position,top:picker.getBoundingClientRect().top,rootColor:getComputedStyle(document.documentElement).backgroundColor});requestAnimationFrame(sample);};requestAnimationFrame(sample);
           new MutationObserver(()=>window.startupEvents.push({type:'render',phase:document.querySelector('#lm').dataset.phase,booting:document.body.classList.contains('booting')})).observe(view,{childList:true});
         });
       },{mode,person});
@@ -61,12 +61,14 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
       assert.equal(await page.locator('#appTabs').isVisible(),false);
       assert.equal(await page.locator('#view').innerHTML(),'');
       assert.equal(await page.locator('#lm').getAttribute('data-phase'),'start');
-      const early=await page.evaluate(()=>({scroll:scrollY,boot:window.duoBootViewport||null,root:getComputedStyle(document.documentElement).backgroundColor,rootImage:getComputedStyle(document.documentElement).backgroundImage,picker:getComputedStyle(document.querySelector('#pick')).backgroundColor}));
+      const early=await page.evaluate(()=>({scroll:scrollY,boot:window.duoBootViewport||null,root:getComputedStyle(document.documentElement).backgroundColor,rootImage:getComputedStyle(document.documentElement).backgroundImage,picker:getComputedStyle(document.querySelector('#pick')).backgroundColor,entryPosition:getComputedStyle(document.querySelector('#pick')).position,entryTop:document.querySelector('#pick').getBoundingClientRect().top}));
       assert.equal(early.scroll,iosStandalone?60:0,'native start is placed BEFORE blocked config/auth scripts');
       if(iosStandalone)assert.equal(early.boot.phase,'before-config');
       assert.equal(early.root,'rgba(0, 0, 0, 0)','launch root is transparent before config');
       assert(early.rootImage.includes('today-'+person+'-v2.jpg'),'same home scene already backs launch');
       assert.equal(early.picker,'rgba(0, 0, 0, 0)','entry uses an independent gradient without changing root transparency');
+      assert.equal(early.entryPosition,'absolute','intro must not be a fixed edge color sampler');
+      assert.equal(early.entryTop,0,'document entry stays aligned after early native inset positioning');
       if(mode==='cached')await page.screenshot({path:path.join(output,'first-paint-mobile.png')});
       releaseConfig();
       if(mode!=='local')await page.waitForSelector('#duoCoach',{state:'attached'});
@@ -94,6 +96,9 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
             assert(frames.length>0,mode+' has reveal frames');
             assert(frames.every(f=>f.scrollY===60),mode+' reaches final status inset BEFORE any home reveal frame: '+JSON.stringify(frames.slice(0,3)));
           }
+          const entryFrames=await page.evaluate(()=>window.revealFrames);
+          assert(entryFrames.length>0);
+          assert(entryFrames.every(f=>f.position==='absolute'&&Math.abs(f.top)<1&&f.rootColor==='rgba(0, 0, 0, 0)'),'entry fade keeps transparent root and stable document positioning');
           const events=await page.evaluate(()=>window.startupEvents);
           assert(!events.some(e=>e.type==='render'&&e.phase==='run'),'no home construction during running animation');
           if(['cached','skip','reduced'].includes(mode)){

@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');assert(fs.readFileSync(path.join(root,'sw.js'),'utf8').includes('notificationclick'),'push click handler');
-assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=56"></script>'), 'config loads before coaching');
+assert(html.indexOf('<script src="config.js"></script>') < html.indexOf('<script src="private-coach.js?v=57"></script>'), 'config loads before coaching');
 const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('</script>'));
 const memory = new Map();
 const elements = new Map();
@@ -14,7 +14,7 @@ const element = key => {
   return elements.get(key);
 };
 const sandbox = {
-  window: {FATLOSS_CONFIG: {}}, localStorage: {getItem:k=>memory.get(k) ?? null,setItem:(k,v)=>memory.set(k,String(v)),removeItem:k=>memory.delete(k)},
+  window: {FATLOSS_CONFIG: {},duoAnchorEntry(){}}, localStorage: {getItem:k=>memory.get(k) ?? null,setItem:(k,v)=>memory.set(k,String(v)),removeItem:k=>memory.delete(k)},
   document: {querySelector:element,querySelectorAll:()=>[],getElementById:element,documentElement:{...element('html'),style:{setProperty:(key,value)=>rootStyles.set(key,value)}},body:{style:{}},addEventListener(){},activeElement:{blur(){}}},
   location: {hash:'',pathname:'/',search:'',protocol:'file:'}, history:{replaceState(){}}, navigator:{},
   setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame:f=>f(), matchMedia:()=>({matches:true}), getComputedStyle:e=>({backgroundImage:e===element('#pageHero')?`url("${element('html').classList.contains('me-wife')?'wife':'hus'}-scene.jpg")`:'none',getPropertyValue:key=>{const wife=e.classList.contains('me-wife');return key==='--app-top-light'?(wife?'#FDEBF0':'#E4F2FB'):(wife?'#30232B':'#172B36')}}), console, Date, AbortController, URL,
