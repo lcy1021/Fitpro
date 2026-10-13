@@ -15,7 +15,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=49">
+<link rel="stylesheet" href="design-system/tokens.css?v=50">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -535,8 +535,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=49">
-<link rel="stylesheet" href="private-coach.css?v=49">
+<link rel="stylesheet" href="design-system/components.css?v=50">
+<link rel="stylesheet" href="private-coach.css?v=50">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -670,8 +670,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=49"></script>
-<script src="design-system/mascots.js?v=49"></script>
+<script src="private-coach.js?v=50"></script>
+<script src="design-system/mascots.js?v=50"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1353,6 +1353,26 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 // iOS can composite scrolling content beneath its status bar while painting a
 // fallback at scrollY=0. Use a compensated 1px start, never a guessed safe-area height.
 let heroScrollStartReady=false,heroScrollTouch=false,heroScrollTimer=null;
+const heroViewportTrace={attempts:0,lastBlocked:null,firstApplied:null,firstUserScroll:null};
+function pageViewportSnapshot(){
+  const root=document.documentElement,hero=document.querySelector('#pageHero');
+  const probe=document.createElement('div');
+  probe.style.cssText='position:absolute;visibility:hidden;pointer-events:none;width:0;height:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)';
+  document.body.appendChild(probe);
+  const safeStyle=getComputedStyle(probe),safeTop=safeStyle.paddingTop,safeBottom=safeStyle.paddingBottom;
+  probe.remove();
+  const vv=window.visualViewport,rect=hero?.getBoundingClientRect();
+  return {page:tab,scrollY:window.scrollY,innerWidth:window.innerWidth,innerHeight:window.innerHeight,
+    screenWidth:window.screen.width,screenHeight:window.screen.height,clientHeight:root.clientHeight,
+    visualViewport:vv?{height:vv.height,offsetTop:vv.offsetTop,pageTop:vv.pageTop,scale:vv.scale}:null,
+    safeTop,safeBottom,heroTop:rect?.top??null,heroHeight:rect?.height??null,
+    bodyOverflow:getComputedStyle(document.body).overflowY,visibility:document.visibilityState};
+}
+function pageViewportDiagnostics(){
+  return {version:50,userAgent:navigator.userAgent,standalone:navigator.standalone===true,
+    displayStandalone:matchMedia('(display-mode: standalone)').matches,
+    compensatedStart:heroScrollStartReady,current:pageViewportSnapshot(),trace:heroViewportTrace};
+}
 function prepareHeroScrollStart(){
   if(heroScrollStartReady)return;
   const ios=/(?:iPhone|iPad|iPod)/.test(navigator.userAgent);
@@ -1363,7 +1383,7 @@ function prepareHeroScrollStart(){
   window.addEventListener("scroll",settle,{passive:true});
   window.addEventListener("scrollend",restoreHeroScrollStart,{passive:true});
   window.addEventListener("touchstart",()=>{heroScrollTouch=true;},{passive:true});
-  window.addEventListener("touchend",()=>{heroScrollTouch=false;settle();},{passive:true});
+  window.addEventListener("touchend",()=>{heroScrollTouch=false;if(!heroViewportTrace.firstUserScroll&&window.scrollY>1)heroViewportTrace.firstUserScroll=pageViewportSnapshot();settle();},{passive:true});
   window.addEventListener("touchcancel",()=>{heroScrollTouch=false;settle();},{passive:true});
   window.addEventListener("pageshow",restoreHeroScrollStart);
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")restoreHeroScrollStart();});
@@ -1372,15 +1392,19 @@ function restoreHeroScrollStart(){
   if(!heroScrollStartReady)return;
   requestAnimationFrame(()=>{
     // Do not interrupt reading, a drag/bounce, keyboard input or any modal.
-    if(heroScrollTouch||window.scrollY<0||window.scrollY>=1||
-       document.visibilityState!=="visible"||document.querySelector('.pick.open,.run.open,#duoCoach:not([hidden])')||
-       getComputedStyle(document.body).overflowY==="hidden"||
-       /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName||""))return;
+    heroViewportTrace.attempts++;
+    const blocked=heroScrollTouch?'touch':window.scrollY<0?'overscroll':window.scrollY>=1?'already-scrolled':
+      document.visibilityState!=="visible"?'hidden':document.querySelector('.pick.open,.run.open,#duoCoach:not([hidden])')?'dialog':
+      getComputedStyle(document.body).overflowY==="hidden"?'overflow-hidden':
+      /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName||"")?'input':null;
+    if(blocked){heroViewportTrace.lastBlocked=blocked;return;}
     window.scrollTo({top:1,left:0,behavior:"instant"});
+    requestAnimationFrame(()=>{if(!heroViewportTrace.firstApplied)heroViewportTrace.firstApplied=pageViewportSnapshot();});
   });
 }
 function scrollToPageStart(){
   window.scrollTo({top:heroScrollStartReady?1:0,left:0,behavior:"instant"});
+  if(heroScrollStartReady)requestAnimationFrame(()=>{if(!heroViewportTrace.firstApplied)heroViewportTrace.firstApplied=pageViewportSnapshot();});
 }
 function renderHeader(){
   prepareHeroScrollStart();
@@ -2396,6 +2420,7 @@ $("#goalForm").addEventListener("submit",e=>{
 
 if(CLOUD){
   privateCoach=new window.DuoCoach({
+    pageDiagnostics:pageViewportDiagnostics,
     family:()=>family,
     initialMeasures:person=>Object.fromEntries(Object.entries(store.measures).filter(([,body])=>body.person===person)),
     needsRole:()=>{if(!$("#pick").classList.contains("open"))openPicker(false);},

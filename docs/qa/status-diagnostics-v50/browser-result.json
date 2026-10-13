@@ -1,0 +1,135 @@
+{
+  "passed": true,
+  "nativeStatusBarVerified": false,
+  "first": {
+    "version": 50,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_2 like Mac OS X) AppleWebKit/605.1.15",
+    "standalone": true,
+    "displayStandalone": false,
+    "compensatedStart": true,
+    "current": {
+      "page": "today",
+      "scrollY": 1,
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "screenWidth": 390,
+      "screenHeight": 844,
+      "clientHeight": 844,
+      "visualViewport": {
+        "height": 844,
+        "offsetTop": 0,
+        "pageTop": 1,
+        "scale": 1
+      },
+      "safeTop": "0px",
+      "safeBottom": "0px",
+      "heroTop": 0,
+      "heroHeight": 520,
+      "bodyOverflow": "visible",
+      "visibility": "visible"
+    },
+    "trace": {
+      "attempts": 3,
+      "lastBlocked": "already-scrolled",
+      "firstApplied": {
+        "page": "today",
+        "scrollY": 1,
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "screenWidth": 390,
+        "screenHeight": 844,
+        "clientHeight": 844,
+        "visualViewport": {
+          "height": 844,
+          "offsetTop": 0,
+          "pageTop": 1,
+          "scale": 1
+        },
+        "safeTop": "0px",
+        "safeBottom": "0px",
+        "heroTop": 0,
+        "heroHeight": 520,
+        "bodyOverflow": "visible",
+        "visibility": "visible"
+      },
+      "firstUserScroll": null
+    }
+  },
+  "report": {
+    "page": {
+      "version": 50,
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_2 like Mac OS X) AppleWebKit/605.1.15",
+      "standalone": true,
+      "displayStandalone": false,
+      "compensatedStart": true,
+      "current": {
+        "page": "record",
+        "scrollY": 3293,
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "screenWidth": 390,
+        "screenHeight": 844,
+        "clientHeight": 844,
+        "visualViewport": {
+          "height": 844,
+          "offsetTop": 0,
+          "pageTop": 3293,
+          "scale": 1
+        },
+        "safeTop": "0px",
+        "safeBottom": "0px",
+        "heroTop": -3292,
+        "heroHeight": 520,
+        "bodyOverflow": "visible",
+        "visibility": "visible"
+      },
+      "trace": {
+        "attempts": 7,
+        "lastBlocked": "already-scrolled",
+        "firstApplied": {
+          "page": "today",
+          "scrollY": 1,
+          "innerWidth": 390,
+          "innerHeight": 844,
+          "screenWidth": 390,
+          "screenHeight": 844,
+          "clientHeight": 844,
+          "visualViewport": {
+            "height": 844,
+            "offsetTop": 0,
+            "pageTop": 1,
+            "scale": 1
+          },
+          "safeTop": "0px",
+          "safeBottom": "0px",
+          "heroTop": 0,
+          "heroHeight": 520,
+          "bodyOverflow": "visible",
+          "visibility": "visible"
+        },
+        "firstUserScroll": {
+          "page": "today",
+          "scrollY": 90,
+          "innerWidth": 390,
+          "innerHeight": 844,
+          "screenWidth": 390,
+          "screenHeight": 844,
+          "clientHeight": 844,
+          "visualViewport": {
+            "height": 844,
+            "offsetTop": 0,
+            "pageTop": 90,
+            "scale": 1
+          },
+          "safeTop": "0px",
+          "safeBottom": "0px",
+          "heroTop": -89,
+          "heroHeight": 520,
+          "bodyOverflow": "visible",
+          "visibility": "visible"
+        }
+      }
+    },
+    "connection": []
+  }
+}
