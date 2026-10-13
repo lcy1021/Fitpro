@@ -1,0 +1,62 @@
+[
+  {
+    "mode": "cached",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "0.978175"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "5.16222e-10"
+      },
+      "frames": 23,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "skip",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0.000748492"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  }
+]

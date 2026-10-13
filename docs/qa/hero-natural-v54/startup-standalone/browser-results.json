@@ -1,0 +1,226 @@
+[
+  {
+    "mode": "cached",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0.000748855"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "skip",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0.000752769"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "reduced",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "0"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "guest",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": null,
+      "last": null,
+      "frames": 0,
+      "positions": []
+    },
+    "errors": []
+  },
+  {
+    "mode": "guest-skip",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": null,
+      "last": null,
+      "frames": 0,
+      "positions": []
+    },
+    "errors": []
+  },
+  {
+    "mode": "cold",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "0.9781"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "missing-session",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 0,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 0,
+        "opacity": "0.000745768"
+      },
+      "frames": 27,
+      "positions": [
+        0
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "local",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "0.978126"
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "0"
+      },
+      "frames": 27,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  }
+]

@@ -1,0 +1,194 @@
+[
+  {
+    "mode": "cached",
+    "early": {
+      "scroll": 0,
+      "boot": null,
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 0,
+        "opacity": "0.978121"
+      },
+      "last": {
+        "scrollY": 0,
+        "opacity": "1.81459e-08"
+      },
+      "frames": 27,
+      "positions": [
+        0
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "skip",
+    "early": {
+      "scroll": 0,
+      "boot": null,
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 0,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 0,
+        "opacity": "0.00308185"
+      },
+      "frames": 27,
+      "positions": [
+        0
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "reduced",
+    "early": {
+      "scroll": 0,
+      "boot": null,
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 0,
+        "opacity": "0"
+      },
+      "last": {
+        "scrollY": 0,
+        "opacity": "0"
+      },
+      "frames": 27,
+      "positions": [
+        0
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "guest",
+    "early": {
+      "scroll": 0,
+      "boot": null,
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": null,
+      "last": null,
+      "frames": 0,
+      "positions": []
+    },
+    "errors": []
+  },
+  {
+    "mode": "guest-skip",
+    "early": {
+      "scroll": 0,
+      "boot": null,
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": null,
+      "last": null,
+      "frames": 0,
+      "positions": []
+    },
+    "errors": []
+  },
+  {
+    "mode": "cold",
+    "early": {
+      "scroll": 0,
+      "boot": null,
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 0,
+        "opacity": "0.978252"
+      },
+      "last": {
+        "scrollY": 0,
+        "opacity": "0"
+      },
+      "frames": 27,
+      "positions": [
+        0
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "missing-session",
+    "early": {
+      "scroll": 0,
+      "boot": null,
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 0,
+        "opacity": "1"
+      },
+      "last": {
+        "scrollY": 0,
+        "opacity": "0.000748582"
+      },
+      "frames": 27,
+      "positions": [
+        0
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "local",
+    "early": {
+      "scroll": 0,
+      "boot": null,
+      "root": "rgb(185, 228, 248)",
+      "picker": "rgba(0, 0, 0, 0)"
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "reveal": {
+      "first": {
+        "scrollY": 0,
+        "opacity": "0.978207"
+      },
+      "last": {
+        "scrollY": 0,
+        "opacity": "2.69706e-09"
+      },
+      "frames": 27,
+      "positions": [
+        0
+      ]
+    },
+    "errors": []
+  }
+]

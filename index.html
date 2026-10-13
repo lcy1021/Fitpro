@@ -15,7 +15,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=53">
+<link rel="stylesheet" href="design-system/tokens.css?v=54">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -30,7 +30,8 @@ body{margin:0;min-height:100%;background-color:var(--app-top-color);background-i
   font-family:var(--ds-font);
   font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 /* Keep the app hidden until the initial entry flow is ready, including before scripts load. */
-body.booting{overflow:hidden}
+html:not(.app-hero-active){background-color:var(--ds-launch-sky);background-image:linear-gradient(var(--ds-launch-sky),var(--bg))}
+body.booting{overflow:hidden;min-height:calc(100dvh + var(--ds-boot-scroll-room,0px));background:transparent}
 body.booting > #appShell,body.booting > #appTabs{visibility:hidden}
 button{font:inherit;color:inherit;cursor:pointer;transition:background-color .2s,color .2s,box-shadow .2s,transform .1s}
 button:active{transform:scale(.97)}
@@ -61,13 +62,13 @@ p{margin:0}
 .pick .cancel{border:0;background:transparent;color:var(--muted);font-size:14px;padding:10px}
 
 /* 登录动效（首次进入 / 切换身份） */
-.pick.lm-pick{padding:0;background:var(--bg);overflow-x:hidden;overflow-y:auto;transition:opacity .45s ease}
+.pick.lm-pick{padding:0;background:linear-gradient(var(--ds-launch-sky),var(--bg) 180px);overflow-x:hidden;overflow-y:auto;transition:opacity .45s ease}
 .pick.lm-pick.open{z-index:1100}
 .pick.lm-pick.leaving{opacity:0;pointer-events:none}
 .lm.splash .lm-choice{display:none}
 .lm.splash{cursor:pointer}
 .lm{position:relative;width:min(100%,440px);height:100dvh;min-height:560px;margin:0 auto;overflow:hidden;isolation:isolate;color:var(--ink)}
-.lm::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 4% 44%,color-mix(in srgb,var(--hus-soft) 90%,transparent) 0,transparent 42%),radial-gradient(circle at 102% 43%,color-mix(in srgb,var(--wife-soft) 90%,transparent) 0,transparent 45%),var(--bg)}
+.lm::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 4% 44%,color-mix(in srgb,var(--hus-soft) 90%,transparent) 0,transparent 42%),radial-gradient(circle at 102% 43%,color-mix(in srgb,var(--wife-soft) 90%,transparent) 0,transparent 45%),var(--bg);-webkit-mask-image:linear-gradient(transparent,#000 180px);mask-image:linear-gradient(transparent,#000 180px)}
 .lm::after{content:"";position:absolute;width:270px;height:270px;border-radius:50%;top:190px;left:50%;transform:translateX(-50%);z-index:-1;background:radial-gradient(circle,color-mix(in srgb,var(--surface) 90%,transparent) 0,transparent 70%);filter:blur(3px)}
 .lm-grain{position:absolute;inset:0;opacity:.22;background-image:radial-gradient(var(--hus) 1px,transparent 1px);background-size:26px 26px;-webkit-mask-image:linear-gradient(180deg,transparent 18%,#000 55%,transparent 81%);mask-image:linear-gradient(180deg,transparent 18%,#000 55%,transparent 81%);pointer-events:none}
 .lm-top{position:absolute;z-index:6;left:24px;right:20px;top:calc(22px + env(safe-area-inset-top,0px));display:flex;justify-content:flex-end;align-items:center}
@@ -533,8 +534,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=53">
-<link rel="stylesheet" href="private-coach.css?v=53">
+<link rel="stylesheet" href="design-system/components.css?v=54">
+<link rel="stylesheet" href="private-coach.css?v=54">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -667,9 +668,29 @@ p{margin:0}
   <button class="cancel" data-code-close hidden>完成</button>
 </div></div>
 
+<script id="nativeStart">
+// Run before config/auth scripts. Reserve scroll range even while home is hidden.
+// The bounded native-inset calculation is shared with the later page lifecycle.
+window.duoNativeStartOffset=function(){
+  if(!/(?:iPhone|iPad|iPod)/.test(navigator.userAgent)||!(navigator.standalone===true||matchMedia('(display-mode: standalone)').matches))return 0;
+  const vv=window.visualViewport,gap=screen.height-innerHeight;
+  if(screen.height<=screen.width||Math.abs(screen.width-innerWidth)>1||gap<20||gap>80||
+     parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)>0||
+     (vv&&(Math.abs(vv.scale-1)>.01||Math.abs(vv.height-innerHeight)>1||Math.abs(vv.offsetTop)>1)))return 0;
+  return Math.ceil(gap)+1;
+};
+(function(){
+  const target=window.duoNativeStartOffset();
+  if(!target)return;
+  document.documentElement.style.setProperty('--ds-boot-scroll-room',target+'px');
+  const apply=()=>{if(document.body.classList.contains('booting'))window.scrollTo({top:target,left:0,behavior:'instant'});};
+  apply();requestAnimationFrame(apply);
+  window.duoBootViewport={target,scrollY:window.scrollY,phase:'before-config'};
+})();
+</script>
 <script src="config.js"></script>
-<script src="private-coach.js?v=53"></script>
-<script src="design-system/mascots.js?v=53"></script>
+<script src="private-coach.js?v=54"></script>
+<script src="design-system/mascots.js?v=54"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1369,18 +1390,12 @@ function pageViewportSnapshot(){
 }
 function heroScrollStartOffset(){
   if(!heroScrollStartReady)return 0;
-  const vv=window.visualViewport,gap=window.screen.height-window.innerHeight;
-  // Only match the measured portrait, unzoomed, zero-safe-top layout. Browser
-  // chrome, keyboards and landscape must not be mistaken for the native inset.
-  if(window.screen.height<=window.screen.width||Math.abs(window.screen.width-window.innerWidth)>1||
-     gap<20||gap>80||parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)>0||
-     (vv&&(Math.abs(vv.scale-1)>.01||Math.abs(vv.height-window.innerHeight)>1||Math.abs(vv.offsetTop)>1)))return 0;
-  return Math.ceil(gap)+1;
+  return window.duoNativeStartOffset();
 }
 function pageViewportDiagnostics(){
-  return {version:53,userAgent:navigator.userAgent,standalone:navigator.standalone===true,
+  return {version:54,userAgent:navigator.userAgent,standalone:navigator.standalone===true,
     displayStandalone:matchMedia('(display-mode: standalone)').matches,
-    scrollStartEnabled:heroScrollStartReady,targetScrollY:heroScrollStartOffset(),current:pageViewportSnapshot(),trace:heroViewportTrace};
+    earlyStart:window.duoBootViewport||null,scrollStartEnabled:heroScrollStartReady,targetScrollY:heroScrollStartOffset(),current:pageViewportSnapshot(),trace:heroViewportTrace};
 }
 function prepareHeroScrollStart(){
   if(heroScrollStartReady)return;

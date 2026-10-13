@@ -60,6 +60,11 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
       assert.equal(await page.locator('#appTabs').isVisible(),false);
       assert.equal(await page.locator('#view').innerHTML(),'');
       assert.equal(await page.locator('#lm').getAttribute('data-phase'),'start');
+      const early=await page.evaluate(()=>({scroll:scrollY,boot:window.duoBootViewport||null,root:getComputedStyle(document.documentElement).backgroundColor,picker:getComputedStyle(document.querySelector('#pick')).backgroundColor}));
+      assert.equal(early.scroll,iosStandalone?60:0,'native start is placed BEFORE blocked config/auth scripts');
+      if(iosStandalone)assert.equal(early.boot.phase,'before-config');
+      assert(!['rgb(255, 255, 255)','rgb(253, 250, 246)'].includes(early.root),'launch root has no white/cream fallback');
+      assert.equal(early.picker,'rgba(0, 0, 0, 0)','fixed entry layer must not sample an opaque white top');
       if(mode==='cached')await page.screenshot({path:path.join(output,'first-paint-mobile.png')});
       releaseConfig();
       if(mode!=='local')await page.waitForSelector('#duoCoach',{state:'attached'});
@@ -97,7 +102,7 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
       }
       releaseCloud();
       assert.deepEqual(errors,[],mode+' has no browser exceptions');
-      checks.push({mode,initialHomeHidden:true,entryFinished:true,reveal:await page.evaluate(()=>({first:window.revealFrames[0]||null,last:window.revealFrames.at(-1)||null,frames:window.revealFrames.length,positions:[...new Set(window.revealFrames.map(f=>f.scrollY))]})),errors});await context.close();
+      checks.push({mode,early,initialHomeHidden:true,entryFinished:true,reveal:await page.evaluate(()=>({first:window.revealFrames[0]||null,last:window.revealFrames.at(-1)||null,frames:window.revealFrames.length,positions:[...new Set(window.revealFrames.map(f=>f.scrollY))]})),errors});await context.close();
     }
     fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify(checks,null,2)+'\n');
     console.log('PASS first paint, cached/cold/local startup, guest selection, skip, reduced motion and recovery error');
