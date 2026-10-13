@@ -42,7 +42,7 @@
 - 一般面板与标题氛围层使用 `--ds-surface-gradient`：135度，从近 `--surface` 过渡到角色浅色，浅色为白到浅蓝/粉，深色为深灰到角色暗色。外壳和餐卡标题均不叠云朵图片；餐区使用 `--ds-meal-scene-bg`、餐卡标题使用 `--ds-meal-header-gradient`，维持外壳与白色内卡的层次。角色相关复合 token 须在 `.hus/.wife/.ds-root` 上解析，不能在没有 `--p-*` 的 `:root` 上定义。
 - tab选中填充统一 `--ds-fill-selected:var(--p-ink)` / `--ds-fill-selected-ink:var(--surface)`，未选中透明灰字；无默认线框、无下划线。键盘焦点轮廓保留。餐品 `.meal-art-stage` 以 `--ds-food-tint:52%` 的浅色底托和 `--ds-food-shadow` 轻投影承托真实图片。
 - `--faint` 用于低优先级装饰或禁用，不能作为重要正文色。渐变主按钮沿用现有风格；不要把角色亮色白字默认当作小字号标签，组件页不代表完整 WCAG 认证。
-- 页面顶部保留 `--app-background` 作为普通页面底色；正式四页的场景启用后，`html/body` 的 `background-color` 透明，正文底色由滚动内容 `#appShell` 承担。根画布通过 `--ds-root-hero-image` 复用当前同一张图、共用顶部暗角，画布空白处以背景图层填充 `--bg`。不新增固定的状态栏色块、不强制滚动；v48 删除 v46 已被用户证实无效的 `screen.height-innerHeight` 偏移。此背景分层是针对 iOS 原生取色的修复尝试，尚待用户真机验收，不能把桌面截图当成灵动岛验证。根节点与正文同步 `.me-hus/.me-wife`；浅深 `theme-color` 和 `black-translucent` 元信息保留。详见[顶部画布 QA](qa/status-canvas-v48/README.md)。
+- 页面顶部保留 `--app-background` 作为普通页面底色；正式四页的场景启用后，`html/body` 的 `background-color` 透明，正文底色由滚动内容 `#appShell` 承担。根画布通过 `--ds-root-hero-image` 复用当前同一张图、共用顶部暗角，画布空白处以背景图层填充 `--bg`。不新增固定的状态栏色块；v48 删除 v46 已被用户证实无效的 `screen.height-innerHeight` 偏移。v48 背景分层已被真机证实未解决。v49 仅在 iOS 主屏幕模式使用 1px 顶部行程和 1px 初始滚动，保持可见场景与标题位置；阅读、手势、弹窗和输入时不重置位置。此为针对初始合成状态的兼容尝试，仍需真机验收，不能把网页截图当成灵动岛验证。根节点与正文同步 `.me-hus/.me-wife`；浅深 `theme-color` 和 `black-translucent` 元信息保留。详见[首屏滚动 QA](qa/status-scroll-v49/README.md)。
 
 ## 3. 字体：同级同大小
 

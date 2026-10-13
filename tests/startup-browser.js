@@ -8,9 +8,11 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
   fs.mkdirSync(output,{recursive:true});
   const browser=await chromium.launch({headless:true,channel:process.env.PLAYWRIGHT_BROWSER||'chromium'});
   const checks=[];
+  const iosStandalone=process.env.DUOFIT_TEST_IOS_STANDALONE==='1';
   try{
     for(const mode of ['cached','skip','reduced','guest','guest-skip','cold','missing-session','local']){
       const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:mode==='reduced'?'reduce':'no-preference'});
+      if(iosStandalone)await context.addInitScript(()=>{Object.defineProperty(navigator,'userAgent',{get:()=> 'Mozilla/5.0 (iPhone; CPU iPhone OS 26_2 like Mac OS X) AppleWebKit/605.1.15'});Object.defineProperty(navigator,'standalone',{get:()=>true});});
       await context.addInitScript(mode=>{
         localStorage.clear();window.startupEvents=[];
         const date=new Date(),day=[date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');
@@ -77,6 +79,7 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
           assert.equal(await page.locator('#view').innerHTML(),'');
         }else{
           assert(await page.locator('#view').innerHTML());
+          if(iosStandalone)await page.waitForFunction(()=>window.scrollY===1);
           const events=await page.evaluate(()=>window.startupEvents);
           assert(!events.some(e=>e.type==='render'&&e.phase==='run'),'no home construction during running animation');
           if(['cached','skip','reduced'].includes(mode)){

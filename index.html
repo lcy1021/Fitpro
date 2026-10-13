@@ -15,7 +15,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=48">
+<link rel="stylesheet" href="design-system/tokens.css?v=49">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -26,6 +26,8 @@ html{height:100%;background-color:var(--app-top-color);background-image:var(--ap
 html.app-hero-active{padding-top:0;background-color:transparent;background-image:var(--ds-hero-top-shade),var(--ds-root-hero-image,none),linear-gradient(var(--bg),var(--bg));background-position:center top;background-size:min(100%,var(--ds-page-max)) 80px,min(100%,var(--ds-page-max)) auto,100% 100%;background-repeat:no-repeat}
 html.app-hero-active body{background:transparent}
 html.app-hero-active #appShell{background:var(--bg)}
+/* A 1px runway lets iOS leave its unscrolled native tint state without moving the UI. */
+html.app-hero-scroll-start #appShell.wrap{padding-top:1px}
 body{margin:0;min-height:100%;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;color:var(--ink);
   font-family:var(--ds-font);
   font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
@@ -533,8 +535,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=48">
-<link rel="stylesheet" href="private-coach.css?v=48">
+<link rel="stylesheet" href="design-system/components.css?v=49">
+<link rel="stylesheet" href="private-coach.css?v=49">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -668,8 +670,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=48"></script>
-<script src="design-system/mascots.js?v=48"></script>
+<script src="private-coach.js?v=49"></script>
+<script src="design-system/mascots.js?v=49"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1348,7 +1350,40 @@ function streak(person){
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
+// iOS can composite scrolling content beneath its status bar while painting a
+// fallback at scrollY=0. Use a compensated 1px start, never a guessed safe-area height.
+let heroScrollStartReady=false,heroScrollTouch=false,heroScrollTimer=null;
+function prepareHeroScrollStart(){
+  if(heroScrollStartReady)return;
+  const ios=/(?:iPhone|iPad|iPod)/.test(navigator.userAgent);
+  if(!ios||!(navigator.standalone===true||matchMedia("(display-mode: standalone)").matches))return;
+  heroScrollStartReady=true;
+  document.documentElement.classList.add("app-hero-scroll-start");
+  const settle=()=>{clearTimeout(heroScrollTimer);heroScrollTimer=setTimeout(restoreHeroScrollStart,180);};
+  window.addEventListener("scroll",settle,{passive:true});
+  window.addEventListener("scrollend",restoreHeroScrollStart,{passive:true});
+  window.addEventListener("touchstart",()=>{heroScrollTouch=true;},{passive:true});
+  window.addEventListener("touchend",()=>{heroScrollTouch=false;settle();},{passive:true});
+  window.addEventListener("touchcancel",()=>{heroScrollTouch=false;settle();},{passive:true});
+  window.addEventListener("pageshow",restoreHeroScrollStart);
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")restoreHeroScrollStart();});
+}
+function restoreHeroScrollStart(){
+  if(!heroScrollStartReady)return;
+  requestAnimationFrame(()=>{
+    // Do not interrupt reading, a drag/bounce, keyboard input or any modal.
+    if(heroScrollTouch||window.scrollY<0||window.scrollY>=1||
+       document.visibilityState!=="visible"||document.querySelector('.pick.open,.run.open,#duoCoach:not([hidden])')||
+       getComputedStyle(document.body).overflowY==="hidden"||
+       /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName||""))return;
+    window.scrollTo({top:1,left:0,behavior:"instant"});
+  });
+}
+function scrollToPageStart(){
+  window.scrollTo({top:heroScrollStartReady?1:0,left:0,behavior:"instant"});
+}
 function renderHeader(){
+  prepareHeroScrollStart();
   const d=new Date();
   $("#pageTitle").textContent={today:"今日",diet:"饮食",train:"训练",record:"记录"}[tab];
   $("#pageHero").dataset.page=tab;
@@ -1368,6 +1403,7 @@ function renderHeader(){
   const darkMeta=document.querySelector('meta[name="theme-color"][media*="dark"]');
   if(lightMeta)lightMeta.content=topColors.getPropertyValue('--app-top-light').trim();
   if(darkMeta)darkMeta.content=topColors.getPropertyValue('--app-top-dark').trim();
+  restoreHeroScrollStart();
 }
 function renderSync(){
   const el=$("#sync"); let t="", detail="", warn=false;
@@ -2027,10 +2063,10 @@ document.addEventListener("click",async e=>{
   if(t.dataset.recField){ recField=t.dataset.recField; renderRecordData(); return; }
   if(t.hasAttribute("data-open-extra")){
     tab="train"; document.querySelectorAll(".tabs button").forEach(b=>{if(b.dataset.tab==="train")b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
-    lastTab=null;render();window.scrollTo(0,0);return;
+    lastTab=null;render();scrollToPageStart();return;
   }
   if(t.dataset.tab){ tab=t.dataset.tab; document.querySelectorAll(".tabs button").forEach(b=>{ if(b===t) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
-    lastTab=null; render(); window.scrollTo(0,0); return; }
+    lastTab=null; render(); scrollToPageStart(); return; }
   if(t.dataset.extraMove){
     if(readOnly)return;
     const move=EXTRA_MOVES.find(m=>m.img===t.dataset.extraMove);if(!move)return;
@@ -2115,7 +2151,7 @@ function openSplash(after){
     lm.classList.remove("splash");
     if(next==="choose"){lmSelect(null);lmPhase("choose");finishStartup();return;}
     finishStartup(next!=="error");
-    pk.classList.add("leaving"); setTimeout(()=>{ pk.classList.remove("open","leaving"); document.body.style.overflow=""; lmPhase("choose"); },450); };
+    pk.classList.add("leaving"); setTimeout(()=>{ pk.classList.remove("open","leaving"); document.body.style.overflow=""; lmPhase("choose"); restoreHeroScrollStart(); },450); };
   lm.onclick=done;
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmTimers.push(setTimeout(done,600)); return; }
   lmReady().then(()=>{ if(!lm.classList.contains("splash")||finishing) return;
@@ -2322,7 +2358,7 @@ function goalCard(){
     <div class="gl"><div><b>${p.kcal}</b>每天 kcal</div><div><b>${p.protein}g</b>蛋白质</div><div><b>${R} 轮</b>每次训练${p.g.cardio?" + 快走":""}</div></div>
     <p>每周日量完体重后，会根据趋势给调整建议，点确认才会改。</p></div>`;
 }
-function closePicker(){ lmClear(); $("#pick").classList.remove("open"); document.body.style.overflow=""; }
+function closePicker(){ lmClear(); $("#pick").classList.remove("open"); document.body.style.overflow=""; restoreHeroScrollStart(); }
 
 /* Reserve the fixed navigation's complete height, including the iPhone safe area. */
 function initTabBarSpace(){
