@@ -31,4 +31,4 @@ v54：
 
 ## 发布
 
-待发布 v54。核心 CSS/JS、SW CORE、本机预览与诊断统一版本；图片缓存独立不变，config.js 与个人数据未改。
+v54 已发布：应用提交 `da2cc34`；Pages [38345236023](https://github.com/lcy1021/Fitpro/actions/runs/38345236023) 成功，线上7项资源 SHA-256 全部匹配，见 [核验](release-verification.json)。核心 CSS/JS、SW CORE、本机预览与诊断统一版本；图片缓存独立不变，config.js 与个人数据未改。
