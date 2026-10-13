@@ -28,4 +28,4 @@ v57的正文截图相同和定位稳定不等于原生顶区隔离。故将v57�
 
 ## 发布
 
-待发布核验。
+提交 `da32eb4` 已推送main，Pages [38362637548](https://github.com/lcy1021/Fitpro/actions/runs/38362637548) 成功；线上6项核心文件SHA-256与本机一致，见[核验](release-verification.json)。核验时本机代理连接重置，直连后确认成功；不把该连接问题推断为DuoFit服务故障。真实iOS顶部最终观感仍待验收。

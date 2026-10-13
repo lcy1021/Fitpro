@@ -1,0 +1,46 @@
+{
+  "version": 58,
+  "commit": "da32eb4f675264c85ec699bbc25ec97b16a6aa65",
+  "workflow": 38362637548,
+  "deployment": "success",
+  "at": "2026-10-13T07:37:41.097682+00:00",
+  "nativeStatusBarVerified": false,
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256": "f1c8efed5c1c46f5154190dd9e6559a1857330a8afcc50d9b70e210d7b8efe86",
+      "match": true
+    },
+    {
+      "file": "sw.js",
+      "status": 200,
+      "sha256": "e8a8d4b75d53b307443a9ed58eae2f887f87ecad9486fb4715d4e534cd2b3741",
+      "match": true
+    },
+    {
+      "file": "private-coach.js",
+      "status": 200,
+      "sha256": "30a255849393f20f9a9bc5ad0f710db1e8c6efb6f2014e8af64c51b74148786b",
+      "match": true
+    },
+    {
+      "file": "design-system/index.html",
+      "status": 200,
+      "sha256": "da689585c2efbd1751678ff21f1cb7bf6dd98065f3c69e9b0bc9e9fb3ef8d0d5",
+      "match": true
+    },
+    {
+      "file": "tests/theme-preview.html",
+      "status": 200,
+      "sha256": "b7583533a7135472eed7823d4971e0d2d02617d86522723be9f0fadcd346757c",
+      "match": true
+    },
+    {
+      "file": "design-system/tokens.css",
+      "status": 200,
+      "sha256": "553114580e7f8d64adc56b2db9036292435adda2bbeef5fdd0bbded3dcb4458b",
+      "match": true
+    }
+  ]
+}
