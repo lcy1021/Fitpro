@@ -1,0 +1,122 @@
+{
+  "version": 60,
+  "commit": "681531f60b0cc3073d419577aabd2ea1af47a544",
+  "workflow": 38379550708,
+  "deployment": "success",
+  "at": "2026-10-13T10:01:46.405929+00:00",
+  "nativeStartupMeasured": false,
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256": "0ec7031ed90f5fc3e05756605defe48379c726d81f9f02d6b79183b81ba31e15",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "sw.js",
+      "status": 200,
+      "sha256": "fd4d0ba0bd6e924d05a3dcbffe71e440e42114e4f2269a983daeb539cdc07481",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "app.js",
+      "status": 200,
+      "sha256": "44c0c5eaaafdf0244a38bc32d4188f02d568ccbe56eb9033db743bf60ebef19f",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "app.css",
+      "status": 200,
+      "sha256": "323a54e5f8f4347b6e9db51302923d66c2f45f77b8b2b5be9533f2e3bae17691",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "entry.js",
+      "status": 200,
+      "sha256": "2978056164e02cdcc21f2e22259941ca5666f4c8f01a2f43cb397c74f808ae4e",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "entry.css",
+      "status": 200,
+      "sha256": "16a1a319a745823696abc0aa8b45d5c304e2d4d9916987aef2255a947eeb350c",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "private-coach.js",
+      "status": 200,
+      "sha256": "cb4a2af00f288d7e07288e193e1206b900404efe7d267359387d436ea556bfc3",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "private-coach.css",
+      "status": 200,
+      "sha256": "44e763f99df5497e9b4cfa49855a0c220aa968039320b2c75b98533f5271c736",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "design-system/tokens.css",
+      "status": 200,
+      "sha256": "bbda0b5d40f3e11971ff53b6cd3335e928123a65f2dcc1d9ce99331fd19b495f",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "design-system/components.css",
+      "status": 200,
+      "sha256": "b113f7a53f2ef12b8642954bbf3eb205cfc89e4d7bb2a1ec77e4e94d4f5f5407",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "design-system/mascots.js",
+      "status": 200,
+      "sha256": "3e9aaac6a3812d3f8fe7478c78f74a4f0947314df5b846bf7694237045300165",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "design-system/gallery.js",
+      "status": 200,
+      "sha256": "7f9349ac72e9c04d8204c3138b0a55fa7fca7909d027a4e840a6c8a06fd74523",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "design-system/index.html",
+      "status": 200,
+      "sha256": "f8b03cf0e9d6e953c19017c90854a4e910e4af05fba3e4b4709e90bd22e0a6f8",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "tests/theme-preview.html",
+      "status": 200,
+      "sha256": "542262d2d59d6e589d1c9248d7cd255790079cf4613cbe69db88ee1914f05d42",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "assets/fonts/DuoFit-Header-v1.woff2",
+      "status": 200,
+      "sha256": "e686a868321b1fc1dbacbda30227b3d9853acad26fd6c86339269aa7e00de2a4",
+      "match": true,
+      "initialAttemptErrors": []
+    },
+    {
+      "file": "docs/design-system.md",
+      "status": 200,
+      "sha256": "c9980928ff18734f2ba1b416b520ed30d2b5bb47cbf8295a20409798afe64892",
+      "match": true,
+      "initialAttemptErrors": []
+    }
+  ]
+}
