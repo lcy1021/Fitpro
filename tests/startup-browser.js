@@ -30,7 +30,14 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
         if(mode==='local')localStorage.setItem('fatloss.me',person);
         document.addEventListener('DOMContentLoaded',()=>{
           const view=document.querySelector('#view');
-          const sample=()=>{const picker=document.querySelector('#pick');if(picker?.classList.contains('leaving'))window.revealFrames.push({scrollY:window.scrollY,opacity:getComputedStyle(picker).opacity,position:getComputedStyle(picker).position,top:picker.getBoundingClientRect().top,rootColor:getComputedStyle(document.documentElement).backgroundColor});requestAnimationFrame(sample);};requestAnimationFrame(sample);
+          window.entryFrames=[];
+          const sample=()=>{
+            const picker=document.querySelector('#pick'),root=document.documentElement;
+            const frame={scrollY,opacity:getComputedStyle(picker).opacity,position:getComputedStyle(picker).position,top:picker.getBoundingClientRect().top,rootColor:getComputedStyle(root).backgroundColor,rootImage:getComputedStyle(root).backgroundImage,entryCanvas:root.classList.contains('app-entry-active')};
+            if(picker.classList.contains('open'))window.entryFrames.push(frame);
+            else if(view.firstElementChild)window.revealFrames.push(frame);
+            requestAnimationFrame(sample);
+          };requestAnimationFrame(sample);
           new MutationObserver(()=>window.startupEvents.push({type:'render',phase:document.querySelector('#lm').dataset.phase,booting:document.body.classList.contains('booting')})).observe(view,{childList:true});
         });
       },{mode,person});
@@ -65,7 +72,8 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
       assert.equal(early.scroll,iosStandalone?60:0,'native start is placed BEFORE blocked config/auth scripts');
       if(iosStandalone)assert.equal(early.boot.phase,'before-config');
       assert.equal(early.root,'rgba(0, 0, 0, 0)','launch root is transparent before config');
-      assert(early.rootImage.includes('today-'+person+'-v2.jpg'),'same home scene already backs launch');
+      assert(!early.rootImage.includes('url('),'home image must not own any part of the launch canvas');
+      assert(early.rootImage.includes('radial-gradient'),'the independent intro fills the entire root canvas');
       assert.equal(early.picker,'rgba(0, 0, 0, 0)','entry uses an independent gradient without changing root transparency');
       assert.equal(early.entryPosition,'absolute','intro must not be a fixed edge color sampler');
       assert.equal(early.entryTop,0,'document entry stays aligned after early native inset positioning');
@@ -89,16 +97,16 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
           assert.equal(await page.locator('#view').innerHTML(),'');
         }else{
           assert(await page.locator('#view').innerHTML());
+          await page.waitForFunction(()=>window.revealFrames.length>0);
           if(iosStandalone){
             await page.waitForFunction(()=>window.scrollY===60);
             const frames=await page.evaluate(()=>window.revealFrames);
-            assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).backgroundImage),early.rootImage,'root scene remains identical through reveal');
+            assert((await page.evaluate(()=>getComputedStyle(document.documentElement).backgroundImage)).includes('today-'+person+'-v2.jpg'),'home scene takes ownership when the complete home page is visible');
             assert(frames.length>0,mode+' has reveal frames');
             assert(frames.every(f=>f.scrollY===60),mode+' reaches final status inset BEFORE any home reveal frame: '+JSON.stringify(frames.slice(0,3)));
           }
-          const entryFrames=await page.evaluate(()=>window.revealFrames);
-          assert(entryFrames.length>0);
-          assert(entryFrames.every(f=>f.position==='absolute'&&Math.abs(f.top)<1&&f.rootColor==='rgba(0, 0, 0, 0)'),'entry fade keeps transparent root and stable document positioning');
+          const frames=await page.evaluate(()=>window.revealFrames);
+          assert(frames.every(f=>!f.entryCanvas&&f.rootColor==='rgba(0, 0, 0, 0)'&&f.rootImage.includes('today-')),'home and root background appear together, without entry overlap');
           const events=await page.evaluate(()=>window.startupEvents);
           assert(!events.some(e=>e.type==='render'&&e.phase==='run'),'no home construction during running animation');
           if(['cached','skip','reduced'].includes(mode)){
@@ -108,9 +116,12 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
           if(mode==='cached')await page.screenshot({path:path.join(output,'home-mobile.png')});
         }
       }
+      const entryFrames=await page.evaluate(()=>window.entryFrames);
+      assert(entryFrames.length>0);
+      assert(entryFrames.every(f=>f.entryCanvas&&!f.rootImage.includes('url(')&&f.opacity==='1'&&f.rootColor==='rgba(0, 0, 0, 0)'),'every entry frame owns the entire canvas with no home image or crossfade');
       releaseCloud();
       assert.deepEqual(errors,[],mode+' has no browser exceptions');
-      checks.push({mode,early,initialHomeHidden:true,entryFinished:true,reveal:await page.evaluate(()=>({first:window.revealFrames[0]||null,last:window.revealFrames.at(-1)||null,frames:window.revealFrames.length,positions:[...new Set(window.revealFrames.map(f=>f.scrollY))]})),errors});await context.close();
+      checks.push({mode,early,initialHomeHidden:true,entryFinished:true,entryCanvasIsolated:true,entryFrameCount:entryFrames.length,reveal:await page.evaluate(()=>({first:window.revealFrames[0]||null,last:window.revealFrames.at(-1)||null,frames:window.revealFrames.length,positions:[...new Set(window.revealFrames.map(f=>f.scrollY))]})),errors});await context.close();
     }
     fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify(checks,null,2)+'\n');
     console.log('PASS first paint, cached/cold/local startup, guest selection, skip, reduced motion and recovery error');

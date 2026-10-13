@@ -9,9 +9,10 @@ assert.deepEqual([...new Set(references.filter(t=>!definitions.has(t)))],[],'sha
 const html=read('index.html'),preview=read('tests/theme-preview.html'),sw=read('sw.js');
 assert(html.includes('name="apple-mobile-web-app-capable" content="yes"')&&html.includes('name="apple-mobile-web-app-status-bar-style" content="black-translucent"'),'installed iOS app can paint beneath the status bar');
 assert(html.includes('html{height:100%;background-color:transparent;')&&html.includes('html.me-wife{--ds-root-hero-image:')&&html.includes('document.documentElement.classList.toggle("me-wife",me==="wife")'),'root safe-area background follows the active identity');
+assert(html.includes('class="me-hus app-entry-active"')&&html.includes('html.app-entry-active{background-color:transparent;background-image:var(--ds-entry-background)'),'entry owns the initial whole-page canvas');
 assert(tokens.includes('--app-background:')&&tokens.includes('--app-top-dark:#172B36')&&html.includes('topColors.getPropertyValue(\'--app-top-dark\')'),'top canvas and browser chrome share role-aware colors');
 for(const file of ['tokens.css','components.css','mascots.js']){
- const url=`design-system/${file}?v=57`;
+ const url=`design-system/${file}?v=58`;
  assert(html.includes(url)&&preview.includes(url)&&sw.includes(url),`${file} must load in the app, preview and offline core`);
 }
 assert(html.indexOf('tokens.css')<html.indexOf('<style>'),'tokens load before app layouts');
@@ -22,7 +23,7 @@ assert(/\.(?:ds-role-tabs|ds-checkin|ds-section-heading)/.test(components));
 assert(sw.includes('duofit-images-v1'),'app releases preserve independently versioned images');
 assert(html.indexOf('id="recInsight"')<html.indexOf('id="recHistory"'),'couple check-ins precede individual details');
 const gallery=read('design-system/index.html').replace(/<pre>[\s\S]*?<\/pre>/g,'');
-for(const file of ['tokens.css','components.css','mascots.js'])assert(gallery.includes(`${file}?v=57`),`${file} uses the current version in the component gallery`);
+for(const file of ['tokens.css','components.css','mascots.js'])assert(gallery.includes(`${file}?v=58`),`${file} uses the current version in the component gallery`);
 for(const m of gallery.matchAll(/(?:href|src)="([^"#]+)"/g)){
  const url=m[1].split('?')[0];if(!/^(?:https?:|\/)/.test(url))assert(fs.existsSync(path.resolve(root,'design-system',url)),`gallery resource exists: ${url}`);
 }

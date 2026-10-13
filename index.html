@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="me-hus app-hero-active">
+<html lang="zh-CN" class="me-hus app-entry-active">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -19,8 +19,11 @@
 // Cosmetic identity only; never infer authentication or profile readiness here.
 try{if(localStorage.getItem('fatloss.me')==='wife'){document.documentElement.classList.replace('me-hus','me-wife');}}catch(_){}
 const launchScenePreload=document.createElement('link');launchScenePreload.rel='preload';launchScenePreload.as='image';launchScenePreload.href='assets/page-hero/today-'+(document.documentElement.classList.contains('me-wife')?'wife':'hus')+'-v2.jpg';document.head.appendChild(launchScenePreload);
+// Prepare pixels without making the home canvas visible during the entry screen.
+const launchSceneImage=new Image();launchSceneImage.src=launchScenePreload.href;
+window.duoLaunchSceneReady=launchSceneImage.decode().catch(()=>{});
 </script>
-<link rel="stylesheet" href="design-system/tokens.css?v=57">
+<link rel="stylesheet" href="design-system/tokens.css?v=58">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
@@ -31,7 +34,9 @@ html{height:100%;background-color:transparent;background-attachment:fixed;-webki
 html.me-hus{--ds-root-hero-image:url("assets/page-hero/today-hus-v2.jpg")}
 html.me-wife{--ds-root-hero-image:url("assets/page-hero/today-wife-v2.jpg")}
 html.app-hero-active{padding-top:0;background-color:transparent;background-image:var(--ds-hero-top-shade),var(--ds-root-hero-image,none),linear-gradient(var(--bg),var(--bg));background-position:center top;background-size:min(100%,var(--ds-page-max)) 80px,min(100%,var(--ds-page-max)) auto,100% 100%;background-repeat:no-repeat}
-html.app-hero-active body{background:transparent}
+/* The visible page owns the whole root canvas, including the native top inset. */
+html.app-entry-active{background-color:transparent;background-image:var(--ds-entry-background);background-size:100% 100dvh;background-position:center top;background-repeat:no-repeat}
+html.app-entry-active body,html.app-hero-active body{background:transparent}
 html.app-hero-active #appShell{background:var(--bg)}
 body{margin:0;min-height:100%;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;color:var(--ink);
   font-family:var(--ds-font);
@@ -70,9 +75,8 @@ p{margin:0}
 /* 登录动效（首次进入 / 切换身份） */
 /* A viewport-wide fixed intro can become Safari's sampled status-bar color.
    Anchor it in document coordinates instead; the root scene stays transparent. */
-.pick.lm-pick{position:absolute;top:var(--ds-entry-scroll-top,0px);bottom:auto;height:100dvh;padding:0;background:var(--ds-entry-background);overflow-x:hidden;overflow-y:auto;transition:opacity .45s ease}
+.pick.lm-pick{position:absolute;top:var(--ds-entry-scroll-top,0px);bottom:auto;height:100dvh;padding:0;background:var(--ds-entry-background);overflow-x:hidden;overflow-y:auto}
 .pick.lm-pick.open{z-index:1100}
-.pick.lm-pick.leaving{opacity:0;pointer-events:none}
 .lm.splash .lm-choice{display:none}
 .lm.splash{cursor:pointer}
 .lm{position:relative;width:min(100%,440px);height:100dvh;min-height:560px;margin:0 auto;overflow:hidden;isolation:isolate;color:var(--ink)}
@@ -542,8 +546,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=57">
-<link rel="stylesheet" href="private-coach.css?v=57">
+<link rel="stylesheet" href="design-system/components.css?v=58">
+<link rel="stylesheet" href="private-coach.css?v=58">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -687,9 +691,15 @@ window.duoNativeStartOffset=function(){
      (vv&&(Math.abs(vv.scale-1)>.01||Math.abs(vv.height-innerHeight)>1||Math.abs(vv.offsetTop)>1)))return 0;
   return Math.ceil(gap)+1;
 };
+// Entry and app are independent pages; only one owns the root background.
+window.duoSetEntryCanvas=function(active){
+  const root=document.documentElement;
+  root.classList.toggle('app-entry-active',active);
+  root.classList.toggle('app-hero-active',!active&&!!document.querySelector('#view')?.firstElementChild);
+};
 // Keep entry visuals at the viewport origin without a fixed top-edge layer.
 window.duoAnchorEntry=function(){document.documentElement.style.setProperty('--ds-entry-scroll-top',window.scrollY+'px');};
-const anchorOpenEntry=()=>{if(document.querySelector('#pick.open:not(.leaving)'))window.duoAnchorEntry();};
+const anchorOpenEntry=()=>{if(document.querySelector('#pick.open'))window.duoAnchorEntry();};
 window.addEventListener('resize',anchorOpenEntry);
 // Focusing the optional invite input may scroll the document even while locked.
 window.addEventListener('scroll',anchorOpenEntry,{passive:true});
@@ -703,8 +713,8 @@ window.addEventListener('scroll',anchorOpenEntry,{passive:true});
 })();
 </script>
 <script src="config.js"></script>
-<script src="private-coach.js?v=57"></script>
-<script src="design-system/mascots.js?v=57"></script>
+<script src="private-coach.js?v=58"></script>
+<script src="design-system/mascots.js?v=58"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1407,9 +1417,9 @@ function heroScrollStartOffset(){
   return window.duoNativeStartOffset();
 }
 function pageViewportDiagnostics(){
-  return {version:57,userAgent:navigator.userAgent,standalone:navigator.standalone===true,
+  return {version:58,userAgent:navigator.userAgent,standalone:navigator.standalone===true,
     displayStandalone:matchMedia('(display-mode: standalone)').matches,
-    entryLayer:{position:getComputedStyle($("#pick")).position,open:$("#pick").classList.contains("open")},earlyStart:window.duoBootViewport||null,scrollStartEnabled:heroScrollStartReady,targetScrollY:heroScrollStartOffset(),current:pageViewportSnapshot(),trace:heroViewportTrace};
+    canvas:document.documentElement.classList.contains("app-entry-active")?"entry":"page",entryLayer:{position:getComputedStyle($("#pick")).position,open:$("#pick").classList.contains("open")},earlyStart:window.duoBootViewport||null,scrollStartEnabled:heroScrollStartReady,targetScrollY:heroScrollStartOffset(),current:pageViewportSnapshot(),trace:heroViewportTrace};
 }
 function prepareHeroScrollStart(){
   if(heroScrollStartReady)return;
@@ -1459,7 +1469,7 @@ function renderHeader(){
   $("#dateLabel").textContent=`${d.getMonth()+1}月${d.getDate()}日 周${WEEK[d.getDay()]}`;
   $("#roleBtn").hidden=!!privateCoach;
   $("#roleBtn").setAttribute("aria-label","切换身份，当前是"+PEOPLE[me].label);
-  document.documentElement.classList.add("app-hero-active");
+  document.documentElement.classList.toggle("app-hero-active",!document.documentElement.classList.contains("app-entry-active"));
   document.documentElement.classList.toggle("me-hus",me==="hus");
   document.documentElement.classList.toggle("me-wife",me==="wife");
   document.body.className="me-"+me;
@@ -2209,9 +2219,10 @@ function lmPlay(){
 }
 /* 每次打开 App：已经选过身份的，播完跑近会合直接进主页（点任意处或"跳过"可提前进入）；首次打开播完弹出选择卡片 */
 function openSplash(after){
+  window.duoSetEntryCanvas(true);
   window.duoAnchorEntry();
   const pk=$("#pick"), lm=$("#lm");
-  lm.classList.add("splash"); pk.classList.remove("leaving"); pk.classList.add("open"); document.body.style.overflow="hidden";
+  lm.classList.add("splash"); pk.classList.add("open"); document.body.style.overflow="hidden";
   lmClear(); lmPhase("start");
   let finishing=false;
   const done=async()=>{ if(!lm.classList.contains("splash")||finishing) return; finishing=true; lmClear(); lm.onclick=null;
@@ -2220,29 +2231,36 @@ function openSplash(after){
     if(next==="choose"){lmSelect(null);lmPhase("choose");finishStartup();return;}
     finishStartup(next!=="error");
     if(next!=="error"){
-      // Keep the entry layer opaque while iOS receives the final scroll position.
-      // Unlock first: the old order waited until AFTER the fade, exposing a 60px jump.
+      // Prepare the complete page while entry still owns the root canvas.
+      // The canvas and entry visibility are then committed in the same task.
       document.body.style.overflow="";
       scrollToPageStart();
       window.duoAnchorEntry();
+      await Promise.race([window.duoLaunchSceneReady,new Promise(resolve=>setTimeout(resolve,1200))]);
       await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
     }
-    pk.classList.add("leaving"); setTimeout(()=>{ pk.classList.remove("open","leaving"); document.body.style.overflow=""; lmPhase("choose"); },450); };
+    window.duoSetEntryCanvas(false);
+    pk.classList.remove("open");
+    document.body.style.overflow="";
+    lmPhase("choose");
+  };
   lm.onclick=done;
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){ lmTimers.push(setTimeout(done,600)); return; }
   lmReady().then(()=>{ if(!lm.classList.contains("splash")||finishing) return;
     lmTimers.push(setTimeout(()=>lmPhase("run"),60), setTimeout(()=>lmPhase("meet"),1840), setTimeout(done,2400)); });
 }
 function openPicker(canCancel){
+  window.duoSetEntryCanvas(true);
   window.duoAnchorEntry();
-  $("#lm").classList.remove("splash"); $("#lm").onclick=null; $("#pick").classList.remove("leaving");
+  $("#lm").classList.remove("splash"); $("#lm").onclick=null;
   $("#pick").classList.add("open"); $("[data-pick-cancel]").hidden=!canCancel; document.body.style.overflow="hidden";
   $("#entryIssue").hidden=true;
   if(canCancel){ lmClear(); lmSelect(me); lmPhase("choose"); } else lmPlay();
 }
 function showRoleChoice(){
+  window.duoSetEntryCanvas(true);
   window.duoAnchorEntry();
-  $("#lm").classList.remove("splash"); $("#lm").onclick=null; $("#pick").classList.remove("leaving");
+  $("#lm").classList.remove("splash"); $("#lm").onclick=null;
   $("#pick").classList.add("open"); $("[data-pick-cancel]").hidden=true; document.body.style.overflow="hidden";
   $("#entryIssue").hidden=true;
   lmClear(); lmSelect(null); lmPhase("choose");
@@ -2436,7 +2454,7 @@ function goalCard(){
     <div class="gl"><div><b>${p.kcal}</b>每天 kcal</div><div><b>${p.protein}g</b>蛋白质</div><div><b>${R} 轮</b>每次训练${p.g.cardio?" + 快走":""}</div></div>
     <p>每周日量完体重后，会根据趋势给调整建议，点确认才会改。</p></div>`;
 }
-function closePicker(){ lmClear(); $("#pick").classList.remove("open"); document.body.style.overflow=""; restoreHeroScrollStart(); }
+function closePicker(){ lmClear(); window.duoSetEntryCanvas(false); $("#pick").classList.remove("open"); document.body.style.overflow=""; restoreHeroScrollStart(); }
 
 /* Reserve the fixed navigation's complete height, including the iPhone safe area. */
 function initTabBarSpace(){

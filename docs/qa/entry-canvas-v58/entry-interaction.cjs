@@ -1,0 +1,26 @@
+const {chromium}=require('/tmp/duofit-browser-qa/node_modules/playwright');
+const assert=require('node:assert/strict'),fs=require('node:fs');
+(async()=>{const b=await chromium.launch({channel:'chrome',headless:true});try{
+const p=await b.newPage({viewport:{width:390,height:844}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
+await p.goto('http://127.0.0.1:8765/tests/theme-preview.html?journal=1&meal-design=1&view=today&state=daily-rest&theme=light');
+await p.waitForSelector('#pageHero');
+await p.evaluate(()=>{scrollTo(0,600);themePreviewApp.showRoleChoice()});
+assert(await p.evaluate(()=>document.documentElement.classList.contains('app-entry-active')&&!getComputedStyle(document.documentElement).backgroundImage.includes('url(')));
+assert.equal(await p.locator('#pick').evaluate(el=>el.getBoundingClientRect().top),0);
+await p.setViewportSize({width:320,height:480});
+await p.waitForFunction(()=>document.querySelector('#pick').getBoundingClientRect().top===0);
+await p.locator('[data-lm-role="wife"]').click();
+assert.equal(await p.locator('[data-lm-role="wife"]').getAttribute('aria-pressed'),'true');
+await p.locator('.lm-family summary').click();
+await p.locator('#entryFamily').fill('fixture-only');
+await p.locator('#lmConfirm').scrollIntoViewIfNeeded();
+assert(await p.locator('#lmConfirm').isEnabled());
+await p.waitForFunction(()=>document.querySelector('#pick').getBoundingClientRect().top===0);
+assert(await p.locator('#pick').evaluate(el=>el.scrollTop>0));
+await p.screenshot({path:__dirname+'/short-picker.png'});
+await p.evaluate(()=>document.querySelector('[data-pick-cancel]').click());
+assert(await p.evaluate(()=>!document.querySelector('#pick').classList.contains('open')&&!document.documentElement.classList.contains('app-entry-active')&&getComputedStyle(document.documentElement).backgroundImage.includes('today-')));
+assert.deepEqual(errors,[]);
+fs.writeFileSync(__dirname+'/entry-interaction.json',JSON.stringify({scrolledOpening:true,resizeAnchored:true,roleSelection:true,optionalInput:true,internalScrolling:true,errors},null,2));
+console.log('PASS scrolled opening, short viewport, role selection, optional input and internal scroll');
+}finally{await b.close()}})().catch(e=>{console.error(e);process.exit(1)});

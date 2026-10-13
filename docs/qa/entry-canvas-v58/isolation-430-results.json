@@ -1,0 +1,50 @@
+[
+  {
+    "role": "hus",
+    "theme": "light",
+    "width": 430,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  },
+  {
+    "role": "wife",
+    "theme": "light",
+    "width": 430,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  },
+  {
+    "role": "hus",
+    "theme": "dark",
+    "width": 430,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  },
+  {
+    "role": "wife",
+    "theme": "dark",
+    "width": 430,
+    "phases": [
+      "start",
+      "run",
+      "meet",
+      "choose"
+    ],
+    "underlayCannotLeak": true
+  }
+]

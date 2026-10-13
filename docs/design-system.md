@@ -11,8 +11,8 @@
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=57">
-<link rel="stylesheet" href="design-system/components.css?v=57">
+<link rel="stylesheet" href="design-system/tokens.css?v=58">
+<link rel="stylesheet" href="design-system/components.css?v=58">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -126,7 +126,9 @@
 
 ## 6. 状态与动效
 
-v57 引导背景用 `--ds-entry-background`：蓝粉柔和径向渐变加完整页面底色渐变。`.pick.lm-pick` 与 `.lm::before` 共用，不保留顶部透明缺口或渐隐遮罩，以免首页人物和山水叠进引导。根画布仍透明，首页场景与受限 iOS 起点仍预备；引导在页面完成定位后整体淡出。组件页提供独立引导背景样例。v57 引导使用绝对定位，以 `--ds-entry-scroll-top` 锚定当前文档滚动位置；打开／早期定位／显示首页／调整视口及输入引起的文档滚动时同步，避免全宽固定层参与 Safari 顶部采样。引导仍锁定背景滚动，内部可滚动；不得用全屏 fixed 背景代替。原生过渡仍需真机确认。
+v58 引导背景用 `--ds-entry-background`：蓝粉柔和径向渐变加完整页面底色渐变。初始HTML为 `.app-entry-active`，根画布与引导共用同一背景；根背景色透明，首页图仅预加载，不提前绘入根画布。引导保持文档absolute定位，以 `--ds-entry-scroll-top` 锚定当前滚动位置；内部可滚动，输入/视口变化同步锚点。
+
+首页在引导覆盖期间完成渲染、图片解码和受限iOS定位，之后在同一任务内移除引导并切换根画布归属。两个背景不通过透明度交叠；页面顶部显示当前页面自己的完整背景，不增加状态栏专用颜色层。后续打开身份选择也切回引导背景，关闭后恢复页面。v57只验证正文隔离，用户真机证实根画布仍漏出首页天空；该策略被本版本替代。见[引导/首页背景归属QA](qa/entry-canvas-v58/README.md)。
 
 - 正常、选中、未选中、焦点、禁用、加载、空态、错误、只读都要定义。组件页可实际切换角色、主题、餐次状态，展示这些状态。
 - 新增小交互用 `--ds-motion-fast:100ms / --ds-motion-normal:200ms`；只过渡背景、颜色、阴影和轻微按压。`prefers-reduced-motion` 下新增组件去掉过渡和按压变形；入场大动画继续沿用 App 已有跳过与减弱逻辑。
@@ -155,7 +157,7 @@ v57 引导背景用 `--ds-entry-background`：蓝粉柔和径向渐变加完整�
 
 ## 8. 当前接入与后续维护
 
-v55 从文档初始就使用透明根画布与今日原场景，不再先显示启动天空色；根据既有身份选择蓝粉首图并预加载。v55曾让入场顶部96px透明，用户截图证实首页漏进文案；v56改为完整独立引导背景覆盖。配置前的受限iOS定位沿用v51守卫；不得删除已真机确认有效的定位。原生轻闪仍待手机确认，见[QA](qa/hero-unified-v55/README.md)。
+v55 从文档初始就使用透明根画布与今日原场景，不再先显示启动天空色；根据既有身份选择蓝粉首图并预加载。v55曾让入场顶部96px透明，用户截图证实首页漏进文案；v56改为完整独立引导背景覆盖。v57改为文档定位后，用户仍在引导顶部看到首页天空；v58改为当前页面拥有整个根背景，引导与首页同时切换，详见上文。配置前的受限iOS定位沿用v51守卫；不得删除已真机确认有效的定位。原生切换效果仍待手机确认。
 
 v55 四页共用 `--ds-hero-glass-blur:16px`、`--ds-hero-texture-blur:16px`，伪元素向上延伸80px、左右各延伸36px，遮罩从透明渐入再渐出。`--ds-hero-glass-scene-tint` 浅48%／深80%，避免在原图已白化下缘只叠白色。今日色源仍为 meadow-glass-v1.jpg；其他三页通过自身 `--ds-hero-image` 下部取样，不跨场景套图。`--ds-hero-glass-position` 今日50%、饮食69%、训练72%、记录默认71%，用于避开重复角色特征。角色图像层不被整体模糊，数据文字独立清晰。见[四页统一QA](qa/hero-unified-v55/README.md)。
 
