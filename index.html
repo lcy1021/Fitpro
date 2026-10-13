@@ -15,17 +15,17 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="assets/login/hus-running.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="assets/login/wife-running.webp" fetchpriority="high">
-<link rel="stylesheet" href="design-system/tokens.css?v=47">
+<link rel="stylesheet" href="design-system/tokens.css?v=48">
 <style>
 /* Shared theme and identity tokens live in design-system/tokens.css. */
 
 *,*::before,*::after{box-sizing:inherit}
 html{height:100%;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px);scroll-padding-bottom:calc(var(--tab-bar-height) + 24px)}
-html.app-hero-active{padding-top:0;background-color:var(--bg);background-image:var(--ds-hero-top-shade),var(--ds-root-hero-image,none);background-position:center top;background-size:min(100%,var(--ds-page-max)) 80px,min(100%,var(--ds-page-max)) auto;background-repeat:no-repeat}
-html.app-hero-active body{background:var(--bg)}
-html.app-hero-under-status #appShell{margin-top:calc(-1 * var(--ds-pwa-top-gap))}
-html.app-hero-under-status #pageHero{height:calc(min(100vw,var(--ds-page-max)) * 4 / 3 + var(--ds-pwa-top-gap));aspect-ratio:auto;background-color:var(--bg);background-size:100% auto}
-html.app-hero-under-status #pageHero::after{bottom:auto;height:calc(100% - var(--ds-pwa-top-gap))}
+/* Keep the scene canvas transparent to native background-color sampling.
+   The page surface belongs to the scrolling app, not an opaque body backdrop. */
+html.app-hero-active{padding-top:0;background-color:transparent;background-image:var(--ds-hero-top-shade),var(--ds-root-hero-image,none),linear-gradient(var(--bg),var(--bg));background-position:center top;background-size:min(100%,var(--ds-page-max)) 80px,min(100%,var(--ds-page-max)) auto,100% 100%;background-repeat:no-repeat}
+html.app-hero-active body{background:transparent}
+html.app-hero-active #appShell{background:var(--bg)}
 body{margin:0;min-height:100%;background-color:var(--app-top-color);background-image:var(--app-background);background-attachment:fixed;color:var(--ink);
   font-family:var(--ds-font);
   font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
@@ -533,8 +533,8 @@ p{margin:0}
 @media (prefers-reduced-motion: reduce){ .react{transition:none} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
-<link rel="stylesheet" href="design-system/components.css?v=47">
-<link rel="stylesheet" href="private-coach.css?v=47">
+<link rel="stylesheet" href="design-system/components.css?v=48">
+<link rel="stylesheet" href="private-coach.css?v=48">
 </head>
 <body class="me-hus booting">
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -668,8 +668,8 @@ p{margin:0}
 </div></div>
 
 <script src="config.js"></script>
-<script src="private-coach.js?v=47"></script>
-<script src="design-system/mascots.js?v=47"></script>
+<script src="private-coach.js?v=48"></script>
+<script src="design-system/mascots.js?v=48"></script>
 <script>
 /* Supabase 配置写在同目录的 config.js 里，这个文件以后可以直接整个替换 */
 const SUPABASE_URL = String((window.FATLOSS_CONFIG||{}).SUPABASE_URL||"").trim();
@@ -1361,12 +1361,6 @@ function renderHeader(){
   document.documentElement.classList.toggle("me-hus",me==="hus");
   document.documentElement.classList.toggle("me-wife",me==="wife");
   document.body.className="me-"+me;
-  // Some iOS home-screen layouts reserve the top strip until content scrolls beneath it.
-  // Extend the same scene into that strip while keeping the title and first card in place.
-  const standalone=navigator.standalone===true || (/(?:iPhone|iPad|iPod)/.test(navigator.userAgent)&&matchMedia("(display-mode: standalone)").matches);
-  const topGap=standalone&&innerWidth<=520&&screen.height>screen.width?Math.round(Math.min(80,Math.max(0,screen.height-innerHeight))):0;
-  document.documentElement.classList.toggle("app-hero-under-status",topGap>=20);
-  document.documentElement.style.setProperty("--ds-pwa-top-gap",(topGap>=20?topGap:0)+"px");
   // Mirror the active scene onto the root canvas that iOS exposes behind its status area.
   document.documentElement.style.setProperty("--ds-root-hero-image",getComputedStyle($("#pageHero")).backgroundImage);
   const topColors=getComputedStyle(document.documentElement);
