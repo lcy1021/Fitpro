@@ -1,19 +1,19 @@
 # DuoFit 维护记录与故障定位
 
-最后更新：2026-10-13 · 线上应用 v58。此文件是后续修复的首查入口；每次修改都补充症状、原因证据、改动范围、验证结果与发布版本。专题 QA 文档保留当时版本的证据，不能把历史策略直接当作当前策略。
+最后更新：2026-10-13 · 当前源码 v59（发布核验中），线上应用 v58。此文件是后续修复的首查入口；每次修改都补充症状、原因证据、改动范围、验证结果与发布版本。专题 QA 文档保留当时版本的证据，不能把历史策略直接当作当前策略。
 
 ## 1. 当前约定与代码入口
 
 | 范围 | 当前规则 | 一致修改的入口 |
 | --- | --- | --- |
-| 启动 | HTML 先显示入场动画；同一身份完整缓存可先进入首页，云端后台连接；未确认身份不能当作新档案 | `index.html` boot / splash；`private-coach.js` init / cached profile / reconnect |
+| 启动 | HTML 内联规范 CSS 快照先显示引导；安装完整 CORE 后本机直读应用壳；同一身份完整缓存先进入首页，云端后台连接；未确认身份不能当作新档案 | `index.html` boot / splash；`scripts/sync-shell-styles.js`；`sw.js` coreResponse；`private-coach.js` init / cached profile / reconnect |
 | 身份和同步 | 共享刷新请求，跨页面 Web Locks；明确失效才清除身份；可重复请求重试，一次性恢复及消费 AI 不因网络错误自动重发 | `private-coach.js` refresh / request / sync；`index.html` dirty 快照确认 |
 | 餐次呈现 | 今日、饮食计划共用 `mealHeading / mealPlanContent`；所有餐次共用 `mealEnergy`；今日、饮食打卡共用 `mealActions`；本人/伴侣历史共用 `dietDayRows`；饮食页近 120 天本人可编辑，伴侣/记录页详情只读 | `index.html` Shared meal surfaces 样式块和上述函数；不要单独在某个页面追加覆盖 |
 | 餐食来源 | 有已确认个性餐食就优先显示；有饮食限制而缺少个性餐食时明确待确认，不能回退默认菜单；历史只显示当时保存的食物和热量 | `mealPlanContent / mealRecordText / dietDayRows`；不得用今天的计划重算昨天 |
 | 历史与共享 | 近 120 天；餐食/活动默认向配对伴侣共享，本人可手动关闭；伴侣详情只读、按日读取、仅运行内存保存 | `supabase-checkin-sharing-default.sql`、`private-coach.js` partner records、`historyCard` |
 | 私人数据 | 体重围度、健康、目标、身体状态、自由文本和聊天不进入伴侣详情 | SQL 与 JS 嵌套白名单必须一起核对；不可用原始 JSON 透传 |
 | 图片 | 小列表用 small WebP，跟练用大 WebP；独立图片缓存跨应用升级保留 | `moveArt / warmNextMove`、`sw.js`、`scripts/optimize-images.py` |
-| 发布 | 核心文件同一版本；图片仅内容变化时改素材版本 | `index.html` CSS/JS 查询参数、`sw.js` CACHE/CORE、连接诊断版本、版本断言；图片仍为 `duofit-images-v1` / `media1` |
+| 发布 | 核心文件同一版本，新版完整 CORE 安装成功后统一切换；规范 CSS 生成快照须同步，图片仅内容变化时改素材版本 | `index.html` CSS/JS 版本、`scripts/sync-shell-styles.js`、`sw.js` CACHE/CORE、连接诊断版本、版本断言；图片仍为 `duofit-images-v1` / `media1` |
 
 `config.js` 不随样式修改覆盖。数据 `person`、记录 ID 与旧 JSON 字段保持兼容。GitHub Pages 发布只更新网页；Edge Function 与 SQL 需要独立部署和检查。旧版家庭口令接口说明见 `CLAUDE.md` 的历史模型；当前私人模型以 `docs/private-coach-setup.md` 和最新迁移为准。
 
@@ -36,6 +36,14 @@
 | 设置被挡 / 齿轮被裁 | 分别检查导航实际高+安全区、SVG viewBox 和描边范围 | 不只修底部空白就宣布图标已修好 | 设置安全区与图标 QA |
 
 ## 3. 已确认的问题、修改与证据
+
+### 2026-10-13：引导首绘与缓存启动提速（v59，发布核验中）
+
+- **反馈与已确认原因**：用户打开 App 后引导显示慢，有 2–3 秒空白。v58 三条外部 stylesheet 阻塞首绘；SW 的 network-first/no-store 即使命中离线缓存也先等网络。合成样式延迟 2500ms 时，旧首绘实测 2540–2588ms；用户手机当次网络和原生快照时序未知。
+- **范围**：HTML 内联共享规范 CSS 的生成快照，源文件仍唯一编辑入口，脚本校验同步并转换素材相对路径；缓存应用入口/config/版本化 CORE 本机直读，新版完整安装后切换，注册检查不读旧 HTTP 缓存。引导原版 WebP/字标加入独立图片预热；核心、诊断、组件页、预览 v59。HTML 原始文本增加约 57KB，消除三次阻塞 CSS 请求；无构建步骤。
+- **视觉与边界**：打开认可的 v58 同视口画面并保存前后对照，背景、小字、原版角色身份/姿态/道具、点阵/跑道/速度线与跳过保留。背景与非角色内容像素核对，旋转角色/投影记录轻微栅格化差异。身份、数据、记录 ID/角色格式、config、私人共享与已确认 iOS 顶部定位保留；不自动刷新编辑中的页面。
+- **验证**：8 种 320/390×蓝粉×浅深慢加载首绘；真实 SW 慢网/离线、失败安装保留旧壳、完整升级保留身份/图片；普通/模拟安装态各 8 启动路径；四页 96 布局/滚动状态、诊断与 6 项 Node 回归通过。手机原生冷启动未直接测量，不把本机时间当实机承诺。见[启动速度 QA](qa/startup-speed-v59/README.md)。
+- **发布**：用户已明确确认「发布 v59」；待 Pages/线上文件核验。回退应用位置 v58 `da32eb4`，独立图片缓存保留。
 
 ### 2026-10-13：引导与首页分别拥有完整背景（v58，已发布／真机待验收）
 

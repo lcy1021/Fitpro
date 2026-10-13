@@ -1,0 +1,154 @@
+[
+  {
+    "width": 320,
+    "theme": "light",
+    "person": "hus",
+    "early": {
+      "paint": 124,
+      "entry": true,
+      "configLoaded": false,
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))"
+    },
+    "paint": 124,
+    "visual": {
+      "maxChannelDelta": 9,
+      "meanChannelDelta": 0.026674825643776823,
+      "outsideRunnerPixels": 0
+    },
+    "skipWorks": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "person": "wife",
+    "early": {
+      "paint": 44,
+      "entry": true,
+      "configLoaded": false,
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))"
+    },
+    "paint": 44,
+    "visual": {
+      "maxChannelDelta": 9,
+      "meanChannelDelta": 0.026674825643776823,
+      "outsideRunnerPixels": 0
+    },
+    "skipWorks": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "person": "hus",
+    "early": {
+      "paint": 28,
+      "entry": true,
+      "configLoaded": false,
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.0470588 0.196078 0.27451 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 0.290196 0.117647 0.164706 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(16, 19, 24), rgb(16, 19, 24))"
+    },
+    "paint": 28,
+    "visual": {
+      "maxChannelDelta": 8,
+      "meanChannelDelta": 0.02773940450643777,
+      "outsideRunnerPixels": 0
+    },
+    "skipWorks": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "person": "wife",
+    "early": {
+      "paint": 40,
+      "entry": true,
+      "configLoaded": false,
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.0470588 0.196078 0.27451 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 0.290196 0.117647 0.164706 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(16, 19, 24), rgb(16, 19, 24))"
+    },
+    "paint": 40,
+    "visual": {
+      "maxChannelDelta": 8,
+      "meanChannelDelta": 0.02773940450643777,
+      "outsideRunnerPixels": 0
+    },
+    "skipWorks": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "person": "hus",
+    "early": {
+      "paint": 56,
+      "entry": true,
+      "configLoaded": false,
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))"
+    },
+    "paint": 56,
+    "visual": {
+      "maxChannelDelta": 25,
+      "meanChannelDelta": 0.0769340816551117,
+      "outsideRunnerPixels": 0
+    },
+    "skipWorks": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "person": "wife",
+    "early": {
+      "paint": 56,
+      "entry": true,
+      "configLoaded": false,
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))"
+    },
+    "paint": 56,
+    "visual": {
+      "maxChannelDelta": 25,
+      "meanChannelDelta": 0.0769340816551117,
+      "outsideRunnerPixels": 0
+    },
+    "skipWorks": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "person": "hus",
+    "early": {
+      "paint": 56,
+      "entry": true,
+      "configLoaded": false,
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.0470588 0.196078 0.27451 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 0.290196 0.117647 0.164706 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(16, 19, 24), rgb(16, 19, 24))"
+    },
+    "paint": 56,
+    "visual": {
+      "maxChannelDelta": 27,
+      "meanChannelDelta": 0.08505007153075822,
+      "outsideRunnerPixels": 0
+    },
+    "skipWorks": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "person": "wife",
+    "early": {
+      "paint": 68,
+      "entry": true,
+      "configLoaded": false,
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.0470588 0.196078 0.27451 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 0.290196 0.117647 0.164706 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(16, 19, 24), rgb(16, 19, 24))"
+    },
+    "paint": 68,
+    "visual": {
+      "maxChannelDelta": 27,
+      "meanChannelDelta": 0.08505007153075822,
+      "outsideRunnerPixels": 0
+    },
+    "skipWorks": true,
+    "errors": []
+  }
+]

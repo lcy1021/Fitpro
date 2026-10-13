@@ -7,11 +7,11 @@ const handlers = {};
 const stale = {body:'old page',ok:true,clone(){return this}};
 const fresh = {body:'new page',ok:true,clone(){return this}};
 let online = true,failHeroOnce=false;
-const cache = {put:async()=>{},addAll:async()=>{}};
+const cache = {match:async()=>stale,put:async()=>{},addAll:async()=>{}};
 const images=new Map();let downloads=0,failStorage=false;
 const imageCache={match:async req=>images.get(req.url),put:async(req,response)=>{if(failStorage)throw Error('full');images.set(req.url,response)}};
 const sandbox = {
-  self:{location:{origin:'https://example.com'},clients:{claim:async()=>{}},skipWaiting:async()=>{},addEventListener:(name,fn)=>{handlers[name]=fn}},
+  self:{location:{origin:'https://example.com',href:'https://example.com/sw.js'},clients:{claim:async()=>{}},skipWaiting:async()=>{},addEventListener:(name,fn)=>{handlers[name]=fn}},
   caches:{open:async key=>key==='duofit-images-v1'?imageCache:cache,match:async()=>stale,keys:async()=>[]},
   fetch:async request=>{downloads++;if(!online)throw Error('offline');if(failHeroOnce&&request.url.includes('/page-hero/')){failHeroOnce=false;throw Error('transient')}return fresh},
   URL,Request:function(path){this.url=new URL(path,'https://example.com/Fitpro/').href},Promise,AbortController,setTimeout,clearTimeout,
@@ -21,10 +21,23 @@ const request={method:'GET',url:'https://example.com/index.html',mode:'navigate'
 const respond=()=>new Promise((resolve,reject)=>handlers.fetch({request,respondWith:p=>Promise.resolve(p).then(resolve,reject),waitUntil(){}}));
 const respondImage=(url,method='GET')=>new Promise((resolve,reject)=>{let intercepted=false;handlers.fetch({request:{url,method,mode:'no-cors'},respondWith:p=>{intercepted=true;Promise.resolve(p).then(resolve,reject)},waitUntil(){}});if(!intercepted)resolve('bypassed');});
 (async()=>{
-  assert.equal((await respond()).body,'new page','online navigation must bypass stale app cache');
+  assert.equal((await respond()).body,'old page','navigation immediately reads the installed complete shell');
+  assert.equal(downloads,0,'cached navigation never waits on a network request');
+  const originalFetch=sandbox.fetch;sandbox.fetch=()=>new Promise(()=>{});
+  assert.equal((await Promise.race([respond(),new Promise((_,reject)=>setTimeout(()=>reject(Error('cached launch waited on stalled network')),100))])).body,'old page');
+  for(const url of ['https://example.com/?source=homescreen','https://example.com/private-coach.js?v=59','https://example.com/design-system/components.css?v=59','https://example.com/config.js']){
+    const result=await respondImage(url);assert.equal(result.body,'old page','matching CORE resource never waits on network: '+url);
+  }
+  sandbox.fetch=originalFetch;
   online=false;
   assert.equal((await respond()).body,'old page','offline navigation can use saved page');
-  online=true;downloads=0;
+  online=true;cache.match=async()=>undefined;
+  assert.equal((await respond()).body,'new page','missing shell cache uses the network');
+  const originalPut=cache.put;cache.put=async()=>{throw Error('full')};
+  assert.equal((await respond()).body,'new page','cache write failure does not hide a successfully downloaded page');cache.put=originalPut;cache.match=async()=>stale;
+  assert.equal((await respondImage('https://example.com/docs/design-system.md')).body,'old page');
+  assert.equal((await respondImage('https://example.com/tests/theme-preview.html')).body,'new page','non-core HTML still gets a fresh network response');
+  downloads=0;
   const url='https://example.com/Fitpro/assets/moves/a-plank.webp?v=media1';
   await Promise.all([respondImage(url),respondImage(url)]);assert.equal(downloads,1,'concurrent requests for the same uncached image share a download');
   online=false;assert.equal((await respondImage(url)).body,'new page');assert.equal(downloads,1,'cached image is returned offline without a background fetch');
@@ -34,12 +47,14 @@ const respondImage=(url,method='GET')=>new Promise((resolve,reject)=>{let interc
   const beforeRetry=downloads;assert.equal((await respondImage(hero)).body,'new page','a transient scene request retries once');assert.equal(downloads-beforeRetry,2,'scene retry is bounded');
   assert.equal(await respondImage('https://project.supabase.co/rest/v1/fl_members'),'bypassed');assert.equal(await respondImage(url,'POST'),'bypassed');
   const oldRequest={url:'https://example.com/Fitpro/assets/moves/old.gif'},apiRequest={url:'https://example.com/private-data.json'},already={url};
-  const deleted=[];sandbox.caches.keys=async()=>['duofit-v29','duofit-v40','duofit-v41','duofit-v42','duofit-v43','duofit-v44','duofit-v45','duofit-v46','duofit-v47','duofit-v48','duofit-v49','duofit-v50','duofit-v51','duofit-v52','duofit-v53','duofit-v54','duofit-v55','duofit-v56','duofit-v57','duofit-images-v1','another-app'];
+  const oldShells=['duofit-v29',...Array.from({length:19},(_,i)=>'duofit-v'+(40+i))];
+  const deleted=[];sandbox.caches.keys=async()=>[...oldShells,'duofit-images-v1','another-app'];
   const oldCache={keys:async()=>[oldRequest,apiRequest,already],match:async()=>stale};
-  sandbox.caches.open=async key=>key==='duofit-images-v1'?imageCache:['duofit-v29','duofit-v40','duofit-v41','duofit-v42','duofit-v43','duofit-v44','duofit-v45','duofit-v46','duofit-v47','duofit-v48','duofit-v49','duofit-v50','duofit-v51','duofit-v52','duofit-v53','duofit-v54','duofit-v55','duofit-v56','duofit-v57'].includes(key)?oldCache:cache;sandbox.caches.delete=async key=>{deleted.push(key)};
+  sandbox.caches.open=async key=>key==='duofit-images-v1'?imageCache:oldShells.includes(key)?oldCache:cache;sandbox.caches.delete=async key=>{deleted.push(key)};
   await new Promise((resolve,reject)=>handlers.activate({waitUntil:p=>p.then(resolve,reject)}));
-  assert(images.has(oldRequest.url),'existing image survives shell upgrade');assert(!images.has(apiRequest.url),'migration does not preserve unrelated data');assert.equal(images.get(url).body,'new page','older shell does not replace a current image');assert.deepEqual(deleted,['duofit-v29','duofit-v40','duofit-v41','duofit-v42','duofit-v43','duofit-v44','duofit-v45','duofit-v46','duofit-v47','duofit-v48','duofit-v49','duofit-v50','duofit-v51','duofit-v52','duofit-v53','duofit-v54','duofit-v55','duofit-v56','duofit-v57'],'only old DuoFit shell caches are deleted');
+  assert(images.has(oldRequest.url),'existing image survives shell upgrade');assert(!images.has(apiRequest.url),'migration does not preserve unrelated data');assert.equal(images.get(url).body,'new page','older shell does not replace a current image');assert.deepEqual(deleted,oldShells,'only old DuoFit shell caches are deleted');
   await new Promise((resolve,reject)=>handlers.install({waitUntil:p=>p.then(resolve,reject)}));
   for(const name of ['today-hus','today-wife','diet-hus','diet-wife','train-hus','train-wife','record-couple'])assert(images.has(`https://example.com/Fitpro/assets/page-hero/${name}-v2.jpg`),`${name} is available offline after the new shell installs`);
-  console.log('PASS fresh app shell, offline fallback, image cache hits, scene retry and prewarm, request coalescing, media revisions, cache migration and external data bypass');
+  for(const name of ['hus-running','wife-running'])assert(images.has(`https://example.com/Fitpro/assets/login/${name}.webp`),'entry mascots are prewarmed');
+  console.log('PASS immediate installed shell, stalled network, cache miss/write failure, offline fallback, fresh non-core HTML, image cache/prewarm, migration and external data bypass');
 })().catch(error=>{console.error(error);process.exitCode=1});

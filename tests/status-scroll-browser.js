@@ -1,7 +1,7 @@
 // Browser contract only: native iOS status-bar compositing still requires a phone.
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'/tmp/duofit-browser-qa/node_modules/playwright');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const out=path.join(__dirname,'../docs/qa/entry-canvas-v58');
+const out=process.env.DUOFIT_STATUS_QA_DIR||path.join(__dirname,'../docs/qa/startup-speed-v59');
 (async()=>{
  const browser=await chromium.launch({headless:true,channel:'chrome'}),results=[];
  try{for(const standalone of [false,true])for(const width of [320,390,430])for(const person of ['hus','wife'])for(const theme of ['light','dark']){

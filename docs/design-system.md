@@ -10,9 +10,11 @@
 
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
+v59 正式 App 为避免外部 CSS 阻塞引导首绘，在 `index.html` 的 `data-shell-source` 样式块中保存共享 tokens、components 和 private-coach CSS 的生成快照，保持原级联顺序；素材相对路径自动转为相对 HTML 的路径。源文件仍是唯一编辑入口，快照不得手改。修改源 CSS 后运行 `node scripts/sync-shell-styles.js`，`node tests/design-system.js` 会校验快照一致性；提交后的 HTML 仍可直接部署，无构建步骤。组件页和主题预览继续读取源文件。完整应用壳由 SW 安装后本机直读，新版完整 CORE 安装成功才切换；图片缓存独立保留。见[启动速度 QA](qa/startup-speed-v59/README.md)。
+
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=58">
-<link rel="stylesheet" href="design-system/components.css?v=58">
+<link rel="stylesheet" href="design-system/tokens.css?v=59">
+<link rel="stylesheet" href="design-system/components.css?v=59">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>

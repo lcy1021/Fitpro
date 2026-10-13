@@ -1,16 +1,31 @@
-// DuoFit 离线缓存：页面和脚本优先取新版，断网时才使用本机缓存；图片可先读缓存。
+// DuoFit：已安装的完整应用壳直接读本机；新版由 SW 安装完整 CORE 后统一切换。
 // 只缓存本站的文件；Supabase 数据同步和 AI 请求（其他域名）一律不经过缓存。
-const CACHE = "duofit-v58";
+const CACHE = "duofit-v59";
 // Media URLs carry their own revision. Keep downloaded images through app-only releases.
 const IMAGE_CACHE = "duofit-images-v1";
 const imageRequests = new Map();
 const HERO_SCENES = [
   "today-hus", "today-wife", "diet-hus", "diet-wife", "train-hus", "train-wife", "record-couple",
 ].map(name => `assets/page-hero/${name}-v2.jpg`).concat("assets/page-hero/meadow-glass-v1.jpg");
+const ENTRY_IMAGES = ['assets/login/hus-running.webp','assets/login/wife-running.webp','assets/brand/duofit-wordmark.svg'];
 const CORE = [
-  "./", "index.html", "config.js", "design-system/tokens.css?v=58", "design-system/components.css?v=58", "design-system/mascots.js?v=58", "private-coach.js?v=58", "private-coach.css?v=58", "assets/fonts/LongCang-Regular.ttf", "manifest.webmanifest",
+  "./", "index.html", "config.js", "design-system/tokens.css?v=59", "design-system/components.css?v=59", "design-system/mascots.js?v=59", "private-coach.js?v=59", "private-coach.css?v=59", "assets/fonts/LongCang-Regular.ttf", "manifest.webmanifest",
 ];
 const isImage = url => /\.(?:avif|webp|png|gif|jpe?g|svg)$/i.test(url.pathname);
+const coreURLs = new Set(CORE.map(path => new URL(path,self.location.href).href));
+const appPaths = new Set(['./','index.html'].map(path => new URL(path,self.location.href).pathname));
+
+async function coreResponse(request,key){
+  let cache;
+  try{
+    cache=await caches.open(CACHE);
+    const hit=await cache.match(key);
+    if(hit)return hit;
+  }catch{/* Storage failure falls back to the network. */}
+  const response=await fetch(request,{cache:'no-store'});
+  if(response.ok&&cache){try{await cache.put(key,response.clone());}catch{/* Still show a successful network response. */}}
+  return response;
+}
 
 async function retainImages(){
   const images = await caches.open(IMAGE_CACHE);
@@ -48,7 +63,7 @@ async function imageResponse(request){
 }
 async function warmHeroScenes(){
   const images = await caches.open(IMAGE_CACHE);
-  await Promise.allSettled(HERO_SCENES.map(async path => {
+  await Promise.allSettled([...ENTRY_IMAGES,...HERO_SCENES].map(async path => {
     const request = new Request(path, {cache: "no-store"});
     if(await images.match(request))return;
     const controller = new AbortController();
@@ -77,6 +92,9 @@ self.addEventListener("fetch", (e) => {
   if (url.origin !== self.location.origin) return; // Supabase、AI 等其他域名不管
   if(isImage(url)){e.respondWith(imageResponse(req));return;}
   const isPage = req.mode === "navigate";
+  if((isPage&&appPaths.has(url.pathname))||coreURLs.has(url.href)){
+    e.respondWith(coreResponse(req,isPage?'./':req));return;
+  }
   const key = isPage ? "./" : req;
   const critical = isPage || /\.(?:html|js|css|webmanifest)$/.test(url.pathname);
   const fresh = fetch(req, critical ? {cache: "no-store"} : undefined).then(async res => {
