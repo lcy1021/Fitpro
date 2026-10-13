@@ -1,0 +1,308 @@
+[
+  {
+    "mode": "cached",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)",
+      "entryPosition": "absolute",
+      "entryTop": 0
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "entryCanvasIsolated": true,
+    "entryFrameCount": 139,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)",
+        "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+        "entryCanvas": false
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)",
+        "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+        "entryCanvas": false
+      },
+      "frames": 4,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "skip",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)",
+      "entryPosition": "absolute",
+      "entryTop": 0
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "entryCanvasIsolated": true,
+    "entryFrameCount": 6,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)",
+        "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+        "entryCanvas": false
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)",
+        "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+        "entryCanvas": false
+      },
+      "frames": 1,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "reduced",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)",
+      "entryPosition": "absolute",
+      "entryTop": 0
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "entryCanvasIsolated": true,
+    "entryFrameCount": 37,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)",
+        "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+        "entryCanvas": false
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)",
+        "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+        "entryCanvas": false
+      },
+      "frames": 13,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "guest",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)",
+      "entryPosition": "absolute",
+      "entryTop": 0
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "entryCanvasIsolated": true,
+    "entryFrameCount": 141,
+    "reveal": {
+      "first": null,
+      "last": null,
+      "frames": 0,
+      "positions": []
+    },
+    "errors": []
+  },
+  {
+    "mode": "guest-skip",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)",
+      "entryPosition": "absolute",
+      "entryTop": 0
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "entryCanvasIsolated": true,
+    "entryFrameCount": 10,
+    "reveal": {
+      "first": null,
+      "last": null,
+      "frames": 0,
+      "positions": []
+    },
+    "errors": []
+  },
+  {
+    "mode": "cold",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)",
+      "entryPosition": "absolute",
+      "entryTop": 0
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "entryCanvasIsolated": true,
+    "entryFrameCount": 138,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)",
+        "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+        "entryCanvas": false
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)",
+        "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+        "entryCanvas": false
+      },
+      "frames": 3,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  },
+  {
+    "mode": "missing-session",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)",
+      "entryPosition": "absolute",
+      "entryTop": 0
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "entryCanvasIsolated": true,
+    "entryFrameCount": 138,
+    "reveal": {
+      "first": null,
+      "last": null,
+      "frames": 0,
+      "positions": []
+    },
+    "errors": []
+  },
+  {
+    "mode": "local",
+    "early": {
+      "scroll": 60,
+      "boot": {
+        "target": 60,
+        "scrollY": 60,
+        "phase": "before-config"
+      },
+      "root": "rgba(0, 0, 0, 0)",
+      "rootImage": "radial-gradient(circle at 4% 44%, color(srgb 0.878431 0.94902 0.996078 / 0.9) 0px, rgba(0, 0, 0, 0) 42%), radial-gradient(circle at 102% 43%, color(srgb 1 0.894118 0.901961 / 0.9) 0px, rgba(0, 0, 0, 0) 45%), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+      "picker": "rgba(0, 0, 0, 0)",
+      "entryPosition": "absolute",
+      "entryTop": 0
+    },
+    "initialHomeHidden": true,
+    "entryFinished": true,
+    "entryCanvasIsolated": true,
+    "entryFrameCount": 141,
+    "reveal": {
+      "first": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)",
+        "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+        "entryCanvas": false
+      },
+      "last": {
+        "scrollY": 60,
+        "opacity": "1",
+        "position": "absolute",
+        "top": 0,
+        "rootColor": "rgba(0, 0, 0, 0)",
+        "rootImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(\"http://127.0.0.1:8765/assets/page-hero/today-hus-v2.jpg\"), linear-gradient(rgb(253, 250, 246), rgb(253, 250, 246))",
+        "entryCanvas": false
+      },
+      "frames": 28,
+      "positions": [
+        60
+      ]
+    },
+    "errors": []
+  }
+]

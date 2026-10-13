@@ -1,0 +1,42 @@
+[
+  {
+    "mode": "stream",
+    "early": {
+      "paint": null,
+      "phase": null,
+      "scrollY": 0,
+      "appHidden": true,
+      "appLoaded": false,
+      "status": ""
+    },
+    "errors": [],
+    "diagnosticCopied": false,
+    "privateDataExcluded": null,
+    "recovered": false,
+    "final": {
+      "paint": 4568,
+      "version": null,
+      "trace": null
+    }
+  },
+  {
+    "mode": "scripts",
+    "early": {
+      "paint": 56,
+      "phase": "start",
+      "scrollY": 60,
+      "appHidden": true,
+      "appLoaded": false,
+      "status": ""
+    },
+    "errors": [],
+    "diagnosticCopied": false,
+    "privateDataExcluded": null,
+    "recovered": false,
+    "final": {
+      "paint": 56,
+      "version": null,
+      "trace": null
+    }
+  }
+]

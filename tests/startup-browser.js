@@ -67,7 +67,7 @@ const coachSource=fs.readFileSync(path.join(__dirname,'../private-coach.js'),'ut
       assert.equal(await page.locator('#appShell').isVisible(),false,'no Today flash while scripts are still loading');
       assert.equal(await page.locator('#appTabs').isVisible(),false);
       assert.equal(await page.locator('#view').innerHTML(),'');
-      assert.equal(await page.locator('#lm').getAttribute('data-phase'),'start');
+      assert(['start','run','meet','waiting'].includes(await page.locator('#lm').getAttribute('data-phase')),'entry is already controlled before config arrives');
       const early=await page.evaluate(()=>({scroll:scrollY,boot:window.duoBootViewport||null,root:getComputedStyle(document.documentElement).backgroundColor,rootImage:getComputedStyle(document.documentElement).backgroundImage,picker:getComputedStyle(document.querySelector('#pick')).backgroundColor,entryPosition:getComputedStyle(document.querySelector('#pick')).position,entryTop:document.querySelector('#pick').getBoundingClientRect().top}));
       assert.equal(early.scroll,iosStandalone?60:0,'native start is placed BEFORE blocked config/auth scripts');
       if(iosStandalone)assert.equal(early.boot.phase,'before-config');

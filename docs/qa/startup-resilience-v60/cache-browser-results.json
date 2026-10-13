@@ -1,0 +1,30 @@
+{
+  "syntheticUpdates": true,
+  "slow": {
+    "paint": 32,
+    "versionedStyles": "design-system/tokens.css?v=60",
+    "identity": "unchanged"
+  },
+  "offline": {
+    "paint": 32,
+    "identity": "unchanged"
+  },
+  "failedUpdate": {
+    "caches": [
+      "duofit-v60",
+      "duofit-images-v1",
+      "duofit-v61"
+    ],
+    "preserved": "unchanged"
+  },
+  "successfulUpdate": {
+    "caches": [
+      "duofit-images-v1",
+      "duofit-v62"
+    ],
+    "source": "design-system/tokens.css?v=62",
+    "preserved": "unchanged",
+    "entryImage": true
+  },
+  "errors": []
+}

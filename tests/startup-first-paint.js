@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const origin=process.env.DUOFIT_PREVIEW_URL||'http://127.0.0.1:8765';
-const output=path.join(__dirname,'../docs/qa/startup-speed-v59');
+const output=process.env.DUOFIT_FIRST_PAINT_QA_DIR||path.join(__dirname,'../docs/qa/startup-speed-v59');
 const before=process.argv.includes('--before');
 const baseline=before?require('node:child_process').execFileSync('git',['show','da32eb4:index.html'],{cwd:path.join(__dirname,'..'),encoding:'utf8'}):null;
 (async()=>{
@@ -30,7 +30,7 @@ const baseline=before?require('node:child_process').execFileSync('git',['show','
    if(!before&&person==='hus'&&theme==='light'&&width===390)await page.screenshot({path:path.join(output,'after-slow-hus-light-390.png')});
    await page.locator('#pick').waitFor({state:'visible'});
    await page.addStyleTag({content:'.lm *,.lm *::before,.lm *::after{animation:none!important;transition:none!important}'});
-   await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.querySelectorAll('.lm-runner img')].map(img=>img.decode()));document.querySelector('#lm').dataset.phase='run';await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
+   await page.evaluate(async()=>{window.duoEntry?.stop();document.querySelector('#launchStatus')?.setAttribute('hidden','');document.querySelector('#launchRetry')?.setAttribute('hidden','');await document.fonts.ready;await Promise.all([...document.querySelectorAll('.lm-runner img')].map(img=>img.decode()));document.querySelector('#lm').dataset.phase='run';await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
    const name=`${person}-${theme}-${width}`;
    const stable=await page.screenshot({path:path.join(output,`${before?'before':'after'}-run-${name}.png`)});
    let visual=null;
@@ -49,7 +49,7 @@ const baseline=before?require('node:child_process').execFileSync('git',['show','
     assert(visual.maxChannelDelta<=40&&visual.meanChannelDelta<0.2&&visual.outsideRunnerPixels===0,'approved entry has no material pixel change: '+name+' '+JSON.stringify(visual));
     assert.equal(await page.locator('#appShell').isVisible(),false);
    }
-   releaseConfig();await page.waitForFunction(()=>!!document.querySelector('#lm').onclick);
+   releaseConfig();await page.waitForFunction(()=>window.duoAppStarted||!window.duoEntry&&!!document.querySelector('#lm').onclick);
    await page.locator('[data-lm-skip]').click();await page.locator('#pick').waitFor({state:'hidden'});
    assert.deepEqual(errors,[]);
    results.push({width,theme,person,early,paint:await page.evaluate(()=>performance.getEntriesByName('first-contentful-paint')[0].startTime),visual,skipWorks:true,errors});

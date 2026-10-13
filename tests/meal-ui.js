@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const html=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8');
-const inline=html.slice(html.lastIndexOf('<script>')+8,html.lastIndexOf('</script>'));
+const inline=fs.readFileSync(require('node:path').join(__dirname,'../app.js'),'utf8')+'\nwindow.duoStartApp();';
 const elements=new Map(),memory=new Map();
 function element(key){if(!elements.has(key)){const classes=new Set();elements.set(key,{value:'',hidden:false,innerHTML:'',textContent:'',dataset:{},disabled:false,classList:{add(...xs){xs.forEach(x=>classes.add(x))},remove(...xs){xs.forEach(x=>classes.delete(x))},contains:x=>classes.has(x),toggle(x,on){on?classes.add(x):classes.delete(x)}},addEventListener(){},setAttribute(){},focus(){}});}return elements.get(key);}
 const sandbox={window:{FATLOSS_CONFIG:{}},document:{querySelector:element,querySelectorAll:()=>[],body:{style:{}},addEventListener(){},activeElement:{blur(){}}},localStorage:{getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,v),removeItem:k=>memory.delete(k)},location:{hash:'',pathname:'/',search:'',protocol:'file:'},history:{replaceState(){}},navigator:{},setTimeout:(fn,ms)=>{const t=setTimeout(fn,ms);t.unref();return t;},clearTimeout,setInterval,clearInterval,requestAnimationFrame:f=>f(),matchMedia:()=>({matches:true}),Date,console,URL,AbortController};

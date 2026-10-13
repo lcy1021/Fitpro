@@ -1,15 +1,16 @@
 // DuoFit：已安装的完整应用壳直接读本机；新版由 SW 安装完整 CORE 后统一切换。
 // 只缓存本站的文件；Supabase 数据同步和 AI 请求（其他域名）一律不经过缓存。
-const CACHE = "duofit-v59";
+const CACHE = "duofit-v60";
 // Media URLs carry their own revision. Keep downloaded images through app-only releases.
 const IMAGE_CACHE = "duofit-images-v1";
 const imageRequests = new Map();
+let mediaWarmPromise=null;
 const HERO_SCENES = [
   "today-hus", "today-wife", "diet-hus", "diet-wife", "train-hus", "train-wife", "record-couple",
 ].map(name => `assets/page-hero/${name}-v2.jpg`).concat("assets/page-hero/meadow-glass-v1.jpg");
 const ENTRY_IMAGES = ['assets/login/hus-running.webp','assets/login/wife-running.webp','assets/brand/duofit-wordmark.svg'];
 const CORE = [
-  "./", "index.html", "config.js", "design-system/tokens.css?v=59", "design-system/components.css?v=59", "design-system/mascots.js?v=59", "private-coach.js?v=59", "private-coach.css?v=59", "assets/fonts/LongCang-Regular.ttf", "manifest.webmanifest",
+  "./", "index.html", "config.js", "entry.css?v=60", "app.css?v=60", "app.js?v=60", "design-system/tokens.css?v=60", "design-system/components.css?v=60", "design-system/mascots.js?v=60", "private-coach.js?v=60", "private-coach.css?v=60", "assets/fonts/DuoFit-Header-v1.woff2", "manifest.webmanifest",
 ];
 const isImage = url => /\.(?:avif|webp|png|gif|jpe?g|svg)$/i.test(url.pathname);
 const coreURLs = new Set(CORE.map(path => new URL(path,self.location.href).href));
@@ -76,13 +77,22 @@ async function warmHeroScenes(){
 }
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE.map(path => new Request(path, {cache: "no-store"})))).then(() => warmHeroScenes().catch(() => {})).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE.map(path => new Request(path, {cache: "no-store"})))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     retainImages().then(() => self.clients.claim())
   );
+});
+
+// Optional artwork warms after the app has opened; it never delays activation.
+self.addEventListener('message',e=>{
+  if(e.data?.type==='startup-status')e.source?.postMessage({type:'startup-status',version:Number(CACHE.match(/\d+$/)[0])});
+  if(e.data?.type==='warm-media'){
+    if(!mediaWarmPromise)mediaWarmPromise=warmHeroScenes().catch(()=>{}).finally(()=>{mediaWarmPromise=null;});
+    e.waitUntil(mediaWarmPromise);
+  }
 });
 
 self.addEventListener("fetch", (e) => {

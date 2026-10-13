@@ -34,3 +34,6 @@ document.querySelector('#saveExample').addEventListener('click',e=>{const b=e.cu
 render();
 
 document.querySelector('#modulePatterns').addEventListener('click',e=>{const b=e.target.closest('[data-stand]');if(b){const n=document.querySelector('#standExample');n.textContent=String(Math.max(0,Number(n.textContent)+Number(b.dataset.stand)));}});
+
+document.querySelector('#entryDemoFail').addEventListener('click',()=>{document.querySelector('#entryDemoStatus').textContent='启动资源未能加载，请重试';});
+document.querySelector('#entryDemoRetry').addEventListener('click',()=>{document.querySelector('#entryDemoStatus').textContent='正在打开…';});

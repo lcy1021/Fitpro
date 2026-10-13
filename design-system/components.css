@@ -1,9 +1,9 @@
-/* DuoFit Design System 1.9. Shared app + component gallery CSS. */
+/* DuoFit Design System 1.10. Shared app + component gallery CSS. */
 .icon-sprite{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
 .ui-icon{display:inline-block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.85;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:-.2em}
 .ui-icon.sm{width:16px;height:16px;vertical-align:-.25em}
 .ui-icon.lg{width:24px;height:24px}
-@font-face{font-family:"DuoFit Long Cang";src:url("../assets/fonts/LongCang-Regular.ttf") format("truetype");font-display:swap}
+@font-face{font-family:"DuoFit Long Cang";src:url("../assets/fonts/DuoFit-Header-v1.woff2") format("woff2");font-display:swap}
 /* Four app headers share one measured text grid; the scene is decorative, data stays in DOM. */
 .ds-page-hero{position:relative;isolation:isolate;width:100%;aspect-ratio:100/112;background:var(--app-top-color) var(--ds-hero-image) center top/100% auto no-repeat;overflow:hidden}
 .ds-page-hero[data-page="diet"]{--ds-hero-glass-position:69%}

@@ -25,7 +25,7 @@ const respondImage=(url,method='GET')=>new Promise((resolve,reject)=>{let interc
   assert.equal(downloads,0,'cached navigation never waits on a network request');
   const originalFetch=sandbox.fetch;sandbox.fetch=()=>new Promise(()=>{});
   assert.equal((await Promise.race([respond(),new Promise((_,reject)=>setTimeout(()=>reject(Error('cached launch waited on stalled network')),100))])).body,'old page');
-  for(const url of ['https://example.com/?source=homescreen','https://example.com/private-coach.js?v=59','https://example.com/design-system/components.css?v=59','https://example.com/config.js']){
+  for(const url of ['https://example.com/?source=homescreen','https://example.com/private-coach.js?v=60','https://example.com/design-system/components.css?v=60','https://example.com/config.js']){
     const result=await respondImage(url);assert.equal(result.body,'old page','matching CORE resource never waits on network: '+url);
   }
   sandbox.fetch=originalFetch;
@@ -47,13 +47,15 @@ const respondImage=(url,method='GET')=>new Promise((resolve,reject)=>{let interc
   const beforeRetry=downloads;assert.equal((await respondImage(hero)).body,'new page','a transient scene request retries once');assert.equal(downloads-beforeRetry,2,'scene retry is bounded');
   assert.equal(await respondImage('https://project.supabase.co/rest/v1/fl_members'),'bypassed');assert.equal(await respondImage(url,'POST'),'bypassed');
   const oldRequest={url:'https://example.com/Fitpro/assets/moves/old.gif'},apiRequest={url:'https://example.com/private-data.json'},already={url};
-  const oldShells=['duofit-v29',...Array.from({length:19},(_,i)=>'duofit-v'+(40+i))];
+  const oldShells=['duofit-v29',...Array.from({length:20},(_,i)=>'duofit-v'+(40+i))];
   const deleted=[];sandbox.caches.keys=async()=>[...oldShells,'duofit-images-v1','another-app'];
   const oldCache={keys:async()=>[oldRequest,apiRequest,already],match:async()=>stale};
   sandbox.caches.open=async key=>key==='duofit-images-v1'?imageCache:oldShells.includes(key)?oldCache:cache;sandbox.caches.delete=async key=>{deleted.push(key)};
   await new Promise((resolve,reject)=>handlers.activate({waitUntil:p=>p.then(resolve,reject)}));
   assert(images.has(oldRequest.url),'existing image survives shell upgrade');assert(!images.has(apiRequest.url),'migration does not preserve unrelated data');assert.equal(images.get(url).body,'new page','older shell does not replace a current image');assert.deepEqual(deleted,oldShells,'only old DuoFit shell caches are deleted');
   await new Promise((resolve,reject)=>handlers.install({waitUntil:p=>p.then(resolve,reject)}));
+  assert(!images.has('https://example.com/Fitpro/assets/page-hero/today-hus-v2.jpg'),'optional artwork does not delay shell installation');
+  await new Promise((resolve,reject)=>handlers.message({data:{type:'warm-media'},waitUntil:p=>p.then(resolve,reject)}));
   for(const name of ['today-hus','today-wife','diet-hus','diet-wife','train-hus','train-wife','record-couple'])assert(images.has(`https://example.com/Fitpro/assets/page-hero/${name}-v2.jpg`),`${name} is available offline after the new shell installs`);
   for(const name of ['hus-running','wife-running'])assert(images.has(`https://example.com/Fitpro/assets/login/${name}.webp`),'entry mascots are prewarmed');
   console.log('PASS immediate installed shell, stalled network, cache miss/write failure, offline fallback, fresh non-core HTML, image cache/prewarm, migration and external data bypass');

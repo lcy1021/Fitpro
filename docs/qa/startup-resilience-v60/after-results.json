@@ -1,0 +1,482 @@
+[
+  {
+    "mode": "stream",
+    "early": {
+      "paint": 92,
+      "phase": "run",
+      "scrollY": 60,
+      "appHidden": true,
+      "appLoaded": false,
+      "status": ""
+    },
+    "errors": [],
+    "diagnosticCopied": false,
+    "privateDataExcluded": null,
+    "recovered": false,
+    "final": {
+      "paint": 92,
+      "version": 60,
+      "trace": {
+        "version": 60,
+        "reducedMotion": false,
+        "events": [
+          {
+            "stage": "entry-parsed",
+            "ms": 39
+          },
+          {
+            "stage": "entry-run",
+            "ms": 73
+          },
+          {
+            "stage": "home-image-ready",
+            "ms": 443
+          },
+          {
+            "stage": "entry-meet",
+            "ms": 1854
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 2414
+          },
+          {
+            "stage": "app-start",
+            "ms": 4508
+          },
+          {
+            "stage": "pageshow",
+            "ms": 4516
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 4516
+          },
+          {
+            "stage": "entry-complete",
+            "ms": 4526
+          },
+          {
+            "stage": "home-visible",
+            "ms": 4541
+          }
+        ]
+      }
+    }
+  },
+  {
+    "mode": "scripts",
+    "early": {
+      "paint": 56,
+      "phase": "run",
+      "scrollY": 60,
+      "appHidden": true,
+      "appLoaded": false,
+      "status": ""
+    },
+    "errors": [],
+    "diagnosticCopied": false,
+    "privateDataExcluded": null,
+    "recovered": false,
+    "final": {
+      "paint": 56,
+      "version": 60,
+      "trace": {
+        "version": 60,
+        "reducedMotion": false,
+        "events": [
+          {
+            "stage": "entry-parsed",
+            "ms": 19
+          },
+          {
+            "stage": "entry-run",
+            "ms": 52
+          },
+          {
+            "stage": "home-image-ready",
+            "ms": 425
+          },
+          {
+            "stage": "entry-skip",
+            "ms": 1033
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 1033
+          },
+          {
+            "stage": "app-start",
+            "ms": 4522
+          },
+          {
+            "stage": "pageshow",
+            "ms": 4526
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 4526
+          },
+          {
+            "stage": "entry-complete",
+            "ms": 4529
+          },
+          {
+            "stage": "home-visible",
+            "ms": 4555
+          }
+        ]
+      }
+    }
+  },
+  {
+    "mode": "images",
+    "early": {
+      "paint": 72,
+      "phase": "run",
+      "scrollY": 60,
+      "appHidden": true,
+      "appLoaded": true,
+      "status": ""
+    },
+    "errors": [],
+    "diagnosticCopied": false,
+    "privateDataExcluded": null,
+    "recovered": false,
+    "final": {
+      "paint": 72,
+      "version": 60,
+      "trace": {
+        "version": 60,
+        "reducedMotion": false,
+        "events": [
+          {
+            "stage": "entry-parsed",
+            "ms": 20
+          },
+          {
+            "stage": "app-start",
+            "ms": 34
+          },
+          {
+            "stage": "entry-run",
+            "ms": 286
+          },
+          {
+            "stage": "home-image-ready",
+            "ms": 428
+          },
+          {
+            "stage": "entry-meet",
+            "ms": 2068
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 2627
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 2628
+          },
+          {
+            "stage": "entry-complete",
+            "ms": 2641
+          },
+          {
+            "stage": "home-visible",
+            "ms": 2657
+          }
+        ]
+      }
+    }
+  },
+  {
+    "mode": "styles",
+    "early": {
+      "paint": 40,
+      "phase": "run",
+      "scrollY": 60,
+      "appHidden": true,
+      "appLoaded": false,
+      "status": ""
+    },
+    "errors": [],
+    "diagnosticCopied": false,
+    "privateDataExcluded": null,
+    "recovered": false,
+    "final": {
+      "paint": 40,
+      "version": 60,
+      "trace": {
+        "version": 60,
+        "reducedMotion": false,
+        "events": [
+          {
+            "stage": "entry-parsed",
+            "ms": 19
+          },
+          {
+            "stage": "entry-run",
+            "ms": 34
+          },
+          {
+            "stage": "home-image-ready",
+            "ms": 432
+          },
+          {
+            "stage": "entry-meet",
+            "ms": 1815
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 2375
+          },
+          {
+            "stage": "app-start",
+            "ms": 4516
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 4553
+          },
+          {
+            "stage": "entry-complete",
+            "ms": 4557
+          },
+          {
+            "stage": "home-visible",
+            "ms": 4576
+          },
+          {
+            "stage": "pageshow",
+            "ms": 4579
+          }
+        ]
+      }
+    }
+  },
+  {
+    "mode": "long-wait",
+    "early": {
+      "paint": 56,
+      "phase": "run",
+      "scrollY": 60,
+      "appHidden": true,
+      "appLoaded": false,
+      "status": ""
+    },
+    "errors": [],
+    "diagnosticCopied": true,
+    "privateDataExcluded": true,
+    "recovered": false,
+    "final": {
+      "paint": 56,
+      "version": 60,
+      "trace": {
+        "version": 60,
+        "reducedMotion": false,
+        "events": [
+          {
+            "stage": "entry-parsed",
+            "ms": 20
+          },
+          {
+            "stage": "entry-run",
+            "ms": 48
+          },
+          {
+            "stage": "home-image-ready",
+            "ms": 426
+          },
+          {
+            "stage": "entry-meet",
+            "ms": 1830
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 2388
+          },
+          {
+            "stage": "app-start",
+            "ms": 9512
+          },
+          {
+            "stage": "pageshow",
+            "ms": 9516
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 9516
+          },
+          {
+            "stage": "entry-complete",
+            "ms": 9520
+          },
+          {
+            "stage": "home-visible",
+            "ms": 9537
+          }
+        ]
+      }
+    }
+  },
+  {
+    "mode": "failed-script",
+    "early": {
+      "paint": 60,
+      "phase": "run",
+      "scrollY": 60,
+      "appHidden": true,
+      "appLoaded": false,
+      "status": "启动资源未能加载，请重试"
+    },
+    "errors": [],
+    "diagnosticCopied": true,
+    "privateDataExcluded": true,
+    "recovered": true,
+    "final": {
+      "paint": 32,
+      "version": 60,
+      "trace": {
+        "version": 60,
+        "reducedMotion": false,
+        "events": [
+          {
+            "stage": "entry-parsed",
+            "ms": 12
+          },
+          {
+            "stage": "app-start",
+            "ms": 17
+          },
+          {
+            "stage": "pageshow",
+            "ms": 26
+          },
+          {
+            "stage": "entry-run",
+            "ms": 30
+          },
+          {
+            "stage": "home-image-ready",
+            "ms": 421
+          },
+          {
+            "stage": "entry-meet",
+            "ms": 1812
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 2372
+          },
+          {
+            "stage": "entry-waiting",
+            "ms": 2372
+          },
+          {
+            "stage": "entry-complete",
+            "ms": 2383
+          },
+          {
+            "stage": "home-visible",
+            "ms": 2396
+          }
+        ]
+      }
+    }
+  },
+  {
+    "mode": "failed-config",
+    "early": {
+      "paint": 76,
+      "phase": "run",
+      "scrollY": 60,
+      "appHidden": true,
+      "appLoaded": false,
+      "status": "启动资源未能加载，请重试"
+    },
+    "errors": [],
+    "diagnosticCopied": true,
+    "privateDataExcluded": true,
+    "recovered": false,
+    "final": {
+      "paint": 76,
+      "version": 60,
+      "trace": {
+        "version": 60,
+        "reducedMotion": false,
+        "events": [
+          {
+            "stage": "entry-parsed",
+            "ms": 22
+          },
+          {
+            "stage": "resource-error-config",
+            "ms": 25
+          },
+          {
+            "stage": "pageshow",
+            "ms": 38
+          },
+          {
+            "stage": "entry-run",
+            "ms": 59
+          },
+          {
+            "stage": "home-image-ready",
+            "ms": 432
+          }
+        ]
+      }
+    }
+  },
+  {
+    "mode": "failed-style",
+    "early": {
+      "paint": 44,
+      "phase": "run",
+      "scrollY": 60,
+      "appHidden": true,
+      "appLoaded": false,
+      "status": "启动资源未能加载，请重试"
+    },
+    "errors": [],
+    "diagnosticCopied": true,
+    "privateDataExcluded": true,
+    "recovered": false,
+    "final": {
+      "paint": 44,
+      "version": 60,
+      "trace": {
+        "version": 60,
+        "reducedMotion": false,
+        "events": [
+          {
+            "stage": "entry-parsed",
+            "ms": 21
+          },
+          {
+            "stage": "resource-error-style",
+            "ms": 34
+          },
+          {
+            "stage": "resource-error-style",
+            "ms": 34
+          },
+          {
+            "stage": "pageshow",
+            "ms": 35
+          },
+          {
+            "stage": "entry-run",
+            "ms": 40
+          },
+          {
+            "stage": "home-image-ready",
+            "ms": 431
+          }
+        ]
+      }
+    }
+  }
+]

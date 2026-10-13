@@ -1,4 +1,4 @@
-# DuoFit Design System · 1.9
+# DuoFit Design System · 1.10
 
 状态：正式沿用。以用户确认的 v35「方案一」页面为视觉依据；实现入口是 `design-system/tokens.css`、`design-system/components.css`，可操作样例是 `design-system/index.html`。
 
@@ -10,11 +10,11 @@
 
 新增页面加载两个 CSS 文件，先 tokens 后 components。现有 App 保留自身布局样式；不要复制组件规则或通过末尾重复覆盖制造另一套样式。
 
-v59 正式 App 为避免外部 CSS 阻塞引导首绘，在 `index.html` 的 `data-shell-source` 样式块中保存共享 tokens、components 和 private-coach CSS 的生成快照，保持原级联顺序；素材相对路径自动转为相对 HTML 的路径。源文件仍是唯一编辑入口，快照不得手改。修改源 CSS 后运行 `node scripts/sync-shell-styles.js`，`node tests/design-system.js` 会校验快照一致性；提交后的 HTML 仍可直接部署，无构建步骤。组件页和主题预览继续读取源文件。完整应用壳由 SW 安装后本机直读，新版完整 CORE 安装成功才切换；图片缓存独立保留。见[启动速度 QA](qa/startup-speed-v59/README.md)。
+v60 正式 App 的 `index.html` 仅内联 tokens、`entry.css` 和独立 `entry.js` 的生成快照；引导是 body 第一项，先绘制并播放，不等待业务脚本。`app.css`、components、private-coach CSS 非阻塞并行加载；config、coach、mascots、`app.js` 使用 defer 保持执行顺序，样式就绪才初始化业务。级联仍为 tokens → entry → app → components → coach。源文件是唯一编辑入口，快照不得手改；修改 tokens/entry 后运行 `node scripts/sync-shell-styles.js`，设计系统测试校验一致性，提交后的静态文件可直接部署，无构建步骤。组件页和主题预览复用同一源文件。完整 CORE 成功安装后切换；图片独立缓存不变，场景预热移到首页打开后。v59 的完整样式内联方案仍需下载约116KB才出现引导，也未消除动画对业务脚本的依赖；本版本补齐这两条冷启动路径。见[冷启动 QA](qa/startup-resilience-v60/README.md)。
 
 ```html
-<link rel="stylesheet" href="design-system/tokens.css?v=59">
-<link rel="stylesheet" href="design-system/components.css?v=59">
+<link rel="stylesheet" href="design-system/tokens.css?v=60">
+<link rel="stylesheet" href="design-system/components.css?v=60">
 <!-- .me-hus / .me-wife 表示登录者；.hus / .wife 表示当前内容的所有者 -->
 <body class="ds-root me-hus">
   <section class="card hus">…</section>
@@ -48,7 +48,7 @@ v59 正式 App 为避免外部 CSS 阻塞引导首绘，在 `index.html` 的 `da
 
 ## 3. 字体：同级同大小
 
-正文使用系统中文字体，不加载网络字体。四页表头手写句单独使用本地 `LongCang-Regular.ttf`，统一字号、笔触和手绘下划线，属于装饰文本层，不替代数据。数字使用等宽数字属性。
+正文使用系统中文字体，不加载网络字体。四页表头手写句使用本地 `DuoFit-Header-v1.woff2`，从保留的 `LongCang-Regular.ttf` 按现有五组固定句子生成子集；约14KB，原字形轮廓和宽度逐字核对一致，仍统一字号、笔触和手绘下划线，属于装饰文本层，不替代数据。新增句子须更新字集并递增字体素材版本；字体源文件和 OFL 许可保留。数字使用等宽数字属性。
 
 | 层级 / token | 大小 / 常用字重 | 场景 |
 | --- | --- | --- |
@@ -129,6 +129,8 @@ v59 正式 App 为避免外部 CSS 阻塞引导首绘，在 `index.html` 的 `da
 ## 6. 状态与动效
 
 v58 引导背景用 `--ds-entry-background`：蓝粉柔和径向渐变加完整页面底色渐变。初始HTML为 `.app-entry-active`，根画布与引导共用同一背景；根背景色透明，首页图仅预加载，不提前绘入根画布。引导保持文档absolute定位，以 `--ds-entry-scroll-top` 锚定当前滚动位置；内部可滚动，输入/视口变化同步锚点。
+
+v60 增加 `.lm-loading` / `.lm-retry` 等待与恢复状态，复用 `--ds-text-meta`、`--muted`、`--surface`、`--line`、`--me` 和 `--ds-touch-compact`，无新色盘。正常 start/run/meet 画面不新增文案；当动画结束而应用仍未就绪时继续角色轻跑并显示「正在打开…」。资源失败或超过8秒出现「重新打开 / 复制启动诊断」；重试只重新加载，不清登录或记录。启动诊断仅含版本、绘制/阶段时间、导航大小、安装态和SW控制状态，不含健康内容、身份凭据或家庭口令。短视口增加引导内部高度以便滚动到两项操作；减少动态偏好关闭动画。
 
 首页在引导覆盖期间完成渲染、图片解码和受限iOS定位，之后在同一任务内移除引导并切换根画布归属。两个背景不通过透明度交叠；页面顶部显示当前页面自己的完整背景，不增加状态栏专用颜色层。后续打开身份选择也切回引导背景，关闭后恢复页面。v57只验证正文隔离，用户真机证实根画布仍漏出首页天空；该策略被本版本替代。见[引导/首页背景归属QA](qa/entry-canvas-v58/README.md)。
 

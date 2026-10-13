@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <base href="/">
   <title>DuoFit 主题场景检查</title>
-  <link rel="stylesheet" href="design-system/tokens.css?v=59">
-  <link rel="stylesheet" href="design-system/components.css?v=59">
-  <link rel="stylesheet" href="private-coach.css?v=59">
+  <link rel="stylesheet" href="design-system/tokens.css?v=60">
+  <link rel="stylesheet" href="entry.css?v=60">
+  <link rel="stylesheet" href="app.css?v=60">
+  <link rel="stylesheet" href="design-system/components.css?v=60">
+  <link rel="stylesheet" href="private-coach.css?v=60">
 </head>
 <body>
-<script src="private-coach.js?v=59"></script>
-<script src="design-system/mascots.js?v=59"></script>
+<script src="private-coach.js?v=60"></script>
+<script src="design-system/mascots.js?v=60"></script>
 <script>
 (async () => {
   // Only synthetic local fixtures; never load config.js or call a production backend.
@@ -40,13 +42,14 @@
     if (child.tagName !== 'SCRIPT') document.body.appendChild(child);
   }
   const script = document.createElement('script');
-  const inline = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('<\/script>'));
+  const inline = await (await fetch('app.js?v=60', {cache:'no-store'})).text();
   script.textContent = inline.replace('/* ---------- boot ---------- */', `
     window.themePreviewApp = {pageViewportDiagnostics,render, viewToday, viewDiet, viewTrain, viewRecord, renderRecordData, openGoal, openFood, openCode, showRoleChoice, buildSteps, drawRun, ymd, getCheckin, onFoodText, initTabBarSpace,
       setMe:v=>{me=v;viewP=v}, clearFixtureDirty:()=>{dirty=[]}, setTab:v=>{tab=v}, setStore:v=>{store=v}, setCoach:v=>{privateCoach=v}, setRunState:v=>{runState=v}, setSync:(v,time)=>{syncState=v;lastSync=time===undefined?new Date():time;renderSync()}};
     return;
   `);
   document.body.appendChild(script);
+  window.duoStartApp();
   const app = window.themePreviewApp;
   document.querySelector("#pick").classList.remove("open");
   document.querySelector("#lm").classList.remove("splash");
