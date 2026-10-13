@@ -1,0 +1,51 @@
+{
+  "version": 55,
+  "commit": "410f3ea",
+  "workflow": 38347769859,
+  "at": "2026-10-13T04:50:56.947135+00:00",
+  "nativeFlashVerified": false,
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256": "a94ccc0d21a68a3ac2b6696d1a12777f363a9dc72d5d27301602d26343fe495c",
+      "match": true
+    },
+    {
+      "file": "sw.js",
+      "status": 200,
+      "sha256": "d3963e3ed043d7fc198f62d7e41978ac010a16fd4db1ccedd1266023a2025e6f",
+      "match": true
+    },
+    {
+      "file": "private-coach.js",
+      "status": 200,
+      "sha256": "4128f67d667ff88638e753788de502de0e6c49ed4e77e56b43cdc49e198a183e",
+      "match": true
+    },
+    {
+      "file": "design-system/tokens.css",
+      "status": 200,
+      "sha256": "a20dcfe508700d026f844ff005c5fce5070ad9a2022ceb98af75ae6cd71055f4",
+      "match": true
+    },
+    {
+      "file": "design-system/components.css",
+      "status": 200,
+      "sha256": "c3e81caf408f2138428e976203c0267169145b41edfee4884cbdfa4d41941578",
+      "match": true
+    },
+    {
+      "file": "design-system/index.html",
+      "status": 200,
+      "sha256": "deb101b7855c84aa56e46751395351b3784fa855e5f98091f6142d2fa1852940",
+      "match": true
+    },
+    {
+      "file": "tests/theme-preview.html",
+      "status": 200,
+      "sha256": "9162fd40b1832b0e81ce9edbad140f3386cf68df29986e253ab4ba7f2595841f",
+      "match": true
+    }
+  ]
+}

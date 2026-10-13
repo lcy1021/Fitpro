@@ -25,4 +25,4 @@
 
 ## 发布
 
-待发布v55，核心脚本/样式/SW/本机预览/诊断版本统一；图片未变，不改config与用户数据。
+v55已发布，应用提交 `410f3ea`，Pages [38347769859](https://github.com/lcy1021/Fitpro/actions/runs/38347769859) 成功，线上7项资源SHA-256匹配，见[核验](release-verification.json)。核心脚本/样式/SW/本机预览/诊断版本统一；图片未变，不改config与用户数据。
